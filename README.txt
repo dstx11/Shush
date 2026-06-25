@@ -21,9 +21,9 @@ Estrutura atual:
 - script.js: menu mobile, scroll progress, reveal com stagger, roster, filtros e pedido da jersey
 
 Notas importantes:
-- assets/avatars/ está intencionalmente vazio. Fotos reais serão adicionadas depois.
+- assets/avatars/ já tem cinco avatares reais em PNG: Délcio, Tomás, Catarina, Lyel e Tz.
 - Não criar fotos falsas, imagens remotas ou placeholders externos para jogadores.
-- O roster deve evoluir para placeholders/initials sem ícones de imagem quebrados.
+- Jogadores sem avatar real continuam com placeholders/initials sem ícones de imagem quebrados.
 - Backora deve continuar como parceiro técnico/digital, sem grelha de sponsors falsos.
 - Drop 01 continua com pedido manual. Não existe checkout real nesta fase.
 
@@ -36,7 +36,7 @@ Estado de Stage 1:
 
 Estado de Stage 2:
 - O roster usa dados sem caminhos para imagens inexistentes.
-- Todos os jogadores renderizam com initials/placeholders enquanto assets/avatars/ estiver vazio.
+- Jogadores sem foto real renderizam com initials/placeholders.
 - A cópia do roster foi profissionalizada sem inventar estatísticas, rankings ou histórico.
 - O modo antigo e os badges/campos específicos foram removidos do roster.
 - Os filtros do roster continuam preservados.
@@ -61,6 +61,11 @@ Estado de Stage 5:
 - Placeholders de avatar continuam sem imagens falsas e prontos para fotos reais.
 - Délcio continua Flex e Tiago mantém badge IGL subtil.
 - Home, Drop 01, About, header/nav e callroom.html não foram redesenhados nesta etapa.
+
+Estado pós-Stage 5 / avatares:
+- Cinco avatares reais em PNG foram ligados ao roster.
+- Tiago, Levi e Craquinho continuam com placeholders até existirem fotos reais.
+- Os PNGs ficam como ficheiros source/master. WebP otimizado deve ser gerado depois quando houver ferramenta local disponível.
 
 Validação:
 - Correr: python scripts/validate_shush_static.py

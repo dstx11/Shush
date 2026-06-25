@@ -41,6 +41,8 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Use initials/placeholders when photos are absent
 - [x] Ensure no broken image icons with empty `assets/avatars/`
 - [x] Make future photo replacement simple
+- [x] Integrate first five real roster avatars
+- [ ] Generate optimized WebP avatar files when a local converter is available
 
 ## Drop 01
 - [ ] Improve jersey presentation

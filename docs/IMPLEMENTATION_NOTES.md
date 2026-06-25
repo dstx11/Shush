@@ -32,16 +32,18 @@ Current core files:
 - reduced-motion baseline
 - Home hero jersey showcase using `assets/jersey-hero.webp`
 - Roster visual system with fallback-first avatar placeholders and role filters
+- Real PNG avatars for Délcio, Tomás, Tz, Lyel and Catarina
 
 ## Current Known Issues
 - `callroom.html` remains only as a redirect/fallback.
 - Some text has encoding artifacts in existing files.
-- `assets/avatars/` is intentionally empty.
+- `assets/avatars/` still has missing photos for Tiago, Levi and Craquinho.
 - Drop 01 output does not yet document `aria-live` in the markup.
-- Roster currently uses fallback initials/placeholders until real player photos are added.
+- Roster uses real images where local files exist and fallback initials/placeholders for the remaining players.
 - Header/nav has been redesigned into a dark glass component; future header work should be incremental cleanup, not a restart.
 - Home hero now centers Drop 01 as the visual entry point. Further Home page copy/section cleanup remains later-stage work.
 - Roster page has been visually refined; future roster work should focus on real photos or small copy tweaks, not replacing the fallback architecture.
+- Avatar PNGs are source/master files. WebP optimization is still a future asset task because no local WebP converter was available.
 
 ## Editing Guidance
 Stage work should be incremental:

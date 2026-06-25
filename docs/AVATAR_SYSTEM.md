@@ -1,9 +1,14 @@
 # SHUSH Avatar System
 
 ## Current State
-`assets/avatars/` is intentionally empty except support files. Real player photos will be added later.
+`assets/avatars/` now contains five real PNG source/master avatar files:
+- `delcio.png`
+- `tomas.png`
+- `catarina.png`
+- `lyel.png`
+- `tz.png`
 
-This is not an error.
+Tiago, Levi and Craquinho still use fallback placeholders until real files are added.
 
 ## Required Roster States
 The roster must support:
@@ -46,7 +51,16 @@ When real photos are added, use predictable local filenames:
 - `catarina.webp`
 
 ## Implementation Notes
-Stage 2 switched the roster to fallback-first rendering. Current player data uses initials and does not reference missing avatar files.
+Stage 2 switched the roster to fallback-first rendering. The roster now mixes real local avatars with placeholder-only players.
+
+Current real avatar paths in player data:
+- `assets/avatars/delcio.png`
+- `assets/avatars/tomas.png`
+- `assets/avatars/tz.png`
+- `assets/avatars/lyel.png`
+- `assets/avatars/catarina.png`
+
+The PNG files are source/master assets. Use optimized WebP files in player data later if local conversion is available.
 
 Current/final expected behavior:
 - no `<img>` tag is created unless the file exists in the project or is explicitly assigned after upload
