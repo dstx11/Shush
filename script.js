@@ -11,14 +11,23 @@ const players = [
 
 const nav = document.querySelector('.main-nav');
 const menu = document.querySelector('.menu-toggle');
+const setMenu = open => {
+  nav?.classList.toggle('is-open', open);
+  menu?.setAttribute('aria-expanded', String(open));
+  menu?.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+};
 menu?.addEventListener('click', () => {
-  const open = nav.classList.toggle('is-open');
-  menu.setAttribute('aria-expanded', String(open));
+  setMenu(!nav?.classList.contains('is-open'));
 });
 nav?.addEventListener('click', event => {
   if (event.target.matches('a')) {
-    nav.classList.remove('is-open');
-    menu?.setAttribute('aria-expanded', 'false');
+    setMenu(false);
+  }
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && nav?.classList.contains('is-open')) {
+    setMenu(false);
+    menu?.focus();
   }
 });
 

@@ -21,7 +21,7 @@ Current core files:
 
 ## Existing Features To Preserve
 - static site architecture
-- mobile menu
+- mobile menu with Escape/link-close behavior
 - scroll progress
 - reveal effects
 - roster rendering from JS data
@@ -37,6 +37,7 @@ Current core files:
 - `assets/avatars/` is intentionally empty.
 - Drop 01 output does not yet document `aria-live` in the markup.
 - Roster currently uses fallback initials/placeholders until real player photos are added.
+- Header/nav has been redesigned into a dark glass component; future header work should be incremental cleanup, not a restart.
 
 ## Editing Guidance
 Stage work should be incremental:

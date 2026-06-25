@@ -55,12 +55,12 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Mention static/technical care without sounding corporate
 
 ## Navigation
-- [ ] Add `aria-controls` to mobile menu button
-- [ ] Ensure Escape closes mobile menu
-- [ ] Ensure link click closes mobile menu
-- [ ] Create dark Liquid Glass-inspired desktop nav
-- [ ] Create premium mobile nav panel
-- [ ] Ensure active nav states work everywhere
+- [x] Add `aria-controls` to mobile menu button
+- [x] Ensure Escape closes mobile menu
+- [x] Ensure link click closes mobile menu
+- [x] Create dark Liquid Glass-inspired desktop nav
+- [x] Create premium mobile nav panel
+- [x] Ensure active nav states work everywhere
 
 ## Performance
 - [ ] Review image dimensions/loading

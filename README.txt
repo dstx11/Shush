@@ -41,6 +41,13 @@ Estado de Stage 2:
 - O modo antigo e os badges/campos específicos foram removidos do roster.
 - Os filtros do roster continuam preservados.
 
+Estado de Stage 3:
+- Header/nav redesenhado como componente dark glass.
+- Desktop usa logo à esquerda, nav centrada e CTA Drop 01 à direita.
+- Mobile usa painel compacto com estados acessíveis.
+- Escape fecha o menu e o clique em links também fecha.
+- About continua na navegação; a página antiga continua apenas como fallback.
+
 Validação:
 - Correr: python scripts/validate_shush_static.py
 - Correr o servidor local e abrir todas as páginas principais.
