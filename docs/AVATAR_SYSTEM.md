@@ -46,9 +46,10 @@ When real photos are added, use predictable local filenames:
 - `catarina.webp`
 
 ## Implementation Notes
-Current pre-redesign code still references some avatar image paths that do not exist. Stage 2 must fix this by switching the roster to fallback-first rendering.
+Stage 2 switched the roster to fallback-first rendering. Current player data uses initials and does not reference missing avatar files.
 
-The best final behavior:
+Current/final expected behavior:
 - no `<img>` tag is created unless the file exists in the project or is explicitly assigned after upload
 - placeholders occupy the same space as photos
 - real images can replace placeholders by adding files and updating data
+- if a future assigned image fails to load, the fallback can still appear instead of a broken image icon

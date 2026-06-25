@@ -33,11 +33,10 @@ Current core files:
 
 ## Current Known Issues
 - `callroom.html` remains only as a redirect/fallback.
-- Current roster copy and data still include Troll Mode until Stage 2.
 - Some text has encoding artifacts in existing files.
-- `script.js` references avatar images that are not present.
 - `assets/avatars/` is intentionally empty.
 - Drop 01 output does not yet document `aria-live` in the markup.
+- Roster currently uses fallback initials/placeholders until real player photos are added.
 
 ## Editing Guidance
 Stage work should be incremental:

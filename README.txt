@@ -34,6 +34,13 @@ Estado de Stage 1:
 - O visual principal foi mantido quase intacto.
 - Roster, Drop 01, hero e animações não foram redesenhados nesta etapa.
 
+Estado de Stage 2:
+- O roster usa dados sem caminhos para imagens inexistentes.
+- Todos os jogadores renderizam com initials/placeholders enquanto assets/avatars/ estiver vazio.
+- A cópia do roster foi profissionalizada sem inventar estatísticas, rankings ou histórico.
+- O modo antigo e os badges/campos específicos foram removidos do roster.
+- Os filtros do roster continuam preservados.
+
 Validação:
 - Correr: python scripts/validate_shush_static.py
 - Correr o servidor local e abrir todas as páginas principais.

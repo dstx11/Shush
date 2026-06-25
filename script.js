@@ -1,12 +1,12 @@
 const players = [
-  { name: 'Délcio', number: '01', roles: ['Duelista', 'Smoker'], image: 'assets/avatars/delcio.webp', quote: 'Entra primeiro, fuma depois. Às vezes por esta ordem.', detail: 'O caos de entrada da SHUSH. Energia de meme, mas com utilidade real quando o round precisa de espaço.', pos: 'center 45%' },
-  { name: 'Tiago', number: '02', roles: ['Sentinela', 'Iniciador'], image: 'assets/avatars/tiago.webp', quote: 'Fecha espaço, abre round e ainda quer o site alinhado.', detail: 'O jogador que segura a estrutura, corrige o setup e provavelmente ainda repara no espaçamento do site.', pos: 'center 42%' },
-  { name: 'Tomás', number: '03', roles: ['Iniciador', 'Duelista'], image: 'assets/avatars/tomas.webp', quote: 'Flash para ganhar espaço. Nem sempre só ao inimigo.', detail: 'Serve para abrir caminho, criar contacto e garantir que alguém vai reclamar da flash na call.', pos: 'center 38%' },
-  { name: 'Tz', number: '04', roles: ['Duelista', 'Sentinela'], image: 'assets/avatars/tz.webp', quote: 'Presença silenciosa, peek discutível, confiança intacta.', detail: 'Mistura presença calma com decisões que obrigam a equipa a respirar fundo antes de comentar.', pos: 'center 44%' },
-  { name: 'Lyel', number: '05', roles: ['Flex'], image: 'assets/avatars/lyel.webp', quote: 'Troll oficial. Não é bug, é feature.', detail: 'Flex no papel, troll no coração. A strat pode não estar aprovada, mas vai acontecer na mesma.', troll: true, pos: 'center 38%' },
-  { name: 'Levi', number: '06', roles: ['Duelista'], initials: 'LV', quote: 'Sem foto ainda. Lugar marcado até a imagem oficial cair.', detail: 'Slot reservado. Quando chegar a foto, entra no sistema sem mexer no layout.', placeholder: true },
-  { name: 'Craquinho', number: '07', roles: ['Duelista', 'Smoker'], initials: 'CR', quote: 'Sem foto, com presença garantida. O card fica pronto para update.', detail: 'Duelista e smoker, o que significa que tanto pode entrar como pode salvar a call da própria entrada.', placeholder: true },
-  { name: 'Catarina', number: '08', roles: ['Smoker', 'Iniciador'], image: 'assets/avatars/catarina.webp', quote: 'Call limpa, round fechado, caos minimizado.', detail: 'A presença que baixa o ruído, organiza a utilidade e impede a call de virar discussão sem fim.', pos: 'center 38%' }
+  { name: 'Délcio', initials: 'DL', number: '01', roles: ['Flex'], quote: 'Flexível no round, consistente na presença.', detail: 'Flex no roster, adapta-se ao ritmo da equipa e cobre o que o round pede com presença estável.' },
+  { name: 'Tiago', initials: 'TG', number: '02', roles: ['Sentinela', 'Iniciador'], status: 'IGL', quote: 'Estrutura, leitura e ritmo para a equipa.', detail: 'IGL da equipa, responsável por estrutura, leitura e ritmo sem tirar clareza ao round.' },
+  { name: 'Tomás', initials: 'TM', number: '03', roles: ['Iniciador', 'Duelista'], quote: 'Contacto criado sem perder intenção.', detail: 'Iniciador com ritmo ofensivo. Cria janelas para a equipa avançar e mantém pressão quando o mapa pede presença.' },
+  { name: 'Tz', initials: 'TZ', number: '04', roles: ['Duelista', 'Sentinela'], quote: 'Presença discreta, impacto claro.', detail: 'Mistura calma com decisões rápidas. Dá flexibilidade ao round sem puxar o foco para fora da equipa.' },
+  { name: 'Lyel', initials: 'LY', number: '05', roles: ['Flex'], quote: 'Flexível por função, consistente por presença.', detail: 'Adapta-se ao que o mapa pede e ajuda a manter o ritmo da equipa sem perder a identidade SHUSH.' },
+  { name: 'Levi', initials: 'LV', number: '06', roles: ['Duelista'], quote: 'Pressão frontal com espaço para crescer.', detail: 'Duelista preparado para ocupar espaço e acelerar rounds quando a equipa precisa de iniciativa.' },
+  { name: 'Craquinho', initials: 'CR', number: '07', roles: ['Duelista', 'Smoker'], quote: 'Entrada e cobertura no mesmo sistema.', detail: 'Duelista e smoker, combina presença ofensiva com utilidade para manter o round controlado.' },
+  { name: 'Catarina', initials: 'CT', number: '08', roles: ['Smoker', 'Iniciador'], quote: 'Call limpa, utilidade certa, round com direção.', detail: 'Baixa o ruído, organiza utilidade e ajuda a transformar intenção em execução dentro do servidor.' }
 ];
 
 const nav = document.querySelector('.main-nav');
@@ -100,30 +100,39 @@ if (heroReveal) {
 revealItems.forEach(item => observer.observe(item));
 
 const roleMarkup = roles => roles.map((role, i) => `<span style="--i:${i}">${role}</span>`).join('');
+const statusMarkup = player => player.status ? `<span class="player-tag">${player.status}</span>` : '';
+const detailBadge = player => [player.status, `${player.number} / ${player.roles.join(' + ')}`].filter(Boolean).join(' · ');
+const fallbackAvatar = player => `
+  <span class="avatar-badge">Foto pendente</span>
+  <div class="placeholder-grid" aria-hidden="true"></div>
+  <div class="placeholder-scan" aria-hidden="true"></div>
+  <div class="placeholder-core" aria-hidden="true">${player.initials}</div>
+  <p class="placeholder-note">Preparado para foto real quando existir.</p>`;
 const avatarMarkup = player => {
-  if (player.placeholder) {
+  if (player.image) {
     return `
-      <div class="avatar">
-        <span class="avatar-badge">Foto pendente</span>
-        <div class="placeholder-grid" aria-hidden="true"></div>
-        <div class="placeholder-scan" aria-hidden="true"></div>
-        <div class="placeholder-core" aria-hidden="true">${player.initials}</div>
-        <p class="placeholder-note">Placeholder intencional para manter a grelha limpa até chegar foto real.</p>
+      <div class="avatar has-image" style="--pos:${player.pos || 'center'}">
+        <img src="${player.image}" alt="Foto de ${player.name}" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+        <div class="avatar-fallback" hidden>
+          ${fallbackAvatar(player)}
+        </div>
       </div>`;
   }
   return `
-    <div class="avatar" style="--pos:${player.pos || 'center'}">
-      ${player.troll ? '<span class="avatar-badge is-troll">Troll mode</span>' : ''}
-      <img src="${player.image}" alt="Foto de ${player.name}" loading="lazy">
+    <div class="avatar avatar-fallback-only">
+      ${fallbackAvatar(player)}
     </div>`;
 };
 
 const rosterCard = player => `
-  <article class="roster-card ${player.troll ? 'troll' : ''} ${player.placeholder ? 'placeholder' : ''}" data-reveal data-roles="${player.roles.join('|')}" tabindex="0">
+  <article class="roster-card ${player.image ? 'has-photo' : 'placeholder'}" data-reveal data-roles="${player.roles.join('|')}" tabindex="0">
     ${avatarMarkup(player)}
     <div class="roster-content">
       <div class="roster-top">
-        <h3 class="roster-name">${player.name}</h3>
+        <div class="roster-title">
+          <h3 class="roster-name">${player.name}</h3>
+          ${statusMarkup(player)}
+        </div>
         <span class="roster-number">${player.number}</span>
       </div>
       <div class="role-list">${roleMarkup(player.roles)}</div>
@@ -147,7 +156,12 @@ if (rosterGrid) {
 
 const roleFilters = document.querySelector('#roleFilters');
 if (roleFilters && rosterGrid) {
-  const allRoles = [...new Set(players.flatMap(p => p.roles))];
+  const discoveredRoles = [...new Set(players.flatMap(p => p.roles))];
+  const roleOrder = ['Duelista', 'Smoker', 'Sentinela', 'Iniciador', 'Flex'];
+  const allRoles = [
+    ...roleOrder.filter(role => discoveredRoles.includes(role)),
+    ...discoveredRoles.filter(role => !roleOrder.includes(role))
+  ];
   const filterButton = (label, role, active) => `<button type="button" class="filter-pill${active ? ' is-active' : ''}" data-role="${role}">${label}</button>`;
   roleFilters.innerHTML = filterButton('Todos', 'all', true) + allRoles.map(role => filterButton(role, role, false)).join('');
 
@@ -190,7 +204,7 @@ if (detailGrid) {
     <article class="detail-card card" data-reveal>
       ${avatarMarkup(player)}
       <div>
-        <span class="badge">${player.number} / ${player.roles.join(' + ')}</span>
+        <span class="badge">${detailBadge(player)}</span>
         <h3>${player.name}</h3>
         <p>${player.detail}</p>
       </div>

@@ -17,27 +17,27 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 
 ## Copy
 - [x] Remove visible old room copy from public pages
-- [ ] Remove Troll Mode language
-- [ ] Remove meme-heavy/roast player copy
+- [x] Remove old mode language
+- [x] Remove meme-heavy/roast player copy from roster
 - [ ] Rewrite Home identity copy
-- [ ] Rewrite roster copy in professional gamer tone
+- [x] Rewrite roster copy in professional gamer tone
 - [ ] Rewrite Drop 01 copy as honest launch/concept language
 - [ ] Write concise About copy
 
 ## Roster
-- [ ] Preserve filters
-- [ ] Remove troll data/property
-- [ ] Remove Troll Mode badge
-- [ ] Keep player identities unchanged
+- [x] Preserve filters
+- [x] Remove old mode data/property
+- [x] Remove old mode badge
+- [x] Keep player identities unchanged
 - [ ] Improve card hierarchy
-- [ ] Avoid fake stats and fake achievements
+- [x] Avoid fake stats and fake achievements
 
 ## Avatars
-- [ ] Make roster fallback-first
-- [ ] Remove hardcoded missing image paths
-- [ ] Use initials/placeholders when photos are absent
-- [ ] Ensure no broken image icons with empty `assets/avatars/`
-- [ ] Make future photo replacement simple
+- [x] Make roster fallback-first
+- [x] Remove hardcoded missing image paths
+- [x] Use initials/placeholders when photos are absent
+- [x] Ensure no broken image icons with empty `assets/avatars/`
+- [x] Make future photo replacement simple
 
 ## Drop 01
 - [ ] Improve jersey presentation
@@ -80,7 +80,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 
 ## Cleanup
 - [ ] Remove unused old room CSS after replacement
-- [ ] Remove Troll Mode CSS after replacement
+- [x] Remove old mode CSS after replacement
 - [ ] Remove unused JS after page cleanup
 - [ ] Update README after final structure changes
 

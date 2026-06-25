@@ -297,22 +297,25 @@ main, .site-footer { position: relative; z-index: 2; }
 .avatar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.02) 35%, rgba(3,3,8,.72)); transition: opacity .35s ease; }
 .roster-card:hover .avatar::after, .roster-card:focus-visible .avatar::after { opacity: .82; }
 .avatar-badge { position: absolute; z-index: 3; left: 12px; top: 12px; padding: 6px 8px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(109,40,217,.78); font-size: .62rem; font-weight: 950; letter-spacing: .12em; text-transform: uppercase; }
-.avatar-badge.is-troll { background: linear-gradient(120deg, #f6f2ff, #ded3ff); color: #1c0f3a; border-color: rgba(255,255,255,.5); box-shadow: 0 0 0 3px rgba(162,107,255,.18); }
 .roster-content { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 11px; flex: 1; padding: 6px 18px 18px; }
 .roster-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.roster-title { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .roster-name { margin: 0; font-size: 1.42rem; letter-spacing: -.035em; }
 .roster-number { color: rgba(246,242,255,.3); font-weight: 950; font-size: 1.06rem; }
+.player-tag { display: inline-flex; align-items: center; min-height: 22px; padding: 4px 7px; border-radius: 999px; border: 1px solid rgba(162,107,255,.35); background: rgba(162,107,255,.12); color: #ded3ff; font-size: .58rem; font-weight: 950; letter-spacing: .14em; text-transform: uppercase; }
 .role-list { display: flex; flex-wrap: wrap; gap: 7px; }
 .role-list span { padding: 7px 9px; border-radius: 999px; background: rgba(255,255,255,.068); color: #e4dcff; font-size: .67rem; font-weight: 950; letter-spacing: .085em; text-transform: uppercase; transition: transform .3s ease, background .3s ease; transition-delay: calc(var(--i, 0) * 35ms); }
 .roster-card:hover .role-list span, .roster-card:focus-visible .role-list span { transform: translateY(-2px); background: rgba(162,107,255,.22); }
 .roster-quote { margin: auto 0 0; color: var(--muted); line-height: 1.55; font-size: .92rem; }
-.roster-card.troll { border-color: rgba(162,107,255,.42); }
 .roster-card.placeholder .avatar { display: grid; place-items: center; background: radial-gradient(circle at 30% 20%, rgba(109,40,217,.25), transparent 10rem), linear-gradient(145deg,#0b0a14,#05050a); }
+.avatar-fallback { position: absolute; inset: 0; display: grid; place-items: center; background: radial-gradient(circle at 30% 20%, rgba(109,40,217,.25), transparent 10rem), linear-gradient(145deg,#0b0a14,#05050a); }
+.avatar-fallback[hidden] { display: none; }
 .placeholder-grid { position: absolute; inset: 0; opacity: .34; background: linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(180deg, rgba(255,255,255,.06) 1px, transparent 1px); background-size: 24px 24px; }
 .placeholder-scan { position: absolute; left: 0; right: 0; top: 0; height: 90px; z-index: 1; background: linear-gradient(180deg, transparent, rgba(162,107,255,.22), transparent); animation: scan 4.5s ease-in-out infinite; will-change: transform; }
 @keyframes scan { 0% { transform: translateY(-90px); } 100% { transform: translateY(305px); } }
 .placeholder-core { position: relative; z-index: 2; width: 116px; height: 116px; display: grid; place-items: center; border-radius: 28px; border: 1px solid rgba(255,255,255,.12); background: radial-gradient(circle at 30% 20%, rgba(109,40,217,.52), rgba(109,40,217,.12)); font-size: 2.1rem; font-weight: 950; letter-spacing: -.06em; }
 .placeholder-note { position: absolute; z-index: 2; left: 16px; right: 16px; bottom: 16px; color: var(--muted); font-size: .8rem; line-height: 1.45; }
+.detail-card .placeholder-note { display: none; }
 
 .page-hero { margin-top: 18px; padding: 34px; border-radius: var(--radius-xl); display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: stretch; position: relative; }
 .page-hero h1 { margin: 16px 0 12px; max-width: 11ch; font-size: clamp(2.6rem, 5.6vw, 4.6rem); line-height: .98; letter-spacing: -.05em; }
