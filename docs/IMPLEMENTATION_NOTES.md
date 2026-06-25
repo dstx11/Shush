@@ -28,6 +28,7 @@ Current core files:
 - roster filters
 - Drop 01 generated message
 - Drop 01 copy button
+- Drop 01 concept/interest page with live generated output
 - Backora footer presence
 - reduced-motion baseline
 - Home hero jersey showcase using `assets/jersey-hero.webp`
@@ -38,11 +39,11 @@ Current core files:
 - `callroom.html` remains only as a redirect/fallback.
 - Some text has encoding artifacts in existing files.
 - `assets/avatars/` still has missing photos for Tiago, Levi and Craquinho.
-- Drop 01 output does not yet document `aria-live` in the markup.
 - Roster uses real images where local files exist and fallback initials/placeholders for the remaining players.
 - Header/nav has been redesigned into a dark glass component; future header work should be incremental cleanup, not a restart.
 - Home hero now centers Drop 01 as the visual entry point. Further Home page copy/section cleanup remains later-stage work.
 - Roster page has been visually refined; future roster work should focus on real photos or small copy tweaks, not replacing the fallback architecture.
+- Drop 01 has been redesigned as a manual concept/interest page; future work should not turn it into a fake shop without a real flow.
 - Avatar PNGs are source/master files. WebP optimization is still a future asset task because no local WebP converter was available.
 
 ## Editing Guidance

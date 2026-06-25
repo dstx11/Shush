@@ -21,7 +21,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Remove meme-heavy/roast player copy from roster
 - [ ] Rewrite Home identity copy
 - [x] Rewrite roster copy in professional gamer tone
-- [ ] Rewrite Drop 01 copy as honest launch/concept language
+- [x] Rewrite Drop 01 copy as honest launch/concept language
 - [ ] Write concise About copy
 
 ## Roster
@@ -45,12 +45,12 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Generate optimized WebP avatar files when a local converter is available
 
 ## Drop 01
-- [ ] Improve jersey presentation
-- [ ] Preserve manual request form
-- [ ] Add/confirm useful field names
-- [ ] Add `aria-live` to generated output
-- [ ] Improve copy button feedback
-- [ ] Avoid fake checkout, stock or production claims
+- [x] Improve jersey presentation
+- [x] Preserve manual request form
+- [x] Add/confirm useful field names
+- [x] Add `aria-live` to generated output
+- [x] Improve copy button feedback
+- [x] Avoid fake checkout, stock or production claims
 
 ## About
 - [ ] Explain what SHUSH is
@@ -95,6 +95,6 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Open all final pages
 - [ ] Test mobile widths
 - [ ] Test roster filters
-- [ ] Test Drop 01 form/copy
+- [x] Test Drop 01 form/copy
 - [ ] Check no broken images
 - [ ] Check no horizontal scroll

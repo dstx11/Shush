@@ -243,17 +243,22 @@ if (hasHover && !prefersReducedMotion) {
 
 const orderButton = document.querySelector('#copyOrder');
 const orderOutput = document.querySelector('#orderOutput');
+const orderForm = document.querySelector('#dropInterestForm');
+orderForm?.addEventListener('submit', event => {
+  event.preventDefault();
+  orderButton?.click();
+});
 orderButton?.addEventListener('click', async () => {
   const name = document.querySelector('#kitName')?.value.trim() || 'Unknown';
   const number = document.querySelector('#kitNumber')?.value.trim() || '00';
   const size = document.querySelector('#kitSize')?.value || 'L';
   const message = [
-    'Pedido SHUSH Drop 01',
+    'Interesse SHUSH Drop 01',
     `Nome: ${name}`,
     `Número: ${number}`,
     `Tamanho: ${size}`,
-    'Modelo: Unknown 00',
-    'Nota: pedido manual / pré-reserva'
+    'Peça: Drop 01 / Unknown 00',
+    'Nota: mensagem manual de interesse'
   ].join('\n');
 
   orderOutput.textContent = message;
@@ -263,12 +268,15 @@ orderButton?.addEventListener('click', async () => {
   try {
     await navigator.clipboard.writeText(message);
     orderButton.classList.add('is-success');
-    orderButton.textContent = 'Pedido copiado';
+    orderButton.textContent = 'Mensagem copiada';
     setTimeout(() => {
       orderButton.classList.remove('is-success');
-      orderButton.textContent = 'Criar pedido';
+      orderButton.textContent = 'Gerar mensagem';
     }, 1800);
   } catch {
-    orderButton.textContent = 'Copiar manualmente';
+    orderButton.textContent = 'Mensagem pronta';
+    setTimeout(() => {
+      orderButton.textContent = 'Gerar mensagem';
+    }, 1800);
   }
 });

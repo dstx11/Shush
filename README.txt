@@ -18,7 +18,7 @@ Estrutura atual:
 - about.html: página sobre a SHUSH, identidade, Drop 01 e Backora
 - callroom.html: fallback simples que redireciona para about.html
 - styles.css: design system global
-- script.js: menu mobile, scroll progress, reveal com stagger, roster, filtros e pedido da jersey
+- script.js: menu mobile, scroll progress, reveal com stagger, roster, filtros e mensagem manual da jersey
 
 Notas importantes:
 - assets/avatars/ já tem cinco avatares reais em PNG: Délcio, Tomás, Catarina, Lyel e Tz.
@@ -66,6 +66,13 @@ Estado pós-Stage 5 / avatares:
 - Cinco avatares reais em PNG foram ligados ao roster.
 - Tiago, Levi e Craquinho continuam com placeholders até existirem fotos reais.
 - Os PNGs ficam como ficheiros source/master. WebP otimizado deve ser gerado depois quando houver ferramenta local disponível.
+
+Estado de Stage 6:
+- Drop 01 foi redesenhada como página premium de conceito/interesse para a primeira jersey SHUSH.
+- A página usa apenas o asset local assets/jersey-drop-01.webp como showcase.
+- O formulário continua a gerar uma mensagem manual, agora com output legível e `aria-live`.
+- Não existe checkout, pagamento, preço ou stock real nesta fase.
+- Home, Roster, About, header/nav e callroom.html não foram redesenhados nesta etapa.
 
 Validação:
 - Correr: python scripts/validate_shush_static.py

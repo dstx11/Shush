@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drop 01 | SHUSH Unknown 00</title>
-  <meta name="description" content="SHUSH Drop 01, jersey Unknown 00 com textura de cobra, roxo dominante e pré-reserva manual.">
+  <title>Drop 01 | SHUSH Jersey</title>
+  <meta name="description" content="Drop 01 é a primeira peça oficial da SHUSH: uma jersey conceptual com pedido manual de interesse.">
   <meta name="theme-color" content="#050509">
-  <meta property="og:title" content="Drop 01 | SHUSH Unknown 00">
-  <meta property="og:description" content="A jersey conceptual da SHUSH em versão site.">
+  <meta property="og:title" content="Drop 01 | SHUSH Jersey">
+  <meta property="og:description" content="A primeira peça oficial da SHUSH, criada com a Backora.">
   <meta property="og:image" content="assets/jersey-drop-01.webp">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css">
@@ -23,37 +23,56 @@
     <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span></button>
   </header>
 
-  <main id="top">
-    <section class="page-hero shell grid-bg panel" data-reveal>
-      <div><span class="eyebrow">DROP 01 / UNKNOWN 00</span><h1>A camisola como peça principal.</h1><p>Preto, roxo, cobra e SHS. Esta página trata a jersey como produto conceptual sem fingir uma loja real.</p></div>
-      <div class="page-hero-side" data-frame="01"><div class="mini-strip"><article><strong>Front</strong><span>SHS + Backora</span></article><article><strong>Back</strong><span>Unknown 00</span></article><article><strong>Pedido</strong><span>manual</span></article></div></div>
+  <main id="top" class="drop-page">
+    <section class="drop-hero shell grid-bg panel" aria-labelledby="dropHeroTitle">
+      <div class="drop-hero-copy" data-reveal>
+        <span class="eyebrow">DROP 01</span>
+        <h1 id="dropHeroTitle">A primeira jersey SHUSH.</h1>
+        <p>Uma peça visual para marcar presença sem fazer barulho. Preto, roxo frio, SHS no peito e Backora como partner técnico/digital.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#drop-interest">Manifestar interesse</a>
+          <a class="button secondary" href="#drop-concept">Ver conceito</a>
+        </div>
+      </div>
+      <figure class="drop-hero-stage drop-stage card" data-reveal>
+        <div class="card-top"><span>OFFICIAL CONCEPT</span><span>DROP 01</span></div>
+        <img src="assets/jersey-drop-01.webp" width="1122" height="1402" alt="Mockup da jersey SHUSH Drop 01 vista de frente e costas" fetchpriority="high" decoding="async">
+        <figcaption>A primeira peça oficial da SHUSH, criada com a Backora.</figcaption>
+      </figure>
     </section>
 
-    <section class="section shell">
-      <div class="drop-layout">
-        <div class="drop-stage card" data-reveal><div class="card-top"><span>OFFICIAL CONCEPT</span><span>DROP 01</span></div><img src="assets/jersey-drop-01.webp" alt="Mockup da jersey SHUSH Drop 01 frente e costas"></div>
-        <div class="order-panel" data-reveal>
-          <span class="eyebrow">JERSEY CONCEPT</span>
-          <h2>Unknown 00, versão site.</h2>
-          <p>Base preta, textura inspirada em cobra, roxo dominante, SHS no peito e Backora como único partner visual. O pedido é manual para não fingir checkout.</p>
-          <div class="spec-grid"><span>Textura de escamas</span><span>Roxo dominante</span><span>Backora front only</span><span>Nome e número custom</span></div>
-          <div class="order-grid">
-            <label>Nome<input id="kitName" value="Unknown" maxlength="14"></label>
-            <label>Número<input id="kitNumber" value="00" maxlength="2" inputmode="numeric"></label>
-            <label>Tamanho<select id="kitSize"><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>XXL</option></select></label>
-            <button class="button primary" id="copyOrder" type="button">Criar pedido</button>
-          </div>
-          <output class="order-output" id="orderOutput">A mensagem pronta para copiar aparece aqui.</output>
-        </div>
+    <section class="section shell" id="drop-concept">
+      <div class="section-head" data-reveal>
+        <div><span class="frame">FRAME / CONCEPT</span><h2>Feita para identidade, não para ruído.</h2></div>
+        <p>Drop 01 é uma página de conceito e interesse. A peça apresenta a direção visual da SHUSH com o cuidado certo e sem prometer fases que ainda não estão fechadas.</p>
+      </div>
+      <div class="drop-concept-grid">
+        <article class="feature-card drop-feature main" data-reveal><span class="badge">01</span><h3>Primeira peça</h3><p>Uma jersey para dar forma ao universo SHUSH: pequena, escura, cuidada e feita para rounds.</p></article>
+        <article class="feature-card drop-feature" data-reveal><span class="badge">02</span><h3>Visual SHUSH</h3><p>Base preta, roxo frio, textura agressiva e composição limpa. Gamer sem ficar caótico.</p></article>
+        <article class="feature-card drop-feature" data-reveal><span class="badge">03</span><h3>Backora</h3><p>Partner técnico/digital integrado como parte do sistema visual, sem transformar a página numa grelha de marcas.</p></article>
       </div>
     </section>
 
-    <section class="section shell">
-      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / DETAILS</span><h2>Detalhes do conceito</h2></div></div>
-      <div class="design-notes">
-        <article class="feature-card" data-reveal><span class="badge">01</span><h3>Silhueta limpa</h3><p>O design não precisa de parecer cheio. O padrão dá agressividade e a estrutura mantém ar de jersey real.</p></article>
-        <article class="feature-card" data-reveal><span class="badge">02</span><h3>Marca controlada</h3><p>SHS manda no peito. O B da Backora aparece como partner técnico, sem roubar atenção.</p></article>
-        <article class="feature-card" data-reveal><span class="badge">03</span><h3>Drop manual</h3><p>Pré-reserva simples, sem carrinho falso, stock falso ou promessas que ainda não existem.</p></article>
+    <section class="section shell" id="drop-interest">
+      <div class="drop-layout">
+        <div class="drop-summary card" data-reveal>
+          <span class="eyebrow">INTERESSE MANUAL</span>
+          <h2>Gera uma mensagem limpa.</h2>
+          <p>Escolhe nome, número e tamanho. O site cria uma mensagem pronta para enviar manualmente, com o contexto certo e sem fluxo automático.</p>
+          <div class="spec-grid"><span>SHUSH Drop 01</span><span>Pedido manual</span><span>Nome e número</span><span>Backora partner</span></div>
+        </div>
+        <form class="order-panel" id="dropInterestForm" data-reveal>
+          <span class="eyebrow">DROP 01 / MENSAGEM</span>
+          <h2>Manifestar interesse.</h2>
+          <p>Preenche os campos e copia a mensagem gerada. A confirmação continua fora do site.</p>
+          <div class="order-grid">
+            <label for="kitName">Nome<input id="kitName" name="name" value="Unknown" maxlength="14" autocomplete="name"></label>
+            <label for="kitNumber">Número<input id="kitNumber" name="number" value="00" maxlength="2" inputmode="numeric" pattern="[0-9]*"></label>
+            <label for="kitSize">Tamanho<select id="kitSize" name="size"><option>S</option><option>M</option><option selected>L</option><option>XL</option><option>XXL</option></select></label>
+            <button class="button primary" id="copyOrder" type="button">Gerar mensagem</button>
+          </div>
+          <output class="order-output" id="orderOutput" for="kitName kitNumber kitSize" aria-live="polite" aria-atomic="true">A mensagem pronta aparece aqui.</output>
+        </form>
       </div>
     </section>
   </main>
