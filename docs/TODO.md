@@ -9,7 +9,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Keep final pages to Home, Roster, Drop 01 and About
 
 ## Design
-- [ ] Rebuild Home hero around jersey showcase
+- [x] Rebuild Home hero around jersey showcase
 - [ ] Improve section spacing and hierarchy
 - [ ] Make glass surfaces darker and more premium
 - [ ] Reduce generic card feel
@@ -63,7 +63,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Ensure active nav states work everywhere
 
 ## Performance
-- [ ] Review image dimensions/loading
+- [x] Review Home hero image dimensions/loading
 - [ ] Avoid excessive blur
 - [ ] Remove old unused CSS/JS after redesign
 - [ ] Keep animations transform/opacity based

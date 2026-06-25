@@ -30,6 +30,7 @@ Current core files:
 - Drop 01 copy button
 - Backora footer presence
 - reduced-motion baseline
+- Home hero jersey showcase using `assets/jersey-hero.webp`
 
 ## Current Known Issues
 - `callroom.html` remains only as a redirect/fallback.
@@ -38,6 +39,7 @@ Current core files:
 - Drop 01 output does not yet document `aria-live` in the markup.
 - Roster currently uses fallback initials/placeholders until real player photos are added.
 - Header/nav has been redesigned into a dark glass component; future header work should be incremental cleanup, not a restart.
+- Home hero now centers Drop 01 as the visual entry point. Further Home page copy/section cleanup remains later-stage work.
 
 ## Editing Guidance
 Stage work should be incremental:

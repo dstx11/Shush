@@ -27,25 +27,29 @@
   </header>
 
   <main id="top">
-    <section class="hero shell grid-bg panel">
+    <section class="hero shell grid-bg panel" aria-labelledby="homeHeroTitle">
       <div class="hero-copy">
-        <span class="eyebrow" data-reveal>VALORANT FRIEND TEAM</span>
-        <h1 data-reveal>Sem barulho,<br>só rounds.</h1>
-        <p class="lead" data-reveal>Uma equipa nascida da call, do Premier e de piadas internas que ficaram sérias o suficiente para ter identidade, roster, jersey e partner.</p>
+        <span class="eyebrow" data-reveal>SHUSH / DROP 01</span>
+        <h1 id="homeHeroTitle" data-reveal>Sem barulho.<br>Só rounds.</h1>
+        <p class="lead" data-reveal>Uma equipa pequena. Uma identidade feita com intenção. Drop 01 marca o primeiro passo visual da SHUSH.</p>
         <div class="hero-actions" data-reveal>
           <a class="button primary" href="drop01.html">Ver Drop 01</a>
           <a class="button secondary" href="roster.html">Conhecer roster</a>
         </div>
-        <div class="hero-meta" aria-label="Resumo SHUSH">
-          <article data-reveal><strong>08</strong><span>jogadores</span></article>
-          <article data-reveal><strong>01</strong><span>partner</span></article>
-          <article data-reveal><strong>SHHH</strong><span>call limpa</span></article>
+        <div class="hero-proof" aria-label="Contexto SHUSH">
+          <article data-reveal><strong>Drop 01</strong><span>primeira peça oficial</span></article>
+          <article data-reveal><strong>Backora</strong><span>partner técnico/digital</span></article>
+          <article data-reveal><strong>SHUSH</strong><span>gaming, estética e estrutura</span></article>
         </div>
       </div>
-      <div class="hero-visual card" data-reveal>
-        <div class="card-top"><span>OFFICIAL CONCEPT</span><span>DROP 01</span></div>
-        <img src="assets/jersey-hero.webp" alt="Jersey SHUSH Drop 01 frente e costas">
-      </div>
+      <figure class="hero-visual jersey-showcase" data-reveal>
+        <div class="showcase-top"><span>OFFICIAL CONCEPT</span><span>DROP 01</span></div>
+        <div class="showcase-glow" aria-hidden="true"></div>
+        <img src="assets/jersey-hero.webp" width="1100" height="1375" alt="Jersey SHUSH Drop 01 vista de frente e costas" fetchpriority="high" decoding="async">
+        <figcaption>A primeira peça oficial da SHUSH, criada com a Backora.</figcaption>
+        <div class="showcase-chip chip-front" aria-hidden="true"><strong>Front</strong><span>SHS + Backora</span></div>
+        <div class="showcase-chip chip-drop" aria-hidden="true"><strong>01</strong><span>Drop visual</span></div>
+      </figure>
     </section>
 
     <section class="ticker" aria-label="Frases SHUSH">

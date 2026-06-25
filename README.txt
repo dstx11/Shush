@@ -48,6 +48,13 @@ Estado de Stage 3:
 - Escape fecha o menu e o clique em links também fecha.
 - About continua na navegação; a página antiga continua apenas como fallback.
 
+Estado de Stage 4:
+- Home hero reconstruído à volta da jersey/Drop 01.
+- A imagem local assets/jersey-hero.webp é usada como objeto principal do hero.
+- O hero tem CTA principal para Drop 01 e CTA secundário para Roster.
+- A composição usa showcase escuro, spotlight, glass e contexto curto sobre SHUSH/Backora.
+- Roster, Drop 01, About e o fallback callroom.html não foram redesenhados nesta etapa.
+
 Validação:
 - Correr: python scripts/validate_shush_static.py
 - Correr o servidor local e abrir todas as páginas principais.
