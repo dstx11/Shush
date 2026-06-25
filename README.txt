@@ -64,7 +64,7 @@ Estado de Stage 5:
 
 Estado pós-Stage 5 / avatares:
 - Cinco avatares reais em PNG foram ligados ao roster.
-- Tiago, Levi e Craquinho continuam com placeholders até existirem fotos reais.
+- Tiago, Lei e Craquinho continuam com placeholders até existirem fotos reais.
 - Os PNGs ficam como ficheiros source/master. WebP otimizado deve ser gerado depois quando houver ferramenta local disponível.
 
 Estado de Stage 6:

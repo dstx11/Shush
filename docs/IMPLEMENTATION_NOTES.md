@@ -38,7 +38,7 @@ Current core files:
 ## Current Known Issues
 - `callroom.html` remains only as a redirect/fallback.
 - Some text has encoding artifacts in existing files.
-- `assets/avatars/` still has missing photos for Tiago, Levi and Craquinho.
+- `assets/avatars/` still has missing photos for Tiago, Lei and Craquinho.
 - Roster uses real images where local files exist and fallback initials/placeholders for the remaining players.
 - Header/nav has been redesigned into a dark glass component; future header work should be incremental cleanup, not a restart.
 - Home hero now centers Drop 01 as the visual entry point. Further Home page copy/section cleanup remains later-stage work.

@@ -1,10 +1,10 @@
 const players = [
-  { name: 'Délcio', initials: 'DL', number: '01', roles: ['Flex'], image: 'assets/avatars/delcio.png', quote: 'Flexível no round, consistente na presença.', detail: 'Flex no roster, adapta-se ao ritmo da equipa e cobre o que o round pede com presença estável.' },
   { name: 'Tiago', initials: 'TG', number: '02', roles: ['Sentinela', 'Iniciador'], status: 'IGL', quote: 'Estrutura, leitura e ritmo para a equipa.', detail: 'IGL da equipa, responsável por estrutura, leitura e ritmo sem tirar clareza ao round.' },
+  { name: 'Délcio', initials: 'DL', number: '01', roles: ['Flex'], image: 'assets/avatars/delcio.png', quote: 'Flexível no round, consistente na presença.', detail: 'Flex no roster, adapta-se ao ritmo da equipa e cobre o que o round pede com presença estável.' },
   { name: 'Tomás', initials: 'TM', number: '03', roles: ['Iniciador', 'Duelista'], image: 'assets/avatars/tomas.png', quote: 'Contacto criado sem perder intenção.', detail: 'Iniciador com ritmo ofensivo. Cria janelas para a equipa avançar e mantém pressão quando o mapa pede presença.' },
-  { name: 'Tz', initials: 'TZ', number: '04', roles: ['Duelista', 'Sentinela'], image: 'assets/avatars/tz.png', quote: 'Presença discreta, impacto claro.', detail: 'Mistura calma com decisões rápidas. Dá flexibilidade ao round sem puxar o foco para fora da equipa.' },
   { name: 'Lyel', initials: 'LY', number: '05', roles: ['Flex'], image: 'assets/avatars/lyel.png', quote: 'Flexível por função, consistente por presença.', detail: 'Adapta-se ao que o mapa pede e ajuda a manter o ritmo da equipa sem perder a identidade SHUSH.' },
-  { name: 'Levi', initials: 'LV', number: '06', roles: ['Duelista'], quote: 'Pressão frontal com espaço para crescer.', detail: 'Duelista preparado para ocupar espaço e acelerar rounds quando a equipa precisa de iniciativa.' },
+  { name: 'Tz', initials: 'TZ', number: '04', roles: ['Duelista', 'Sentinela'], image: 'assets/avatars/tz.png', quote: 'Presença discreta, impacto claro.', detail: 'Mistura calma com decisões rápidas. Dá flexibilidade ao round sem puxar o foco para fora da equipa.' },
+  { name: 'Lei', initials: 'LE', number: '06', roles: ['Duelista'], quote: 'Pressão frontal sem ruído extra.', detail: 'Duelista preparado para ocupar espaço e acelerar rounds quando a equipa precisa de iniciativa.' },
   { name: 'Craquinho', initials: 'CR', number: '07', roles: ['Duelista', 'Smoker'], quote: 'Entrada e cobertura no mesmo sistema.', detail: 'Duelista e smoker, combina presença ofensiva com utilidade para manter o round controlado.' },
   { name: 'Catarina', initials: 'CT', number: '08', roles: ['Smoker', 'Iniciador'], image: 'assets/avatars/catarina.png', quote: 'Call limpa, utilidade certa, round com direção.', detail: 'Baixa o ruído, organiza utilidade e ajuda a transformar intenção em execução dentro do servidor.' }
 ];
@@ -45,8 +45,8 @@ if (jerseyStages.length && !prefersReducedMotion) {
         const box = s.stage.getBoundingClientRect();
         const relX = (event.clientX - box.left) / box.width - 0.5;
         const relY = (event.clientY - box.top) / box.height - 0.5;
-        s.targetX = relX * 10;
-        s.targetY = relY * 8;
+        s.targetX = relX * 6;
+        s.targetY = relY * 5;
       });
       s.stage.addEventListener('pointerleave', () => { s.targetX = 0; s.targetY = 0; });
     });
@@ -55,7 +55,7 @@ if (jerseyStages.length && !prefersReducedMotion) {
   const start = performance.now();
   const tick = now => {
     const t = (now - start) / 1000;
-    const floatY = Math.sin(t / 1.1) * 9;
+    const floatY = Math.sin(t / 1.1) * 5;
     state.forEach(s => {
       if (!s.img) return;
       s.tiltX += (s.targetX - s.tiltX) * 0.08;
@@ -236,8 +236,8 @@ if (hasHover && !prefersReducedMotion) {
     const py = ((event.clientY - box.top) / box.height) * 100;
     card.style.setProperty('--cx', `${px}%`);
     card.style.setProperty('--cy', `${py}%`);
-    card.style.setProperty('--tilt-x', `${(px / 100 - 0.5) * 6}deg`);
-    card.style.setProperty('--tilt-y', `${(py / 100 - 0.5) * 6}deg`);
+    card.style.setProperty('--tilt-x', `${(px / 100 - 0.5) * 4}deg`);
+    card.style.setProperty('--tilt-y', `${(py / 100 - 0.5) * 4}deg`);
   }, { passive: true });
 }
 

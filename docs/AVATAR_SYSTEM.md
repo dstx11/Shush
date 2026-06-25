@@ -8,7 +8,7 @@
 - `lyel.png`
 - `tz.png`
 
-Tiago, Levi and Craquinho still use fallback placeholders until real files are added.
+Tiago, Lei and Craquinho still use fallback placeholders until real files are added.
 
 ## Required Roster States
 The roster must support:
@@ -46,7 +46,7 @@ When real photos are added, use predictable local filenames:
 - `tomas.webp`
 - `tz.webp`
 - `lyel.webp`
-- `levi.webp`
+- `lei.webp`
 - `craquinho.webp`
 - `catarina.webp`
 

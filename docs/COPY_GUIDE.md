@@ -19,11 +19,12 @@ Prefer short sentences. Use concrete nouns. Avoid overexplaining.
 Good:
 - "Sem barulho. Só rounds."
 - "Gaming, estética e estrutura. Sem promessas falsas."
-- "Uma equipa pequena, uma identidade cuidada e uma presença feita para durar."
+- "Uma equipa pequena, uma presença feita com intenção."
 
 Weak:
 - "A melhor experiência para todos os apaixonados pelo gaming."
 - "Excelência competitiva e união numa comunidade inovadora."
+- "Uma presença feita para durar."
 
 ## Avoid
 - "experiência única"

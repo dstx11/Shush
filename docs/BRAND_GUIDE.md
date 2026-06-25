@@ -53,7 +53,7 @@ Avoid:
 
 ## Good Copy Examples
 - "Sem barulho. Só rounds."
-- "Uma equipa pequena, uma identidade cuidada e uma presença feita para durar."
+- "Uma equipa pequena, uma presença feita com intenção."
 - "Gaming, estética e estrutura. Sem promessas falsas."
 - "A primeira peça oficial da SHUSH, criada com a Backora."
 - "SHUSH é uma equipa, uma identidade e um projeto visual em construção."
