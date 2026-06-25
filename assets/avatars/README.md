@@ -1,21 +1,35 @@
-# Avatar assets
+# Avatar Assets
 
 This folder is intentionally empty for now. Real player photos will be added later.
 
-Codex must not assume avatar images exist. The roster must render cleanly with initials/placeholders and upgrade gracefully when these files are later added.
+This is not an error and Codex must not fill it with fake images.
 
-Suggested future filenames, if used by the project data:
-- delcio.webp
-- tiago.webp
-- tomas.webp
-- catarina.webp
-- tz.webp
-- levi.webp
-- craquinho.webp
-- lyel.webp
-
-Rules:
+## Rules
 - Do not generate fake player photos.
-- Do not rely on remote images.
+- Do not download placeholder images.
+- Do not use remote placeholder images.
+- Do not change player identities.
+- Do not reference missing avatar files without a fallback.
 - Do not leave broken image icons.
-- Use CSS placeholders/initials when a photo is unavailable.
+
+## Required Roster Behavior
+The roster must render cleanly when this folder has no image files.
+
+Use:
+- initials
+- clean CSS placeholder
+- gradient/silhouette treatment
+- stable avatar dimensions
+
+When real photos are added later, replacing placeholders should be simple and should not require layout changes.
+
+## Suggested Future Filenames
+Only use these paths in player data when the files actually exist:
+- `delcio.webp`
+- `tiago.webp`
+- `tomas.webp`
+- `tz.webp`
+- `lyel.webp`
+- `levi.webp`
+- `craquinho.webp`
+- `catarina.webp`

@@ -1,51 +1,53 @@
-# AGENTS.md — SHUSH website instructions for Codex
+# AGENTS.md - SHUSH website instructions for Codex
 
-## Project
-This repository is the SHUSH website, a static HTML/CSS/JS project.
+## Project Purpose
+This repository is the SHUSH website: a static vanilla HTML/CSS/JS site for a small premium gamer micro-org/team.
 
 Final pages:
-- `index.html`
-- `roster.html`
-- `drop01.html`
-- `about.html`
+- `index.html` - Home
+- `roster.html` - Roster
+- `drop01.html` - Drop 01
+- `about.html` - About
 
-Current legacy concepts that must be removed:
+Current legacy concepts are temporary and must be removed in staged redesign work:
 - Call Room
 - Troll Mode
 - meme-heavy copy
 - fake esports grandeur
 
-## Brand direction
-SHUSH is a small premium gamer micro-org/team with a strong visual identity.
-
-The site should feel:
-- dark, premium and sophisticated
-- gamer, but not childish
-- technical and credible
-- immersive and smooth
-- well aligned and spacious
-- professional, but not corporate
+## Brand Direction
+SHUSH should feel dark, premium, technical, immersive, gamer and professional without pretending to be a giant esports organization.
 
 Core sentence:
 > Sem barulho. Só rounds.
 
-Backora is the technical/digital partner and must remain integrated with credibility.
+Positioning:
+- small gamer micro-org with strong identity
+- premium jersey showcase
+- professional roster
+- credible About page
+- Backora as technical/digital partner
+- smooth static website experience
 
-## Non-negotiable direction
-Do not make SHUSH look like a fake giant esports organization.
-Do not make SHUSH look like a meme site.
+Do not make SHUSH look like a meme site, a fake major org, or a corporate template.
+
+## Hard Removals For Future Stages
+Future implementation must remove:
+- Call Room as a concept and primary nav page
+- Troll Mode text, badges and data
+- roast/meme-heavy player copy
+- fake sponsors, fake achievements, fake rankings, fake match history and fake org history
+- any real checkout/ecommerce claim while Drop 01 is only a manual request flow
+
 Do not preserve weak old ideas just because they already exist.
 
-The goal is:
-> A small gamer micro-org with strong identity, a premium jersey showcase, a professional roster, a credible About page and a smooth immersive website experience.
-
-## Technical constraints
+## Technical Constraints
 Keep:
 - vanilla HTML
 - vanilla CSS
 - vanilla JavaScript
 - static site architecture
-- existing jersey/logo/Backora assets where useful
+- existing logo, jersey and Backora assets where useful
 - roster filters
 - Drop 01 manual order flow
 - accessibility baseline
@@ -55,24 +57,39 @@ Keep:
 Do not add:
 - frameworks
 - heavy dependencies
-- fake sponsors
-- fake achievements
-- fake rankings
-- fake match history
-- fake organization history
-- real ecommerce/checkout if the current project only supports manual request
+- generated fake people
+- remote placeholder images
+- real ecommerce/checkout
 
-## Avatar asset rule
-The `assets/avatars/` folder may be empty. Real player photos will be added later.
+## Coding Rules
+- Read the existing project before editing.
+- Keep changes staged and scoped.
+- Prefer small, reviewable tasks over one large redesign.
+- Preserve working features unless the stage explicitly replaces them.
+- Use semantic HTML and clear class names.
+- Avoid inventing claims, stats, sponsors or history.
+- Do not edit generated-looking assets unless requested.
 
-The roster must:
+## Avatar Folder State
+`assets/avatars/` is intentionally empty except documentation/keep files. Real player photos will be added later.
+
+Roster implementation must:
 - render correctly without avatar images
-- use clean CSS placeholders/initials when no photo is available
+- use clean CSS placeholders, initials, silhouettes or gradient fallbacks
 - never show broken image icons
-- upgrade gracefully when avatar files are later added
-- not generate fake player photos or use remote placeholder images
+- only include an `image` path when that file exists
+- upgrade gracefully when real files are later added
+- make photo replacement simple
 
-## Design priorities
+Never:
+- create fake avatars
+- download placeholder avatars
+- generate AI player portraits
+- reference missing avatar files without a fallback
+- change player identities to solve missing images
+
+## Design Rules
+Priorities:
 1. Text alignment and visual hierarchy
 2. Home hero
 3. Jersey showcase
@@ -84,17 +101,20 @@ The roster must:
 9. Motion and microinteractions
 10. Performance/accessibility cleanup
 
-## Motion rules
-- Fix layout before adding motion.
-- Prefer `transform` and `opacity`.
-- Avoid animating `width`, `height`, `top`, `left`, `margin`, `padding`.
-- Avoid heavy filters and constant expensive blur.
-- Use `will-change` sparingly.
-- Respect `prefers-reduced-motion`.
-- Simplify motion on mobile when needed.
+Visual direction:
+- dark theme
+- cold purple/blue accents
+- clean typography
+- strong spacing
+- controlled glow
+- darker gamer Liquid Glass-inspired nav
+- jersey as a showcase object
+- smooth but lightweight motion
 
-## Copywriting rules
-Voice should be:
+Avoid visual chaos, overdone particles, constant glitch, excessive blur, cramped sections and generic AI landing-page layouts.
+
+## Copy Rules
+Voice:
 - short
 - clean
 - confident
@@ -104,63 +124,92 @@ Voice should be:
 - professional
 - slightly distinctive
 
+Good examples:
+- "Sem barulho. Só rounds."
+- "Uma equipa pequena, uma identidade cuidada e uma presença feita para durar."
+- "Gaming, estética e estrutura. Sem promessas falsas."
+- "A primeira peça oficial da SHUSH, criada com a Backora."
+- "Não somos uma mega organização. Somos uma equipa com direção visual."
+
 Avoid:
-- “experiência única”
-- “paixão pelo gaming”
-- “excelência competitiva”
-- “comunidade inovadora”
-- “performance e união”
-- “elite”
-- “world class”
-- “legacy”
+- "experiência única"
+- "paixão pelo gaming"
+- "excelência competitiva"
+- "comunidade inovadora"
+- "performance e união"
+- "elite"
+- "world class"
+- "legacy"
 - excessive jokes
+- roasts
+- troll language
 - AI filler
 
-Good examples:
-- “Sem barulho. Só rounds.”
-- “Uma equipa pequena, uma identidade cuidada e uma presença feita para durar.”
-- “Gaming, estética e estrutura. Sem promessas falsas.”
-- “A primeira peça oficial da SHUSH, criada com a Backora.”
-- “Não somos uma mega organização. Somos uma equipa com direção visual.”
+## Animation Rules
+- Fix layout before adding motion.
+- Prefer `transform` and `opacity`.
+- Avoid animating `width`, `height`, `top`, `left`, `margin` and `padding`.
+- Avoid heavy filters in loops.
+- Use `will-change` sparingly.
+- Respect `prefers-reduced-motion`.
+- Reduce motion on mobile where needed.
+- Motion should feel alive, intentional and lightweight, not noisy.
 
-## Accessibility requirements
+## Accessibility Rules
+Required:
 - `lang="pt-PT"`
 - semantic `<nav>` with `aria-label`
-- `aria-current` on active nav links
-- mobile menu button uses `aria-expanded` and `aria-controls`
+- `aria-current="page"` on active nav links
+- mobile menu button with `aria-expanded` and `aria-controls`
 - Escape closes mobile menu
 - visible `:focus-visible`
 - sufficient contrast
 - `prefers-reduced-motion`
 - `aria-live` on Drop 01 generated output
-- meaningful image alt text
-- decorative images use empty alt
-- form labels and useful input names
+- meaningful alt text for meaningful images
+- empty alt text for decorative images
+- labels and useful names for form fields
 - keyboard navigation works
 
-## Validation before finishing
-Run or explain how to run:
-- `python -m http.server 5173`
-- `python scripts/validate_shush_static.py`
+## Performance Rules
+- Keep the site static and lightweight.
+- Do not add frameworks or heavy dependencies.
+- Optimize logo and image usage where possible.
+- Avoid huge assets for tiny UI.
+- Use lazy loading where appropriate.
+- Use `fetchpriority` only for critical hero images.
+- Use `decoding="async"` where useful.
+- Define image width/height where possible.
+- Avoid excessive `backdrop-filter`.
+- Avoid heavy infinite animations and scroll jank.
+- Remove unused CSS/JS after the redesign.
 
-Confirm manually:
-- all pages open
-- nav links work
-- active nav works
-- mobile menu opens/closes
-- Escape closes menu
-- roster renders without avatar images
-- roster filters work
-- Drop 01 form works
-- generated message works
-- copy button works
-- no horizontal scroll
-- no text overlap
-- no visible Call Room references
-- no visible Troll Mode references
-- no broken image icons
+## Validation Commands
+Run from the project root:
+```bash
+python -m http.server 5173
+python scripts/validate_shush_static.py
+```
 
-## Reporting format after each task
+For final redesign enforcement:
+```bash
+python scripts/validate_shush_static.py --final
+```
+
+## Definition Of Done
+For each future stage:
+- stage scope is respected
+- required files/pages work
+- roster filters still work
+- Drop 01 manual request still works
+- no fake information is introduced
+- empty avatars state is handled
+- mobile has no horizontal scroll
+- focus and keyboard behavior work
+- validation has been run or clearly explained
+- manual checks still needed are listed
+
+## Reporting Format
 Return:
 1. Files changed
 2. What changed

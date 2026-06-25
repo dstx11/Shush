@@ -1,87 +1,105 @@
 # SHUSH QA Checklist
 
-Use this before accepting Codex changes.
+Use this checklist before accepting redesign-stage changes.
+
+## Commands
+- [ ] `python -m http.server 5173` starts successfully
+- [ ] `python scripts/validate_shush_static.py` runs
+- [ ] `python scripts/validate_shush_static.py --final` passes during final QA
 
 ## Pages
 - [ ] `index.html` opens
 - [ ] `roster.html` opens
 - [ ] `drop01.html` opens
-- [ ] `about.html` opens
-- [ ] No primary nav link points to `callroom.html`
-- [ ] No visible “Call Room” text remains
-- [ ] No visible “Troll Mode” text remains
+- [ ] `about.html` opens after Stage 1
+- [ ] no primary nav link points to `callroom.html` after Stage 1
+- [ ] no visible "Call Room" text remains after Stage 1
+- [ ] no visible "Troll Mode" text remains after Stage 2
 
 ## Navigation
-- [ ] Active nav link works on every page
-- [ ] Desktop nav is aligned
-- [ ] Mobile menu opens
-- [ ] Mobile menu closes
+- [ ] all nav links work
+- [ ] active nav link works on every page
+- [ ] desktop nav is aligned
+- [ ] mobile menu opens
+- [ ] mobile menu closes
 - [ ] Escape closes mobile menu
-- [ ] Click link closes mobile menu
-- [ ] Mobile nav has no text overlap
+- [ ] clicking a mobile nav link closes the menu
+- [ ] mobile nav has no text overlap
+- [ ] mobile menu button has `aria-expanded`
+- [ ] mobile menu button has `aria-controls`
 
 ## Home
-- [ ] Hero uses more space
-- [ ] Jersey is the visual centerpiece
-- [ ] Jersey feels like showcase/exhibition
+- [ ] hero uses space well
+- [ ] jersey is the visual centerpiece
+- [ ] jersey feels like showcase/exhibition
 - [ ] CTAs are aligned
-- [ ] Headline breaks well
-- [ ] No text overlaps jersey
+- [ ] headline breaks well
+- [ ] no text overlaps jersey
+- [ ] Backora appears credibly
 
 ## Roster
-- [ ] Roster renders when `assets/avatars/` is empty
-- [ ] No broken image icons appear
-- [ ] Initials/placeholders look intentional
-- [ ] Filters work
-- [ ] Copy sounds professional
-- [ ] No troll/meme-heavy player labels remain
+- [ ] roster renders when `assets/avatars/` is empty
+- [ ] no broken image icons appear
+- [ ] initials/placeholders look intentional
+- [ ] real image state works when images are added
+- [ ] filters work
+- [ ] cards stay aligned after filtering
+- [ ] copy sounds professional
+- [ ] no troll/meme-heavy labels remain
 
 ## Drop 01
-- [ ] Manual order form works
-- [ ] Generated message works
-- [ ] Copy button works
-- [ ] Output has accessible live feedback
-- [ ] Page feels like a launch/concept page
+- [ ] page feels like a launch/concept page
+- [ ] manual order form works
+- [ ] generated message works
+- [ ] copy button works
+- [ ] output has accessible live feedback
+- [ ] no fake checkout/stock claims
 
 ## About
 - [ ] About replaces Call Room
 - [ ] About explains SHUSH clearly
 - [ ] Backora is integrated credibly
-- [ ] No fake claims
-- [ ] Copy is concise and human
+- [ ] no fake claims
+- [ ] copy is concise and human
 
 ## Mobile
-- [ ] 360px no horizontal scroll
-- [ ] 375px no horizontal scroll
-- [ ] 390px no horizontal scroll
-- [ ] 430px no horizontal scroll
-- [ ] Hero readable
-- [ ] Roster readable
-- [ ] Drop 01 readable
-- [ ] About readable
+- [ ] 360px has no horizontal scroll
+- [ ] 375px has no horizontal scroll
+- [ ] 390px has no horizontal scroll
+- [ ] 430px has no horizontal scroll
+- [ ] Home is readable
+- [ ] Roster is readable
+- [ ] Drop 01 is readable
+- [ ] About is readable
+- [ ] no text overlap
 
 ## Accessibility
-- [ ] `lang="pt-PT"`
-- [ ] semantic nav
-- [ ] `aria-current` active links
-- [ ] mobile menu has `aria-expanded`
-- [ ] mobile menu has `aria-controls`
-- [ ] focus-visible states visible
+- [ ] `lang="pt-PT"` is present
+- [ ] semantic `<nav>` is present
+- [ ] nav has `aria-label`
+- [ ] active links use `aria-current="page"`
+- [ ] focus-visible states are clear
 - [ ] `prefers-reduced-motion` exists
-- [ ] inputs have labels/names
-- [ ] important images have meaningful alt
-- [ ] decorative images have empty alt
+- [ ] Drop 01 output uses `aria-live`
+- [ ] inputs have labels and useful names
+- [ ] important images have meaningful alt text
+- [ ] decorative images have empty alt text
+- [ ] keyboard navigation works
 
 ## Performance
-- [ ] No heavy dependencies added
-- [ ] No excessive blur everywhere
-- [ ] Main animations use transform/opacity
-- [ ] Critical hero image has useful loading hints
-- [ ] No huge images used for tiny UI if avoidable
+- [ ] no frameworks or heavy dependencies added
+- [ ] no excessive blur everywhere
+- [ ] main animations use transform/opacity
+- [ ] critical hero image has useful loading hints
+- [ ] important images have width/height where possible
+- [ ] no huge images used for tiny UI if avoidable
+- [ ] no console errors
+- [ ] no scroll jank
 
-## Commands
-Run:
-```bash
-python -m http.server 5173
-python scripts/validate_shush_static.py
-```
+## Content Integrity
+- [ ] no fake sponsors
+- [ ] no fake achievements
+- [ ] no fake rankings
+- [ ] no fake match history
+- [ ] no fake organization history
+- [ ] Backora wording stays credible

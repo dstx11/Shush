@@ -1,0 +1,58 @@
+# SHUSH Implementation Notes
+
+## Current Project Snapshot
+Current visible pages:
+- `index.html`
+- `roster.html`
+- `drop01.html`
+- `callroom.html`
+
+Final visible pages:
+- `index.html`
+- `roster.html`
+- `drop01.html`
+- `about.html`
+
+Current core files:
+- `styles.css`
+- `script.js`
+- `assets/`
+- `scripts/validate_shush_static.py`
+
+## Existing Features To Preserve
+- static site architecture
+- mobile menu
+- scroll progress
+- reveal effects
+- roster rendering from JS data
+- roster filters
+- Drop 01 generated message
+- Drop 01 copy button
+- Backora footer presence
+- reduced-motion baseline
+
+## Current Known Issues
+- `about.html` does not exist yet.
+- Nav still includes Call Room.
+- Current copy includes Call Room and Troll Mode intentionally until redesign stages.
+- Some text has encoding artifacts in existing files.
+- `script.js` references avatar images that are not present.
+- `assets/avatars/` is intentionally empty.
+- Mobile menu button does not currently expose `aria-controls`.
+- Drop 01 output does not yet document `aria-live` in the markup.
+
+## Editing Guidance
+Stage work should be incremental:
+1. Replace structure/concepts.
+2. Fix avatar dependency.
+3. Improve nav.
+4. Rebuild page sections.
+5. Add motion only after layout is stable.
+6. Clean performance/accessibility.
+
+Avoid broad rewrites until the relevant stage requires them.
+
+## Validation Script Modes
+`python scripts/validate_shush_static.py` is for current-stage safety. It reports warnings for unfinished redesign work.
+
+`python scripts/validate_shush_static.py --final` is for final redesign enforcement. It should fail if final pages/concepts are missing or legacy visible terms remain.

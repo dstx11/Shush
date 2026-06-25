@@ -1,124 +1,182 @@
 # SHUSH Redesign Specification
 
-## Final direction
-SHUSH should become a premium micro-org gamer experience.
+This document defines the destination for the SHUSH redesign. It is not a request to implement everything at once.
 
-Small, but intentional. Dark, but readable. Gamer, but sophisticated. Interactive, but lightweight. Professional, but not corporate. Confident, but not fake.
+## Final Direction
+SHUSH is a small premium gamer micro-org/team with a strong visual identity.
 
-## Final pages
-- Home (`index.html`)
-- Roster (`roster.html`)
-- Drop 01 (`drop01.html`)
-- About (`about.html`)
+The site should feel:
+- dark, polished and immersive
+- gamer, but not childish
+- technical and credible
+- professional, but not corporate
+- spacious, aligned and smooth
+- honest about scale
 
-## Remove
-- Call Room as a concept
-- `callroom.html` as the main page
-- Troll Mode
-- troll-specific badges/classes/copy
-- meme-heavy writing
-- fake esports grandeur
+Core sentence:
+> Sem barulho. Só rounds.
 
-## Home
-The Home page is the brand entry point.
+SHUSH should not look like a fake giant esports organization. The strongest version is smaller, sharper and more intentional.
+
+## Final Site Structure
+- `index.html` - Home
+- `roster.html` - Roster
+- `drop01.html` - Drop 01
+- `about.html` - About
+
+Legacy structure to remove in later stages:
+- `callroom.html` as a visible page
+- Call Room nav item and concept
+- Troll Mode data/copy/UI
+
+## Home Direction
+Goal: make the Home page the strongest brand entry.
 
 Must include:
-- dark Liquid Glass-inspired nav
-- strong hero
-- jersey as centerpiece
+- premium dark header/nav
+- strong hero around the jersey
 - primary CTA to Drop 01
 - secondary CTA to Roster
 - short identity section
-- roster teaser
+- roster preview
 - Drop 01 teaser
-- Backora integration
+- credible Backora partner integration
 
-The hero must not feel like a card with an image dropped inside. The jersey should feel like a showcase object with spotlight, depth, shadow/pedestal and subtle interactivity.
+The jersey should feel like an object on display, not an image placed inside a generic card. Use depth, spotlight, shadow/pedestal and subtle pointer interaction only after the layout is solid.
 
-## Roster
-The Roster page must feel premium and professional.
+## Roster Direction
+Goal: professional team page with controlled personality.
 
-Keep personality, remove meme energy.
+Keep:
+- filters by role
+- player identities
+- static data-driven rendering
 
-Required:
-- clean roster hero
-- filters preserved
-- cards aligned
-- graceful avatar fallback/initials
-- no broken images when avatars are missing
-- no Troll Mode
-- no insulting/roast copy
+Remove:
+- Troll Mode
+- roast copy
+- broken/missing avatar images
+- fake competitive stats
 
-## Drop 01
-Drop 01 should feel like a launch/concept page, not a simple form.
+Roster cards should work with no avatar files. Initials/placeholders must feel intentional and should later upgrade cleanly to real photos.
 
-Required:
-- stronger page hero
-- jersey presentation
-- honest product/concept language
-- manual request form preserved
-- generated message preserved
-- copy button preserved
-- `aria-live` for output
-- no fake shop claims
+## Drop 01 Direction
+Goal: launch/concept page for the first SHUSH jersey.
 
-## About
-About replaces Call Room.
+Keep:
+- manual request flow
+- generated message
+- copy button
 
-Should explain:
+Improve:
+- page hero
+- jersey showcase
+- product/concept storytelling
+- form layout
+- `aria-live` output feedback
+
+Do not fake stock, checkout, production details or availability.
+
+## About Direction
+Goal: credible page that replaces Call Room.
+
+Explain:
 - what SHUSH is
-- identity
+- why it exists
+- visual identity
 - Drop 01
-- Backora
-- technical care
-- performance/accessibility/static approach
+- Backora partnership
+- technical/static website care
 
-Tone:
-- professional
-- human
-- concise
-- credible
-- not corporate fake
-- not meme-heavy
+Tone: concise, human, professional, premium and honest.
 
-## Header/Nav
-Inspired by dark Liquid Glass, adapted to SHUSH.
+## Backora Integration
+Backora is the technical/digital partner. It should feel integrated and credible, not like a fake sponsor tile.
 
+Use Backora in:
+- footer
+- Home partner section
+- Drop 01 jersey context
+- About technical/digital partner section
+
+Avoid sponsor grids or claims beyond the current relationship.
+
+## Header/Nav Direction
 Desktop:
 - logo left
-- capsule nav centered
+- centered capsule nav
 - Drop 01 CTA right
-- active link as pill/liquid indicator
-- subtle hover
-- scroll state
+- clear active page state
+- subtle scroll state
+- dark Liquid Glass-inspired surface
 
 Mobile:
-- premium glass dropdown or side panel
-- readable links
+- premium glass dropdown/panel
+- readable tap targets
 - active state
 - CTA highlighted
 - `aria-expanded`
 - `aria-controls`
 - Escape closes
-- click link closes
+- link click closes
 
-## Text and alignment
-Critical priority.
+Use normal site navigation semantics. Do not use `role="menu"` for basic page nav.
 
-No text overlap. No random floating text. No cramped headings. No over-wide paragraphs. No disconnected CTAs. No mobile squeezing.
+## Layout And Text
+Alignment and hierarchy are the first design priorities.
 
-Use controlled max-widths, balanced headings where useful, responsive typography and a consistent spacing scale.
+Rules:
+- no text overlap
+- no random floating copy
+- no over-wide paragraphs
+- no disconnected CTAs
+- no cramped headings
+- no mobile squeezing
+- use controlled max widths
+- use consistent spacing scale
+- balance headings when useful
 
-## Performance
-Use static, lightweight implementation.
+## Visual Direction
+Use:
+- dark theme
+- cold purple/blue
+- clean typography
+- strong spacing
+- controlled glow
+- premium glass surfaces
+- jersey showcase
+- smooth lightweight motion
 
-Prefer transform/opacity animation. Avoid layout-heavy animation. Review image sizes. Add image dimensions where useful. Use fetchpriority only for critical hero image. Use decoding async when useful. Avoid excessive blur and will-change.
+Avoid:
+- fake esports grandeur
+- childish meme identity
+- overdone particles
+- constant glitch
+- excessive blur
+- generic AI landing-page sections
+- visual chaos
 
-## Avatar strategy
-The avatar folder may be empty.
+## Motion Direction
+Layout first, motion second.
 
-Roster should render with CSS initials/placeholders first and optionally upgrade if images are later added.
+Prefer:
+- transform
+- opacity
+- subtle pointer interaction
+- reveal transitions with restraint
 
-Do not create fake photos.
-Do not use remote placeholder images.
-Do not leave broken image icons.
+Avoid:
+- animating layout properties
+- heavy filters in loops
+- constant expensive blur
+- noisy particles/glitch overload
+
+Always respect `prefers-reduced-motion`.
+
+## Known Current Risks
+- The current nav still points to `callroom.html`.
+- `about.html` does not exist yet.
+- `script.js` references avatar image paths that are currently missing.
+- The current roster can show broken image icons until Stage 2 fixes avatar logic.
+- Current copy still contains meme-heavy concepts by design because this is pre-redesign.
+- Some existing documents had encoding artifacts; future copy should be saved as UTF-8.
