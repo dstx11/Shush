@@ -24,10 +24,10 @@ SHUSH should not look like a fake giant esports organization. The strongest vers
 - `drop01.html` - Drop 01
 - `about.html` - About
 
-Legacy structure to remove in later stages:
-- `callroom.html` as a visible page
-- Call Room nav item and concept
-- Troll Mode data/copy/UI
+Legacy status after Stage 1:
+- `about.html` is the visible About page
+- `callroom.html` may remain only as a redirect/fallback
+- Troll Mode data/copy/UI remains for Stage 2
 
 ## Home Direction
 Goal: make the Home page the strongest brand entry.
@@ -174,9 +174,8 @@ Avoid:
 Always respect `prefers-reduced-motion`.
 
 ## Known Current Risks
-- The current nav still points to `callroom.html`.
-- `about.html` does not exist yet.
+- `callroom.html` remains as a fallback file and should not return as a visible nav page.
 - `script.js` references avatar image paths that are currently missing.
 - The current roster can show broken image icons until Stage 2 fixes avatar logic.
-- Current copy still contains meme-heavy concepts by design because this is pre-redesign.
+- Current roster copy still contains meme-heavy concepts by design because this is pre-Stage 2.
 - Some existing documents had encoding artifacts; future copy should be saved as UTF-8.

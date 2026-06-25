@@ -5,7 +5,7 @@ Current visible pages:
 - `index.html`
 - `roster.html`
 - `drop01.html`
-- `callroom.html`
+- `about.html`
 
 Final visible pages:
 - `index.html`
@@ -32,13 +32,11 @@ Current core files:
 - reduced-motion baseline
 
 ## Current Known Issues
-- `about.html` does not exist yet.
-- Nav still includes Call Room.
-- Current copy includes Call Room and Troll Mode intentionally until redesign stages.
+- `callroom.html` remains only as a redirect/fallback.
+- Current roster copy and data still include Troll Mode until Stage 2.
 - Some text has encoding artifacts in existing files.
 - `script.js` references avatar images that are not present.
 - `assets/avatars/` is intentionally empty.
-- Mobile menu button does not currently expose `aria-controls`.
 - Drop 01 output does not yet document `aria-live` in the markup.
 
 ## Editing Guidance

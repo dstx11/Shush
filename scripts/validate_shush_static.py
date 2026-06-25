@@ -20,7 +20,7 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 
 FINAL_PAGES = ["index.html", "roster.html", "drop01.html", "about.html"]
-CURRENT_ALLOWED_LEGACY_PAGE = "callroom.html"
+LEGACY_FALLBACK_PAGE = "callroom.html"
 FINAL_FORBIDDEN_VISIBLE_TERMS = [
     "Call Room",
     "Troll Mode",
@@ -85,13 +85,13 @@ def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
 
-    required_pages = FINAL_PAGES if args.final else ["index.html", "roster.html", "drop01.html", CURRENT_ALLOWED_LEGACY_PAGE]
+    required_pages = FINAL_PAGES
     for page in required_pages:
         if not (ROOT / page).exists():
             target = errors if args.final else warnings
             target.append(f"Missing expected page: {page}")
 
-    if args.final and (ROOT / CURRENT_ALLOWED_LEGACY_PAGE).exists():
+    if (ROOT / LEGACY_FALLBACK_PAGE).exists():
         warnings.append("Legacy callroom.html still exists. This is OK only if it is an intentional redirect/fallback.")
 
     for path in ROOT.glob("*.html"):
@@ -138,7 +138,7 @@ def main() -> int:
                 target = errors if args.final else warnings
                 target.append(f"Avatar path currently has no file: {path.relative_to(ROOT)} -> {ref}")
 
-    for page in [p for p in ROOT.glob("*.html") if p.name != CURRENT_ALLOWED_LEGACY_PAGE]:
+    for page in [p for p in ROOT.glob("*.html") if p.name != LEGACY_FALLBACK_PAGE]:
         text = read(page)
         lower = text.lower()
         if "<html" in lower and 'lang="pt-pt"' not in lower and "lang='pt-pt'" not in lower:
@@ -170,7 +170,7 @@ def main() -> int:
 
     if args.final:
         for path in site_files(include_docs=False):
-            if path.name == CURRENT_ALLOWED_LEGACY_PAGE:
+            if path.name == LEGACY_FALLBACK_PAGE:
                 continue
             text = read(path)
             for term in FINAL_FORBIDDEN_VISIBLE_TERMS:

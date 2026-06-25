@@ -3,9 +3,9 @@
 Do not complete these tasks in Stage 0. Use this as the staged work queue.
 
 ## Structure
-- [ ] Create `about.html`
-- [ ] Replace Call Room nav item with About
-- [ ] Decide whether `callroom.html` becomes a redirect/fallback or is removed later
+- [x] Create `about.html`
+- [x] Replace the legacy public room nav item with About
+- [x] Keep `callroom.html` as a redirect/fallback for now
 - [ ] Keep final pages to Home, Roster, Drop 01 and About
 
 ## Design
@@ -16,7 +16,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Improve visual rhythm across pages
 
 ## Copy
-- [ ] Remove visible Call Room copy
+- [x] Remove visible old room copy from public pages
 - [ ] Remove Troll Mode language
 - [ ] Remove meme-heavy/roast player copy
 - [ ] Rewrite Home identity copy
@@ -79,7 +79,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Confirm meaningful/decorative image alt text
 
 ## Cleanup
-- [ ] Remove Call Room CSS after replacement
+- [ ] Remove unused old room CSS after replacement
 - [ ] Remove Troll Mode CSS after replacement
 - [ ] Remove unused JS after page cleanup
 - [ ] Update README after final structure changes
