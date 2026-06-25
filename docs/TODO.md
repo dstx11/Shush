@@ -22,7 +22,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [ ] Rewrite Home identity copy
 - [x] Rewrite roster copy in professional gamer tone
 - [x] Rewrite Drop 01 copy as honest launch/concept language
-- [ ] Write concise About copy
+- [x] Write concise About copy
 
 ## Roster
 - [x] Preserve filters
@@ -53,11 +53,11 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Avoid fake checkout, stock or production claims
 
 ## About
-- [ ] Explain what SHUSH is
-- [ ] Explain identity and direction
-- [ ] Mention Drop 01 honestly
-- [ ] Integrate Backora credibly
-- [ ] Mention static/technical care without sounding corporate
+- [x] Explain what SHUSH is
+- [x] Explain identity and direction
+- [x] Mention Drop 01 honestly
+- [x] Integrate Backora credibly
+- [x] Mention static/technical care without sounding corporate
 
 ## Navigation
 - [x] Add `aria-controls` to mobile menu button

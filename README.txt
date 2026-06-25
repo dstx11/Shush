@@ -24,7 +24,7 @@ Notas importantes:
 - assets/avatars/ já tem cinco avatares reais em PNG: Délcio, Tomás, Catarina, Lyel e Tz.
 - Não criar fotos falsas, imagens remotas ou placeholders externos para jogadores.
 - Jogadores sem avatar real continuam com placeholders/initials sem ícones de imagem quebrados.
-- Backora deve continuar como parceiro técnico/digital, sem grelha de sponsors falsos.
+- Backora deve continuar como parceiro técnico/digital, sem grelha de marcas falsas.
 - Drop 01 continua com pedido manual. Não existe checkout real nesta fase.
 
 Estado de Stage 1:
@@ -73,6 +73,12 @@ Estado de Stage 6:
 - O formulário continua a gerar uma mensagem manual, agora com output legível e `aria-live`.
 - Não existe checkout, pagamento, preço ou stock real nesta fase.
 - Home, Roster, About, header/nav e callroom.html não foram redesenhados nesta etapa.
+
+Estado de Stage 7:
+- About foi reconstruída como página final de identidade da SHUSH.
+- A página explica equipa, roster, Drop 01, Backora e estado atual sem inventar escala, história ou palmarés.
+- Backora continua apresentada como parceira técnica/digital.
+- Home, Roster, Drop 01, header/nav e callroom.html não foram redesenhados nesta etapa.
 
 Validação:
 - Correr: python scripts/validate_shush_static.py

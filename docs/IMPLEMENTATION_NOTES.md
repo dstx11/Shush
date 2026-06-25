@@ -34,6 +34,7 @@ Current core files:
 - Home hero jersey showcase using `assets/jersey-hero.webp`
 - Roster visual system with fallback-first avatar placeholders and role filters
 - Real PNG avatars for Délcio, Tomás, Tz, Lyel and Catarina
+- Final About page with SHUSH identity, Drop 01, Backora and current-state sections
 
 ## Current Known Issues
 - `callroom.html` remains only as a redirect/fallback.
@@ -44,6 +45,7 @@ Current core files:
 - Home hero now centers Drop 01 as the visual entry point. Further Home page copy/section cleanup remains later-stage work.
 - Roster page has been visually refined; future roster work should focus on real photos or small copy tweaks, not replacing the fallback architecture.
 - Drop 01 has been redesigned as a manual concept/interest page; future work should not turn it into a fake shop without a real flow.
+- About has been rebuilt as the final identity page; future About work should be small factual/copy polish.
 - Avatar PNGs are source/master files. WebP optimization is still a future asset task because no local WebP converter was available.
 
 ## Editing Guidance
