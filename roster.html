@@ -23,20 +23,20 @@
     <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span></button>
   </header>
 
-  <main id="top">
-    <section class="page-hero shell grid-bg panel" data-reveal>
-      <div><span class="eyebrow">FRAME / ROSTER</span><h1>Oito nomes, uma call.</h1><p>O roster da SHUSH mantém personalidade, função e presença visual sem depender de fotos. Os placeholders ficam prontos para receber imagens reais quando existirem.</p></div>
-      <div class="page-hero-side" data-frame="08"><div class="mini-strip"><article><strong>08</strong><span>jogadores</span></article><article><strong>Roles</strong><span>função clara</span></article><article><strong>SHS</strong><span>sistema comum</span></article></div></div>
+  <main id="top" class="roster-page">
+    <section class="page-hero roster-hero shell grid-bg panel" data-reveal>
+      <div><span class="eyebrow">ROSTER / SHUSH</span><h1>Oito nomes. Papéis claros.</h1><p>Uma equipa pequena, com funções claras e identidade visual cuidada. Cada jogador ocupa espaço no roster sem forçar personagem.</p></div>
+      <div class="page-hero-side roster-hero-side" data-frame="08"><div class="mini-strip"><article><strong>08</strong><span>jogadores</span></article><article><strong>Délcio</strong><span>flex</span></article><article><strong>Tiago</strong><span>IGL</span></article></div></div>
     </section>
 
     <section class="section shell">
-      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / 001</span><h2>Cards principais</h2></div><p>Todos os cards usam a mesma estrutura visual, com placeholders limpos até chegarem fotos reais.</p></div>
-      <div class="role-filters" id="roleFilters" data-reveal></div>
+      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / 001</span><h2>Roster ativo</h2></div><p>Cards alinhados, roles visíveis e placeholders preparados para fotos reais quando existirem.</p></div>
+      <div class="role-filters" id="roleFilters" data-reveal role="group" aria-label="Filtrar roster por função"></div>
       <div class="roster-grid" id="rosterGrid"></div>
     </section>
 
     <section class="section shell">
-      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / 002</span><h2>Notas de jogador</h2></div><p>Um segundo nível de leitura para mostrar função e personalidade sem inventar estatísticas nem palmarés.</p></div>
+      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / 002</span><h2>Leitura rápida</h2></div><p>Um segundo nível de leitura para função, presença e estrutura sem inventar estatísticas nem palmarés.</p></div>
       <div class="roster-detail" id="rosterDetails"></div>
     </section>
   </main>

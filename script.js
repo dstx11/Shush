@@ -108,15 +108,16 @@ if (heroReveal) {
 }
 revealItems.forEach(item => observer.observe(item));
 
-const roleMarkup = roles => roles.map((role, i) => `<span style="--i:${i}">${role}</span>`).join('');
-const statusMarkup = player => player.status ? `<span class="player-tag">${player.status}</span>` : '';
+const roleMarkup = roles => roles.map((role, i) => `<span data-role="${role}" style="--i:${i}">${role}</span>`).join('');
+const statusMarkup = player => player.status ? `<span class="player-tag" aria-label="${player.status} da equipa">${player.status}</span>` : '';
+const cardLabel = player => [player.name, player.status, player.roles.join(' e ')].filter(Boolean).join(', ');
 const detailBadge = player => [player.status, `${player.number} / ${player.roles.join(' + ')}`].filter(Boolean).join(' · ');
 const fallbackAvatar = player => `
   <span class="avatar-badge">Foto pendente</span>
   <div class="placeholder-grid" aria-hidden="true"></div>
   <div class="placeholder-scan" aria-hidden="true"></div>
   <div class="placeholder-core" aria-hidden="true">${player.initials}</div>
-  <p class="placeholder-note">Preparado para foto real quando existir.</p>`;
+  <p class="placeholder-note">Slot preparado para foto real.</p>`;
 const avatarMarkup = player => {
   if (player.image) {
     return `
@@ -134,7 +135,7 @@ const avatarMarkup = player => {
 };
 
 const rosterCard = player => `
-  <article class="roster-card ${player.image ? 'has-photo' : 'placeholder'}" data-reveal data-roles="${player.roles.join('|')}" tabindex="0">
+  <article class="roster-card ${player.image ? 'has-photo' : 'placeholder'}" data-reveal data-roles="${player.roles.join('|')}" tabindex="0" aria-label="${cardLabel(player)}">
     ${avatarMarkup(player)}
     <div class="roster-content">
       <div class="roster-top">
@@ -171,14 +172,18 @@ if (roleFilters && rosterGrid) {
     ...roleOrder.filter(role => discoveredRoles.includes(role)),
     ...discoveredRoles.filter(role => !roleOrder.includes(role))
   ];
-  const filterButton = (label, role, active) => `<button type="button" class="filter-pill${active ? ' is-active' : ''}" data-role="${role}">${label}</button>`;
+  const filterButton = (label, role, active) => `<button type="button" class="filter-pill${active ? ' is-active' : ''}" data-role="${role}" aria-pressed="${active ? 'true' : 'false'}">${label}</button>`;
   roleFilters.innerHTML = filterButton('Todos', 'all', true) + allRoles.map(role => filterButton(role, role, false)).join('');
 
   roleFilters.addEventListener('click', event => {
     const pill = event.target.closest('.filter-pill');
     if (!pill) return;
-    roleFilters.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('is-active'));
+    roleFilters.querySelectorAll('.filter-pill').forEach(btn => {
+      btn.classList.remove('is-active');
+      btn.setAttribute('aria-pressed', 'false');
+    });
     pill.classList.add('is-active');
+    pill.setAttribute('aria-pressed', 'true');
     const role = pill.dataset.role;
     const cards = [...rosterGrid.querySelectorAll('.roster-card')];
     const toHide = [];

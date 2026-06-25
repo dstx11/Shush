@@ -31,6 +31,7 @@ Current core files:
 - Backora footer presence
 - reduced-motion baseline
 - Home hero jersey showcase using `assets/jersey-hero.webp`
+- Roster visual system with fallback-first avatar placeholders and role filters
 
 ## Current Known Issues
 - `callroom.html` remains only as a redirect/fallback.
@@ -40,6 +41,7 @@ Current core files:
 - Roster currently uses fallback initials/placeholders until real player photos are added.
 - Header/nav has been redesigned into a dark glass component; future header work should be incremental cleanup, not a restart.
 - Home hero now centers Drop 01 as the visual entry point. Further Home page copy/section cleanup remains later-stage work.
+- Roster page has been visually refined; future roster work should focus on real photos or small copy tweaks, not replacing the fallback architecture.
 
 ## Editing Guidance
 Stage work should be incremental:

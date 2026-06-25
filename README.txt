@@ -55,6 +55,13 @@ Estado de Stage 4:
 - A composição usa showcase escuro, spotlight, glass e contexto curto sobre SHUSH/Backora.
 - Roster, Drop 01, About e o fallback callroom.html não foram redesenhados nesta etapa.
 
+Estado de Stage 5:
+- Roster page refinada visualmente para a direção premium SHUSH.
+- Cards, filtros, badges de role/status e detalhes receberam tratamento glass mais escuro.
+- Placeholders de avatar continuam sem imagens falsas e prontos para fotos reais.
+- Délcio continua Flex e Tiago mantém badge IGL subtil.
+- Home, Drop 01, About, header/nav e callroom.html não foram redesenhados nesta etapa.
+
 Validação:
 - Correr: python scripts/validate_shush_static.py
 - Correr o servidor local e abrir todas as páginas principais.

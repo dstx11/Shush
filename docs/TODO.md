@@ -29,7 +29,10 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Remove old mode data/property
 - [x] Remove old mode badge
 - [x] Keep player identities unchanged
-- [ ] Improve card hierarchy
+- [x] Improve roster page hero
+- [x] Improve card hierarchy
+- [x] Improve filter controls
+- [x] Improve avatar placeholder visual quality
 - [x] Avoid fake stats and fake achievements
 
 ## Avatars
