@@ -22,6 +22,7 @@ Estrutura atual:
 
 Notas importantes:
 - assets/avatars/ já tem cinco avatares reais em PNG: Délcio, Tomás, Catarina, Lyel e Tz.
+- O site usa cópias WebP otimizadas desses cinco avatares; os PNGs continuam como source/master.
 - Não criar fotos falsas, imagens remotas ou placeholders externos para jogadores.
 - Jogadores sem avatar real continuam com placeholders/initials sem ícones de imagem quebrados.
 - Backora deve continuar como parceiro técnico/digital, sem grelha de marcas falsas.
@@ -63,9 +64,9 @@ Estado de Stage 5:
 - Home, Drop 01, About, header/nav e callroom.html não foram redesenhados nesta etapa.
 
 Estado pós-Stage 5 / avatares:
-- Cinco avatares reais em PNG foram ligados ao roster.
+- Cinco avatares reais em PNG foram ligados ao roster e otimizados para WebP no site.
 - Tiago, Lei e Craquinho continuam com placeholders até existirem fotos reais.
-- Os PNGs ficam como ficheiros source/master. WebP otimizado deve ser gerado depois quando houver ferramenta local disponível.
+- Os PNGs ficam como ficheiros source/master.
 
 Estado de Stage 6:
 - Drop 01 foi redesenhada como página premium de conceito/interesse para a primeira jersey SHUSH.
@@ -79,6 +80,12 @@ Estado de Stage 7:
 - A página explica equipa, roster, Drop 01, Backora e estado atual sem inventar escala, história ou palmarés.
 - Backora continua apresentada como parceira técnica/digital.
 - Home, Roster, Drop 01, header/nav e callroom.html não foram redesenhados nesta etapa.
+
+Estado de Stage 8:
+- QA final executada com validação normal e final.
+- CSS antigo não usado foi removido.
+- Avatares reais passaram a usar WebP otimizado, mantendo PNGs como source/master.
+- callroom.html continua apenas como fallback/redirecionamento intencional.
 
 Validação:
 - Correr: python scripts/validate_shush_static.py

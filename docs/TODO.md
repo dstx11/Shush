@@ -6,7 +6,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Create `about.html`
 - [x] Replace the legacy public room nav item with About
 - [x] Keep `callroom.html` as a redirect/fallback for now
-- [ ] Keep final pages to Home, Roster, Drop 01 and About
+- [x] Keep final pages to Home, Roster, Drop 01 and About
 
 ## Design
 - [x] Rebuild Home hero around jersey showcase
@@ -42,7 +42,7 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 - [x] Ensure no broken image icons with empty `assets/avatars/`
 - [x] Make future photo replacement simple
 - [x] Integrate first five real roster avatars
-- [ ] Generate optimized WebP avatar files when a local converter is available
+- [x] Generate optimized WebP avatar files when a local converter is available
 
 ## Drop 01
 - [x] Improve jersey presentation
@@ -69,32 +69,32 @@ Do not complete these tasks in Stage 0. Use this as the staged work queue.
 
 ## Performance
 - [x] Review Home hero image dimensions/loading
-- [ ] Avoid excessive blur
-- [ ] Remove old unused CSS/JS after redesign
-- [ ] Keep animations transform/opacity based
-- [ ] Review global pointer/scroll listeners
+- [x] Avoid excessive blur
+- [x] Remove old unused CSS/JS after redesign
+- [x] Keep animations transform/opacity based
+- [x] Review global pointer/scroll listeners
 
 ## Accessibility
-- [ ] Confirm `lang="pt-PT"`
-- [ ] Confirm semantic nav and `aria-label`
-- [ ] Confirm `aria-current`
-- [ ] Confirm focus-visible
-- [ ] Confirm reduced motion
-- [ ] Confirm form labels/names
-- [ ] Confirm meaningful/decorative image alt text
+- [x] Confirm `lang="pt-PT"`
+- [x] Confirm semantic nav and `aria-label`
+- [x] Confirm `aria-current`
+- [x] Confirm focus-visible
+- [x] Confirm reduced motion
+- [x] Confirm form labels/names
+- [x] Confirm meaningful/decorative image alt text
 
 ## Cleanup
-- [ ] Remove unused old room CSS after replacement
+- [x] Remove unused old room CSS after replacement
 - [x] Remove old mode CSS after replacement
-- [ ] Remove unused JS after page cleanup
-- [ ] Update README after final structure changes
+- [x] Remove unused JS after page cleanup
+- [x] Update README after final structure changes
 
 ## QA
-- [ ] Run local server
-- [ ] Run validation
-- [ ] Open all final pages
-- [ ] Test mobile widths
-- [ ] Test roster filters
+- [x] Run local server
+- [x] Run validation
+- [x] Open all final pages
+- [x] Test mobile widths
+- [x] Test roster filters
 - [x] Test Drop 01 form/copy
-- [ ] Check no broken images
-- [ ] Check no horizontal scroll
+- [x] Check no broken images
+- [x] Check no horizontal scroll

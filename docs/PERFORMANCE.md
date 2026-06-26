@@ -13,6 +13,7 @@ Keep:
 ## Images
 - Use existing jersey/logo/Backora assets where useful.
 - Avoid huge assets for tiny UI elements.
+- Use optimized WebP copies for roster avatars; keep PNGs as source/master files.
 - Use `loading="lazy"` below the fold.
 - Use `decoding="async"` where useful.
 - Add width/height to important images where possible.
@@ -20,7 +21,7 @@ Keep:
 - Keep avatar handling local; no remote placeholders.
 
 ## CSS
-- Remove unused Call Room/Troll Mode CSS after the related stages.
+- Removed unused legacy concept CSS after the related stages.
 - Avoid excessive `backdrop-filter`.
 - Avoid large stacked shadows everywhere.
 - Keep responsive rules direct and maintainable.

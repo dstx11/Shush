@@ -1,12 +1,12 @@
 const players = [
   { name: 'Tiago', initials: 'TG', number: '02', roles: ['Sentinela', 'Iniciador'], status: 'IGL', quote: 'Estrutura, leitura e ritmo para a equipa.', detail: 'IGL da equipa, responsável por estrutura, leitura e ritmo sem tirar clareza ao round.' },
-  { name: 'Délcio', initials: 'DL', number: '01', roles: ['Flex'], image: 'assets/avatars/delcio.png', quote: 'Flexível no round, consistente na presença.', detail: 'Flex no roster, adapta-se ao ritmo da equipa e cobre o que o round pede com presença estável.' },
-  { name: 'Tomás', initials: 'TM', number: '03', roles: ['Iniciador', 'Duelista'], image: 'assets/avatars/tomas.png', quote: 'Contacto criado sem perder intenção.', detail: 'Iniciador com ritmo ofensivo. Cria janelas para a equipa avançar e mantém pressão quando o mapa pede presença.' },
-  { name: 'Lyel', initials: 'LY', number: '05', roles: ['Flex'], image: 'assets/avatars/lyel.png', quote: 'Flexível por função, consistente por presença.', detail: 'Adapta-se ao que o mapa pede e ajuda a manter o ritmo da equipa sem perder a identidade SHUSH.' },
-  { name: 'Tz', initials: 'TZ', number: '04', roles: ['Duelista', 'Sentinela'], image: 'assets/avatars/tz.png', quote: 'Presença discreta, impacto claro.', detail: 'Mistura calma com decisões rápidas. Dá flexibilidade ao round sem puxar o foco para fora da equipa.' },
+  { name: 'Délcio', initials: 'DL', number: '01', roles: ['Flex'], image: 'assets/avatars/delcio.webp', quote: 'Flexível no round, consistente na presença.', detail: 'Flex no roster, adapta-se ao ritmo da equipa e cobre o que o round pede com presença estável.' },
+  { name: 'Tomás', initials: 'TM', number: '03', roles: ['Iniciador', 'Duelista'], image: 'assets/avatars/tomas.webp', quote: 'Contacto criado sem perder intenção.', detail: 'Iniciador com ritmo ofensivo. Cria janelas para a equipa avançar e mantém pressão quando o mapa pede presença.' },
+  { name: 'Lyel', initials: 'LY', number: '05', roles: ['Flex'], image: 'assets/avatars/lyel.webp', quote: 'Flexível por função, consistente por presença.', detail: 'Adapta-se ao que o mapa pede e ajuda a manter o ritmo da equipa sem perder a identidade SHUSH.' },
+  { name: 'Tz', initials: 'TZ', number: '04', roles: ['Duelista', 'Sentinela'], image: 'assets/avatars/tz.webp', quote: 'Presença discreta, impacto claro.', detail: 'Mistura calma com decisões rápidas. Dá flexibilidade ao round sem puxar o foco para fora da equipa.' },
   { name: 'Lei', initials: 'LE', number: '06', roles: ['Duelista'], quote: 'Pressão frontal sem ruído extra.', detail: 'Duelista preparado para ocupar espaço e acelerar rounds quando a equipa precisa de iniciativa.' },
   { name: 'Craquinho', initials: 'CR', number: '07', roles: ['Duelista', 'Smoker'], quote: 'Entrada e cobertura no mesmo sistema.', detail: 'Duelista e smoker, combina presença ofensiva com utilidade para manter o round controlado.' },
-  { name: 'Catarina', initials: 'CT', number: '08', roles: ['Smoker', 'Iniciador'], image: 'assets/avatars/catarina.png', quote: 'Call limpa, utilidade certa, round com direção.', detail: 'Baixa o ruído, organiza utilidade e ajuda a transformar intenção em execução dentro do servidor.' }
+  { name: 'Catarina', initials: 'CT', number: '08', roles: ['Smoker', 'Iniciador'], image: 'assets/avatars/catarina.webp', quote: 'Call limpa, utilidade certa, round com direção.', detail: 'Baixa o ruído, organiza utilidade e ajuda a transformar intenção em execução dentro do servidor.' }
 ];
 
 const nav = document.querySelector('.main-nav');
@@ -75,10 +75,12 @@ const setProgress = () => {
 };
 setProgress();
 window.addEventListener('scroll', setProgress, { passive: true });
-window.addEventListener('pointermove', event => {
-  root.style.setProperty('--mx', `${event.clientX}px`);
-  root.style.setProperty('--my', `${event.clientY}px`);
-}, { passive: true });
+if (hasHover && !prefersReducedMotion) {
+  window.addEventListener('pointermove', event => {
+    root.style.setProperty('--mx', `${event.clientX}px`);
+    root.style.setProperty('--my', `${event.clientY}px`);
+  }, { passive: true });
+}
 
 const revealItems = document.querySelectorAll('[data-reveal]');
 const observer = new IntersectionObserver(entries => {

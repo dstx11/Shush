@@ -11,6 +11,13 @@ Available PNG source/master files:
 
 Players without a real file still use the roster initials/placeholder fallback.
 
+Available optimized WebP files used by the website:
+- `delcio.webp`
+- `tomas.webp`
+- `catarina.webp`
+- `lyel.webp`
+- `tz.webp`
+
 ## Rules
 - Do not generate fake player photos.
 - Do not download placeholder images.
@@ -31,9 +38,7 @@ Use:
 When more real photos are added later, replacing placeholders should be simple and should not require layout changes.
 
 ## Optimization
-The PNG files are source/master assets. Prefer optimized WebP copies for the website when a local WebP conversion route is available.
-
-No WebP files are currently present.
+The PNG files are source/master assets. The live roster uses optimized WebP copies generated locally at 768x768.
 
 ## Suggested Future Filenames
 Only use these paths in player data when the files actually exist:

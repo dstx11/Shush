@@ -8,6 +8,13 @@
 - `lyel.png`
 - `tz.png`
 
+The live roster uses optimized WebP copies generated from those masters:
+- `delcio.webp`
+- `tomas.webp`
+- `catarina.webp`
+- `lyel.webp`
+- `tz.webp`
+
 Tiago, Lei and Craquinho still use fallback placeholders until real files are added.
 
 ## Required Roster States
@@ -54,13 +61,13 @@ When real photos are added, use predictable local filenames:
 Stage 2 switched the roster to fallback-first rendering. The roster now mixes real local avatars with placeholder-only players.
 
 Current real avatar paths in player data:
-- `assets/avatars/delcio.png`
-- `assets/avatars/tomas.png`
-- `assets/avatars/tz.png`
-- `assets/avatars/lyel.png`
-- `assets/avatars/catarina.png`
+- `assets/avatars/delcio.webp`
+- `assets/avatars/tomas.webp`
+- `assets/avatars/tz.webp`
+- `assets/avatars/lyel.webp`
+- `assets/avatars/catarina.webp`
 
-The PNG files are source/master assets. Use optimized WebP files in player data later if local conversion is available.
+The PNG files remain source/master assets. The WebP files are the optimized web delivery format.
 
 Current/final expected behavior:
 - no `<img>` tag is created unless the file exists in the project or is explicitly assigned after upload
