@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roster | SHUSH</title>
+  <meta name="description" content="Roster da SHUSH por ordem de entrada, com roles claras, identidade visual e placeholders preparados para fotos reais.">
+  <meta name="theme-color" content="#050509">
+  <meta property="og:title" content="Roster | SHUSH">
+  <meta property="og:description" content="Tiago, Délcio, Tomás, Lyel, Tz, Lei, Craquinho e Catarina.">
+  <meta property="og:image" content="assets/shs-logo.png">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <header class="site-header shell" data-reveal>
+    <a class="brand" href="index.html" aria-label="SHUSH Home"><img src="assets/shs-logo.png" width="1167" height="647" alt="SHS" decoding="async"></a>
+    <nav class="main-nav" id="mainNav" aria-label="Navegação principal">
+      <a href="index.html">Home</a><a href="roster.html" aria-current="page">Roster</a><a class="nav-drop-link" href="drop01.html">Drop 01</a><a href="about.html">About</a>
+    </nav>
+    <a class="nav-cta" href="drop01.html">Ver Drop 01</a>
+    <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span></button>
+  </header>
+
+  <main id="top" class="roster-page">
+    <section class="page-hero roster-hero shell grid-bg panel" data-reveal>
+      <div><span class="eyebrow">ROSTER / SHUSH</span><h1>Oito nomes. Papéis claros. Pouco teatro.</h1><p>Cada jogador entra com uma função, uma presença e uma forma própria de jogar. Ordem de entrada, não ranking.</p></div>
+      <div class="page-hero-side roster-hero-side" data-frame="08"><div class="mini-strip"><article><strong>08</strong><span>jogadores</span></article><article><strong>Tiago</strong><span>IGL</span></article><article><strong>Délcio</strong><span>flex</span></article></div></div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / 001</span><h2>Roster ativo</h2></div><p>A equipa, sem lore inventada: roles visíveis, cards alinhados e espaço preparado para fotos reais quando existirem.</p></div>
+      <div class="role-filters" id="roleFilters" data-reveal role="group" aria-label="Filtrar roster por função"></div>
+      <div class="roster-grid" id="rosterGrid"></div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-head compact" data-reveal><div><span class="frame">FRAME / 002</span><h2>Leitura rápida</h2></div><p>Função, presença e estrutura. Sem estatísticas inventadas, sem palmarés falso.</p></div>
+      <div class="roster-detail" id="rosterDetails"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <img src="assets/shs-logo.png" width="1167" height="647" alt="SHS" loading="lazy" decoding="async">
+    <div class="footer-mid">
+      <p>Ordem de entrada. Sem ruído, só função.</p>
+      <a class="footer-partner" href="https://backora.org/" target="_blank" rel="noopener noreferrer"><img src="assets/backora-b.png" width="320" height="293" alt="" loading="lazy" decoding="async"><span>Parceiro técnico: Backora</span></a>
+    </div>
+    <a href="#top">Voltar ao topo</a>
+  </footer>
+  <script src="script.js" defer></script>
+</body>
+</html>
