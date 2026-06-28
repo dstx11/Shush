@@ -11,7 +11,12 @@ temp/
 
 # Codex/local
 .codex/
+source-assets/
+shush-clean-review.zip
 
 # Build artifacts if any are created later
 dist/
 build/
+node_modules/
+.vite/
+*.tsbuildinfo
