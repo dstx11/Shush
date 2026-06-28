@@ -87,9 +87,9 @@ export function HeroShowcase() {
           <h1>A camisola da SHUSH.</h1>
           <p>Preto. Roxo. Silêncio no lobby.</p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button href="#drop">Ver Drop 01</Button>
-            <Button href="#roster" variant="secondary">
-              Ver Roster
+            <Button href="/products">Ver produtos</Button>
+            <Button href="/esports" variant="secondary">
+              Ver esports
             </Button>
           </div>
         </motion.div>

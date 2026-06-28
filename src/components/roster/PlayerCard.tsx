@@ -1,4 +1,4 @@
-import type { Player } from '../../data/roster';
+import type { Player } from '../../data/players';
 
 type PlayerCardProps = {
   player: Player;
@@ -11,7 +11,7 @@ export function PlayerCard({ player, isSelected = false, onSelect }: PlayerCardP
     <button type="button" className={`player-card text-left ${isSelected ? 'is-selected' : ''}`} onClick={onSelect} aria-pressed={isSelected}>
       <span className="player-card-image">
         {player.avatar ? (
-          <img src={player.avatar} alt={`Foto de ${player.name}`} width="768" height="768" loading="lazy" decoding="async" />
+          <img src={player.avatar} alt={`Avatar de ${player.displayName}`} width="768" height="768" loading="lazy" decoding="async" />
         ) : (
           <span className="avatar-fallback">
             <span className="avatar-ring" aria-hidden="true" />
@@ -22,7 +22,7 @@ export function PlayerCard({ player, isSelected = false, onSelect }: PlayerCardP
       </span>
       <span className="mt-4 flex items-start justify-between gap-4">
         <span>
-          <span className="block text-xl font-black uppercase tracking-normal text-shush-text">{player.name}</span>
+          <span className="block text-xl font-black uppercase tracking-normal text-shush-text">{player.displayName}</span>
           <span className="mt-2 block text-xs font-black uppercase tracking-[0.15em] text-shush-muted">{player.focus}</span>
         </span>
         <span className="text-sm font-black text-shush-purpleGlow">{player.number}</span>

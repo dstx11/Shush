@@ -4,14 +4,14 @@ import { navItems } from '../../data/nav';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeHash, setActiveHash] = useState(() => (typeof window === 'undefined' ? '#top' : window.location.hash || '#top'));
+  const [activePath, setActivePath] = useState(() => (typeof window === 'undefined' ? '/' : normalizePath(window.location.pathname)));
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const onHashChange = () => setActiveHash(window.location.hash || '#top');
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    const onRouteChange = () => setActivePath(normalizePath(window.location.pathname));
+    window.addEventListener('popstate', onRouteChange);
+    return () => window.removeEventListener('popstate', onRouteChange);
   }, []);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function Header() {
         className="relative mx-auto flex max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/55 px-4 py-3 shadow-[0_24px_80px_rgba(0,0,0,.46)] backdrop-blur-md"
         aria-label="Navegação principal"
       >
-        <a href="#top" className="flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
+        <a href="/" className="flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
           <img src="/assets/brand/shush-logo.webp" alt="SHS" width="1167" height="647" className="h-8 w-auto" />
           <span className="hidden text-xs font-black uppercase tracking-[0.26em] text-shush-muted sm:inline">SHUSH</span>
         </a>
@@ -57,9 +57,9 @@ export function Header() {
             <a
               key={item.href}
               href={item.href}
-              aria-current={activeHash === item.href ? 'page' : undefined}
+              aria-current={activePath === item.href ? 'page' : undefined}
               className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-[0.18em] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow ${
-                activeHash === item.href ? 'bg-shush-purple/80 text-white shadow-glow' : 'text-shush-muted hover:bg-white/[0.06] hover:text-shush-text'
+                activePath === item.href ? 'bg-shush-purple/80 text-white shadow-glow' : 'text-shush-muted hover:bg-white/[0.06] hover:text-shush-text'
               }`}
             >
               {item.label}
@@ -68,10 +68,10 @@ export function Header() {
         </div>
 
         <a
-          href="#drop"
+          href="/products"
           className="hidden rounded-full border border-shush-purpleGlow/35 bg-shush-purple/70 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-white shadow-glow transition hover:bg-shush-purpleGlow md:inline-flex"
         >
-          Ver Drop 01
+          Jersey
         </a>
 
         <button
@@ -96,21 +96,21 @@ export function Header() {
                 <a
                   key={item.href}
                   href={item.href}
-                  aria-current={activeHash === item.href ? 'page' : undefined}
+                  aria-current={activePath === item.href ? 'page' : undefined}
                   onClick={closeMenu}
                   className={`rounded-2xl px-4 py-4 text-sm font-black uppercase tracking-[0.16em] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shush-purpleGlow ${
-                    activeHash === item.href ? 'bg-shush-purple/75 text-white' : 'bg-white/[0.045] text-shush-muted hover:text-shush-text'
+                    activePath === item.href ? 'bg-shush-purple/75 text-white' : 'bg-white/[0.045] text-shush-muted hover:text-shush-text'
                   }`}
                 >
                   {item.label}
                 </a>
               ))}
               <a
-                href="#drop"
+                href="/products"
                 onClick={closeMenu}
                 className="rounded-2xl border border-shush-purpleGlow/35 bg-shush-purple px-4 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-glow"
               >
-                Ver Drop 01
+                Jersey
               </a>
             </div>
           </div>
@@ -118,4 +118,9 @@ export function Header() {
       </nav>
     </header>
   );
+}
+
+function normalizePath(pathname: string) {
+  if (!pathname || pathname === '/index.html') return '/';
+  return pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
 }

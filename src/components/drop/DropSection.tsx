@@ -80,13 +80,13 @@ export function DropSection() {
   };
 
   return (
-    <section id="drop" className="drop-section scroll-mt-24 px-5 py-28">
+    <section id="products" className="drop-section scroll-mt-24 px-5 pb-28 pt-36">
       <div className="mx-auto mb-10 max-w-7xl">
-        <span className="section-kicker">Drop 01</span>
-        <h2 className="mt-4 max-w-3xl text-5xl font-black uppercase leading-none tracking-normal text-shush-text md:text-7xl">
+        <span className="section-kicker">Jersey / Clothing</span>
+        <h1 className="mt-4 max-w-3xl text-5xl font-black uppercase leading-none tracking-normal text-shush-text md:text-7xl">
           A camisola da SHUSH.
-        </h2>
-        <p className="mt-5 max-w-xl text-sm leading-7 text-shush-muted">Escolhe nome, número e tamanho. O pedido é manual.</p>
+        </h1>
+        <p className="mt-5 max-w-xl text-sm leading-7 text-shush-muted">Drop 01 como primeira peça visual. Pedido manual, sem checkout falso.</p>
       </div>
 
       <div className="drop-shell">

@@ -17,11 +17,20 @@ pnpm run build
 pnpm run preview
 ```
 
+## Deploy
+
+- Build command: `pnpm run build`
+- Output directory: `dist`
+- Cloudflare Pages SPA fallback works without `public/_redirects` while there is no top-level `404.html`.
+
 ## Site Structure
 
 - Home
-- Roster
-- Drop 01
-- About
+- Esports
+- Content
+- Products
+- Company
 
-The Drop 01 flow is manual. There is no checkout, payment integration or backend in this project.
+The Products flow is manual. There is no checkout, payment integration or backend in this project.
+
+Admin shell: hidden visual-only modal via `↑ ↑ ↓ ↓ ← → ← →`. It does not authenticate, persist or protect anything.

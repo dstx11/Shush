@@ -28,7 +28,7 @@ export function AboutSection() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="about" className="about-section scroll-mt-24 px-5 py-28">
+    <section id="company" className="about-section scroll-mt-24 px-5 pb-28 pt-36">
       <motion.div
         className="about-shell"
         initial={reduceMotion ? false : { opacity: 0, y: 24 }}
@@ -38,7 +38,7 @@ export function AboutSection() {
       >
         <div className="about-copy">
           <span className="section-kicker">About / SHUSH</span>
-          <h2>Uma equipa, uma estética, zero encenação.</h2>
+          <h1>Uma equipa, uma estética, zero encenação.</h1>
           <p>
             SHUSH é equipa gaming, identidade preta/roxa e Drop 01 como primeira peça oficial. Backora entra como parceiro técnico/digital, sem roubar o centro.
           </p>
@@ -66,7 +66,7 @@ export function AboutSection() {
         </div>
 
         <a href="https://backora.org/" target="_blank" rel="noreferrer" className="about-backora">
-          <span className="section-kicker">Parceiro técnico/digital</span>
+          <span className="section-kicker">Partners</span>
           <span>Backora apoia a camada técnica e digital da SHUSH.</span>
           <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
         </a>

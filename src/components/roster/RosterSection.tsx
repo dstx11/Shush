@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { players } from '../../data/roster';
+import { players } from '../../data/players';
 import { PlayerCard } from './PlayerCard';
 
 const allFilter = 'Todos';
 
 export function RosterSection() {
   const [activeFilter, setActiveFilter] = useState(allFilter);
-  const [selectedName, setSelectedName] = useState(players[0]?.name ?? '');
+  const [selectedName, setSelectedName] = useState(players[0]?.displayName ?? '');
   const reduceMotion = useReducedMotion();
 
   const filters = useMemo(() => {
@@ -20,12 +20,12 @@ export function RosterSection() {
     return players.filter((player) => player.roles.includes(activeFilter));
   }, [activeFilter]);
 
-  const selectedPlayer = players.find((player) => player.name === selectedName) ?? filteredPlayers[0] ?? players[0];
+  const selectedPlayer = players.find((player) => player.displayName === selectedName) ?? filteredPlayers[0] ?? players[0];
 
   const setFilter = (filter: string) => {
     setActiveFilter(filter);
     const nextPlayer = filter === allFilter ? players[0] : players.find((player) => player.roles.includes(filter));
-    if (nextPlayer) setSelectedName(nextPlayer.name);
+    if (nextPlayer) setSelectedName(nextPlayer.displayName);
   };
 
   return (
@@ -59,20 +59,20 @@ export function RosterSection() {
           <div className="roster-grid">
             {filteredPlayers.map((player, index) => (
               <motion.div
-                key={player.name}
+                key={player.id}
                 initial={reduceMotion ? false : { opacity: 0, y: 34, scale: 0.96 }}
                 whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: '-12%' }}
                 transition={{ duration: 0.52, delay: index * 0.055, ease: [0.16, 1, 0.3, 1] }}
               >
-                <PlayerCard player={player} isSelected={selectedPlayer.name === player.name} onSelect={() => setSelectedName(player.name)} />
+                <PlayerCard player={player} isSelected={selectedPlayer.displayName === player.displayName} onSelect={() => setSelectedName(player.displayName)} />
               </motion.div>
             ))}
           </div>
         </div>
 
         <motion.article
-          key={selectedPlayer.name}
+          key={selectedPlayer.id}
           className="roster-spotlight"
           initial={reduceMotion ? false : { opacity: 0, x: 34, scale: 0.97 }}
           animate={reduceMotion ? undefined : { opacity: 1, x: 0, scale: 1 }}
@@ -80,7 +80,7 @@ export function RosterSection() {
         >
           <div className="spotlight-media">
             {selectedPlayer.avatar ? (
-              <img src={selectedPlayer.avatar} alt={`Foto de ${selectedPlayer.name}`} width="768" height="768" loading="lazy" decoding="async" />
+              <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="lazy" decoding="async" />
             ) : (
               <div className="avatar-fallback">
                 <span className="avatar-ring" aria-hidden="true" />
@@ -90,7 +90,7 @@ export function RosterSection() {
           </div>
           <div className="spotlight-copy">
             <span className="section-kicker">Spotlight / {selectedPlayer.number}</span>
-            <h3>{selectedPlayer.name}</h3>
+            <h3>{selectedPlayer.displayName}</h3>
             <p>{selectedPlayer.quote}</p>
             <div className="mt-6 flex flex-wrap gap-2">
               {selectedPlayer.status ? <span className="status-badge">{selectedPlayer.status}</span> : null}
