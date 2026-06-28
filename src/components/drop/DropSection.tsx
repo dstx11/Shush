@@ -17,6 +17,7 @@ const jerseyViews = {
 } as const;
 
 type JerseyView = keyof typeof jerseyViews;
+type CopyStatus = 'idle' | 'copied' | 'failed';
 
 async function writeClipboardText(text: string) {
   if (navigator.clipboard?.writeText) {
@@ -49,7 +50,7 @@ export function DropSection() {
   const [number, setNumber] = useState('01');
   const [size, setSize] = useState('M');
   const [phrase, setPhrase] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
   const reduceMotion = useReducedMotion();
 
   const message = useMemo(
@@ -70,10 +71,11 @@ export function DropSection() {
   const copyMessage = async () => {
     try {
       await writeClipboardText(message);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
+      setCopyStatus('copied');
+      window.setTimeout(() => setCopyStatus('idle'), 1800);
     } catch {
-      setCopied(false);
+      setCopyStatus('failed');
+      window.setTimeout(() => setCopyStatus('idle'), 1800);
     }
   };
 
@@ -126,7 +128,7 @@ export function DropSection() {
             size={size}
             phrase={phrase}
             message={message}
-            copied={copied}
+            copyStatus={copyStatus}
             onNameChange={setName}
             onNumberChange={setNumber}
             onSizeChange={setSize}

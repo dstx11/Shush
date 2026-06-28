@@ -6,7 +6,7 @@ type JerseyCustomizerProps = {
   size: string;
   phrase: string;
   message: string;
-  copied: boolean;
+  copyStatus: 'idle' | 'copied' | 'failed';
   onNameChange: (value: string) => void;
   onNumberChange: (value: string) => void;
   onSizeChange: (value: string) => void;
@@ -20,7 +20,7 @@ export function JerseyCustomizer({
   size,
   phrase,
   message,
-  copied,
+  copyStatus,
   onNameChange,
   onNumberChange,
   onSizeChange,
@@ -57,9 +57,9 @@ export function JerseyCustomizer({
       </label>
 
       <pre aria-live="polite">{message}</pre>
-      <button type="button" onClick={onCopy} className="copy-button">
-        {copied ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
-        {copied ? 'Copiado' : 'Copiar pedido'}
+      <button type="button" onClick={onCopy} className="copy-button" aria-live="polite">
+        {copyStatus === 'copied' ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
+        {copyStatus === 'copied' ? 'Copiado' : copyStatus === 'failed' ? 'Copiar falhou' : 'Copiar pedido'}
       </button>
     </div>
   );
