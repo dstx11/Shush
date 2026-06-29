@@ -1,6 +1,6 @@
 # SHUSH
 
-SHUSH is a dark premium gamer team site built with Vite, React, TypeScript, Tailwind CSS, Framer Motion and lucide-react.
+SHUSH is a dark premium gamer site built with Vite, React, TypeScript, Tailwind CSS, Framer Motion and lucide-react.
 
 ## Local Development
 
@@ -21,16 +21,27 @@ pnpm run preview
 
 - Build command: `pnpm run build`
 - Output directory: `dist`
-- Cloudflare Pages SPA fallback works without `public/_redirects` while there is no top-level `404.html`.
+- Static SPA fallback: `public/_redirects` maps public routes to `index.html`.
 
 ## Site Structure
 
-- Home
-- Esports
-- Content
-- Products
-- Company
+- `/`
+- `/esports`
+- `/esports/valorant`
+- `/esports/valorant/premier`
+- `/esports/valorant/roster`
+- `/esports/valorant/results`
+- `/esports/valorant/tournaments`
+- `/content`
+- `/content/more`
+- `/content/th0maz7`
+- `/products`
+- `/products/jersey`
+- `/products/jersey/custom`
+- `/company`
+- `/company/partners`
+- `/company/contact`
 
-The Products flow is manual. There is no checkout, payment integration or backend in this project.
+Products are manual. There is no checkout, payment integration or backend.
 
 Admin shell: hidden visual-only modal via `↑ ↑ ↓ ↓ ← → ← →`. It does not authenticate, persist or protect anything.

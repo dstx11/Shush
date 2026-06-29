@@ -1,15 +1,11 @@
-import { CreatorsPulse } from '../components/home/CreatorsPulse';
 import { HeroShowcase } from '../components/home/HeroShowcase';
-import { MatchDayPanel } from '../components/home/MatchDayPanel';
-import { ProductsTeaser } from '../components/home/ProductsTeaser';
+import { HomeHub } from '../components/home/HomeHub';
 
 export function HomePage() {
   return (
     <>
       <HeroShowcase />
-      <MatchDayPanel />
-      <CreatorsPulse />
-      <ProductsTeaser />
+      <HomeHub />
     </>
   );
 }

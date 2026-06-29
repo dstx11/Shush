@@ -1,5 +1,5 @@
-import { DropSection } from '../components/drop/DropSection';
+import { ProductsOverviewPage } from './RoutePages';
 
 export function ProductsPage() {
-  return <DropSection />;
+  return <ProductsOverviewPage />;
 }

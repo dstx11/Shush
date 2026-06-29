@@ -1,26 +1,27 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { Cpu, EyeOff, Gem, Users } from 'lucide-react';
+import { Cpu, EyeOff, Shirt, Users } from 'lucide-react';
+import { MotionRail, SectionBreadcrumb, SnakeLine } from '../motion/MotionPrimitives';
 
 const principles = [
   {
     icon: EyeOff,
     title: 'Sem barulho',
-    copy: 'Presença baixa, escura e controlada.',
+    copy: 'Identidade escura, direta e controlada.',
   },
   {
     icon: Users,
-    title: 'Equipa pequena',
-    copy: 'Papéis claros sem escala inventada.',
+    title: 'Grupo pequeno',
+    copy: 'Gaming, esports e entertainment entre amigos.',
   },
   {
-    icon: Gem,
-    title: 'Peça cuidada',
-    copy: 'A jersey é o primeiro objeto forte da SHUSH.',
+    icon: Shirt,
+    title: 'Produto manual',
+    copy: 'Jersey / Clothing com pedido manual.',
   },
   {
     icon: Cpu,
     title: 'Backora',
-    copy: 'Parceiro técnico/digital da experiência.',
+    copy: 'Partner técnico/digital da SHUSH.',
   },
 ];
 
@@ -28,7 +29,7 @@ export function AboutSection() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section id="company" className="about-section scroll-mt-24 px-5 pb-28 pt-36">
+    <section id="about" className="about-section scroll-mt-28 px-5 pb-28 pt-36">
       <motion.div
         className="about-shell"
         initial={reduceMotion ? false : { opacity: 0, y: 24 }}
@@ -37,11 +38,11 @@ export function AboutSection() {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="about-copy">
+          <SectionBreadcrumb items={['Company', 'About']} />
           <span className="section-kicker">About / SHUSH</span>
-          <h1>Uma equipa, uma estética, zero encenação.</h1>
-          <p>
-            SHUSH é equipa gaming, identidade preta/roxa e Drop 01 como primeira peça oficial. Backora entra como parceiro técnico/digital, sem roubar o centro.
-          </p>
+          <h1>Grupo gaming, esports e entertainment.</h1>
+          <MotionRail className="route-title-rail" />
+          <p>SHUSH é um grupo gaming, esports e entertainment criado à volta de Valorant, creators e identidade própria.</p>
           <p className="about-line">Sem barulho. Só rounds.</p>
         </div>
 
@@ -65,9 +66,10 @@ export function AboutSection() {
           })}
         </div>
 
-        <a href="https://backora.org/" target="_blank" rel="noreferrer" className="about-backora">
+        <a id="partners" href="https://backora.org/" target="_blank" rel="noreferrer" className="about-backora scroll-mt-28">
+          <SnakeLine className="backora-system-line" />
           <span className="section-kicker">Partners</span>
-          <span>Backora apoia a camada técnica e digital da SHUSH.</span>
+          <span>Backora é o partner técnico/digital por trás da estrutura web e suporte técnico.</span>
           <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
         </a>
       </motion.div>

@@ -1,18 +1,20 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ShieldCheck, Shirt } from 'lucide-react';
+import { motionPresets } from '../../lib/motion';
+import { JerseyStitchOverlay, MotionRail, SnakeLine } from '../motion/MotionPrimitives';
 import { JerseyCustomizer } from './JerseyCustomizer';
 
 const jerseyViews = {
   front: {
     label: 'Frente',
     src: '/assets/jersey/frontjersey.webp',
-    alt: 'Jersey SHUSH Drop 01 vista de frente',
+    alt: 'Jersey SHUSH vista de frente',
   },
   back: {
     label: 'Verso',
     src: '/assets/jersey/backjersey.webp',
-    alt: 'Jersey SHUSH Drop 01 vista de costas',
+    alt: 'Jersey SHUSH vista de costas',
   },
 } as const;
 
@@ -56,12 +58,12 @@ export function DropSection() {
   const message = useMemo(
     () =>
       [
-        'Interesse SHUSH Drop 01',
+        'Interesse SHUSH Jersey / Clothing',
         `Nome: ${name || 'SHUSH'}`,
         `Número: ${number || '00'}`,
         `Tamanho: ${size}`,
         phrase ? `Frase: ${phrase}` : 'Frase: sem frase personalizada',
-        'Pedido manual. Sem checkout automático por agora.',
+        'Pedido manual.',
       ].join('\n'),
     [name, number, size, phrase],
   );
@@ -81,16 +83,18 @@ export function DropSection() {
 
   return (
     <section id="products" className="drop-section scroll-mt-24 px-5 pb-28 pt-36">
-      <div className="mx-auto mb-10 max-w-7xl">
+      <div id="jersey" className="mx-auto mb-10 max-w-7xl scroll-mt-28">
         <span className="section-kicker">Jersey / Clothing</span>
-        <h1 className="mt-4 max-w-3xl text-5xl font-black uppercase leading-none tracking-normal text-shush-text md:text-7xl">
-          A camisola da SHUSH.
-        </h1>
-        <p className="mt-5 max-w-xl text-sm leading-7 text-shush-muted">Drop 01 como primeira peça visual. Pedido manual, sem checkout falso.</p>
+        <h1 className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight tracking-normal text-shush-text md:text-5xl">A camisola da SHUSH.</h1>
+        <MotionRail className="product-title-rail" />
+        <p className="mt-5 max-w-xl text-sm leading-7 text-shush-muted">Produto manual, escuro e direto. Frente, verso, nick, número e tamanho.</p>
       </div>
 
       <div className="drop-shell">
         <div className="drop-product-stage">
+          <SnakeLine className="product-snake" />
+          <JerseyStitchOverlay />
+          <span className="fabric-light-sweep" aria-hidden="true" />
           <AnimatePresence mode="wait" initial={!reduceMotion}>
             <motion.img
               key={view}
@@ -101,19 +105,19 @@ export function DropSection() {
               loading="lazy"
               decoding="async"
               className="drop-jersey-image"
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.94, rotateY: view === 'front' ? -14 : 14 }}
-              animate={reduceMotion ? undefined : { opacity: 1, scale: 1, rotateY: 0 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.98, rotateY: view === 'front' ? 12 : -12 }}
-              transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+              initial={reduceMotion ? false : motionPresets.jerseySwap.initial}
+              animate={reduceMotion ? undefined : motionPresets.jerseySwap.animate}
+              exit={reduceMotion ? undefined : motionPresets.jerseySwap.exit}
             />
           </AnimatePresence>
           <div className="drop-nameplate">
             <span>{name || 'SHUSH'}</span>
             <strong>{number || '00'}</strong>
+            {phrase ? <small>{phrase}</small> : null}
           </div>
         </div>
 
-        <aside className="drop-control-panel">
+        <aside id="customizacao" className="drop-control-panel scroll-mt-28">
           <div className="drop-toggle" role="group" aria-label="Alternar vista da camisola">
             {(Object.keys(jerseyViews) as JerseyView[]).map((key) => (
               <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)} className={view === key ? 'is-active' : ''}>
@@ -136,7 +140,7 @@ export function DropSection() {
             onCopy={copyMessage}
           />
 
-          <div className="drop-proof">
+          <div id="pedido-manual" className="drop-proof scroll-mt-28">
             <div>
               <Shirt aria-hidden="true" className="h-5 w-5 text-shush-purpleGlow" />
               <span>Frente / verso</span>

@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { Radio, Users } from 'lucide-react';
+import { activePremierSeason, getPlayersByIds } from '../../data/season';
+import { motionPresets } from '../../lib/motion';
+import { calculatePublicMatchDayState, formatDate, formatWindowCountdown } from '../../lib/premier';
+import { MapPing, MotionRail, SnakeLine, StatusBadge, TacticalGrid, UltrawideClampLines } from '../motion/MotionPrimitives';
 import { Button } from '../ui/Button';
 
 const jerseyViews = {
   front: {
     label: 'Frente',
     src: '/assets/jersey/frontjersey.webp',
-    alt: 'Jersey SHUSH Drop 01 vista de frente',
+    alt: 'Jersey SHUSH vista de frente',
   },
   back: {
     label: 'Verso',
     src: '/assets/jersey/backjersey.webp',
-    alt: 'Jersey SHUSH Drop 01 vista de costas',
+    alt: 'Jersey SHUSH vista de costas',
   },
 } as const;
 
@@ -21,13 +26,21 @@ export function HeroShowcase() {
   const [view, setView] = useState<JerseyView>('front');
   const reduceMotion = useReducedMotion();
   const active = jerseyViews[view];
+  const state = calculatePublicMatchDayState(activePremierSeason);
+  const week = 'week' in state ? state.week : null;
+  const day = 'day' in state ? state.day : null;
+  const convocados = week ? getPlayersByIds(week.convocados).slice(0, 5) : [];
+  const meta = week && day ? `${week.map ?? 'Mapa por definir'} · ${formatDate(day.date)} · ${day.windowStart}-${day.windowEnd}` : state.detail;
+  const countdown = day ? formatWindowCountdown(day) : 'A atualizar';
 
   return (
-    <section id="top" className="hero-stage relative min-h-screen overflow-hidden px-5 pb-8 pt-24">
+    <section id="top" className="hero-stage home-identity-stage relative overflow-hidden px-5 pb-8 pt-24">
       <div className="absolute inset-0 serpent-texture" aria-hidden="true" />
       <div className="hero-vignette" aria-hidden="true" />
       <div className="serpent-trail trail-one" aria-hidden="true" />
       <div className="serpent-trail trail-two" aria-hidden="true" />
+      <TacticalGrid className="hero-tactical-grid" />
+      <UltrawideClampLines />
 
       <motion.p
         aria-hidden="true"
@@ -39,18 +52,76 @@ export function HeroShowcase() {
         SHUSH
       </motion.p>
 
-      <div className="hero-shell">
+      <div className="hero-shell is-identity">
         <motion.div
-          className="hero-product"
-          initial={reduceMotion ? false : { opacity: 0, scale: 0.72, y: 68, rotateX: 8 }}
-          animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: [0, -14, 0], rotateX: 0 }}
+          className="hero-copy identity"
+          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          <span className="section-kicker">SHUSH</span>
+          <h1>SHUSH</h1>
+          <MotionRail className="hero-title-rail" />
+          <p>Gaming, Premier e creators no mesmo sítio. Sem barulho. Só rounds.</p>
+
+          <div className="hero-status-strip" aria-label="Estado atual SHUSH">
+            <StatusBadge pulse>
+              <Radio aria-hidden="true" className="h-4 w-4" />
+              {state.title}
+            </StatusBadge>
+            <strong>{meta}</strong>
+            {week?.map ? <MapPing label={`Mapa ${week.map}`} /> : null}
+          </div>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <Button href="/esports/valorant/premier">Acompanhar Premier</Button>
+            <Button href="/esports/valorant/roster" variant="secondary">
+              Ver roster
+            </Button>
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="hero-mini-card"
+          variants={reduceMotion ? undefined : motionPresets.panel}
+          initial={reduceMotion ? false : 'hidden'}
+          animate={reduceMotion ? undefined : 'visible'}
+        >
+          <SnakeLine className="hero-mini-snake" />
+          <span>
+            <Users aria-hidden="true" className="h-4 w-4" />
+            Now panel
+          </span>
+          <strong>{state.title}</strong>
+          <p>{meta}</p>
+          <div className="now-panel-meta">
+            <small>{countdown}</small>
+            <small>{convocados.length > 0 ? `${convocados.length} convocados` : 'Convocados a atualizar'}</small>
+          </div>
+          {convocados.length > 0 ? (
+            <div className="now-panel-lineup" aria-label="Convocados">
+              {convocados.map((player) => (
+                <span key={player.id}>
+                  {player.displayName}
+                  <small>{player.roles[0]}</small>
+                </span>
+              ))}
+            </div>
+          ) : null}
+          <a href="#match-day">Ver estado vivo</a>
+        </motion.div>
+
+        <motion.div
+          className="hero-product is-secondary"
+          initial={reduceMotion ? false : { opacity: 0, scale: 0.84, y: 42, rotateX: 8 }}
+          animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: [0, -10, 0], rotateX: 0 }}
           transition={
             reduceMotion
               ? undefined
               : {
                   opacity: { duration: 0.55 },
-                  scale: { duration: 1.05, ease: [0.16, 1, 0.3, 1] },
-                  rotateX: { duration: 1.05, ease: [0.16, 1, 0.3, 1] },
+                  scale: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
+                  rotateX: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
                   y: { duration: 7.5, repeat: Infinity, ease: 'easeInOut' },
                 }
           }
@@ -67,30 +138,12 @@ export function HeroShowcase() {
                 fetchPriority="high"
                 decoding="async"
                 className="jersey-hero-image"
-                initial={reduceMotion ? false : { opacity: 0, scale: 0.965, rotateY: view === 'front' ? -18 : 18 }}
-                animate={reduceMotion ? undefined : { opacity: 1, scale: 1, rotateY: 0 }}
-                exit={reduceMotion ? undefined : { opacity: 0, scale: 0.985, rotateY: view === 'front' ? 14 : -14 }}
-                transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+                initial={reduceMotion ? false : motionPresets.jerseySwap.initial}
+                animate={reduceMotion ? undefined : motionPresets.jerseySwap.animate}
+                exit={reduceMotion ? undefined : motionPresets.jerseySwap.exit}
               />
             </AnimatePresence>
             <div className="pedestal" aria-hidden="true" />
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="hero-copy left"
-          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35 }}
-        >
-          <span className="section-kicker">Drop 01</span>
-          <h1>A camisola da SHUSH.</h1>
-          <p>Preto. Roxo. Silêncio no lobby.</p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button href="/products">Ver produtos</Button>
-            <Button href="/esports" variant="secondary">
-              Ver esports
-            </Button>
           </div>
         </motion.div>
 
@@ -100,22 +153,17 @@ export function HeroShowcase() {
           animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.48 }}
         >
-          <span>Silence the lobby.</span>
+          <span>Jersey / Clothing</span>
           <div className="grid grid-cols-2 gap-2">
             {(Object.keys(jerseyViews) as JerseyView[]).map((key) => (
-              <button
-                key={key}
-                type="button"
-                aria-pressed={view === key}
-                onClick={() => setView(key)}
-                className={`rounded-2xl px-4 py-3 text-xs font-black uppercase tracking-[0.18em] transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-shush-purpleGlow ${
-                  view === key ? 'bg-shush-purple text-white shadow-glow' : 'bg-white/[0.045] text-shush-muted hover:bg-white/[0.08] hover:text-shush-text'
-                }`}
-              >
+              <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)} className={`hero-view-button ${view === key ? 'is-active' : ''}`}>
                 {jerseyViews[key].label}
               </button>
             ))}
           </div>
+          <a href="/products/jersey" className="hero-product-link">
+            Pedido manual
+          </a>
         </motion.div>
       </div>
     </section>

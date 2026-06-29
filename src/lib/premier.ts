@@ -17,7 +17,7 @@ export type PublicMatchDayState =
   | { kind: 'last_result'; title: 'LAST RESULT'; detail: string; result: MatchResult }
   | { kind: 'qualified'; title: 'QUALIFIED FOR PREMIER PLAY-OFFS'; detail: string }
   | { kind: 'eliminated'; title: 'PREMIER RUN ENDED'; detail: string }
-  | { kind: 'season_active'; title: 'Premier Season active'; detail: 'Proxima janela por definir' };
+  | { kind: 'season_active'; title: 'Premier Season active'; detail: 'Próxima janela por definir' };
 
 export function pointsForResult(result: MatchResult, season: Pick<PremierSeason, 'winPoints' | 'lossPoints'>) {
   if (result.outcome === 'win') return season.winPoints;
@@ -88,7 +88,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   const latestPlayoffResult = getLatestResult(season.playoffResults, now);
 
   if (placement?.status === 'champions' && latestPlayoffResult && daysBetween(new Date(latestPlayoffResult.date), now) <= 21) {
-    return { kind: 'champions', title: 'PREMIER CHAMPIONS', detail: 'SHUSH won the bracket.', result: latestPlayoffResult };
+    return { kind: 'champions', title: 'PREMIER CHAMPIONS', detail: 'Resultado final publicado pela equipa.', result: latestPlayoffResult };
   }
 
   const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart);
@@ -169,16 +169,35 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
     };
   }
 
-  return { kind: 'season_active', title: 'Premier Season active', detail: 'Proxima janela por definir' };
+  return { kind: 'season_active', title: 'Premier Season active', detail: 'Próxima janela por definir' };
 }
 
 export function formatResultLine(result: MatchResult) {
   if (result.shushScore === undefined || result.opponentScore === undefined) return result.outcome === 'win' ? 'SHUSH venceu' : 'SHUSH perdeu';
-  return `SHUSH ${result.shushScore}-${result.opponentScore} ${result.opponent ?? 'Opponent'}`;
+  const confirmedRival = result.opponent && !/^opp/i.test(result.opponent) ? result.opponent : null;
+  if (!confirmedRival) return 'Resultado a atualizar';
+  return `SHUSH ${result.shushScore}-${result.opponentScore} ${confirmedRival}`;
 }
 
 export function formatDate(date: string) {
   return new Intl.DateTimeFormat('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
+}
+
+export function formatWindowCountdown(day: PremierPlayDay, now = new Date()) {
+  const start = makeDateTime(day.date, day.windowStart);
+  const end = makeDateTime(day.date, day.windowEnd);
+
+  if (now >= start && now <= addMinutes(end, 40)) return 'Janela ativa';
+  if (now > addMinutes(end, 40)) return 'Resultado a atualizar';
+
+  const diffMinutes = Math.max(0, Math.round((start.getTime() - now.getTime()) / 60_000));
+  const days = Math.floor(diffMinutes / 1440);
+  const hours = Math.floor((diffMinutes % 1440) / 60);
+  const minutes = diffMinutes % 60;
+
+  if (days > 0) return `${days}D ${hours}H ${minutes}M`;
+  if (hours > 0) return `${hours}H ${minutes}M`;
+  return `${minutes}M`;
 }
 
 function getAllPlayDays(season: PremierSeason) {

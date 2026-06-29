@@ -1,5 +1,7 @@
 import { FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { X } from 'lucide-react';
+import { motionPresets } from '../../lib/motion';
 
 const unlockSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
 
@@ -9,6 +11,7 @@ export function AdminUnlockModal() {
   const [message, setMessage] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
   const usernameRef = useRef<HTMLInputElement>(null);
+  const reduceMotion = useReducedMotion();
 
   const close = () => {
     setMessage('');
@@ -56,11 +59,9 @@ export function AdminUnlockModal() {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setMessage('Admin real fica para fase futura. Este shell nao autentica nem guarda dados.');
+    setMessage('Shell reservado para fase futura. Não autentica nem guarda dados.');
   };
 
   const trapFocus = (event: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -82,36 +83,40 @@ export function AdminUnlockModal() {
   };
 
   return (
-    <div className="admin-modal-backdrop" aria-hidden={false}>
-      <div
-        ref={modalRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="admin-modal-title"
-        aria-describedby="admin-modal-description"
-        className="admin-modal"
-        onKeyDown={trapFocus}
-      >
-        <button type="button" className="admin-modal-close" aria-label="Fechar admin mock" onClick={close}>
-          <X aria-hidden="true" className="h-5 w-5" />
-        </button>
-        <span className="section-kicker">Admin shell</span>
-        <h2 id="admin-modal-title">Acesso visual oculto.</h2>
-        <p id="admin-modal-description">Sem autenticacao real nesta fase. Sem password guardada. Sem localStorage.</p>
+    <AnimatePresence>
+      {isOpen ? (
+        <motion.div className="admin-modal-backdrop" aria-hidden={false} initial={reduceMotion ? false : { opacity: 0 }} animate={reduceMotion ? undefined : { opacity: 1 }} exit={reduceMotion ? undefined : { opacity: 0 }}>
+          <motion.div
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-modal-title"
+            aria-describedby="admin-modal-description"
+            className="admin-modal"
+            onKeyDown={trapFocus}
+            variants={reduceMotion ? undefined : motionPresets.panel}
+            initial={reduceMotion ? false : 'hidden'}
+            animate={reduceMotion ? undefined : 'visible'}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -10, scale: 0.98 }}
+          >
+            <button type="button" className="admin-modal-close" aria-label="Fechar painel admin" onClick={close}>
+              <X aria-hidden="true" className="h-5 w-5" />
+            </button>
+            <span className="section-kicker">Shell oculto</span>
+            <h2 id="admin-modal-title">Acesso visual oculto.</h2>
+            <p id="admin-modal-description">Sem autenticação real nesta fase. Sem credenciais guardadas. Sem storage.</p>
 
-        <form className="admin-form" onSubmit={submit}>
-          <label>
-            <span>Username</span>
-            <input ref={usernameRef} name="username" autoComplete="username" />
-          </label>
-          <label>
-            <span>Password</span>
-            <input name="password" type="password" autoComplete="current-password" />
-          </label>
-          <button type="submit">Entrar mock</button>
-        </form>
-        {message ? <p className="admin-message" aria-live="polite">{message}</p> : null}
-      </div>
-    </div>
+            <form className="admin-form" onSubmit={submit}>
+              <label>
+                <span>Username</span>
+                <input ref={usernameRef} name="username" autoComplete="username" />
+              </label>
+              <button type="submit">Abrir shell</button>
+            </form>
+            {message ? <p className="admin-message" aria-live="polite">{message}</p> : null}
+          </motion.div>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
   );
 }

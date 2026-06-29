@@ -48,7 +48,7 @@ export function MatchDayPanel() {
               {state.kind === 'match_day_live' && state.showStreams ? (
                 <span className="live-badge">
                   <Radio aria-hidden="true" className="h-4 w-4" />
-                  Streams manuais disponiveis
+                  Streams manuais disponíveis
                 </span>
               ) : null}
             </div>

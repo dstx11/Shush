@@ -1,30 +1,37 @@
-import { navItems } from '../../data/nav';
+import { motion, useReducedMotion } from 'framer-motion';
+import { footerLinks } from '../../data/nav';
+import { motionPresets } from '../../lib/motion';
+import { SnakeLine } from '../motion/MotionPrimitives';
 
 export function Footer() {
+  const reduceMotion = useReducedMotion();
+
   return (
     <footer className="relative px-5 py-14">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 border-t border-white/10 pt-8 text-sm text-shush-muted lg:flex-row lg:items-center lg:justify-between">
+      <SnakeLine className="footer-snake-divider" />
+      <motion.div
+        className="footer-shell mx-auto flex max-w-7xl flex-col gap-6 border-t border-white/10 pt-8 text-sm text-shush-muted lg:flex-row lg:items-center lg:justify-between"
+        variants={reduceMotion ? undefined : motionPresets.staggerParent}
+        initial={reduceMotion ? false : 'hidden'}
+        whileInView={reduceMotion ? undefined : 'visible'}
+        viewport={{ once: true, margin: '-10%' }}
+      >
         <div>
           <strong className="block text-shush-text">SHUSH</strong>
-          <span>Uma jersey. Um roster. Sem fingir ser mais.</span>
+          <span>Sem barulho. Só rounds.</span>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 transition hover:border-shush-purpleGlow/40 hover:text-shush-text">
+        <motion.div className="flex flex-wrap gap-2" variants={reduceMotion ? undefined : motionPresets.staggerParent}>
+          {footerLinks.map((item) => (
+            <motion.a key={item.href} href={item.href} className="footer-link" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
               {item.label}
-            </a>
+            </motion.a>
           ))}
-          <a
-            href="https://backora.org/"
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 transition hover:border-shush-purpleGlow/40 hover:text-shush-text"
-          >
-            <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" className="h-5 w-auto" loading="lazy" />
+          <motion.a href="https://backora.org/" target="_blank" rel="noreferrer" className="footer-link footer-backora inline-flex items-center gap-3" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
+            <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" className="h-5 w-auto" loading="lazy" decoding="async" />
             <span>Backora</span>
-          </a>
-        </div>
-      </div>
+          </motion.a>
+        </motion.div>
+      </motion.div>
     </footer>
   );
 }
