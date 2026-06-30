@@ -1,7 +1,10 @@
-import { motion, useReducedMotion } from 'framer-motion';
+﻿import { motion, useReducedMotion } from 'motion/react';
 import { footerLinks } from '../../data/nav';
 import { motionPresets } from '../../lib/motion';
 import { SnakeLine } from '../motion/MotionPrimitives';
+import { AppLink } from '../ui/AppLink';
+
+const MotionAppLink = motion.create(AppLink);
 
 export function Footer() {
   const reduceMotion = useReducedMotion();
@@ -22,9 +25,9 @@ export function Footer() {
         </div>
         <motion.div className="flex flex-wrap gap-2" variants={reduceMotion ? undefined : motionPresets.staggerParent}>
           {footerLinks.map((item) => (
-            <motion.a key={item.href} href={item.href} className="footer-link" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
+            <MotionAppLink key={item.href} href={item.href} className="footer-link" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
               {item.label}
-            </motion.a>
+            </MotionAppLink>
           ))}
           <motion.a href="https://backora.org/" target="_blank" rel="noreferrer" className="footer-link footer-backora inline-flex items-center gap-3" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
             <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" className="h-5 w-auto" loading="lazy" decoding="async" />

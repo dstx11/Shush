@@ -59,7 +59,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
     description: 'Showcase da jersey SHUSH em preto e roxo.',
   },
   '/products/jersey/custom': {
-    title: 'SHUSH Jersey Custom',
+    title: 'SHUSH Jersey Customização',
     description: 'Pedido manual da jersey SHUSH com nick, número, tamanho e frase opcional.',
   },
   '/company': {

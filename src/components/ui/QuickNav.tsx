@@ -1,15 +1,19 @@
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Search, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { navGroups } from '../../data/nav';
 import { motionPresets } from '../../lib/motion';
+import { AppLink } from './AppLink';
 
 type QuickNavItem = {
   label: string;
   href: string;
   description: string;
 };
+
+const MotionAppLink = motion.create(AppLink);
 
 export function QuickNav() {
   const [open, setOpen] = useState(false);
@@ -18,6 +22,7 @@ export function QuickNav() {
   const inputRef = useRef<HTMLInputElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  const navigate = useNavigate();
 
   const items = useMemo<QuickNavItem[]>(
     () =>
@@ -76,6 +81,11 @@ export function QuickNav() {
     setQuery('');
   };
 
+  const goTo = (href: string) => {
+    navigate(href);
+    close();
+  };
+
   const onInputKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
@@ -89,21 +99,14 @@ export function QuickNav() {
 
     if (event.key === 'Enter' && filtered[activeIndex]) {
       event.preventDefault();
-      window.history.pushState({}, '', filtered[activeIndex].href);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-      close();
+      goTo(filtered[activeIndex].href);
     }
   };
 
   return (
     <AnimatePresence>
       {open ? (
-        <motion.div
-          className="quick-nav-backdrop"
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={reduceMotion ? undefined : { opacity: 1 }}
-          exit={reduceMotion ? undefined : { opacity: 0 }}
-        >
+        <motion.div className="quick-nav-backdrop" initial={reduceMotion ? false : { opacity: 0 }} animate={reduceMotion ? undefined : { opacity: 1 }} exit={reduceMotion ? undefined : { opacity: 0 }}>
           <motion.div
             ref={panelRef}
             role="dialog"
@@ -120,14 +123,7 @@ export function QuickNav() {
               <label className="sr-only" htmlFor="quick-nav-search">
                 Procurar página
               </label>
-              <input
-                ref={inputRef}
-                id="quick-nav-search"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                onKeyDown={onInputKeyDown}
-                placeholder="Premier, roster, jersey..."
-              />
+              <input ref={inputRef} id="quick-nav-search" value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={onInputKeyDown} placeholder="Premier, roster, jersey..." />
               <button type="button" aria-label="Fechar pesquisa rápida" onClick={close}>
                 <X aria-hidden="true" className="h-4 w-4" />
               </button>
@@ -137,7 +133,7 @@ export function QuickNav() {
             </h2>
             <motion.div className="quick-nav-results" variants={reduceMotion ? undefined : motionPresets.staggerParent} initial={reduceMotion ? false : 'hidden'} animate={reduceMotion ? undefined : 'visible'}>
               {filtered.map((item, index) => (
-                <motion.a
+                <MotionAppLink
                   key={`${item.href}-${item.label}`}
                   href={item.href}
                   className={index === activeIndex ? 'is-active' : ''}
@@ -147,7 +143,7 @@ export function QuickNav() {
                 >
                   <span>{item.label}</span>
                   <small>{item.description}</small>
-                </motion.a>
+                </MotionAppLink>
               ))}
             </motion.div>
           </motion.div>

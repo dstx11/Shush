@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+﻿import { useMemo, useState } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { ShieldCheck, Shirt } from 'lucide-react';
 import { motionPresets } from '../../lib/motion';
 import { JerseyStitchOverlay, MotionRail, SnakeLine } from '../motion/MotionPrimitives';
@@ -68,8 +68,6 @@ export function DropSection() {
     [name, number, size, phrase],
   );
 
-  const active = jerseyViews[view];
-
   const copyMessage = async () => {
     try {
       await writeClipboardText(message);
@@ -95,21 +93,43 @@ export function DropSection() {
           <SnakeLine className="product-snake" />
           <JerseyStitchOverlay />
           <span className="fabric-light-sweep" aria-hidden="true" />
-          <AnimatePresence mode="wait" initial={!reduceMotion}>
-            <motion.img
-              key={view}
-              src={active.src}
-              width="1280"
-              height="1280"
-              alt={active.alt}
-              loading="lazy"
-              decoding="async"
-              className="drop-jersey-image"
-              initial={reduceMotion ? false : motionPresets.jerseySwap.initial}
-              animate={reduceMotion ? undefined : motionPresets.jerseySwap.animate}
-              exit={reduceMotion ? undefined : motionPresets.jerseySwap.exit}
-            />
-          </AnimatePresence>
+          <motion.div
+            className={`jersey-flip ${view === 'back' ? 'is-back' : ''}`}
+            variants={reduceMotion ? undefined : motionPresets.jerseyProduct}
+            initial={reduceMotion ? false : 'hidden'}
+            whileInView={reduceMotion ? undefined : 'visible'}
+            viewport={{ once: true, margin: '-12%' }}
+          >
+            <div className="jersey-flip-inner">
+              <div className="jersey-face jersey-front-face" aria-hidden={view !== 'front'}>
+                <img
+                  src={jerseyViews.front.src}
+                  width="1280"
+                  height="1280"
+                  alt={view === 'front' ? jerseyViews.front.alt : ''}
+                  loading="lazy"
+                  decoding="async"
+                  className="drop-jersey-image"
+                />
+              </div>
+              <div className="jersey-face jersey-back-face" aria-hidden={view !== 'back'}>
+                <img
+                  src={jerseyViews.back.src}
+                  width="1280"
+                  height="1280"
+                  alt={view === 'back' ? jerseyViews.back.alt : ''}
+                  loading="lazy"
+                  decoding="async"
+                  className="drop-jersey-image"
+                />
+                <div className="jersey-live-print" aria-hidden="true">
+                  <span>{name || 'SHUSH'}</span>
+                  <strong>{number || '00'}</strong>
+                  {phrase ? <small>{phrase}</small> : null}
+                </div>
+              </div>
+            </div>
+          </motion.div>
           <div className="drop-nameplate">
             <span>{name || 'SHUSH'}</span>
             <strong>{number || '00'}</strong>

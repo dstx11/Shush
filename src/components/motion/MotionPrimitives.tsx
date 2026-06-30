@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+﻿import type { ReactNode } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { hoverMotion, motionPresets } from '../../lib/motion';
 
 type PrimitiveProps = {
@@ -18,6 +18,30 @@ export function SnakeLine({ className = '' }: PrimitiveProps) {
         stroke="currentColor"
         strokeWidth="3"
         strokeLinecap="round"
+        variants={reduceMotion ? undefined : motionPresets.snakeLine}
+        initial={reduceMotion ? false : 'hidden'}
+        whileInView={reduceMotion ? undefined : 'visible'}
+        viewport={{ once: true, margin: '-12%' }}
+      />
+    </svg>
+  );
+}
+
+export function Waveform({ className = '', compact = false }: { className?: string; compact?: boolean }) {
+  const reduceMotion = useReducedMotion();
+  const points = compact
+    ? '0,14 14,14 22,9 31,18 40,14 62,14 70,8 82,20 92,14 120,14'
+    : '0,28 30,28 44,18 58,38 74,28 112,28 126,12 148,44 168,28 214,28 232,20 250,36 270,28 320,28 338,14 360,42 382,28 420,28';
+
+  return (
+    <svg className={`waveform ${compact ? 'is-compact' : ''} ${className}`} viewBox={compact ? '0 0 120 28' : '0 0 420 56'} aria-hidden="true" focusable="false">
+      <motion.polyline
+        points={points}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={compact ? '2' : '3'}
+        strokeLinecap="round"
+        strokeLinejoin="round"
         variants={reduceMotion ? undefined : motionPresets.snakeLine}
         initial={reduceMotion ? false : 'hidden'}
         whileInView={reduceMotion ? undefined : 'visible'}

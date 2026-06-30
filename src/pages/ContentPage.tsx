@@ -1,5 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import { SectionBreadcrumb, SignalBars } from '../components/motion/MotionPrimitives';
+import { AppLink } from '../components/ui/AppLink';
 import { Reveal } from '../components/ui/Reveal';
 import { creators } from '../data/players';
 
@@ -18,17 +19,16 @@ export function ContentPage() {
           {creators.map((creator, index) => (
             <Reveal
               key={creator.id}
-              id={creator.creatorType === 'twitch' ? 'more-twitch' : 'th0maz7-youtube'}
-              as="a"
-              href={creator.id === 'more' ? '/content/more' : '/content/th0maz7'}
-              className="creator-card scroll-mt-28"
+              className="scroll-mt-28"
               delay={index * 0.08}
             >
-              <SignalBars className={creator.creatorType === 'twitch' ? 'is-twitch' : 'is-youtube'} />
-              <span>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</span>
-              <strong>{creator.displayName}</strong>
-              <small>Abrir canal oficial</small>
-              <ExternalLink aria-hidden="true" className="h-5 w-5" />
+              <AppLink id={creator.creatorType === 'twitch' ? 'more-twitch' : 'th0maz7-youtube'} href={creator.id === 'more' ? '/content/more' : '/content/th0maz7'} className="creator-card">
+                <SignalBars className={creator.creatorType === 'twitch' ? 'is-twitch' : 'is-youtube'} />
+                <span>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</span>
+                <strong>{creator.displayName}</strong>
+                <small>Abrir canal oficial</small>
+                <ExternalLink aria-hidden="true" className="h-5 w-5" />
+              </AppLink>
             </Reveal>
           ))}
         </div>

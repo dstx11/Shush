@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+﻿import { useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Radio, Users } from 'lucide-react';
 import { activePremierSeason, getPlayersByIds } from '../../data/season';
 import { motionPresets } from '../../lib/motion';
 import { calculatePublicMatchDayState, formatDate, formatWindowCountdown } from '../../lib/premier';
 import { MapPing, MotionRail, SnakeLine, StatusBadge, TacticalGrid, UltrawideClampLines } from '../motion/MotionPrimitives';
+import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
 
 const jerseyViews = {
@@ -161,9 +162,9 @@ export function HeroShowcase() {
               </button>
             ))}
           </div>
-          <a href="/products/jersey" className="hero-product-link">
+          <AppLink href="/products/jersey" className="hero-product-link">
             Pedido manual
-          </a>
+          </AppLink>
         </motion.div>
       </div>
     </section>

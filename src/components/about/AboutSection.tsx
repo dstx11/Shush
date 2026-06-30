@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+﻿import { motion, useReducedMotion } from 'motion/react';
 import { Cpu, EyeOff, Shirt, Users } from 'lucide-react';
 import { MotionRail, SectionBreadcrumb, SnakeLine } from '../motion/MotionPrimitives';
 

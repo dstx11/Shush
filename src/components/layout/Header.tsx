@@ -1,18 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ChevronDown, Menu, X } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { navGroups, type NavGroup } from '../../data/nav';
 import { activePremierSeason } from '../../data/season';
 import { motionPresets } from '../../lib/motion';
 import { calculatePublicMatchDayState } from '../../lib/premier';
-import { StatusBadge } from '../motion/MotionPrimitives';
+import { StatusBadge, Waveform } from '../motion/MotionPrimitives';
+import { AppLink } from '../ui/AppLink';
+
+const MotionAppLink = motion.create(AppLink);
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const [mobileOpenGroup, setMobileOpenGroup] = useState<string | null>(null);
-  const [activePath, setActivePath] = useState(() => (typeof window === 'undefined' ? '/' : normalizePath(window.location.pathname)));
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
+  const activePath = normalizePath(location.pathname);
   const reduceMotion = useReducedMotion();
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -20,16 +25,10 @@ export function Header() {
   const statusMeta = 'week' in publicState ? publicState.week.map ?? 'Mapa por definir' : publicState.detail;
 
   useEffect(() => {
-    const onRouteChange = () => {
-      setActivePath(normalizePath(window.location.pathname));
-      setOpenGroup(null);
-      setMobileOpenGroup(null);
-      setIsOpen(false);
-    };
-
-    window.addEventListener('popstate', onRouteChange);
-    return () => window.removeEventListener('popstate', onRouteChange);
-  }, []);
+    setOpenGroup(null);
+    setMobileOpenGroup(null);
+    setIsOpen(false);
+  }, [activePath]);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24);
@@ -82,10 +81,10 @@ export function Header() {
       transition={reduceMotion ? undefined : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
       <nav ref={navRef} className="site-nav relative mx-auto flex max-w-7xl items-center justify-between" aria-label="Navegação principal">
-        <a href="/" className="brand-mark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
+        <AppLink href="/" className="brand-mark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
           <img src="/assets/brand/shush-logo.webp" alt="SHS" width="1167" height="647" className="h-8 w-auto" />
           <span>SHUSH</span>
-        </a>
+        </AppLink>
 
         <div className="primary-nav hidden md:flex md:items-center md:gap-1" id="primary-navigation">
           {navGroups.map((group) =>
@@ -109,7 +108,14 @@ export function Header() {
                   aria-expanded={openGroup === group.id}
                   aria-controls={`nav-panel-${group.id}`}
                   onFocus={() => setOpenGroup(group.id)}
-                  onClick={() => setOpenGroup((value) => (value === group.id ? null : group.id))}
+                  onClick={(event) => {
+                    if (event.detail === 0) {
+                      setOpenGroup((value) => (value === group.id ? null : group.id));
+                      return;
+                    }
+
+                    setOpenGroup(group.id);
+                  }}
                 >
                   {group.label}
                   <ChevronDown aria-hidden="true" className="h-3.5 w-3.5" />
@@ -133,7 +139,7 @@ export function Header() {
                       </div>
                       <motion.div className="nav-dropdown-grid" variants={reduceMotion ? undefined : motionPresets.staggerParent} initial={reduceMotion ? false : 'hidden'} animate={reduceMotion ? undefined : 'visible'}>
                         {group.items.map((item) => (
-                          <motion.a
+                          <MotionAppLink
                             key={item.href}
                             href={item.href}
                             variants={reduceMotion ? undefined : motionPresets.staggerItem}
@@ -143,7 +149,7 @@ export function Header() {
                           >
                             <span>{item.label}</span>
                             <small>{item.description}</small>
-                          </motion.a>
+                          </MotionAppLink>
                         ))}
                       </motion.div>
                     </motion.div>
@@ -151,21 +157,22 @@ export function Header() {
                 </AnimatePresence>
               </div>
             ) : (
-              <a key={group.href} href={group.href} aria-current={isGroupActive(group) ? 'page' : undefined} className={`nav-link ${isGroupActive(group) ? 'is-active' : ''}`}>
+              <AppLink key={group.href} href={group.href} aria-current={isGroupActive(group) ? 'page' : undefined} className={`nav-link ${isGroupActive(group) ? 'is-active' : ''}`}>
                 {group.label}
-              </a>
+              </AppLink>
             ),
           )}
         </div>
 
-        <a href="/esports/valorant/premier" className="header-status hidden xl:grid" aria-label="Estado Premier">
+        <AppLink href="/esports/valorant/premier" className="header-status hidden xl:grid" aria-label="Estado Premier">
           <StatusBadge pulse>Premier</StatusBadge>
+          <Waveform compact />
           <strong>{statusMeta}</strong>
-        </a>
+        </AppLink>
 
-        <a href="/products/jersey" className="header-cta hidden md:inline-flex">
+        <AppLink href="/products/jersey" className="header-cta hidden md:inline-flex">
           Jersey
-        </a>
+        </AppLink>
 
         <button
           ref={menuButtonRef}
@@ -215,20 +222,20 @@ export function Header() {
                             exit={reduceMotion ? undefined : 'exit'}
                           >
                             {group.items.map((item) => (
-                              <a key={item.href} href={item.href} aria-current={isSubItemActive(item.href) ? 'page' : undefined} onClick={closeMenus} className="mobile-nav-link">
+                              <AppLink key={item.href} href={item.href} aria-current={isSubItemActive(item.href) ? 'page' : undefined} onClick={closeMenus} className="mobile-nav-link">
                                 <span>{item.label}</span>
                                 <small>{item.description}</small>
-                              </a>
+                              </AppLink>
                             ))}
                           </motion.div>
                         ) : null}
                       </AnimatePresence>
                     </div>
                   ) : (
-                    <a key={group.href} href={group.href} aria-current={isGroupActive(group) ? 'page' : undefined} onClick={closeMenus} className={`mobile-nav-link ${isGroupActive(group) ? 'is-active' : ''}`}>
+                    <AppLink key={group.href} href={group.href} aria-current={isGroupActive(group) ? 'page' : undefined} onClick={closeMenus} className={`mobile-nav-link ${isGroupActive(group) ? 'is-active' : ''}`}>
                       <span>{group.label}</span>
                       <small>Entrada principal.</small>
-                    </a>
+                    </AppLink>
                   ),
                 )}
               </div>

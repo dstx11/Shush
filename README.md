@@ -1,6 +1,6 @@
 # SHUSH
 
-SHUSH is a dark premium gamer site built with Vite, React, TypeScript, Tailwind CSS, Framer Motion and lucide-react.
+SHUSH is a dark premium gamer site built with Vite, React, TypeScript, Tailwind CSS v4, Motion, React Router DOM v7, Supabase JS prep and lucide-react.
 
 ## Local Development
 
@@ -22,6 +22,16 @@ pnpm run preview
 - Build command: `pnpm run build`
 - Output directory: `dist`
 - Static SPA fallback: `public/_redirects` maps public routes to `index.html`.
+- Cloudflare Pages target: static Vite build from `dist`.
+
+## Supabase Prep
+
+Client integration is prepared in `src/lib/supabase.ts` with:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+
+No service role key, frontend password or real auth flow is implemented.
 
 ## Site Structure
 

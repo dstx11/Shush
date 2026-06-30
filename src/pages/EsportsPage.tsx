@@ -1,4 +1,5 @@
 import { MotionRail, SectionBreadcrumb, TacticalGrid } from '../components/motion/MotionPrimitives';
+import { AppLink } from '../components/ui/AppLink';
 import { Reveal } from '../components/ui/Reveal';
 import { Stagger, StaggerItem } from '../components/ui/Stagger';
 
@@ -24,10 +25,10 @@ export function EsportsPage() {
         <Stagger className="route-card-grid">
           {esportsAreas.map((area) => (
             <StaggerItem key={area.href}>
-              <a href={area.href} className="route-card">
+              <AppLink href={area.href} className="route-card">
                 <span>{area.title}</span>
                 <p>{area.copy}</p>
-              </a>
+              </AppLink>
             </StaggerItem>
           ))}
         </Stagger>

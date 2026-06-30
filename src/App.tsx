@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
-import { AnimatePresence, useReducedMotion } from 'framer-motion';
+import { useEffect } from 'react';
+import { AnimatePresence, useReducedMotion } from 'motion/react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { AdminUnlockModal } from './components/admin/AdminUnlockModal';
-import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { Header } from './components/layout/Header';
 import { ScrollProgressRail } from './components/motion/MotionPrimitives';
 import { InitialLoader } from './components/ui/InitialLoader';
 import { PageTransition } from './components/ui/PageTransition';
@@ -23,16 +24,15 @@ import {
   JerseyCustomPage,
   JerseyPage,
   PremierPage,
-  ProductsOverviewPage,
   RosterPage,
   ValorantPage,
 } from './pages/RoutePages';
 
 export default function App() {
   const location = useLocation();
-  const Page = getPage(location.pathname);
   const reduceMotion = useReducedMotion();
   useRouteMetadata(location.pathname);
+  useRouteScroll(location.pathname, location.hash);
 
   return (
     <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
@@ -42,7 +42,25 @@ export default function App() {
       <main>
         <AnimatePresence mode="wait" initial={!reduceMotion}>
           <PageTransition key={location.pathname}>
-            <Page />
+            <Routes location={location}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/esports" element={<EsportsPage />} />
+              <Route path="/esports/valorant" element={<ValorantPage />} />
+              <Route path="/esports/valorant/premier" element={<PremierPage />} />
+              <Route path="/esports/valorant/roster" element={<RosterPage />} />
+              <Route path="/esports/valorant/results" element={<EsportsResultsPage />} />
+              <Route path="/esports/valorant/tournaments" element={<EsportsTournamentsPage />} />
+              <Route path="/content" element={<ContentPage />} />
+              <Route path="/content/more" element={<ContentCreatorPage creatorId="more" />} />
+              <Route path="/content/th0maz7" element={<ContentCreatorPage creatorId="th0maz7" />} />
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/jersey" element={<JerseyPage />} />
+              <Route path="/products/jersey/custom" element={<JerseyCustomPage />} />
+              <Route path="/company" element={<CompanyPage />} />
+              <Route path="/company/partners" element={<CompanyPartnersPage />} />
+              <Route path="/company/contact" element={<CompanyContactPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
           </PageTransition>
         </AnimatePresence>
       </main>
@@ -72,52 +90,8 @@ function useRouteMetadata(pathname: string) {
   }, [pathname]);
 }
 
-function setMeta(selector: string, content: string) {
-  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
-}
-
-function setCanonical(href: string) {
-  const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-  if (link) link.href = href;
-}
-
-function useLocation() {
-  const [location, setLocation] = useState(() => ({
-    pathname: normalizePath(window.location.pathname),
-    hash: window.location.hash,
-  }));
+function useRouteScroll(pathname: string, hash: string) {
   const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    const update = () =>
-      setLocation({
-        pathname: normalizePath(window.location.pathname),
-        hash: window.location.hash,
-      });
-
-    window.addEventListener('popstate', update);
-    return () => window.removeEventListener('popstate', update);
-  }, []);
-
-  useEffect(() => {
-    const onClick = (event: MouseEvent) => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-
-      const anchor = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href]');
-      if (!anchor || anchor.target || anchor.hasAttribute('download')) return;
-
-      const url = new URL(anchor.href);
-      const nextPath = normalizePath(url.pathname);
-      if (url.origin !== window.location.origin || !isPublicRoute(nextPath)) return;
-
-      event.preventDefault();
-      window.history.pushState({}, '', `${nextPath}${url.search}${url.hash}`);
-      window.dispatchEvent(new PopStateEvent('popstate'));
-    };
-
-    document.addEventListener('click', onClick);
-    return () => document.removeEventListener('click', onClick);
-  }, []);
 
   useEffect(() => {
     let frame = 0;
@@ -125,8 +99,8 @@ function useLocation() {
     let attempts = 0;
 
     const scrollToLocation = () => {
-      if (location.hash) {
-        const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (hash) {
+        const target = document.getElementById(decodeURIComponent(hash.slice(1)));
         if (target) {
           target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
           return;
@@ -148,57 +122,16 @@ function useLocation() {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(timeout);
     };
-  }, [location.pathname, location.hash, reduceMotion]);
-
-  return location;
+  }, [pathname, hash, reduceMotion]);
 }
 
-function getPage(pathname: string) {
-  if (pathname === '/') return HomePage;
-  if (pathname === '/esports') return EsportsPage;
-  if (pathname === '/esports/valorant') return ValorantPage;
-  if (pathname === '/esports/valorant/premier') return PremierPage;
-  if (pathname === '/esports/valorant/roster') return RosterPage;
-  if (pathname === '/esports/valorant/results') return EsportsResultsPage;
-  if (pathname === '/esports/valorant/tournaments') return EsportsTournamentsPage;
-  if (pathname === '/content') return ContentPage;
-  if (pathname === '/content/more') return () => <ContentCreatorPage creatorId="more" />;
-  if (pathname === '/content/th0maz7') return () => <ContentCreatorPage creatorId="th0maz7" />;
-  if (pathname === '/products') return ProductsPage;
-  if (pathname === '/products/jersey') return JerseyPage;
-  if (pathname === '/products/jersey/custom') return JerseyCustomPage;
-  if (pathname === '/company') return CompanyPage;
-  if (pathname === '/company/partners') return CompanyPartnersPage;
-  if (pathname === '/company/contact') return CompanyContactPage;
-  return NotFoundPage;
+function setMeta(selector: string, content: string) {
+  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
 }
 
-function isPublicRoute(pathname: string) {
-  return publicRoutes.includes(pathname);
-}
-
-const publicRoutes = [
-  '/',
-  '/esports',
-  '/esports/valorant',
-  '/esports/valorant/premier',
-  '/esports/valorant/roster',
-  '/esports/valorant/results',
-  '/esports/valorant/tournaments',
-  '/content',
-  '/content/more',
-  '/content/th0maz7',
-  '/products',
-  '/products/jersey',
-  '/products/jersey/custom',
-  '/company',
-  '/company/partners',
-  '/company/contact',
-];
-
-function normalizePath(pathname: string) {
-  if (!pathname || pathname === '/index.html') return '/';
-  return pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+function setCanonical(href: string) {
+  const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (link) link.href = href;
 }
 
 function routeArea(pathname: string) {

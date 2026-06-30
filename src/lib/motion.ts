@@ -1,4 +1,4 @@
-import type { TargetAndTransition, Transition, Variants } from 'framer-motion';
+﻿import type { TargetAndTransition, Transition, Variants } from 'motion/react';
 
 export const timing = {
   instant: 0.08,

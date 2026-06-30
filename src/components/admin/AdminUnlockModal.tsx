@@ -1,5 +1,5 @@
-import { FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+﻿import { FormEvent, KeyboardEvent as ReactKeyboardEvent, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { X } from 'lucide-react';
 import { motionPresets } from '../../lib/motion';
 

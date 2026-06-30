@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+﻿import { motion, useReducedMotion } from 'motion/react';
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 import { motionPresets } from '../../lib/motion';
 

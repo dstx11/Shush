@@ -1,10 +1,12 @@
-import { motion, useReducedMotion } from 'framer-motion';
-import { Shirt } from 'lucide-react';
+import type { CSSProperties } from 'react';
+import { motion, useReducedMotion } from 'motion/react';
+import { ExternalLink, Shirt } from 'lucide-react';
 import { AboutSection } from '../components/about/AboutSection';
 import { DropSection } from '../components/drop/DropSection';
-import { EmptyStateMotion, MapPing, MotionRail, ProgressMilestones, SectionBreadcrumb, SignalBars, StatusBadge, TacticalGrid } from '../components/motion/MotionPrimitives';
+import { EmptyStateMotion, MapPing, ProgressMilestones, SectionBreadcrumb, SignalBars, StatusBadge, TacticalGrid, Waveform } from '../components/motion/MotionPrimitives';
 import { RosterSection } from '../components/roster/RosterSection';
 import { AnimatedNumber } from '../components/ui/AnimatedNumber';
+import { AppLink } from '../components/ui/AppLink';
 import { Button } from '../components/ui/Button';
 import { Reveal } from '../components/ui/Reveal';
 import { Stagger, StaggerItem } from '../components/ui/Stagger';
@@ -13,31 +15,37 @@ import { activePremierSeason, getPlayersByIds } from '../data/season';
 import { transitions } from '../lib/motion';
 import { calculatePremierScore, calculatePublicMatchDayState, calculateSeasonStatus, formatDate, formatWindowCountdown } from '../lib/premier';
 
+const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8';
+
 const sectionCards = [
-  { title: 'Valorant', copy: 'A divisão competitiva atual.', href: '/esports/valorant' },
-  { title: 'Premier', copy: 'Calendário, score e próxima janela.', href: '/esports/valorant/premier' },
-  { title: 'Roster', copy: 'Lineup e roles.', href: '/esports/valorant/roster' },
-  { title: 'Results', copy: 'Últimos jogos publicados.', href: '/esports/valorant/results' },
+  { title: 'Valorant', copy: 'Divisão competitiva atual.', href: '/esports/valorant' },
+  { title: 'Premier', copy: 'Match Center, score e próxima janela.', href: '/esports/valorant/premier' },
+  { title: 'Roster', copy: 'Character select da equipa.', href: '/esports/valorant/roster' },
+  { title: 'Results', copy: 'Match tickets publicados.', href: '/esports/valorant/results' },
+  { title: 'Tournaments', copy: 'Resumo quando houver fecho confirmado.', href: '/esports/valorant/tournaments' },
 ];
 
 export function ValorantPage() {
   return (
-    <section className="page-hero route-page px-5 pb-20 pt-36">
+    <section className="page-hero route-page valorant-overview px-5 pb-20 pt-36">
       <div className="page-shell">
         <Reveal>
           <SectionBreadcrumb items={['Esports', 'Valorant']} />
           <span className="section-kicker">Esports / Valorant</span>
           <h1>Valorant é o lobby competitivo.</h1>
-          <MotionRail className="route-title-rail" />
+          <Waveform className="mt-4" />
           <p>Premier no centro. Roster definido pela SHUSH. Resultados só quando houver confirmação.</p>
+          <Button href={trackerTeamUrl} target="_blank" rel="noreferrer" variant="secondary">
+            Tracker team
+          </Button>
         </Reveal>
-        <Stagger className="route-card-grid">
-          {sectionCards.slice(1).map((card) => (
+        <Stagger className="route-card-grid mission-grid">
+          {sectionCards.slice(1, 4).map((card) => (
             <StaggerItem key={card.href}>
-              <a className="route-card" href={card.href}>
+              <AppLink className="route-card mission-card" href={card.href}>
                 <span>{card.title}</span>
                 <p>{card.copy}</p>
-              </a>
+              </AppLink>
             </StaggerItem>
           ))}
         </Stagger>
@@ -55,44 +63,57 @@ export function PremierPage() {
   const currentWeek = 'week' in state ? state.week : null;
   const currentDay = 'day' in state ? state.day : null;
   const convocados = currentWeek ? getPlayersByIds(currentWeek.convocados) : [];
+  const ringStyle = { '--progress': `${progress}%` } as CSSProperties;
 
   return (
     <>
-      <section className="page-hero route-page px-5 pb-12 pt-36">
+      <section className="page-hero route-page premier-center px-5 pb-12 pt-36">
         <TacticalGrid className="premier-tactical-grid" />
         <div className="page-shell">
           <Reveal>
             <SectionBreadcrumb items={['Esports', 'Valorant', 'Premier']} />
             <span className="section-kicker">Valorant / Premier</span>
-            <h1>Premier Calendar.</h1>
-            <MotionRail className="route-title-rail" />
-            <p>Calendário, score e próxima janela da SHUSH.</p>
+            <h1>Premier Match Center.</h1>
+            <Waveform className="mt-4" />
+            <p>Score, timeline, próxima janela e convocados da SHUSH.</p>
           </Reveal>
         </div>
       </section>
+
       <section className="esports-section px-5 py-12">
         <div className="page-shell">
-          <div className="premier-panel">
-            <Reveal className="premier-score">
-              <span className="section-kicker">Season status</span>
+          <div className="premier-match-grid">
+            <Reveal className="qualification-ring-card">
+              <span className="section-kicker">Qualification ring</span>
+              <div className="qualification-ring" style={ringStyle} aria-label={`Premier score ${score} de ${activePremierSeason.qualificationPoints}`}>
+                <div>
+                  <strong>
+                    <AnimatedNumber value={score} />
+                  </strong>
+                  <small>/ {activePremierSeason.qualificationPoints}</small>
+                </div>
+              </div>
               <StatusBadge pulse>{status}</StatusBadge>
-              <p>{state.detail}</p>
             </Reveal>
+
             <Reveal className="qualification-panel" delay={0.08}>
-              <span>Premier Score</span>
-              <strong>
-                <AnimatedNumber value={score} /> / {activePremierSeason.qualificationPoints}
-              </strong>
-              <div className="progress-rail" aria-label={`Premier score ${score} de ${activePremierSeason.qualificationPoints}`}>
+              <span>Estado</span>
+              <h2>{state.title}</h2>
+              <p>{state.detail}</p>
+              <div className="progress-rail" aria-hidden="true">
                 <motion.span initial={reduceMotion ? false : { scaleX: 0 }} whileInView={reduceMotion ? undefined : { scaleX: progress / 100 }} viewport={{ once: true }} transition={reduceMotion ? undefined : transitions.deliberate} />
                 <ProgressMilestones progress={progress} />
               </div>
+              <Button href={trackerTeamUrl} target="_blank" rel="noreferrer" variant="secondary">
+                Tracker team
+              </Button>
             </Reveal>
           </div>
+
           {currentWeek && currentDay ? (
             <Reveal className="premier-now-panel mt-4" delay={0.12}>
               <div>
-                <span className="section-kicker">Next Premier Window</span>
+                <span className="section-kicker">Next window</span>
                 <h2>
                   Week {currentWeek.weekNumber} · {currentWeek.map ?? 'Mapa por definir'}
                   {currentWeek.map ? <MapPing label={`Mapa ${currentWeek.map}`} /> : null}
@@ -118,10 +139,11 @@ export function PremierPage() {
               </div>
             </Reveal>
           ) : null}
-          <Stagger className="calendar-grid mt-10">
+
+          <Stagger className="premier-timeline mt-10" aria-label="Timeline Premier">
             {activePremierSeason.weeks.map((week) => (
               <StaggerItem key={week.id}>
-                <article className={`calendar-card ${currentWeek?.id === week.id ? 'is-current' : ''}`}>
+                <article className={`calendar-card timeline-node ${currentWeek?.id === week.id ? 'is-current' : ''}`}>
                   <span className="calendar-scan" aria-hidden="true" />
                   <span>Week {week.weekNumber}</span>
                   <h3>{week.map ?? 'Mapa por definir'}</h3>
@@ -156,12 +178,6 @@ export function RosterPage() {
         </Reveal>
       </section>
       <RosterSection />
-      <section className="px-5 py-16">
-        <Reveal className="page-shell highlight-placeholder">
-          <span className="section-kicker">Clips e momentos</span>
-          <EmptyStateMotion title="A atualizar." copy="Espaço preparado para clipes reais da equipa quando existirem." />
-        </Reveal>
-      </section>
     </>
   );
 }
@@ -173,7 +189,7 @@ export function EsportsResultsPage() {
         <Reveal>
           <SectionBreadcrumb items={['Esports', 'Valorant', 'Results']} />
           <span className="section-kicker">Valorant / Results</span>
-          <h1>Últimos jogos.</h1>
+          <h1>Match tickets.</h1>
           <p>Jogos publicados pela SHUSH. Dados por confirmar ficam marcados.</p>
         </Reveal>
         <Stagger className="match-list mt-8">
@@ -182,7 +198,7 @@ export function EsportsResultsPage() {
             const hasScore = confirmedRival && match.shushScore !== undefined && match.opponentScore !== undefined;
             return (
               <StaggerItem key={match.id}>
-                <article className="match-row">
+                <article className={`match-row match-ticket is-${match.outcome}`}>
                   <span className="result-lock" aria-hidden="true" />
                   <span>
                     {formatDate(match.date)} · {match.tournamentName} · {match.phase} · {match.map ?? 'Mapa por definir'}
@@ -225,13 +241,13 @@ export function ContentCreatorPage({ creatorId }: { creatorId: 'more' | 'th0maz7
   const platform = creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube';
 
   return (
-    <section className="content-page creator-detail px-5 pb-24 pt-36">
+    <section className={`content-page creator-detail creator-${creator.creatorType} px-5 pb-24 pt-36`}>
       <div className="page-shell">
         <Reveal>
           <SectionBreadcrumb items={['Content', platform]} />
           <span className="section-kicker">Content / {platform}</span>
           <h1>{creator.displayName}</h1>
-          <p>Canal ligado à SHUSH. Conteúdo a atualizar.</p>
+          <p>Canal ligado à SHUSH. Área preparada para conteúdo real quando existir.</p>
           <SignalBars className={creator.creatorType === 'twitch' ? 'is-twitch' : 'is-youtube'} />
           <Button href={creator.creatorUrl ?? '/content'} target="_blank" rel="noreferrer">
             Abrir {platform}
@@ -250,22 +266,22 @@ export function ProductsOverviewPage() {
           <SectionBreadcrumb items={['Products']} />
           <span className="section-kicker">Products</span>
           <h1>Jersey / Clothing.</h1>
-          <MotionRail className="route-title-rail" />
+          <Waveform className="mt-4" />
           <p>Jersey / Clothing da SHUSH. Pedido manual, frente/verso e customização.</p>
         </Reveal>
         <Stagger className="route-card-grid">
           <StaggerItem>
-            <a className="route-card" href="/products/jersey">
+            <AppLink className="route-card product-route-card" href="/products/jersey">
               <Shirt aria-hidden="true" className="h-5 w-5" />
               <span>Jersey</span>
               <p>Frente, verso e identidade visual.</p>
-            </a>
+            </AppLink>
           </StaggerItem>
           <StaggerItem>
-            <a className="route-card" href="/products/jersey/custom">
+            <AppLink className="route-card product-route-card" href="/products/jersey/custom">
               <span>Customização</span>
               <p>Nick, número, tamanho e frase opcional.</p>
-            </a>
+            </AppLink>
           </StaggerItem>
         </Stagger>
       </div>
@@ -288,11 +304,13 @@ export function CompanyPartnersPage() {
         <SectionBreadcrumb items={['Company', 'Partners']} />
         <span className="section-kicker">Company / Partners</span>
         <h1>Backora.</h1>
+        <Waveform className="mt-4" />
         <p>Partner técnico/digital da SHUSH. Discreto, direto, dentro da camada web e suporte técnico.</p>
         <a href="https://backora.org/" target="_blank" rel="noreferrer" className="about-backora footer-backora mt-8">
           <span className="section-kicker">Partner</span>
           <span>Backora apoia a camada técnica e digital.</span>
           <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
+          <ExternalLink aria-hidden="true" className="h-5 w-5" />
         </a>
       </Reveal>
     </section>

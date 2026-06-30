@@ -1,5 +1,6 @@
 import { AboutSection } from '../components/about/AboutSection';
 import { SectionBreadcrumb } from '../components/motion/MotionPrimitives';
+import { AppLink } from '../components/ui/AppLink';
 import { Reveal } from '../components/ui/Reveal';
 
 export function CompanyPage() {
@@ -13,8 +14,8 @@ export function CompanyPage() {
           <h2 id="company-contact-title">Contacto direto.</h2>
           <p>Para roster, produto ou site: contacto direto da equipa SHUSH. Backora fica como partner técnico/digital.</p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a className="footer-link" href="/company/partners">Partners</a>
-            <a className="footer-link" href="/company/contact">Contacto</a>
+            <AppLink className="footer-link" href="/company/partners">Partners</AppLink>
+            <AppLink className="footer-link" href="/company/contact">Contacto</AppLink>
           </div>
         </Reveal>
       </section>
