@@ -19,7 +19,7 @@ export function RosterSection() {
             <span className="section-kicker">Valorant / Roster</span>
             <h1 id="roster-title">Quem entra no lobby.</h1>
           </div>
-          <p>{players.length} jogadores públicos. Roles claras e presença de equipa.</p>
+          <p>{players.length} jogadores públicos. Funções claras e presença de equipa.</p>
         </div>
 
         <div className="character-select">
