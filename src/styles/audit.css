@@ -2089,3 +2089,17 @@ select:focus-visible {
 .fatal-fallback-actions a:focus-visible {
   background: #6d35ff;
 }
+
+
+/* Device safe areas */
+.site-header {
+  padding-top: max(.75rem, env(safe-area-inset-top));
+  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-left: max(1rem, env(safe-area-inset-left));
+}
+
+.audit-footer {
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+  padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+}
