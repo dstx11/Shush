@@ -3,9 +3,11 @@
 ## Project Purpose
 This repository is the SHUSH website. The root project is now the production source for a Vite + React + TypeScript + Tailwind CSS static site.
 
-Final site sections:
+Final public areas:
 - Home
+- Premier
 - Roster
+- Creators
 - Drop 01
 - About
 
@@ -31,7 +33,7 @@ Use only:
 - React
 - TypeScript
 - Tailwind CSS
-- Framer Motion
+- Motion for React
 - lucide-react
 
 Do not add:
