@@ -13,6 +13,6 @@ export function StatusBadge({ children, className = '', pulse = false }: Primiti
   return <span className={`motion-status-badge ${pulse ? 'is-pulse' : ''} ${className}`}>{children}</span>;
 }
 
-export function PlayerLockIndicator({ label = 'SELECTED' }: { label?: string }) {
+export function PlayerLockIndicator({ label = 'SELECIONADO' }: { label?: string }) {
   return <span className="player-lock-indicator css-pop-in">{label}</span>;
 }
