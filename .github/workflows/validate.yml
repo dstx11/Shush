@@ -36,6 +36,9 @@ jobs:
       - name: Typecheck
         run: pnpm run typecheck
 
+      - name: Premier logic
+        run: pnpm run test:premier
+
       - name: Asset integrity
         run: pnpm run check:assets
 
