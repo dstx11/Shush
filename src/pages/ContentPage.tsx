@@ -1,34 +1,43 @@
 import { ExternalLink } from 'lucide-react';
-import { SectionBreadcrumb, SignalBars } from '../components/motion/MotionPrimitives';
-import { AppLink } from '../components/ui/AppLink';
 import { Reveal } from '../components/ui/Reveal';
 import { creators } from '../data/players';
 
 export function ContentPage() {
   return (
-    <section id="content-creators" className="content-page scroll-mt-28 px-5 pb-24 pt-36" aria-labelledby="content-title">
-      <div className="page-shell">
-        <Reveal>
-          <SectionBreadcrumb items={['Content']} />
-          <span className="section-kicker">Content Creators</span>
-          <h1 id="content-title">More e Th0maz7.</h1>
-          <p>Links oficiais dos creators da SHUSH. More na Twitch, Th0maz7 no YouTube.</p>
+    <section id="content-creators" className="audit-content-page px-5 pb-28 pt-36" aria-labelledby="content-title">
+      <div className="audit-page-shell">
+        <Reveal className="audit-content-head">
+          <span className="section-kicker">Creators / SHUSH</span>
+          <h1 id="content-title">Conteúdo sem intermediários.</h1>
+          <p>Os canais oficiais dos creators ligados à SHUSH. Sem páginas vazias entre ti e o conteúdo.</p>
         </Reveal>
 
-        <div className="creator-grid">
+        <div className="audit-creator-grid">
           {creators.map((creator, index) => (
-            <Reveal
-              key={creator.id}
-              className="scroll-mt-28"
-              delay={index * 0.08}
-            >
-              <AppLink id={creator.creatorType === 'twitch' ? 'more-twitch' : 'th0maz7-youtube'} href={creator.id === 'more' ? '/content/more' : '/content/th0maz7'} className="creator-card">
-                <SignalBars className={creator.creatorType === 'twitch' ? 'is-twitch' : 'is-youtube'} />
-                <span>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</span>
-                <strong>{creator.displayName}</strong>
-                <small>Abrir canal oficial</small>
-                <ExternalLink aria-hidden="true" className="h-5 w-5" />
-              </AppLink>
+            <Reveal key={creator.id} delay={index * 0.06}>
+              <a
+                href={creator.creatorUrl}
+                target="_blank"
+                rel="noreferrer"
+                className={`audit-creator-card is-${creator.creatorType}`}
+              >
+                <div className="audit-creator-visual">
+                  {creator.avatar ? (
+                    <img src={creator.avatar} alt="" width="768" height="768" loading="eager" decoding="async" />
+                  ) : (
+                    <span>{creator.initials}</span>
+                  )}
+                </div>
+                <div className="audit-creator-copy">
+                  <span>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</span>
+                  <h2>{creator.displayName}</h2>
+                  <p>{creator.quote}</p>
+                  <strong>
+                    Abrir canal oficial
+                    <ExternalLink aria-hidden="true" className="h-4 w-4" />
+                  </strong>
+                </div>
+              </a>
             </Reveal>
           ))}
         </div>
