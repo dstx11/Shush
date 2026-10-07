@@ -1,4 +1,3 @@
-import { ExternalLink } from 'lucide-react';
 import { creators } from '../../data/players';
 
 export function AboutSection() {
@@ -25,7 +24,7 @@ export function AboutSection() {
             <div className="audit-creator-links">
               {creators.map((creator) => (
                 <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
-                  {creator.displayName}<ExternalLink aria-hidden="true" className="h-4 w-4" />
+                  {creator.displayName}<span aria-hidden="true">↗</span>
                 </a>
               ))}
             </div>
@@ -44,7 +43,7 @@ export function AboutSection() {
           </span>
           <p>Estrutura web e suporte técnico da SHUSH.</p>
           <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
-          <ExternalLink aria-hidden="true" className="h-5 w-5" />
+          <span aria-hidden="true">↗</span>
         </a>
       </div>
     </section>
