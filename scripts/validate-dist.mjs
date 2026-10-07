@@ -63,6 +63,14 @@ for (const [path, canonical, title] of routeFiles) {
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
   expect(html, `property="og:image:alt" content="${title}"`, `${path} OG image alt`);
   expect(html, '<meta name="robots" content="index,follow"', `${path} robots`);
+
+  if (path === 'esports/valorant/roster.html') {
+    expect(
+      html,
+      'rel="preload" as="image" href="/assets/avatars/delcio.webp"',
+      'roster portrait preload',
+    );
+  }
 }
 
 for (const route of [
