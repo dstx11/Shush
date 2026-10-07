@@ -95,14 +95,14 @@ jobs:
       - name: Capture screenshots
         run: |
           mkdir -p visual-audit
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/ visual-audit/home-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/esports/valorant/premier visual-audit/premier-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/esports/valorant/roster visual-audit/roster-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/content visual-audit/creators-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/products/jersey visual-audit/drop-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/company visual-audit/about-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="390,844" http://127.0.0.1:4173/ visual-audit/home-mobile.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="390,844" http://127.0.0.1:4173/products/jersey visual-audit/drop-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/ visual-audit/home-desktop.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/esports/valorant/premier visual-audit/premier-desktop.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/esports/valorant/roster visual-audit/roster-desktop.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/content visual-audit/creators-desktop.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/products/jersey visual-audit/drop-desktop.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/company visual-audit/about-desktop.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/ visual-audit/home-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/products/jersey visual-audit/drop-mobile.png
 
       - name: Upload screenshots
         if: always()
