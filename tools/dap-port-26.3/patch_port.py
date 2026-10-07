@@ -38,6 +38,9 @@ mapping_replacements = {
     "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, 82,": "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, com.mojang.blaze3d.platform.InputConstants.KEY_R,",
     "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, 84,": "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, com.mojang.blaze3d.platform.InputConstants.KEY_T,",
     "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, 86,": "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, com.mojang.blaze3d.platform.InputConstants.KEY_V,",
+    "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, 74,": "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, com.mojang.blaze3d.platform.InputConstants.KEY_J,",
+    "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, 76,": "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, com.mojang.blaze3d.platform.InputConstants.KEY_L,",
+    "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, 77,": "com.mojang.blaze3d.platform.InputConstants.Type.KEYBOARD, com.mojang.blaze3d.platform.InputConstants.KEY_M,",
 }
 
 changed = []
