@@ -62,6 +62,8 @@ jobs:
           s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
           if "api.modrinth.com/maven" not in s:
             s=s.replace("repositories {\n","repositories {\n    maven { url = \"https://api.modrinth.com/maven\" }\n",1)
+          if "\npublishing {" in s:
+            s=s.split("\npublishing {",1)[0]+"\n"
           p.write_text(s)
 
           p=Path("src/main/resources/fabric.mod.json")
