@@ -39,6 +39,9 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Validate dist
+        run: pnpm run validate:dist
+
       - name: Bundle budget
         run: pnpm run check:bundle
 
