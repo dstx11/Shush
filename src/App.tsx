@@ -22,7 +22,7 @@ export default function App() {
     <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <Header />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>
           <PageTransition key={location.pathname}>
             <Routes location={location}>
@@ -105,6 +105,7 @@ function useRouteScroll(pathname: string, hash: string) {
       }
 
       window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+      document.getElementById('main-content')?.focus({ preventScroll: true });
     };
 
     frame = window.requestAnimationFrame(scrollToLocation);
