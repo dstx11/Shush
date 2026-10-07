@@ -17,7 +17,7 @@ export function AboutSection() {
         <div className="audit-about-intro">
           <span className="section-kicker">About / SHUSH</span>
           <h1>Pequena por escala. Clara por identidade.</h1>
-          <p>A SHUSH junta um grupo de jogadores, Valorant Premier, creators e uma identidade visual própria. O site existe para mostrar isso com clareza — sem inventar dimensão, resultados ou história.</p>
+          <p>A SHUSH junta um grupo de jogadores, Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
           <strong>Sem barulho. Só rounds.</strong>
         </div>
 
@@ -30,7 +30,7 @@ export function AboutSection() {
           <article>
             <span>02</span>
             <h2>Creators</h2>
-            <p>Conteúdo ligado diretamente aos canais oficiais, sem páginas vazias a fingir catálogo.</p>
+            <p>Conteúdo ligado diretamente aos canais oficiais dos creators da SHUSH.</p>
             <div className="audit-creator-links">
               {creators.map((creator) => (
                 <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
