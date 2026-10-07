@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
 import { activePremierSeason } from '../../data/season';
@@ -101,7 +100,7 @@ export function Header() {
           aria-controls="mobile-navigation"
           onClick={() => setIsOpen((value) => !value)}
         >
-          {isOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
+          <span aria-hidden="true" className="menu-glyph">{isOpen ? '×' : '☰'}</span>
         </button>
 
         {isOpen ? (
