@@ -59,7 +59,7 @@ jobs:
             }
 
             artifact(sourcesJar)''','''            from components.java''')
-          s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
+          s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:1.2.8+mc.26.3"')
           if "api.modrinth.com/maven" not in s:
             s=s.replace("repositories {\n","repositories {\n    maven { url = \"https://api.modrinth.com/maven\" }\n",1)
           if "\npublishing {" in s:
