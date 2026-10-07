@@ -81,7 +81,7 @@ body {
   text-decoration: none;
 }
 
-.header-status-compact .motion-status-badge {
+.header-status-compact .status-badge {
   color: #9b79ff;
   font-family: var(--font-mono);
   font-size: .62rem;
@@ -200,7 +200,7 @@ body {
   padding-top: .9rem;
 }
 
-.audit-hero-status .motion-status-badge {
+.audit-hero-status .status-badge {
   flex: 0 0 auto;
   color: #9b79ff;
   font-family: var(--font-mono);
@@ -792,7 +792,7 @@ select:focus-visible {
   margin: 0 auto;
 }
 
-.motion-button {
+.site-button {
   border-radius: .42rem;
   box-shadow: none;
 }
@@ -1944,7 +1944,7 @@ select:focus-visible {
   animation: shush-pop-in .2s cubic-bezier(.22, 1, .36, 1) both;
 }
 
-.motion-status-badge.is-pulse {
+.status-badge.is-pulse {
   animation: shush-pulse 2.2s ease-in-out infinite;
 }
 
@@ -1959,7 +1959,7 @@ select:focus-visible {
   .character-swap,
   .css-rail,
   .css-pop-in,
-  .motion-status-badge.is-pulse {
+  .status-badge.is-pulse {
     animation: none;
   }
 }
