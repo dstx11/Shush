@@ -100,6 +100,54 @@ jobs:
           path: dap-client-smoke.log
           if-no-files-found: warn
 
+      - name: Install exact Shush Cozy mods
+        working-directory: dap-src
+        shell: bash
+        run: |
+          mkdir -p run/mods
+          while IFS= read -r url; do
+            [ -z "$url" ] && continue
+            name="$(basename "$url")"
+            echo "Downloading $name"
+            curl -fL --retry 3 --retry-delay 2 "$url" -o "run/mods/$name"
+          done < ../tools/dap-port-26.3/shush_mod_urls.txt
+          echo "Downloaded $(find run/mods -maxdepth 1 -name '*.jar' | wc -l) Shush Cozy jars"
+
+      - name: Smoke-test with Shush Cozy mod set
+        working-directory: dap-src
+        shell: bash
+        run: |
+          rm -f run/session.lock || true
+          set +e
+          timeout 120s xvfb-run -a gradle --no-daemon runClient > ../dap-shush-cozy-smoke.log 2>&1
+          rc=$?
+          set -e
+
+          echo "Shush Cozy runClient exit code: $rc"
+          tail -n 350 ../dap-shush-cozy-smoke.log || true
+
+          if grep -Eiq "MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|Incompatible mod set|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|The game crashed|Uncaught exception in thread" ../dap-shush-cozy-smoke.log; then
+            echo "Fatal compatibility signature found in Shush Cozy client log."
+            exit 1
+          fi
+
+          if [ "$rc" -eq 0 ]; then
+            echo "Shush Cozy client exited cleanly."
+          elif [ "$rc" -eq 124 ]; then
+            echo "Shush Cozy client remained alive for 120 seconds; treating as compatibility smoke-test success."
+          else
+            echo "Shush Cozy client exited unexpectedly with code $rc."
+            exit "$rc"
+          fi
+
+      - name: Upload Shush Cozy smoke log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dap-shush-cozy-smoke-log
+          path: dap-shush-cozy-smoke.log
+          if-no-files-found: warn
+
       - name: Inspect candidate jars
         run: |
           ls -lah dap-src/build/libs
