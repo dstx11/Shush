@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Search, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { navGroups } from '../../data/nav';
+import { navItems } from '../../data/nav';
 import { motionPresets } from '../../lib/motion';
 import { AppLink } from './AppLink';
 
@@ -26,10 +26,11 @@ export function QuickNav() {
 
   const items = useMemo<QuickNavItem[]>(
     () =>
-      navGroups.flatMap((group) => [
-        { label: group.label, href: group.href, description: `${group.label} overview` },
-        ...(group.items ?? []).map((item) => ({ label: item.label, href: item.href, description: item.description })),
-      ]),
+      navItems.map((item) => ({
+        label: item.label,
+        href: item.href,
+        description: `Abrir ${item.label}`,
+      })),
     [],
   );
 
