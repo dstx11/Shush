@@ -1,8 +1,9 @@
 import { access, readdir, readFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { extname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const projectRoot = new URL('../', import.meta.url).pathname;
+const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const publicRoot = join(projectRoot, 'public');
 const sourceFiles = [
   join(projectRoot, 'index.html'),
