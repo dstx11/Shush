@@ -4,14 +4,23 @@ import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { PageTransition } from './components/ui/PageTransition';
 import { defaultMetadata, routeMetadata, siteUrl } from './data/meta';
+import {
+  loadAboutPage,
+  loadContentPage,
+  loadDropPage,
+  loadHomePage,
+  loadNotFoundPage,
+  loadPremierPage,
+  loadRosterPage,
+} from './lib/routes';
 
-const HomePage = lazy(() => import('./pages/HomePage').then((module) => ({ default: module.HomePage })));
-const PremierPage = lazy(() => import('./pages/PremierPage').then((module) => ({ default: module.PremierPage })));
-const RosterPage = lazy(() => import('./pages/RosterPage').then((module) => ({ default: module.RosterPage })));
-const ContentPage = lazy(() => import('./pages/ContentPage').then((module) => ({ default: module.ContentPage })));
-const DropPage = lazy(() => import('./pages/DropPage').then((module) => ({ default: module.DropPage })));
-const AboutPage = lazy(() => import('./pages/AboutPage').then((module) => ({ default: module.AboutPage })));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })));
+const HomePage = lazy(loadHomePage);
+const PremierPage = lazy(loadPremierPage);
+const RosterPage = lazy(loadRosterPage);
+const ContentPage = lazy(loadContentPage);
+const DropPage = lazy(loadDropPage);
+const AboutPage = lazy(loadAboutPage);
+const NotFoundPage = lazy(loadNotFoundPage);
 
 export default function App() {
   const location = useLocation();
