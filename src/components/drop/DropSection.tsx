@@ -1,20 +1,17 @@
-﻿import { useMemo, useState } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
-import { ShieldCheck, Shirt } from 'lucide-react';
-import { motionPresets } from '../../lib/motion';
-import { JerseyStitchOverlay, MotionRail, SnakeLine } from '../motion/MotionPrimitives';
+import { useMemo, useState } from 'react';
+import { CheckCircle2, Shirt } from 'lucide-react';
 import { JerseyCustomizer } from './JerseyCustomizer';
 
 const jerseyViews = {
   front: {
     label: 'Frente',
     src: '/assets/jersey/frontjersey.webp',
-    alt: 'Jersey SHUSH vista de frente',
+    alt: 'Jersey SHUSH Drop 01 vista de frente',
   },
   back: {
     label: 'Verso',
     src: '/assets/jersey/backjersey.webp',
-    alt: 'Jersey SHUSH vista de costas',
+    alt: 'Jersey SHUSH Drop 01 vista de costas',
   },
 } as const;
 
@@ -22,28 +19,8 @@ type JerseyView = keyof typeof jerseyViews;
 type CopyStatus = 'idle' | 'copied' | 'failed';
 
 async function writeClipboardText(text: string) {
-  if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-
-  const textarea = document.createElement('textarea');
-  textarea.value = text;
-  textarea.setAttribute('readonly', '');
-  textarea.style.position = 'fixed';
-  textarea.style.top = '0';
-  textarea.style.left = '0';
-  textarea.style.opacity = '0';
-  document.body.appendChild(textarea);
-  textarea.select();
-
-  try {
-    if (!document.execCommand('copy')) {
-      throw new Error('Copy command failed');
-    }
-  } finally {
-    document.body.removeChild(textarea);
-  }
+  if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
+  await navigator.clipboard.writeText(text);
 }
 
 export function DropSection() {
@@ -53,18 +30,16 @@ export function DropSection() {
   const [size, setSize] = useState('M');
   const [phrase, setPhrase] = useState('');
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
-  const reduceMotion = useReducedMotion();
 
   const message = useMemo(
-    () =>
-      [
-        'Interesse SHUSH Jersey / Clothing',
-        `Nome: ${name || 'SHUSH'}`,
-        `Número: ${number || '00'}`,
-        `Tamanho: ${size}`,
-        phrase ? `Frase: ${phrase}` : 'Frase: sem frase personalizada',
-        'Pedido manual.',
-      ].join('\n'),
+    () => [
+      'SHUSH — Drop 01',
+      `Nick: ${name || 'SHUSH'}`,
+      `Número: ${number || '00'}`,
+      `Tamanho: ${size}`,
+      phrase ? `Frase: ${phrase}` : 'Frase: —',
+      'Pedido manual.',
+    ].join('\n'),
     [name, number, size, phrase],
   );
 
@@ -72,105 +47,94 @@ export function DropSection() {
     try {
       await writeClipboardText(message);
       setCopyStatus('copied');
-      window.setTimeout(() => setCopyStatus('idle'), 1800);
     } catch {
       setCopyStatus('failed');
-      window.setTimeout(() => setCopyStatus('idle'), 1800);
     }
+
+    window.setTimeout(() => setCopyStatus('idle'), 1800);
   };
 
-  return (
-    <section id="products" className="drop-section scroll-mt-24 px-5 pb-28 pt-36">
-      <div id="jersey" className="mx-auto mb-10 max-w-7xl scroll-mt-28">
-        <span className="section-kicker">Jersey / Clothing</span>
-        <h1 className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight tracking-normal text-shush-text md:text-5xl">A camisola da SHUSH.</h1>
-        <MotionRail className="product-title-rail" />
-        <p className="mt-5 max-w-xl text-sm leading-7 text-shush-muted">Produto manual, escuro e direto. Frente, verso, nick, número e tamanho.</p>
-      </div>
+  const activeView = jerseyViews[view];
 
-      <div className="drop-shell">
-        <div className="drop-product-stage">
-          <SnakeLine className="product-snake" />
-          <JerseyStitchOverlay />
-          <span className="fabric-light-sweep" aria-hidden="true" />
-          <motion.div
-            className={`jersey-flip ${view === 'back' ? 'is-back' : ''}`}
-            variants={reduceMotion ? undefined : motionPresets.jerseyProduct}
-            initial={reduceMotion ? false : 'hidden'}
-            whileInView={reduceMotion ? undefined : 'visible'}
-            viewport={{ once: true, margin: '-12%' }}
-          >
-            <div className="jersey-flip-inner">
-              <div className="jersey-face jersey-front-face" aria-hidden={view !== 'front'}>
-                <img
-                  src={jerseyViews.front.src}
-                  width="1280"
-                  height="1280"
-                  alt={view === 'front' ? jerseyViews.front.alt : ''}
-                  loading="lazy"
-                  decoding="async"
-                  className="drop-jersey-image"
-                />
-              </div>
-              <div className="jersey-face jersey-back-face" aria-hidden={view !== 'back'}>
-                <img
-                  src={jerseyViews.back.src}
-                  width="1280"
-                  height="1280"
-                  alt={view === 'back' ? jerseyViews.back.alt : ''}
-                  loading="lazy"
-                  decoding="async"
-                  className="drop-jersey-image"
-                />
-                <div className="jersey-live-print" aria-hidden="true">
+  return (
+    <section id="products" className="audit-drop-page px-5 pb-28 pt-36">
+      <div className="audit-page-shell">
+        <div className="audit-drop-head">
+          <div>
+            <span className="section-kicker">Drop 01 / Jersey</span>
+            <h1>A camisola da SHUSH.</h1>
+          </div>
+          <p>Primeiro drop público da SHUSH. Preto, roxo e personalização simples — sem checkout falso nem stock inventado.</p>
+        </div>
+
+        <div className="audit-drop-layout">
+          <div className="audit-drop-gallery">
+            <div className="audit-drop-meta">
+              <span>DROP 01</span>
+              <small>{activeView.label}</small>
+            </div>
+
+            <div className="audit-drop-image">
+              <img
+                key={view}
+                src={activeView.src}
+                width="1280"
+                height="1280"
+                alt={activeView.alt}
+                fetchPriority="high"
+                decoding="async"
+              />
+
+              {view === 'back' ? (
+                <div className="audit-live-print" aria-label={`Pré-visualização: ${name || 'SHUSH'} ${number || '00'}`}>
                   <span>{name || 'SHUSH'}</span>
                   <strong>{number || '00'}</strong>
                   {phrase ? <small>{phrase}</small> : null}
                 </div>
-              </div>
+              ) : null}
             </div>
-          </motion.div>
-          <div className="drop-nameplate">
-            <span>{name || 'SHUSH'}</span>
-            <strong>{number || '00'}</strong>
-            {phrase ? <small>{phrase}</small> : null}
+
+            <div className="audit-drop-switcher" role="group" aria-label="Vista da jersey">
+              {(Object.keys(jerseyViews) as JerseyView[]).map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={view === key}
+                  onClick={() => setView(key)}
+                >
+                  <span>{key === 'front' ? '01' : '02'}</span>
+                  {jerseyViews[key].label}
+                </button>
+              ))}
+            </div>
+
+            <div className="audit-drop-facts">
+              <span><Shirt aria-hidden="true" className="h-4 w-4" /> Frente + verso</span>
+              <span><CheckCircle2 aria-hidden="true" className="h-4 w-4" /> Pedido manual</span>
+              <span>Nick + número + tamanho</span>
+            </div>
           </div>
+
+          <aside id="customizacao" className="audit-drop-config scroll-mt-28">
+            <JerseyCustomizer
+              name={name}
+              number={number}
+              size={size}
+              phrase={phrase}
+              message={message}
+              copyStatus={copyStatus}
+              onNameChange={setName}
+              onNumberChange={setNumber}
+              onSizeChange={setSize}
+              onPhraseChange={setPhrase}
+              onCopy={copyMessage}
+            />
+
+            <p className="audit-order-note">
+              A cópia prepara o texto do pedido. O site não cobra nem confirma encomendas automaticamente.
+            </p>
+          </aside>
         </div>
-
-        <aside id="customizacao" className="drop-control-panel scroll-mt-28">
-          <div className="drop-toggle" role="group" aria-label="Alternar vista da camisola">
-            {(Object.keys(jerseyViews) as JerseyView[]).map((key) => (
-              <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)} className={view === key ? 'is-active' : ''}>
-                {jerseyViews[key].label}
-              </button>
-            ))}
-          </div>
-
-          <JerseyCustomizer
-            name={name}
-            number={number}
-            size={size}
-            phrase={phrase}
-            message={message}
-            copyStatus={copyStatus}
-            onNameChange={setName}
-            onNumberChange={setNumber}
-            onSizeChange={setSize}
-            onPhraseChange={setPhrase}
-            onCopy={copyMessage}
-          />
-
-          <div id="pedido-manual" className="drop-proof scroll-mt-28">
-            <div>
-              <Shirt aria-hidden="true" className="h-5 w-5 text-shush-purpleGlow" />
-              <span>Frente / verso</span>
-            </div>
-            <div>
-              <ShieldCheck aria-hidden="true" className="h-5 w-5 text-shush-purpleGlow" />
-              <span>Pedido manual</span>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
   );
