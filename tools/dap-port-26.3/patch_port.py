@@ -292,6 +292,256 @@ public class CoopShockwaveRenderer {
 
 
 
+
+# Restore the two post-effect chains/resources from the supplied 3.0.0 build.
+post_effect_dir = root / "src/main/resources/assets/cooptest/post_effect"
+post_shader_dir = root / "src/main/resources/assets/cooptest/shaders/post"
+post_effect_dir.mkdir(parents=True, exist_ok=True)
+post_shader_dir.mkdir(parents=True, exist_ok=True)
+
+(post_effect_dir / "chroma.json").write_text(r'''{
+  "targets": { "swap": {} },
+  "passes": [
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/blit",
+      "inputs": [
+        { "sampler_name": "In", "target": "minecraft:main" }
+      ],
+      "uniforms": {
+        "BlitConfig": [
+          { "name": "ColorModulate", "type": "vec4", "value": [1.0, 1.0, 1.0, 1.0] }
+        ]
+      },
+      "output": "swap"
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "cooptest:post/chroma",
+      "inputs": [
+        { "sampler_name": "In", "target": "swap" }
+      ],
+      "uniforms": {
+        "ChromaConfig": [
+          { "name": "ChromaOffset", "type": "float", "value": 0.05 }
+        ]
+      },
+      "output": "minecraft:main"
+    }
+  ]
+}
+''', encoding="utf-8")
+
+(post_effect_dir / "radialblur.json").write_text(r'''{
+  "targets": { "swap": {} },
+  "passes": [
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "minecraft:post/blit",
+      "inputs": [
+        { "sampler_name": "In", "target": "minecraft:main" }
+      ],
+      "uniforms": {
+        "BlitConfig": [
+          { "name": "ColorModulate", "type": "vec4", "value": [1.0, 1.0, 1.0, 1.0] }
+        ]
+      },
+      "output": "swap"
+    },
+    {
+      "vertex_shader": "minecraft:core/screenquad",
+      "fragment_shader": "cooptest:post/radialblur",
+      "inputs": [
+        { "sampler_name": "In", "target": "swap" }
+      ],
+      "uniforms": {
+        "RadialBlurConfig": [
+          { "name": "BlurStrength", "type": "float", "value": 0.035 },
+          { "name": "Samples", "type": "float", "value": 8.0 }
+        ]
+      },
+      "output": "minecraft:main"
+    }
+  ]
+}
+''', encoding="utf-8")
+
+(post_shader_dir / "chroma.fsh").write_text(r'''#version 330
+
+uniform sampler2D InSampler;
+in vec2 texCoord;
+
+layout(std140) uniform ChromaConfig {
+    float ChromaOffset;
+};
+
+out vec4 fragColor;
+
+void main() {
+    vec2 dir = texCoord - vec2(0.5);
+    float dist = length(dir);
+    vec2 offset = (dist > 0.001)
+        ? normalize(dir) * ChromaOffset * dist * 2.0
+        : vec2(0.0);
+
+    float r = texture(InSampler, texCoord + offset).r;
+    float g = texture(InSampler, texCoord).g;
+    float b = texture(InSampler, texCoord - offset).b;
+    fragColor = vec4(r, g, b, 1.0);
+}
+''', encoding="utf-8")
+
+(post_shader_dir / "radialblur.fsh").write_text(r'''#version 330
+
+uniform sampler2D InSampler;
+in vec2 texCoord;
+
+layout(std140) uniform RadialBlurConfig {
+    float BlurStrength;
+    float Samples;
+};
+
+out vec4 fragColor;
+
+void main() {
+    vec2 dir = texCoord - vec2(0.5);
+    vec2 stepv = dir * (BlurStrength / Samples);
+    vec4 color = vec4(0.0);
+    float total = 0.0;
+
+    for (float i = 0.0; i < Samples; i++) {
+        float weight = (Samples - i) / Samples;
+        color += texture(InSampler, texCoord - stepv * i) * weight;
+        total += weight;
+    }
+
+    fragColor = color / total;
+}
+''', encoding="utf-8")
+changed.extend([
+    "src/main/resources/assets/cooptest/post_effect/chroma.json (restored)",
+    "src/main/resources/assets/cooptest/post_effect/radialblur.json (restored)",
+    "src/main/resources/assets/cooptest/shaders/post/chroma.fsh (restored)",
+    "src/main/resources/assets/cooptest/shaders/post/radialblur.fsh (restored)",
+])
+
+# Re-enable GameRenderer's native named post-effect mechanism. In modern
+# Minecraft setPostEffect is private, so expose it as a Mixin invoker.
+post_mixin = root / "src/main/java/com/cooptest/mixin/client/impactframemixin/CoopGameRendererMixin.java"
+if post_mixin.exists():
+    post_mixin.write_text(r'''package com.cooptest.mixin.client.impactframemixin;
+
+import com.cooptest.client.CoopChromaHandler;
+import com.cooptest.client.CoopRadialBlurHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.Identifier;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.gen.Invoker;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Environment(EnvType.CLIENT)
+@Mixin(GameRenderer.class)
+public abstract class CoopGameRendererMixin {
+    @Unique
+    private static final Identifier coop$CHROMA_ID =
+            Identifier.fromNamespaceAndPath("cooptest", "chroma");
+    @Unique
+    private static final Identifier coop$RADIAL_ID =
+            Identifier.fromNamespaceAndPath("cooptest", "radialblur");
+    @Unique private static boolean coop$chromaLoaded = false;
+    @Unique private static boolean coop$radialLoaded = false;
+    @Unique private static boolean coop$chromaBroken = false;
+    @Unique private static boolean coop$radialBroken = false;
+
+    @Invoker("setPostEffect")
+    protected abstract void coop$setPostEffect(Identifier id);
+
+    @Inject(method = "extract", at = @At("HEAD"))
+    private void coop$handlePostEffects(DeltaTracker counter, boolean tick, CallbackInfo ci) {
+        boolean wantRadial = CoopRadialBlurHandler.isActive() && !coop$radialBroken;
+        boolean wantChroma = CoopChromaHandler.isActive() && !coop$chromaBroken;
+
+        if (wantRadial) {
+            if (!coop$radialLoaded) {
+                if (coop$trySet(coop$RADIAL_ID, "radialblur")) {
+                    coop$radialLoaded = true;
+                    coop$chromaLoaded = false;
+                } else {
+                    coop$radialBroken = true;
+                }
+            }
+        } else if (wantChroma) {
+            if (!coop$chromaLoaded) {
+                if (coop$trySet(coop$CHROMA_ID, "chroma")) {
+                    coop$chromaLoaded = true;
+                    coop$radialLoaded = false;
+                } else {
+                    coop$chromaBroken = true;
+                }
+            }
+        } else if (coop$chromaLoaded || coop$radialLoaded) {
+            try {
+                ((GameRenderer)(Object)this).clearPostEffect();
+            } catch (Throwable ignored) {
+            }
+            coop$chromaLoaded = false;
+            coop$radialLoaded = false;
+        }
+    }
+
+    @Unique
+    private boolean coop$trySet(Identifier id, String name) {
+        try {
+            this.coop$setPostEffect(id);
+            return true;
+        } catch (Throwable t) {
+            System.err.println(
+                    "[COOP] post effect '" + name
+                            + "' failed to load and is disabled for this session. Cause: " + t
+            );
+            t.printStackTrace();
+            try {
+                ((GameRenderer)(Object)this).clearPostEffect();
+            } catch (Throwable ignored) {
+            }
+            return false;
+        }
+    }
+}
+''', encoding="utf-8")
+    changed.append(str(post_mixin.relative_to(root)) + " (restored post effects)")
+
+# Restore Heaven impact's world-color clear at the closest 26.3 phase:
+# after opaque terrain and before submitted entity geometry is drawn.
+heaven = root / "src/main/java/com/cooptest/client/HeavenDapClientHandler.java"
+if heaven.exists():
+    src = heaven.read_text(encoding="utf-8")
+    old = "      // TODO(26.3 port): BEFORE_ENTITIES was removed; the screen-clear effect is disabled.\\n      LevelRenderEvents.END_MAIN.register(CoopShockwaveRenderer::render);"
+    new = """      LevelRenderEvents.AFTER_OPAQUE_TERRAIN.register(ctx -> {
+         if (CoopImpactHandler.playing) {
+            int argb = switch (CoopImpactHandler.currentFrameType) {
+               case BLACK -> -16777216;
+               case INVERT -> -16777216;
+               case WHITE -> -1;
+               case RED -> -65536;
+               case CYAN -> -16711681;
+            };
+            Minecraft client = Minecraft.getInstance();
+            RenderSystem.getDevice().createCommandEncoder()
+               .clearColorTexture(client.getMainRenderTarget().getColorTexture(), argb);
+         }
+      });
+      LevelRenderEvents.END_MAIN.register(CoopShockwaveRenderer::render);"""
+    if old in src:
+        heaven.write_text(src.replace(old, new), encoding="utf-8")
+        changed.append(str(heaven.relative_to(root)) + " (restored Heaven world-color impact frames)")
+
 # Restore the first-person arm transforms that the upstream 26.3 port left in
 # disabled-code. renderMapHand remains available with SubmitNodeCollector.
 held_mixin = root / "src/main/java/com/cooptest/mixin/client/HeldItemRendererMixin.java"
