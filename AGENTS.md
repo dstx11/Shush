@@ -33,7 +33,6 @@ Use only:
 - React
 - TypeScript
 - Tailwind CSS
-- Motion for React
 - lucide-react
 
 Do not add:
