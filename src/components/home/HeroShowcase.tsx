@@ -28,7 +28,7 @@ export function HeroShowcase() {
             Sem barulho.
             <span>Só rounds.</span>
           </h1>
-          <MotionRail className="hero-title-rail" />
+          <AccentRail className="hero-title-rail" />
           <p>Valorant, creators e identidade própria. Um espaço para acompanhar a equipa, conhecer o roster e descobrir o Drop 01.</p>
 
           <div className="audit-hero-status">
