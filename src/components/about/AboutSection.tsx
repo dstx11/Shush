@@ -6,8 +6,8 @@ export function AboutSection() {
       <div className="about-shell css-reveal">
         <div className="audit-about-intro">
           <span className="section-kicker">About / SHUSH</span>
-          <h1>Pequena por escala. Clara por identidade.</h1>
-          <p>A SHUSH junta um grupo de jogadores, Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
+          <h1>Competição, conteúdo e identidade.</h1>
+          <p>A SHUSH junta Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
           <strong>Sem barulho. Só rounds.</strong>
         </div>
 
