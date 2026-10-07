@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import sys
 import subprocess
+import json
 
 root = Path(sys.argv[1]).resolve()
 
@@ -289,6 +290,215 @@ public class CoopShockwaveRenderer {
 ''', encoding="utf-8")
     changed.append(str(shockwave.relative_to(root)) + " (restored 26.3 shockwave renderer)")
 
+
+
+# Restore the first-person arm transforms that the upstream 26.3 port left in
+# disabled-code. renderMapHand remains available with SubmitNodeCollector.
+held_mixin = root / "src/main/java/com/cooptest/mixin/client/HeldItemRendererMixin.java"
+held_mixin.parent.mkdir(parents=True, exist_ok=True)
+held_mixin.write_text(r'''package com.cooptest.mixin.client;
+
+import com.cooptest.ArmPoseTracker;
+import com.cooptest.GrabInputHandler;
+import com.cooptest.PoseNetworking;
+import com.cooptest.PoseState;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import java.util.UUID;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.world.entity.HumanoidArm;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Mixin(ItemInHandRenderer.class)
+public class HeldItemRendererMixin {
+    @Unique private static final float READY_UP = 1.2F;
+    @Unique private static final float READY_FORWARD = 0.8F;
+    @Unique private static final float READY_PITCH = -85.0F;
+    @Unique private static final float HOLD_UP = 1.5F;
+    @Unique private static final float HOLD_FORWARD = 0.3F;
+    @Unique private static final float HOLD_PITCH = -95.0F;
+    @Unique private static final float CHARGE_UP = 0.8F;
+    @Unique private static final float CHARGE_FORWARD = -0.5F;
+    @Unique private static final float CHARGE_PITCH = -60.0F;
+    @Unique private static final float CHARGE_SHAKE = 0.08F;
+    @Unique private static final float THROW_DURATION = 300.0F;
+    @Unique private static final float PUSH_IDLE_UP = 0.4F;
+    @Unique private static final float PUSH_IDLE_FORWARD = 0.5F;
+    @Unique private static final float PUSH_IDLE_PITCH = -50.0F;
+    @Unique private static final float PUSH_ACTION_UP = 0.6F;
+    @Unique private static final float PUSH_ACTION_FORWARD = 1.0F;
+    @Unique private static final float PUSH_ACTION_PITCH = -80.0F;
+    @Unique private static final float LERP_SPEED = 0.25F;
+    @Unique private static final float FAST_LERP = 0.4F;
+    @Unique private static float currUp = 0.0F;
+    @Unique private static float currForward = 0.0F;
+    @Unique private static float currPitch = 0.0F;
+    @Unique private static long throwStartTime = 0L;
+    @Unique private static boolean wasHolding = false;
+
+    @Inject(method = "renderMapHand", at = @At("HEAD"))
+    private void coop$onRenderArm(PoseStack matrices, SubmitNodeCollector queue,
+                                  int light, HumanoidArm arm, CallbackInfo ci) {
+        Minecraft client = Minecraft.getInstance();
+        if (client.player == null) return;
+
+        boolean handsEmpty = client.player.getMainHandItem().isEmpty()
+                && client.player.getOffhandItem().isEmpty();
+        UUID playerId = client.player.getUUID();
+        PoseState pose = PoseNetworking.poseStates.getOrDefault(playerId, PoseState.NONE);
+
+        boolean isHolding = pose == PoseState.GRAB_HOLDING;
+        if (wasHolding && !isHolding && pose == PoseState.GRAB_READY) {
+            throwStartTime = System.currentTimeMillis();
+        }
+        wasHolding = isHolding;
+
+        Long trackerThrowStart = ArmPoseTracker.throwAnimationStart.get(playerId);
+        if (trackerThrowStart != null) {
+            throwStartTime = trackerThrowStart;
+        }
+
+        float targetUp = 0.0F;
+        float targetForward = 0.0F;
+        float targetPitch = 0.0F;
+        float lerpSpeed = LERP_SPEED;
+        float shakeAmount = 0.0F;
+        boolean inThrowAnim = false;
+        float throwProgress = 0.0F;
+
+        if (throwStartTime > 0L) {
+            long elapsed = System.currentTimeMillis() - throwStartTime;
+            if ((float)elapsed < THROW_DURATION) {
+                inThrowAnim = true;
+                throwProgress = (float)elapsed / THROW_DURATION;
+            } else {
+                throwStartTime = 0L;
+            }
+        }
+
+        if (inThrowAnim) {
+            lerpSpeed = FAST_LERP;
+            if (throwProgress < 0.3F) {
+                float p = throwProgress / 0.3F;
+                targetUp = lerp(HOLD_UP, 0.3F, p);
+                targetForward = lerp(HOLD_FORWARD, 1.2F, p);
+                targetPitch = lerp(HOLD_PITCH, -100.0F, p);
+            } else {
+                float p = (throwProgress - 0.3F) / 0.7F;
+                targetUp = lerp(0.3F, 0.0F, p);
+                targetForward = lerp(1.2F, 0.0F, p);
+                targetPitch = lerp(-100.0F, 0.0F, p);
+            }
+        } else if (handsEmpty && pose != PoseState.NONE && pose != PoseState.GRABBED) {
+            float charge = GrabInputHandler.getThrowChargeProgress();
+            boolean isCharging = charge >= 0.0F;
+
+            switch (pose) {
+                case GRAB_READY -> {
+                    targetUp = READY_UP;
+                    targetForward = READY_FORWARD;
+                    targetPitch = READY_PITCH;
+                }
+                case GRAB_HOLDING -> {
+                    if (isCharging) {
+                        targetUp = lerp(HOLD_UP, CHARGE_UP, charge);
+                        targetForward = lerp(HOLD_FORWARD, CHARGE_FORWARD, charge);
+                        targetPitch = lerp(HOLD_PITCH, CHARGE_PITCH, charge);
+                        if (charge > 0.5F) {
+                            shakeAmount = CHARGE_SHAKE * (charge - 0.5F) * 2.0F;
+                        }
+                    } else {
+                        targetUp = HOLD_UP;
+                        targetForward = HOLD_FORWARD;
+                        targetPitch = HOLD_PITCH;
+                    }
+                }
+                case PUSH_IDLE, PUSH_RETURN -> {
+                    targetUp = PUSH_IDLE_UP;
+                    targetForward = PUSH_IDLE_FORWARD;
+                    targetPitch = PUSH_IDLE_PITCH;
+                }
+                case PUSH_ACTION -> {
+                    targetUp = PUSH_ACTION_UP;
+                    targetForward = PUSH_ACTION_FORWARD;
+                    targetPitch = PUSH_ACTION_PITCH;
+                    lerpSpeed = FAST_LERP;
+                }
+            }
+        }
+
+        currUp = lerp(currUp, targetUp, lerpSpeed);
+        currForward = lerp(currForward, targetForward, lerpSpeed);
+        currPitch = lerp(currPitch, targetPitch, lerpSpeed);
+
+        float shakeOffset = 0.0F;
+        if (shakeAmount > 0.0F) {
+            shakeOffset = (float)(Math.random() - 0.5) * shakeAmount;
+        }
+
+        if (Math.abs(currPitch) < 1.0F
+                && Math.abs(currUp) < 0.01F
+                && Math.abs(currForward) < 0.01F) {
+            return;
+        }
+
+        matrices.translate(0.0, currUp + shakeOffset, -currForward + shakeOffset * 0.5F);
+        matrices.mulPose(Axis.XP.rotationDegrees(currPitch + shakeOffset * 20.0F));
+    }
+
+    @Unique
+    private static float lerp(float a, float b, float t) {
+        return a + (b - a) * t;
+    }
+}
+''', encoding="utf-8")
+changed.append(str(held_mixin.relative_to(root)) + " (restored first-person pose mixin)")
+
+# 26.2+ renamed renderArmWithItem -> submitArmWithItem while preserving the
+# argument layout. Restore the full-bright impact light modifier against the new name.
+impact_mixin = root / "src/main/java/com/cooptest/mixin/client/impactframemixin/HeldItemRendererImpactMixin.java"
+impact_mixin.parent.mkdir(parents=True, exist_ok=True)
+impact_mixin.write_text(r'''package com.cooptest.mixin.client.impactframemixin;
+
+import com.cooptest.client.CoopImpactHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.ItemInHandRenderer;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+
+@Environment(EnvType.CLIENT)
+@Mixin(ItemInHandRenderer.class)
+public class HeldItemRendererImpactMixin {
+    @ModifyVariable(method = "submitArmWithItem", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    private int coop$forceLight(int light) {
+        return CoopImpactHandler.playing ? 15728880 : light;
+    }
+}
+''', encoding="utf-8")
+changed.append(str(impact_mixin.relative_to(root)) + " (restored 26.3 impact hand mixin)")
+
+# Register the restored client mixins.
+mixins = root / "src/main/resources/testcoop.mixins.json"
+if mixins.exists():
+    data = json.loads(mixins.read_text(encoding="utf-8"))
+    client_mixins = data.setdefault("client", [])
+    for entry in (
+        "client.HeldItemRendererMixin",
+        "client.impactframemixin.HeldItemRendererImpactMixin",
+    ):
+        if entry not in client_mixins:
+            client_mixins.append(entry)
+    data["compatibilityLevel"] = "JAVA_25"
+    mixins.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    changed.append(str(mixins.relative_to(root)) + " (registered restored first-person mixins)")
 
 # Remove two invalid, unused legacy assets that 26.3 rejects during resource scanning.
 bad_mp3 = root / "src/main/resources/assets/testcoop/sounds/pefectdap.MP3"
