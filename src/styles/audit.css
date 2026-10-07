@@ -1,5 +1,4 @@
-/* SHUSH professional audit layer — 2026-10
-   Intentionally overrides legacy presentation without breaking preserved routes. */
+/* SHUSH visual identity and page layouts. */
 
 :root {
   --audit-max: 80rem;
@@ -48,7 +47,7 @@ body {
 
 .nav-link {
   display: inline-flex;
-  min-height: 2.45rem;
+  min-height: 2.75rem;
   align-items: center;
   border-radius: .45rem;
   padding: 0 .82rem;
@@ -102,6 +101,8 @@ body {
 }
 
 .mobile-nav-panel {
+  max-height: calc(100dvh - 6rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  overflow-y: auto;
   border-radius: .7rem;
   background: #08080c;
 }
@@ -179,7 +180,7 @@ body {
 
 .audit-hero-copy h1 span {
   display: block;
-  color: #7a48ff;
+  color: #8b5cff;
 }
 
 .audit-hero-copy > p {
@@ -227,7 +228,7 @@ body {
   top: 2rem;
   z-index: 5;
   writing-mode: vertical-rl;
-  color: #7a48ff;
+  color: #8b5cff;
   font-family: var(--font-mono);
   font-size: .65rem;
   font-weight: 800;
@@ -276,7 +277,7 @@ body {
 }
 
 .audit-product-controls button {
-  min-height: 2.1rem;
+  min-height: 2.75rem;
   border: 1px solid var(--audit-border);
   border-radius: .35rem;
   padding: 0 .7rem;
@@ -293,6 +294,9 @@ body {
 }
 
 .audit-product-controls a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   color: var(--text);
   font-size: .75rem;
   font-weight: 800;
@@ -668,7 +672,8 @@ body {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid #9b79ff;
   outline-offset: 3px;
 }
@@ -824,7 +829,7 @@ select:focus-visible {
 }
 
 .route-loading span {
-  color: #7a48ff;
+  color: #8b5cff;
   font-family: var(--font-mono);
   font-size: .72rem;
   font-weight: 700;
@@ -1348,6 +1353,7 @@ select:focus-visible {
   z-index: 4;
   display: grid;
   min-width: 9rem;
+  max-width: 70%;
   transform: translateX(-50%);
   place-items: center;
   color: white;
@@ -1358,6 +1364,8 @@ select:focus-visible {
 }
 
 .audit-live-print span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
   font-family: var(--font-heading);
   font-size: clamp(.9rem, 1.7vw, 1.35rem);
   font-weight: 700;
@@ -1372,6 +1380,7 @@ select:focus-visible {
 }
 
 .audit-live-print small {
+  overflow-wrap: anywhere;
   max-width: 12rem;
   margin-top: .25rem;
   font-size: .58rem;
@@ -1500,7 +1509,7 @@ select:focus-visible {
   padding-top: 1rem;
 }
 
-.audit-order-preview > span {
+.audit-order-preview > label {
   color: var(--muted);
   font-size: .65rem;
   font-weight: 800;
@@ -1508,7 +1517,10 @@ select:focus-visible {
   text-transform: uppercase;
 }
 
-.audit-order-preview pre {
+.audit-order-preview textarea {
+  display: block;
+  width: 100%;
+  resize: vertical;
   overflow: auto;
   margin-top: .65rem;
   border: 1px solid var(--audit-border);

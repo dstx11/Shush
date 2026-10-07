@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
 import { activePremierSeason } from '../../data/season';
 import { calculatePublicMatchDayState } from '../../lib/premier';
+import { usePremierClock } from '../../lib/use-premier-clock';
 import { StatusBadge } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 
@@ -14,11 +15,19 @@ export function Header() {
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
-  const publicState = calculatePublicMatchDayState(activePremierSeason);
+  const now = usePremierClock();
+  const publicState = calculatePublicMatchDayState(activePremierSeason, now);
 
   useEffect(() => {
     setIsOpen(false);
   }, [activePath]);
+
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const closeOnDesktop = () => { if (desktop.matches) setIsOpen(false); };
+    desktop.addEventListener('change', closeOnDesktop);
+    return () => desktop.removeEventListener('change', closeOnDesktop);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
@@ -67,7 +76,10 @@ export function Header() {
 
   return (
     <header className={`site-header fixed left-0 right-0 top-0 z-50 px-4 py-3 ${isScrolled ? 'is-scrolled' : ''}`}>
-      <nav ref={navRef} className="site-nav relative mx-auto flex max-w-7xl items-center justify-between" aria-label="Navegação principal">
+      <nav ref={navRef} className="site-nav relative mx-auto flex max-w-7xl items-center justify-between" aria-label="Navegação principal"
+        onBlur={(event) => {
+          if (isOpen && !event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
+        }}>
         <AppLink href="/" className="brand-mark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
           <img src="/assets/brand/shush-logo.webp" alt="" width="1167" height="647" className="h-8 w-auto" />
           <span>SHUSH</span>
@@ -115,7 +127,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => {
+                    setIsOpen(false);
+                    document.getElementById('main-content')?.focus({ preventScroll: true });
+                  }}
                   className={`mobile-nav-link ${isActive(item.href) ? 'is-active' : ''}`}
                 >
                   <span>{item.label}</span>

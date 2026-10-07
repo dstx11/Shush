@@ -10,13 +10,17 @@ import './styles/audit.css';
 const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
 
 window.addEventListener('vite:preloadError', (event) => {
-  const lastRecovery = Number(window.sessionStorage.getItem(PRELOAD_RECOVERY_KEY) ?? 0);
   const now = Date.now();
-
-  if (now - lastRecovery < 30_000) return;
-
+  try {
+    const lastRecovery = Number(window.sessionStorage.getItem(PRELOAD_RECOVERY_KEY) ?? 0);
+    if (now - lastRecovery < 30_000) return;
+    window.sessionStorage.setItem(PRELOAD_RECOVERY_KEY, String(now));
+  } catch {
+    // Storage can be blocked. Leave the error boundary in control instead of
+    // risking a reload loop without a persistent recovery timestamp.
+    return;
+  }
   event.preventDefault();
-  window.sessionStorage.setItem(PRELOAD_RECOVERY_KEY, String(now));
   window.location.reload();
 });
 

@@ -62,6 +62,8 @@ for (const [path, canonical, title] of routeFiles) {
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
   expect(html, `property="og:image:alt" content="${title}"`, `${path} OG image alt`);
+  expect(html, `name="twitter:title" content="${title}"`, `${path} Twitter title`);
+  expect(html, `name="twitter:image:alt" content="${title}"`, `${path} Twitter image alt`);
   expect(html, '<meta name="robots" content="index,follow"', `${path} robots`);
 
   if (path === 'esports/valorant/roster.html') {
@@ -70,6 +72,15 @@ for (const [path, canonical, title] of routeFiles) {
       'rel="preload" as="image" href="/assets/avatars/delcio.webp"',
       'roster portrait preload',
     );
+  }
+
+  // Verify the emitted document's actual entry points, not only public source references.
+  for (const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)) {
+    try {
+      await access(join(dist, match[1].slice(1)), constants.R_OK);
+    } catch {
+      failures.push(`Broken built asset ${match[1]} in ${path}`);
+    }
   }
 }
 
@@ -85,6 +96,13 @@ expectAbsent(redirects, '/index.html 200', 'root SPA rewrite that would bypass r
 
 expect(headers, 'Content-Security-Policy:', 'CSP header');
 expect(headers, "frame-ancestors 'none'", 'CSP frame protection');
+for (const policy of [
+  'X-Content-Type-Options: nosniff',
+  'X-Frame-Options: DENY',
+  'Referrer-Policy: strict-origin-when-cross-origin',
+  'Permissions-Policy:',
+  'Cross-Origin-Opener-Policy: same-origin',
+]) expect(headers, policy, policy);
 expect(robots, 'Sitemap: https://shush.pt/sitemap.xml', 'robots sitemap');
 
 

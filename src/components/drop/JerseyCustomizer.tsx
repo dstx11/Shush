@@ -53,7 +53,7 @@ export function JerseyCustomizer({
             value={number}
             inputMode="numeric"
             maxLength={2}
-            onChange={(event) => onNumberChange(event.target.value.replace(/D/g, '').slice(0, 2))}
+            onChange={(event) => onNumberChange(event.target.value.replace(/\D/g, '').slice(0, 2))}
             placeholder="01"
           />
           <small>00–99</small>
@@ -80,8 +80,8 @@ export function JerseyCustomizer({
       </div>
 
       <div className="audit-order-preview">
-        <span>Resumo do pedido</span>
-        <pre>{message}</pre>
+        <label htmlFor="order-summary">Resumo do pedido</label>
+        <textarea id="order-summary" value={message} readOnly rows={7} onFocus={(event) => event.target.select()} />
       </div>
 
       <button

@@ -17,7 +17,7 @@ function walk(dir) {
   });
 }
 
-const files = walk(distDir).filter((path) => /.(?:js|css)$/.test(path));
+const files = walk(distDir).filter((path) => /\.(?:js|css)$/.test(path));
 
 const totals = files.reduce(
   (acc, path) => {

@@ -25,7 +25,6 @@ const NotFoundPage = lazy(loadNotFoundPage);
 export default function App() {
   const location = useLocation();
   useRouteMetadata(location.pathname);
-  useRouteScroll(location.pathname, location.hash);
 
   return (
     <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
@@ -104,47 +103,14 @@ function useRouteMetadata(pathname: string) {
     setMeta('meta[property="og:description"]', metadata.description);
     setMeta('meta[property="og:url"]', canonicalUrl);
     setMeta('meta[property="og:image"]', absoluteImage);
+    setMeta('meta[property="og:image:alt"]', metadata.title);
     setMeta('meta[name="twitter:title"]', metadata.title);
     setMeta('meta[name="twitter:description"]', metadata.description);
     setMeta('meta[name="twitter:image"]', absoluteImage);
+    setMeta('meta[name="twitter:image:alt"]', metadata.title);
     setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow' : 'noindex,nofollow');
     setCanonical(canonicalUrl);
   }, [pathname]);
-}
-
-function useRouteScroll(pathname: string, hash: string) {
-  useEffect(() => {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let frame = 0;
-    let timeout = 0;
-    let attempts = 0;
-
-    const scrollToLocation = () => {
-      if (hash) {
-        const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-        if (target) {
-          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-          return;
-        }
-
-        if (attempts < 12) {
-          attempts += 1;
-          timeout = window.setTimeout(scrollToLocation, 50);
-          return;
-        }
-      }
-
-      window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-      document.getElementById('main-content')?.focus({ preventScroll: true });
-    };
-
-    frame = window.requestAnimationFrame(scrollToLocation);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(timeout);
-    };
-  }, [pathname, hash]);
 }
 
 function setMeta(selector: string, content: string) {

@@ -1,13 +1,15 @@
 import { creators, players } from '../../data/players';
 import { activePremierSeason } from '../../data/season';
 import { calculatePremierScore, calculatePublicMatchDayState, calculateSeasonStatus, formatSeasonStatus } from '../../lib/premier';
+import { usePremierClock } from '../../lib/use-premier-clock';
 import { StatusBadge } from '../ui/VisualPrimitives';
 import { Button } from '../ui/Button';
 import { Reveal } from '../ui/Reveal';
 
 export function HomeHub() {
-  const state = calculatePublicMatchDayState(activePremierSeason);
-  const status = calculateSeasonStatus(activePremierSeason);
+  const now = usePremierClock();
+  const state = calculatePublicMatchDayState(activePremierSeason, now);
+  const status = calculateSeasonStatus(activePremierSeason, now);
   const score = calculatePremierScore(activePremierSeason);
   const rosterPreview = players.slice(0, 5);
 
@@ -75,7 +77,7 @@ export function HomeHub() {
           <Reveal className="hub-feature hub-feature-drop" delay={0.15}>
             <span className="hub-label">Drop 01</span>
             <div className="hub-drop-preview">
-              <img src="/assets/jersey/frontjersey.webp" width="1280" height="1280" alt="Jersey SHUSH Drop 01" loading="lazy" decoding="async" />
+              <img src="/assets/jersey/frontjersey.webp" width="1254" height="1254" alt="Jersey SHUSH Drop 01" loading="lazy" decoding="async" />
             </div>
             <div>
               <h3>Jersey SHUSH</h3>

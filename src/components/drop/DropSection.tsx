@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { JerseyCustomizer } from './JerseyCustomizer';
 
 const jerseyViews = {
@@ -29,6 +29,13 @@ export function DropSection() {
   const [size, setSize] = useState('M');
   const [phrase, setPhrase] = useState('');
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
+  const copyTimer = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
+    setCopyStatus('idle');
+    window.clearTimeout(copyTimer.current);
+    return () => window.clearTimeout(copyTimer.current);
+  }, [name, number, size, phrase]);
 
   const message = useMemo(
     () => [
@@ -50,7 +57,8 @@ export function DropSection() {
       setCopyStatus('failed');
     }
 
-    window.setTimeout(() => setCopyStatus('idle'), 1800);
+    window.clearTimeout(copyTimer.current);
+    copyTimer.current = window.setTimeout(() => setCopyStatus('idle'), 4000);
   };
 
   const activeView = jerseyViews[view];
@@ -77,8 +85,8 @@ export function DropSection() {
               <img
                 key={view}
                 src={activeView.src}
-                width="1280"
-                height="1280"
+                width="1254"
+                height="1254"
                 alt={activeView.alt}
                 fetchPriority="high"
                 decoding="async"
@@ -112,6 +120,7 @@ export function DropSection() {
               <span>Pedido manual</span>
               <span>Nick + número + tamanho</span>
             </div>
+            <p className="audit-order-note">Pré-visualização indicativa. A posição e a impressão são confirmadas no pedido manual.</p>
           </div>
 
           <aside id="customizacao" className="audit-drop-config scroll-mt-28">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { activePremierSeason } from '../../data/season';
 import { calculatePublicMatchDayState } from '../../lib/premier';
+import { usePremierClock } from '../../lib/use-premier-clock';
 import { AccentRail, StatusBadge } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
@@ -15,7 +16,8 @@ type JerseyView = keyof typeof jerseyViews;
 export function HeroShowcase() {
   const [view, setView] = useState<JerseyView>('front');
   const active = jerseyViews[view];
-  const state = calculatePublicMatchDayState(activePremierSeason);
+  const now = usePremierClock();
+  const state = calculatePublicMatchDayState(activePremierSeason, now);
 
   return (
     <section id="top" className="hero-stage home-identity-stage audit-hero relative overflow-hidden px-5 pt-24" aria-labelledby="hero-title">
@@ -49,8 +51,8 @@ export function HeroShowcase() {
               key={view}
               src={active.src}
               alt={active.alt}
-              width="1280"
-              height="1280"
+              width="1254"
+              height="1254"
               fetchPriority="high"
               decoding="async"
               className="product-swap"

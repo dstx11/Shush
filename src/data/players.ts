@@ -35,7 +35,7 @@ export const players: Player[] = [
     isCreator: true,
     creatorType: 'twitch',
     creatorUrl: 'https://www.twitch.tv/kandimba13',
-    quote: 'Leitura calma, espaco bem fechado.',
+    quote: 'Leitura calma, espaço bem fechado.',
     focus: 'Controlo',
   },
   {

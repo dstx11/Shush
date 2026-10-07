@@ -21,14 +21,14 @@ const invalid = [];
 for (const file of files) {
   const source = await readFile(file, 'utf8');
   const patterns = [
-    /href\s*=\s*["']([^"']+)["']/g,
+    /(?:href|to)\s*=\s*(?:\{\s*)?["']([^"']+)["']/g,
     /href\s*:\s*["']([^"']+)["']/g,
   ];
 
   for (const pattern of patterns) {
     for (const match of source.matchAll(pattern)) {
       const href = match[1];
-      if (!href.startsWith('/') || href.startsWith('/assets/')) continue;
+      if (!href.startsWith('/') || href.startsWith('//') || href.startsWith('/assets/')) continue;
 
       const pathname = href.split(/[?#]/, 1)[0] || '/';
       if (!canonicalRoutes.has(pathname)) {

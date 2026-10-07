@@ -5,7 +5,10 @@ type PageModule = { default: ComponentType };
 function once<T>(loader: () => Promise<T>) {
   let promise: Promise<T> | undefined;
   return () => {
-    promise ??= loader();
+    promise ??= loader().catch((error: unknown) => {
+      promise = undefined;
+      throw error;
+    });
     return promise;
   };
 }
@@ -60,5 +63,8 @@ const routeLoaders = new Map<string, () => Promise<PageModule>>([
 export function preloadRoute(href: string) {
   const pathname = href.split(/[?#]/, 1)[0] || '/';
   const loader = routeLoaders.get(pathname) ?? loadNotFoundPage;
-  void loader();
+  void loader().catch(() => {
+    // Prefetch is optional; a failed hover must not create an unhandled error.
+    // The loader remains retryable when the visitor actually opens the route.
+  });
 }

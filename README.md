@@ -23,13 +23,16 @@ pnpm run dev
 
 ```powershell
 pnpm run typecheck
+pnpm run test:premier
+pnpm run check:assets
+pnpm run check:links
 pnpm run build
 pnpm run validate:dist
 pnpm run check:bundle
 pnpm run preview
 ```
 
-Pull requests to `master` validate install, typecheck, production build, route metadata, deploy artifacts and bundle budgets in GitHub Actions.
+Use `pnpm run validate` for the full sequence. Premier tests cover runtime timezone independence, Lisbon DST boundaries, window edges, playoff outcomes and rejection of invalid static data. Pull requests to `master` run the same checks in GitHub Actions.
 
 ## Public routes
 
@@ -56,3 +59,5 @@ Legacy URLs redirect to the closest current destination.
 ## Product rules
 
 The site only publishes information and assets that exist in the repository data. Product requests are manual. The customizer only prepares a request summary; it does not place or confirm an order.
+
+A closed calendar with incomplete results is labelled as a closed published phase with an unconfirmed outcome. Published points are not presented as a final score, and missing results never prove elimination. Confirmed playoff results determine placement and championships.

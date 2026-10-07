@@ -1,6 +1,7 @@
 import { Button } from '../components/ui/Button';
 import { Reveal } from '../components/ui/Reveal';
 import { activePremierSeason } from '../data/season';
+import { usePremierClock } from '../lib/use-premier-clock';
 import {
   calculatePremierScore,
   calculatePublicMatchDayState,
@@ -14,8 +15,9 @@ const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-
 
 export function PremierPage() {
   const score = calculatePremierScore(activePremierSeason);
-  const status = calculateSeasonStatus(activePremierSeason);
-  const state = calculatePublicMatchDayState(activePremierSeason);
+  const now = usePremierClock();
+  const status = calculateSeasonStatus(activePremierSeason, now);
+  const state = calculatePublicMatchDayState(activePremierSeason, now);
   const completedResults = activePremierSeason.results.filter((result) => result.outcome === 'win' || result.outcome === 'loss');
   const played = completedResults.length;
   const wins = completedResults.filter((result) => result.outcome === 'win').length;
@@ -43,7 +45,7 @@ export function PremierPage() {
           </Reveal>
 
           <Reveal className="audit-score-card" delay={0.06}>
-            <span>Pontuação Premier</span>
+            <span>Pontuação publicada</span>
             <div>
               <strong>{score}</strong>
               <small>/ {activePremierSeason.qualificationPoints}</small>

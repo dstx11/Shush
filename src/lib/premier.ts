@@ -1,6 +1,6 @@
 import type { MatchResult, PlayoffResult, PremierPlayDay, PremierSeason, PremierWeek } from '../data/season';
 
-export type SeasonStatus = 'Regular Season' | 'Qualified' | 'Play-offs' | 'Champions' | 'Eliminated before play-offs' | 'Finished';
+export type SeasonStatus = 'Regular Season' | 'Qualified' | 'Play-offs' | 'Champions' | 'Closed' | 'Finished';
 
 export type PlayoffPlacement =
   | { status: 'eliminated'; placement: '5th-8th' | '3rd-4th' | '2nd' }
@@ -17,6 +17,7 @@ export type PublicMatchDayState =
   | { kind: 'last_result'; title: 'ÚLTIMO RESULTADO'; detail: string; result: MatchResult }
   | { kind: 'qualified'; title: 'QUALIFICADOS PARA OS PLAY-OFFS'; detail: string }
   | { kind: 'eliminated'; title: 'PERCURSO PREMIER TERMINADO'; detail: string }
+  | { kind: 'season_closed'; title: 'FASE PUBLICADA ENCERRADA'; detail: string }
   | { kind: 'season_active'; title: 'PREMIER ATIVO'; detail: 'Próxima janela por definir' };
 
 export function pointsForResult(result: MatchResult, season: Pick<PremierSeason, 'winPoints' | 'lossPoints'>) {
@@ -36,33 +37,29 @@ export function calculatePlayoffPlacement(playoffResults: PlayoffResult[]): Play
   const game2 = playoffResults.find((game) => game.playoffRound === 2);
   const final = playoffResults.find((game) => game.playoffRound === 3);
 
-  if (!game1) return null;
+  if (!game1 || game1.outcome === 'cancelled') return null;
 
   if (game1.outcome === 'loss') {
     return { status: 'eliminated', placement: '5th-8th' };
   }
 
-  if (!game2) return { status: 'playoffs_active', placement: null };
+  if (!game2 || game2.outcome === 'cancelled') return { status: 'playoffs_active', placement: null };
 
   if (game2.outcome === 'loss') {
     return { status: 'eliminated', placement: '3rd-4th' };
   }
 
-  if (!final) return { status: 'playoffs_active', placement: null };
+  if (!final || final.outcome === 'cancelled') return { status: 'playoffs_active', placement: null };
 
   if (final.outcome === 'loss') {
     return { status: 'eliminated', placement: '2nd' };
   }
 
-  if (final.outcome === 'win') {
+  if (final.outcome === 'win' || final.outcome === 'bye') {
     return { status: 'champions', placement: 'Premier Champions' };
   }
 
   return null;
-}
-
-export function hasQualifiedForPlayoffs(season: PremierSeason) {
-  return calculatePremierScore(season) >= season.qualificationPoints;
 }
 
 export function calculateSeasonStatus(season: PremierSeason, now = new Date()): SeasonStatus {
@@ -70,15 +67,19 @@ export function calculateSeasonStatus(season: PremierSeason, now = new Date()): 
 
   if (placement?.status === 'champions') return 'Champions';
   if (placement?.status === 'eliminated') return 'Finished';
-  if (placement?.status === 'playoffs_active') return 'Play-offs';
 
   const score = calculatePremierScore(season);
   const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart, season.timezone);
-  const regularWindowEnded = getAllPlayDays(season).every(({ day }) => addMinutes(makeDateTime(day.date, day.windowEnd, season.timezone), 40) < now);
+  const playoffsEnd = addMinutes(makeDateTime(season.playoffsDate, season.playoffsWindowEnd, season.timezone), 40);
+  const playDays = getAllPlayDays(season);
+  const regularWindowEnded = playDays.length > 0 && playDays.every(({ day }) => addMinutes(makeDateTime(day.date, day.windowEnd, season.timezone), 40) < now);
 
+  if (now > playoffsEnd) return 'Closed';
+  if (placement?.status === 'playoffs_active') return 'Play-offs';
   if (now >= playoffsStart && score >= season.qualificationPoints) return 'Play-offs';
   if (regularWindowEnded && score >= season.qualificationPoints) return 'Qualified';
-  if (regularWindowEnded && score < season.qualificationPoints) return 'Eliminated before play-offs';
+  // Missing results do not prove elimination or a final score.
+  if (regularWindowEnded) return 'Closed';
   return 'Regular Season';
 }
 
@@ -92,8 +93,8 @@ export function formatSeasonStatus(status: SeasonStatus) {
       return 'Play-offs';
     case 'Champions':
       return 'Campeões';
-    case 'Eliminated before play-offs':
-      return 'Eliminados antes dos play-offs';
+    case 'Closed':
+      return 'Fase publicada encerrada';
     case 'Finished':
       return 'Terminado';
   }
@@ -104,8 +105,16 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   const placement = calculatePlayoffPlacement(season.playoffResults);
   const latestPlayoffResult = getLatestResult(season.playoffResults, now, season.timezone);
 
-  if (placement?.status === 'champions' && latestPlayoffResult && daysBetween(makeDateTime(latestPlayoffResult.date, '12:00', season.timezone), now) <= 21) {
+  if (placement?.status === 'champions' && latestPlayoffResult) {
     return { kind: 'champions', title: 'CAMPEÕES PREMIER', detail: 'Resultado final publicado pela equipa.', result: latestPlayoffResult };
+  }
+
+  if (placement?.status === 'eliminated') {
+    return {
+      kind: 'eliminated',
+      title: 'PERCURSO PREMIER TERMINADO',
+      detail: `Classificação publicada: ${placement.placement} · Pontuação publicada: ${score}`,
+    };
   }
 
   const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart, season.timezone);
@@ -154,11 +163,11 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
     };
   }
 
-  if (seasonStatus === 'Eliminated before play-offs' || seasonStatus === 'Finished') {
+  if (seasonStatus === 'Closed') {
     return {
-      kind: 'eliminated',
-      title: 'PERCURSO PREMIER TERMINADO',
-      detail: `Pontuação final: ${score} / ${season.qualificationPoints}`,
+      kind: 'season_closed',
+      title: 'FASE PUBLICADA ENCERRADA',
+      detail: `Pontuação publicada: ${score} / ${season.qualificationPoints} · Desfecho por confirmar`,
     };
   }
 
@@ -190,7 +199,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
 }
 
 export function formatResultLine(result: MatchResult) {
-  const confirmedRival = result.opponent && !/^opp/i.test(result.opponent) ? result.opponent : null;
+  const confirmedRival = result.opponent || null;
 
   if (result.shushScore !== undefined && result.opponentScore !== undefined) {
     return confirmedRival
@@ -205,23 +214,6 @@ export function formatResultLine(result: MatchResult) {
 
 export function formatDate(date: string) {
   return new Intl.DateTimeFormat('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
-}
-
-export function formatWindowCountdown(day: PremierPlayDay, now = new Date(), timezone = 'Europe/Lisbon') {
-  const start = makeDateTime(day.date, day.windowStart, timezone);
-  const end = makeDateTime(day.date, day.windowEnd, timezone);
-
-  if (now >= start && now <= addMinutes(end, 40)) return 'Janela ativa';
-  if (now > addMinutes(end, 40)) return 'Resultado a atualizar';
-
-  const diffMinutes = Math.max(0, Math.round((start.getTime() - now.getTime()) / 60_000));
-  const days = Math.floor(diffMinutes / 1440);
-  const hours = Math.floor((diffMinutes % 1440) / 60);
-  const minutes = diffMinutes % 60;
-
-  if (days > 0) return `${days}D ${hours}H ${minutes}M`;
-  if (hours > 0) return `${hours}H ${minutes}M`;
-  return `${minutes}M`;
 }
 
 function getAllPlayDays(season: PremierSeason) {
@@ -296,8 +288,4 @@ function timezoneOffsetMs(timestamp: number, timezone: string) {
 
 function addMinutes(date: Date, minutes: number) {
   return new Date(date.getTime() + minutes * 60_000);
-}
-
-function daysBetween(start: Date, end: Date) {
-  return Math.abs(end.getTime() - start.getTime()) / 86_400_000;
 }
