@@ -181,6 +181,13 @@ function staticRouteMetadata(): Plugin {
           );
         }
 
+        if (route === '/esports/valorant/roster') {
+          html = html.replace(
+            '</head>',
+            '    <link rel="preload" as="image" href="/assets/avatars/delcio.webp" type="image/webp" fetchpriority="high" />\n  </head>',
+          );
+        }
+
         this.emitFile({
           type: 'asset',
           fileName: `${route.slice(1)}.html`,
