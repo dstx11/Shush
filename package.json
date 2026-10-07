@@ -12,7 +12,8 @@
     "validate:dist": "node scripts/validate-dist.mjs",
     "check:assets": "node scripts/check-assets.mjs",
     "check:links": "node scripts/check-links.mjs",
-    "test:premier": "node scripts/test-premier.mjs"
+    "test:premier": "node scripts/test-premier.mjs",
+    "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle"
   },
   "dependencies": {
     "react": "^19.2.7",
