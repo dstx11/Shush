@@ -80,6 +80,7 @@ export function PremierPage() {
                 <div>
                   <span className="section-kicker">Calendário</span>
                   <h2>Fase publicada</h2>
+                  <small className="audit-timezone-note">Horários em Lisboa · Europe/Lisbon</small>
                 </div>
                 <span className="audit-section-mark" aria-hidden="true">P</span>
               </div>
