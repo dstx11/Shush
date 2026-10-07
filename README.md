@@ -8,7 +8,6 @@ Official SHUSH website. A static Vite + React + TypeScript experience focused on
 - React
 - TypeScript
 - Tailwind CSS v4
-- Motion for React
 - React Router
 - lucide-react
 
