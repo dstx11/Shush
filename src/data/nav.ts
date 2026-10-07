@@ -20,9 +20,3 @@ export const footerLinks = [
   { label: 'Drop 01', href: '/products/jersey' },
   { label: 'About', href: '/company' },
 ];
-
-/**
- * Compatibility alias for older components that may still import navGroups.
- * The public information architecture intentionally stays flat.
- */
-export const navGroups = navItems;
