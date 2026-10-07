@@ -167,19 +167,7 @@ export function PremierPage() {
 }
 
 export function RosterPage() {
-  return (
-    <>
-      <section className="page-hero route-page px-5 pb-8 pt-36">
-        <Reveal className="page-shell">
-          <SectionBreadcrumb items={['Esports', 'Valorant', 'Roster']} />
-          <span className="section-kicker">Valorant / Roster</span>
-          <h1>Quem entra no lobby.</h1>
-          <p>Character select da SHUSH. Nicks públicos, roles claras e presença de equipa.</p>
-        </Reveal>
-      </section>
-      <RosterSection />
-    </>
-  );
+  return <RosterSection />;
 }
 
 export function EsportsResultsPage() {
