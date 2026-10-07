@@ -10,7 +10,8 @@
     "typecheck": "tsc -b --pretty",
     "check:bundle": "node scripts/check-build-budget.mjs",
     "validate:dist": "node scripts/validate-dist.mjs",
-    "check:assets": "node scripts/check-assets.mjs"
+    "check:assets": "node scripts/check-assets.mjs",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
