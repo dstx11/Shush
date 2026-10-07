@@ -66,6 +66,40 @@ jobs:
         working-directory: dap-src
         run: gradle --no-daemon clean build --stacktrace
 
+      - name: Smoke-test Minecraft 26.3 client startup
+        working-directory: dap-src
+        shell: bash
+        run: |
+          set +e
+          timeout 75s xvfb-run -a gradle --no-daemon runClient > ../dap-client-smoke.log 2>&1
+          rc=$?
+          set -e
+
+          echo "runClient exit code: $rc"
+          tail -n 250 ../dap-client-smoke.log || true
+
+          if grep -Eiq "Mixin.*(failed|error)|MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|The game crashed" ../dap-client-smoke.log; then
+            echo "Fatal startup signature found in client log."
+            exit 1
+          fi
+
+          if [ "$rc" -eq 0 ]; then
+            echo "Client exited cleanly."
+          elif [ "$rc" -eq 124 ]; then
+            echo "Client remained alive for 75 seconds; treating as startup smoke-test success."
+          else
+            echo "Client exited unexpectedly with code $rc."
+            exit "$rc"
+          fi
+
+      - name: Upload client smoke log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dap-mc26.3-client-smoke-log
+          path: dap-client-smoke.log
+          if-no-files-found: warn
+
       - name: Inspect candidate jars
         run: |
           ls -lah dap-src/build/libs
