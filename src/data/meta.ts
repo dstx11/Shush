@@ -7,8 +7,8 @@ export type RouteMetadata = {
 export const siteUrl = 'https://shush.pt';
 
 export const defaultMetadata: RouteMetadata = {
-  title: 'SHUSH — Gaming, Premier e Creators',
-  description: 'SHUSH é um grupo gaming, esports e entertainment focado em Valorant Premier, creators e jersey/clothing.',
+  title: 'SHUSH — Sem barulho. Só rounds.',
+  description: 'SHUSH é uma micro-org gaming focada em Valorant Premier, creators e identidade própria.',
   image: '/og-shush.png',
 };
 
@@ -23,11 +23,11 @@ export const routeMetadata: Record<string, RouteMetadata> = {
     description: 'Valorant é o lobby competitivo da SHUSH, com Premier, roster e resultados públicos.',
   },
   '/esports/valorant/premier': {
-    title: 'SHUSH Premier Calendar',
+    title: 'Premier — SHUSH',
     description: 'Calendário Premier, score, próxima janela e convocados da SHUSH.',
   },
   '/esports/valorant/roster': {
-    title: 'SHUSH Valorant Roster',
+    title: 'Roster — SHUSH',
     description: 'Roster Valorant da SHUSH com jogadores públicos e roles.',
   },
   '/esports/valorant/results': {
@@ -55,7 +55,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
     description: 'Jersey / Clothing da SHUSH e pedido manual.',
   },
   '/products/jersey': {
-    title: 'SHUSH Jersey / Clothing',
+    title: 'Drop 01 — SHUSH',
     description: 'Showcase da jersey SHUSH em preto e roxo.',
   },
   '/products/jersey/custom': {
@@ -63,7 +63,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
     description: 'Pedido manual da jersey SHUSH com nick, número, tamanho e frase opcional.',
   },
   '/company': {
-    title: 'SHUSH Company',
+    title: 'About — SHUSH',
     description: 'Sobre a SHUSH: gaming, esports, creators e identidade própria.',
   },
   '/company/partners': {
