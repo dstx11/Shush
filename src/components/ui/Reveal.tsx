@@ -1,6 +1,4 @@
-﻿import { motion, useReducedMotion } from 'motion/react';
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
-import { motionPresets } from '../../lib/motion';
 
 type RevealProps<T extends ElementType> = {
   as?: T;
@@ -9,20 +7,15 @@ type RevealProps<T extends ElementType> = {
   delay?: number;
 } & Omit<ComponentPropsWithoutRef<T>, 'as' | 'children' | 'className'>;
 
-export function Reveal<T extends ElementType = 'div'>({ as, children, className, delay = 0, ...props }: RevealProps<T>) {
-  const reduceMotion = useReducedMotion();
-  const Component = motion(as ?? 'div');
+export function Reveal<T extends ElementType = 'div'>({ as, children, className = '', delay = 0, style, ...props }: RevealProps<T>) {
+  const Component = as ?? 'div';
+  const revealStyle = {
+    ...style,
+    '--reveal-delay': `${delay}s`,
+  } as React.CSSProperties;
 
   return (
-    <Component
-      className={className}
-      initial={reduceMotion ? false : 'hidden'}
-      whileInView={reduceMotion ? undefined : 'visible'}
-      variants={reduceMotion ? undefined : motionPresets.reveal}
-      viewport={{ once: true, margin: '-12%' }}
-      transition={reduceMotion ? undefined : { delay }}
-      {...props}
-    >
+    <Component className={`css-reveal ${className}`} style={revealStyle} {...props}>
       {children}
     </Component>
   );
