@@ -5,6 +5,14 @@ import { join } from 'node:path';
 const root = new URL('../', import.meta.url);
 const dist = join(root.pathname, 'dist');
 
+const routeFiles = [
+  ['esports/valorant/premier.html', 'https://shush.pt/esports/valorant/premier', 'Premier — SHUSH'],
+  ['esports/valorant/roster.html', 'https://shush.pt/esports/valorant/roster', 'Roster — SHUSH'],
+  ['content.html', 'https://shush.pt/content', 'Creators — SHUSH'],
+  ['products/jersey.html', 'https://shush.pt/products/jersey', 'Drop 01 — SHUSH'],
+  ['company.html', 'https://shush.pt/company', 'About — SHUSH'],
+];
+
 const requiredFiles = [
   'index.html',
   '404.html',
@@ -17,6 +25,7 @@ const requiredFiles = [
   'assets/brand/shush-logo.webp',
   'assets/jersey/frontjersey.webp',
   'assets/jersey/backjersey.webp',
+  ...routeFiles.map(([path]) => path),
 ];
 
 const failures = [];
@@ -39,21 +48,29 @@ const sitemap = await readText('sitemap.xml');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');
-expect(index, 'rel="canonical" href="https://shush.pt"', 'canonical URL');
+expect(index, 'rel="canonical" href="https://shush.pt"', 'root canonical URL');
 expect(index, 'rel="preload" as="image" href="/assets/jersey/frontjersey.webp"', 'hero image preload');
 
 expect(notFound, '<meta name="robots" content="noindex,nofollow"', '404 noindex');
 expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 
-for (const route of [
-  '/esports/valorant/premier /index.html 200',
-  '/esports/valorant/roster /index.html 200',
-  '/content /index.html 200',
-  '/products/jersey /index.html 200',
-  '/company /index.html 200',
-]) {
-  expect(redirects, route, `SPA route ${route.split(' ')[0]}`);
+for (const [path, canonical, title] of routeFiles) {
+  const html = await readText(path);
+  expect(html, `<title>${title}</title>`, `${path} title`);
+  expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
+  expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
+  expect(html, '<meta name="robots" content="index,follow"', `${path} robots`);
 }
+
+for (const route of [
+  '/esports /esports/valorant/premier 301',
+  '/products /products/jersey 301',
+  '/company/partners /company#partners 301',
+]) {
+  expect(redirects, route, `canonical redirect ${route.split(' ')[0]}`);
+}
+
+expectAbsent(redirects, '/index.html 200', 'root SPA rewrite that would bypass route metadata');
 
 expect(headers, 'Content-Security-Policy:', 'CSP header');
 expect(headers, "frame-ancestors 'none'", 'CSP frame protection');
@@ -76,7 +93,9 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Distribution validation passed (${requiredFiles.length} required files + metadata/routes/security checks).`);
+console.log(
+  `Distribution validation passed (${requiredFiles.length} required files + route metadata + redirects + security checks).`,
+);
 
 async function readText(path) {
   try {
@@ -88,4 +107,8 @@ async function readText(path) {
 
 function expect(content, needle, label) {
   if (!content.includes(needle)) failures.push(`Missing ${label}`);
+}
+
+function expectAbsent(content, needle, label) {
+  if (content.includes(needle)) failures.push(`Unexpected ${label}`);
 }
