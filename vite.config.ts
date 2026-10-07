@@ -62,9 +62,11 @@ function staticRouteMetadata(): Plugin {
         html = setMeta(html, 'property', 'og:description', metadata.description);
         html = setMeta(html, 'property', 'og:url', canonical);
         html = setMeta(html, 'property', 'og:image', image);
+        html = setMeta(html, 'property', 'og:image:alt', metadata.title);
         html = setMeta(html, 'name', 'twitter:title', metadata.title);
         html = setMeta(html, 'name', 'twitter:description', metadata.description);
         html = setMeta(html, 'name', 'twitter:image', image);
+        html = setMeta(html, 'name', 'twitter:image:alt', metadata.title);
 
         if (route !== '/products/jersey') {
           html = html.replace(
