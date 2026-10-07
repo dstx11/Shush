@@ -24,7 +24,7 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '9.4.1'
+          gradle-version: '9.6.0'
 
       - name: Migrate mappings
         working-directory: dap-src
@@ -50,7 +50,7 @@ jobs:
 
           p=Path("build.gradle")
           s=p.read_text()
-          s=s.replace("id 'net.fabricmc.fabric-loom-remap' version \"\${loom_version}\"","id 'net.fabricmc.fabric-loom' version \"\${loom_version}\"")
+          s=s.replace("net.fabricmc.fabric-loom-remap","net.fabricmc.fabric-loom")
           s=s.replace('    mappings "net.fabricmc:yarn:\${project.yarn_mappings}:v2"\n','')
           s=s.replace("options.release = 21","options.release = 25").replace("JavaVersion.VERSION_21","JavaVersion.VERSION_25")
           s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
@@ -65,11 +65,6 @@ jobs:
           p.write_text(p.read_text().replace('"compatibilityLevel": "JAVA_21"','"compatibilityLevel": "JAVA_25"'))
           PY
 
-      - name: Gradle 9.6
-        working-directory: dap-src
-        run: |
-          gradle wrapper --gradle-version 9.6.0
-          gradle --version
 
       - name: Compile
         id: compile
