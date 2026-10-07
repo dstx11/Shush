@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { CheckCircle2, Shirt } from 'lucide-react';
 import { JerseyCustomizer } from './JerseyCustomizer';
 
 const jerseyViews = {
@@ -109,8 +108,8 @@ export function DropSection() {
             </div>
 
             <div className="audit-drop-facts">
-              <span><Shirt aria-hidden="true" className="h-4 w-4" /> Frente + verso</span>
-              <span><CheckCircle2 aria-hidden="true" className="h-4 w-4" /> Pedido manual</span>
+              <span>Frente + verso</span>
+              <span>Pedido manual</span>
               <span>Nick + número + tamanho</span>
             </div>
           </div>
