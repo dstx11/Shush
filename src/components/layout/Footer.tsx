@@ -1,4 +1,3 @@
-import { ExternalLink } from 'lucide-react';
 import { footerLinks } from '../../data/nav';
 import { creators } from '../../data/players';
 import { AppLink } from '../ui/AppLink';
@@ -27,7 +26,7 @@ export function Footer() {
           {creators.map((creator) => (
             <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
               {creator.displayName}
-              <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
+              <span aria-hidden="true">↗</span>
             </a>
           ))}
         </div>
@@ -37,7 +36,7 @@ export function Footer() {
           <a href="https://backora.org/" target="_blank" rel="noreferrer">
             <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" />
             Backora
-            <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
+            <span aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
