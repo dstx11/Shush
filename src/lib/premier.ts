@@ -9,15 +9,15 @@ export type PlayoffPlacement =
   | null;
 
 export type PublicMatchDayState =
-  | { kind: 'champions'; title: 'PREMIER CHAMPIONS'; detail: string; result?: MatchResult }
-  | { kind: 'playoffs_live'; title: 'PLAY-OFFS LIVE'; detail: string }
-  | { kind: 'match_day_live'; title: 'MATCH DAY LIVE'; week: PremierWeek; day: PremierPlayDay; detail: string; showStreams: boolean }
-  | { kind: 'upcoming'; title: 'NEXT PREMIER WINDOW'; week: PremierWeek; day: PremierPlayDay; detail: string }
-  | { kind: 'result_pending'; title: 'RESULT PENDING'; week: PremierWeek; day: PremierPlayDay; detail: string }
-  | { kind: 'last_result'; title: 'LAST RESULT'; detail: string; result: MatchResult }
-  | { kind: 'qualified'; title: 'QUALIFIED FOR PREMIER PLAY-OFFS'; detail: string }
-  | { kind: 'eliminated'; title: 'PREMIER RUN ENDED'; detail: string }
-  | { kind: 'season_active'; title: 'Premier Season active'; detail: 'Próxima janela por definir' };
+  | { kind: 'champions'; title: 'CAMPEÕES PREMIER'; detail: string; result?: MatchResult }
+  | { kind: 'playoffs_live'; title: 'PLAY-OFFS EM DIRETO'; detail: string }
+  | { kind: 'match_day_live'; title: 'MATCH DAY EM DIRETO'; week: PremierWeek; day: PremierPlayDay; detail: string; showStreams: boolean }
+  | { kind: 'upcoming'; title: 'PRÓXIMA JANELA PREMIER'; week: PremierWeek; day: PremierPlayDay; detail: string }
+  | { kind: 'result_pending'; title: 'RESULTADO POR CONFIRMAR'; week: PremierWeek; day: PremierPlayDay; detail: string }
+  | { kind: 'last_result'; title: 'ÚLTIMO RESULTADO'; detail: string; result: MatchResult }
+  | { kind: 'qualified'; title: 'QUALIFICADOS PARA OS PLAY-OFFS'; detail: string }
+  | { kind: 'eliminated'; title: 'PERCURSO PREMIER TERMINADO'; detail: string }
+  | { kind: 'season_active'; title: 'PREMIER ATIVO'; detail: 'Próxima janela por definir' };
 
 export function pointsForResult(result: MatchResult, season: Pick<PremierSeason, 'winPoints' | 'lossPoints'>) {
   if (result.outcome === 'win') return season.winPoints;
@@ -82,19 +82,36 @@ export function calculateSeasonStatus(season: PremierSeason, now = new Date()): 
   return 'Regular Season';
 }
 
+export function formatSeasonStatus(status: SeasonStatus) {
+  switch (status) {
+    case 'Regular Season':
+      return 'Fase regular';
+    case 'Qualified':
+      return 'Qualificados';
+    case 'Play-offs':
+      return 'Play-offs';
+    case 'Champions':
+      return 'Campeões';
+    case 'Eliminated before play-offs':
+      return 'Eliminados antes dos play-offs';
+    case 'Finished':
+      return 'Terminado';
+  }
+}
+
 export function calculatePublicMatchDayState(season: PremierSeason, now = new Date()): PublicMatchDayState {
   const score = calculatePremierScore(season);
   const placement = calculatePlayoffPlacement(season.playoffResults);
   const latestPlayoffResult = getLatestResult(season.playoffResults, now);
 
   if (placement?.status === 'champions' && latestPlayoffResult && daysBetween(new Date(latestPlayoffResult.date), now) <= 21) {
-    return { kind: 'champions', title: 'PREMIER CHAMPIONS', detail: 'Resultado final publicado pela equipa.', result: latestPlayoffResult };
+    return { kind: 'champions', title: 'CAMPEÕES PREMIER', detail: 'Resultado final publicado pela equipa.', result: latestPlayoffResult };
   }
 
   const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart);
   const playoffsEnd = addMinutes(makeDateTime(season.playoffsDate, season.playoffsWindowEnd), 40);
   if (score >= season.qualificationPoints && now >= playoffsStart && now <= playoffsEnd && placement?.status !== 'champions') {
-    return { kind: 'playoffs_live', title: 'PLAY-OFFS LIVE', detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}` };
+    return { kind: 'playoffs_live', title: 'PLAY-OFFS EM DIRETO', detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}` };
   }
 
   const liveRegular = getAllPlayDays(season).find(({ day }) => {
@@ -106,7 +123,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (liveRegular) {
     return {
       kind: 'match_day_live',
-      title: 'MATCH DAY LIVE',
+      title: 'MATCH DAY EM DIRETO',
       week: liveRegular.week,
       day: liveRegular.day,
       detail: `Premier · ${liveRegular.week.map ?? 'Mapa por definir'}`,
@@ -121,7 +138,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (upcoming) {
     return {
       kind: 'upcoming',
-      title: 'NEXT PREMIER WINDOW',
+      title: 'PRÓXIMA JANELA PREMIER',
       week: upcoming.week,
       day: upcoming.day,
       detail: `${upcoming.week.map ?? 'Mapa por definir'} · ${formatDate(upcoming.day.date)} · ${upcoming.day.windowStart}-${upcoming.day.windowEnd}`,
@@ -132,7 +149,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (seasonStatus === 'Qualified') {
     return {
       kind: 'qualified',
-      title: 'QUALIFIED FOR PREMIER PLAY-OFFS',
+      title: 'QUALIFICADOS PARA OS PLAY-OFFS',
       detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}`,
     };
   }
@@ -140,8 +157,8 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (seasonStatus === 'Eliminated before play-offs' || seasonStatus === 'Finished') {
     return {
       kind: 'eliminated',
-      title: 'PREMIER RUN ENDED',
-      detail: `Final score: ${score} / ${season.qualificationPoints}`,
+      title: 'PERCURSO PREMIER TERMINADO',
+      detail: `Pontuação final: ${score} / ${season.qualificationPoints}`,
     };
   }
 
@@ -152,7 +169,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (pending) {
     return {
       kind: 'result_pending',
-      title: 'RESULT PENDING',
+      title: 'RESULTADO POR CONFIRMAR',
       week: pending.week,
       day: pending.day,
       detail: `Premier · ${pending.week.map ?? 'Mapa por definir'}`,
@@ -163,13 +180,13 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (latestResult) {
     return {
       kind: 'last_result',
-      title: 'LAST RESULT',
+      title: 'ÚLTIMO RESULTADO',
       detail: `${formatDate(latestResult.date)} · ${latestResult.tournamentName} · ${latestResult.map ?? 'Mapa por definir'}`,
       result: latestResult,
     };
   }
 
-  return { kind: 'season_active', title: 'Premier Season active', detail: 'Próxima janela por definir' };
+  return { kind: 'season_active', title: 'PREMIER ATIVO', detail: 'Próxima janela por definir' };
 }
 
 export function formatResultLine(result: MatchResult) {
