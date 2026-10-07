@@ -33,7 +33,6 @@ Use only:
 - React
 - TypeScript
 - Tailwind CSS
-- lucide-react
 
 Do not add:
 - Next.js
