@@ -43,7 +43,8 @@ jobs:
             "loader_version=0.18.4":"loader_version=0.19.5",
             "loom_version=1.15-SNAPSHOT":"loom_version=1.17.21",
             "fabric_api_version=0.141.3+1.21.11":"fabric_api_version=0.161.0+26.3",
-            "mod_version=3.0.0+mc-1.21.11-alpha-2":"mod_version=3.0.0+mc-26.3-port"
+            "mod_version=3.0.0+mc-1.21.11-alpha-2":"mod_version=3.0.0+mc-26.3-port",
+            "pal_version = 1.1.6+mc.1.21.11":"pal_version = 1.2.8+mc.26.3"
           }.items(): s=s.replace(a,b)
           s="\n".join(x for x in s.splitlines() if not x.startswith("yarn_mappings="))+"\n"
           p.write_text(s)
@@ -67,7 +68,7 @@ jobs:
           p.write_text(s)
 
           p=Path("src/main/resources/fabric.mod.json")
-          s=p.read_text().replace('"fabricloader": ">=0.18.4"','"fabricloader": ">=0.19.5"').replace('"minecraft": "~1.21.11"','"minecraft": "~26.3"').replace('"java": ">=21"','"java": ">=25"').replace('"player_animation_library": ">=1.1.6"','"player_animation_library": ">=1.2.7"')
+          s=p.read_text().replace('"fabricloader": ">=0.18.4"','"fabricloader": ">=0.19.5"').replace('"minecraft": "~1.21.11"','"minecraft": "~26.3"').replace('"java": ">=21"','"java": ">=25"').replace('"player_animation_library": ">=1.1.6"','"player_animation_library": ">=1.2.8"')
           p.write_text(s)
           p=Path("src/main/resources/testcoop.mixins.json")
           p.write_text(p.read_text().replace('"compatibilityLevel": "JAVA_21"','"compatibilityLevel": "JAVA_25"'))
