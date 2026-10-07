@@ -68,16 +68,17 @@ function useRouteMetadata(pathname: string) {
     const metadata = routeMetadata[pathname] ?? defaultMetadata;
     const canonicalUrl = `${siteUrl}${pathname === '/' ? '' : pathname}`;
     const image = metadata.image ?? defaultMetadata.image ?? '/assets/jersey/frontjersey.webp';
+    const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
     document.title = metadata.title;
     setMeta('meta[name="description"]', metadata.description);
     setMeta('meta[property="og:title"]', metadata.title);
     setMeta('meta[property="og:description"]', metadata.description);
     setMeta('meta[property="og:url"]', canonicalUrl);
-    setMeta('meta[property="og:image"]', image);
+    setMeta('meta[property="og:image"]', absoluteImage);
     setMeta('meta[name="twitter:title"]', metadata.title);
     setMeta('meta[name="twitter:description"]', metadata.description);
-    setMeta('meta[name="twitter:image"]', image);
+    setMeta('meta[name="twitter:image"]', absoluteImage);
     setCanonical(canonicalUrl);
   }, [pathname]);
 }
