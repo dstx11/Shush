@@ -133,7 +133,7 @@ button {
   min-height: 82svh;
 }
 
-.motion-rail {
+.accent-rail {
   display: block;
   width: min(10rem, 52vw);
   height: 2px;
@@ -142,7 +142,7 @@ button {
   transform-origin: left center;
 }
 
-.motion-status-badge {
+.status-badge {
   display: inline-flex;
   width: fit-content;
   align-items: center;
