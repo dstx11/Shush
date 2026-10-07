@@ -15,7 +15,7 @@ export function Button({ children, variant = 'primary', className = '', ...props
       : 'border border-white/15 bg-shush-surface2 text-shush-text hover:border-shush-purpleGlow hover:bg-shush-surface';
 
   return (
-    <AppLink className={`${base} motion-button ${styles} ${className}`} {...props}>
+    <AppLink className={`${base} site-button ${styles} ${className}`} {...props}>
       <span>{children}</span>
       <span aria-hidden="true" className="button-arrow transition group-hover:translate-x-1">→</span>
     </AppLink>
