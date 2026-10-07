@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
 import { activePremierSeason } from '../../data/season';
-import { motionPresets } from '../../lib/motion';
 import { calculatePublicMatchDayState } from '../../lib/premier';
 import { StatusBadge } from '../motion/MotionPrimitives';
 import { AppLink } from '../ui/AppLink';
@@ -14,7 +12,6 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const activePath = normalizePath(location.pathname);
-  const reduceMotion = useReducedMotion();
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
@@ -54,6 +51,7 @@ export function Header() {
 
     window.addEventListener('keydown', onKeyDown);
     document.addEventListener('pointerdown', onPointerDown);
+
     return () => {
       document.body.style.overflow = previousOverflow;
       window.cancelAnimationFrame(focusFrame);
@@ -69,12 +67,7 @@ export function Header() {
   };
 
   return (
-    <motion.header
-      className={`site-header fixed left-0 right-0 top-0 z-50 px-4 py-3 ${isScrolled ? 'is-scrolled' : ''}`}
-      initial={reduceMotion ? false : { opacity: 0, y: -12 }}
-      animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      transition={reduceMotion ? undefined : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-    >
+    <header className={`site-header fixed left-0 right-0 top-0 z-50 px-4 py-3 ${isScrolled ? 'is-scrolled' : ''}`}>
       <nav ref={navRef} className="site-nav relative mx-auto flex max-w-7xl items-center justify-between" aria-label="Navegação principal">
         <AppLink href="/" className="brand-mark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
           <img src="/assets/brand/shush-logo.webp" alt="" width="1167" height="647" className="h-8 w-auto" />
@@ -111,35 +104,29 @@ export function Header() {
           {isOpen ? <X aria-hidden="true" className="h-5 w-5" /> : <Menu aria-hidden="true" className="h-5 w-5" />}
         </button>
 
-        <AnimatePresence>
-          {isOpen ? (
-            <motion.div
-              ref={mobilePanelRef}
-              id="mobile-navigation"
-              className="mobile-nav-panel absolute left-0 right-0 top-[calc(100%+.65rem)] p-2 md:hidden"
-              variants={reduceMotion ? undefined : motionPresets.dropdown}
-              initial={reduceMotion ? false : 'hidden'}
-              animate={reduceMotion ? undefined : 'visible'}
-              exit={reduceMotion ? undefined : 'exit'}
-            >
-              <div className="grid gap-1">
-                {navItems.map((item) => (
-                  <AppLink
-                    key={item.href}
-                    href={item.href}
-                    aria-current={isActive(item.href) ? 'page' : undefined}
-                    onClick={() => setIsOpen(false)}
-                    className={`mobile-nav-link ${isActive(item.href) ? 'is-active' : ''}`}
-                  >
-                    <span>{item.label}</span>
-                  </AppLink>
-                ))}
-              </div>
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+        {isOpen ? (
+          <div
+            ref={mobilePanelRef}
+            id="mobile-navigation"
+            className="mobile-nav-panel mobile-panel-enter absolute left-0 right-0 top-[calc(100%+.65rem)] p-2 md:hidden"
+          >
+            <div className="grid gap-1">
+              {navItems.map((item) => (
+                <AppLink
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  onClick={() => setIsOpen(false)}
+                  className={`mobile-nav-link ${isActive(item.href) ? 'is-active' : ''}`}
+                >
+                  <span>{item.label}</span>
+                </AppLink>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </nav>
-    </motion.header>
+    </header>
   );
 }
 
