@@ -1,4 +1,4 @@
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir, stat } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join } from 'node:path';
 
@@ -76,6 +76,8 @@ expect(headers, 'Content-Security-Policy:', 'CSP header');
 expect(headers, "frame-ancestors 'none'", 'CSP frame protection');
 expect(robots, 'Sitemap: https://shush.pt/sitemap.xml', 'robots sitemap');
 
+await validateAssetBudgets();
+
 for (const url of [
   'https://shush.pt/',
   'https://shush.pt/esports/valorant/premier',
@@ -111,4 +113,44 @@ function expect(content, needle, label) {
 
 function expectAbsent(content, needle, label) {
   if (content.includes(needle)) failures.push(`Unexpected ${label}`);
+}
+
+async function validateAssetBudgets() {
+  const assetsDir = join(dist, 'assets');
+  const entries = await readdir(assetsDir);
+  const jsFiles = entries.filter((name) => name.endsWith('.js'));
+  const cssFiles = entries.filter((name) => name.endsWith('.css'));
+
+  const largestJs = await largestFile(jsFiles, assetsDir);
+  const largestCss = await largestFile(cssFiles, assetsDir);
+
+  const maxMainJsBytes = 320 * 1024;
+  const maxMainCssBytes = 70 * 1024;
+
+  if (largestJs && largestJs.bytes > maxMainJsBytes) {
+    failures.push(
+      `JS budget exceeded: ${largestJs.name} is ${formatKb(largestJs.bytes)} kB (budget 320 kB)`,
+    );
+  }
+
+  if (largestCss && largestCss.bytes > maxMainCssBytes) {
+    failures.push(
+      `CSS budget exceeded: ${largestCss.name} is ${formatKb(largestCss.bytes)} kB (budget 70 kB)`,
+    );
+  }
+}
+
+async function largestFile(files, directory) {
+  let largest = null;
+
+  for (const name of files) {
+    const info = await stat(join(directory, name));
+    if (!largest || info.size > largest.bytes) largest = { name, bytes: info.size };
+  }
+
+  return largest;
+}
+
+function formatKb(bytes) {
+  return (bytes / 1024).toFixed(2);
 }
