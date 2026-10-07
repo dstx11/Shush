@@ -1,4 +1,6 @@
-type PageModule = { default: React.ComponentType };
+import type { ComponentType } from 'react';
+
+type PageModule = { default: ComponentType };
 
 function once<T>(loader: () => Promise<T>) {
   let promise: Promise<T> | undefined;
