@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
 import { activePremierSeason } from '../../data/season';
 import { calculatePublicMatchDayState } from '../../lib/premier';
-import { StatusBadge } from '../motion/MotionPrimitives';
+import { StatusBadge } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 
 export function Header() {
