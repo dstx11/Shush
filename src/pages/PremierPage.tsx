@@ -7,6 +7,7 @@ import {
   calculateSeasonStatus,
   formatDate,
   formatResultLine,
+  formatSeasonStatus,
 } from '../lib/premier';
 
 const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8';
@@ -36,18 +37,18 @@ export function PremierPage() {
                 <p>{state.detail}</p>
               </div>
               <Button href={trackerTeamUrl} target="_blank" rel="noreferrer" variant="secondary">
-                Tracker team
+                Tracker da equipa
               </Button>
             </div>
           </Reveal>
 
           <Reveal className="audit-score-card" delay={0.06}>
-            <span>Premier score</span>
+            <span>Pontuação Premier</span>
             <div>
               <strong>{score}</strong>
               <small>/ {activePremierSeason.qualificationPoints}</small>
             </div>
-            <p>{status}</p>
+            <p>{formatSeasonStatus(status)}</p>
           </Reveal>
         </div>
       </section>
@@ -78,7 +79,7 @@ export function PremierPage() {
               <div className="audit-section-heading">
                 <div>
                   <span className="section-kicker">Calendário</span>
-                  <h2>Season publicada</h2>
+                  <h2>Fase publicada</h2>
                 </div>
                 <span className="audit-section-mark" aria-hidden="true">P</span>
               </div>
