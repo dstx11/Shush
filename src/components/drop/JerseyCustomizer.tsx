@@ -1,4 +1,3 @@
-import { Check, Copy } from 'lucide-react';
 
 type JerseyCustomizerProps = {
   name: string;
@@ -91,7 +90,7 @@ export function JerseyCustomizer({
         className={`audit-copy-button ${copyStatus === 'failed' ? 'is-error' : ''}`}
         aria-live="polite"
       >
-        {copyStatus === 'copied' ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
+        <span aria-hidden="true">{copyStatus === 'copied' ? '✓' : '⧉'}</span>
         {copyStatus === 'copied' ? 'Pedido copiado' : copyStatus === 'failed' ? 'Seleciona o texto manualmente' : 'Copiar pedido'}
       </button>
     </div>
