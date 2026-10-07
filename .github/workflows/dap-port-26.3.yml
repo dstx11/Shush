@@ -37,7 +37,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl-mesa0 \
-            libvulkan1 mesa-vulkan-drivers
+            libvulkan1 mesa-vulkan-drivers imagemagick
 
       - name: Fetch DAP 26.3 source baseline
         run: |
@@ -87,8 +87,19 @@ jobs:
           echo "runClient exit code: $rc"
           tail -n 250 ../dap-client-smoke.log || true
 
-          if grep -Eiq "Mixin.*(failed|error)|MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|BackendCreationException|Failed to create backend|The game crashed" ../dap-client-smoke.log; then
+          if grep -Eiq "Mixin.*(failed|error)|MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|The game crashed" ../dap-client-smoke.log; then
             echo "Fatal startup signature found in client log."
+            exit 1
+          fi
+
+          if grep -Eiq "BackendCreationException|Failed to create backend" ../dap-client-smoke.log \
+             && ! grep -Eiq "Using graphics backend Vulkan|Created window using SDL video driver" ../dap-client-smoke.log; then
+            echo "All graphics backends failed."
+            exit 1
+          fi
+
+          if grep -Eiq "Invalid path in mod resource-pack testcoop|Using missing texture, unable to load testcoop:mob_effect/mahito|Bad PNG Signature" ../dap-client-smoke.log; then
+            echo "DAP resource validation failed."
             exit 1
           fi
 
@@ -137,8 +148,19 @@ jobs:
           echo "Shush Cozy runClient exit code: $rc"
           tail -n 350 ../dap-shush-cozy-smoke.log || true
 
-          if grep -Eiq "MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|Incompatible mod set|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|BackendCreationException|Failed to create backend|The game crashed|Uncaught exception in thread" ../dap-shush-cozy-smoke.log; then
+          if grep -Eiq "MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|Incompatible mod set|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|The game crashed|Uncaught exception in thread" ../dap-shush-cozy-smoke.log; then
             echo "Fatal compatibility signature found in Shush Cozy client log."
+            exit 1
+          fi
+
+          if grep -Eiq "BackendCreationException|Failed to create backend" ../dap-shush-cozy-smoke.log \
+             && ! grep -Eiq "Using graphics backend Vulkan|Created window using SDL video driver" ../dap-shush-cozy-smoke.log; then
+            echo "All graphics backends failed in Shush Cozy test."
+            exit 1
+          fi
+
+          if grep -Eiq "Invalid path in mod resource-pack testcoop|Using missing texture, unable to load testcoop:mob_effect/mahito|Bad PNG Signature" ../dap-shush-cozy-smoke.log; then
+            echo "DAP resource validation failed in Shush Cozy test."
             exit 1
           fi
 
