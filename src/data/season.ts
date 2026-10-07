@@ -1,6 +1,3 @@
-import type { Player } from './players';
-import { players } from './players';
-
 export type MatchOutcome = 'win' | 'loss' | 'bye' | 'cancelled';
 export type Platform = 'twitch' | 'youtube' | 'other';
 
@@ -46,16 +43,6 @@ export type PlayoffResult = MatchResult & {
   playoffRound: 1 | 2 | 3;
 };
 
-export type TournamentResult = {
-  id: string;
-  seasonId: string;
-  tournamentName: string;
-  finalStatus: 'champions' | '2nd' | '3rd-4th' | '5th-8th' | 'eliminated_before_playoffs';
-  finalScore?: number;
-  qualificationPoints?: number;
-  createdAt: string;
-};
-
 export type PremierSeason = {
   id: string;
   name: string;
@@ -75,6 +62,7 @@ export type PremierSeason = {
 };
 
 const mainFive = ['dstx', 'more', 'th0maz7', 'lyel', 'tz'];
+
 const creatorStreams: StreamConfig[] = [
   {
     playerId: 'more',
@@ -90,7 +78,9 @@ const creatorStreams: StreamConfig[] = [
   },
 ];
 
-const baseSeason = {
+export const activePremierSeason: PremierSeason = {
+  id: 'premier-stage-2026-local',
+  name: 'Premier Stage 2026',
   tournamentName: 'Premier',
   timezone: 'Europe/Lisbon',
   winPoints: 100,
@@ -101,12 +91,6 @@ const baseSeason = {
   playoffsDate: '2026-07-26',
   playoffsWindowStart: '18:00',
   playoffsWindowEnd: '21:00',
-};
-
-export const activePremierSeason: PremierSeason = {
-  id: 'premier-stage-2026-local',
-  name: 'Premier Stage 2026',
-  ...baseSeason,
   weeks: [
     {
       id: 'week-1',
@@ -194,172 +178,3 @@ export const activePremierSeason: PremierSeason = {
   ],
   playoffResults: [],
 };
-
-const scenarioWeeks: PremierWeek[] = activePremierSeason.weeks.map((week) => ({ ...week, selectedDays: [...week.selectedDays] }));
-
-export const premierScenarioSeasons: Record<string, PremierSeason> = {
-  resultPending: {
-    ...activePremierSeason,
-    id: 'scenario-result-pending',
-    name: 'Scenario Result Pending',
-    weeks: [
-      {
-        id: 'pending-week',
-        weekNumber: 1,
-        map: 'Bind',
-        selectedDays: [{ id: 'pending-day', date: '2026-06-24', windowStart: '18:00', windowEnd: '19:00' }],
-        convocados: mainFive,
-        streams: creatorStreams,
-      },
-    ],
-    results: [],
-    playoffResults: [],
-  },
-  qualified: {
-    ...activePremierSeason,
-    id: 'scenario-qualified',
-    name: 'Scenario Qualified',
-    weeks: scenarioWeeks,
-    results: Array.from({ length: 6 }, (_, index) => ({
-      id: `qualified-win-${index + 1}`,
-      date: `2026-06-${String(1 + index).padStart(2, '0')}`,
-      tournamentName: 'Premier',
-      phase: 'regular' as const,
-      map: 'Haven',
-      outcome: 'win' as const,
-      shushScore: 13,
-      opponentScore: 9,
-    })),
-    playoffResults: [],
-  },
-  eliminatedBeforePlayoffs: {
-    ...activePremierSeason,
-    id: 'scenario-eliminated-before-playoffs',
-    name: 'Scenario Eliminated Before Play-offs',
-    playoffsDate: '2026-06-25',
-    weeks: scenarioWeeks,
-    results: Array.from({ length: 7 }, (_, index) => ({
-      id: `eliminated-loss-${index + 1}`,
-      date: `2026-06-${String(1 + index).padStart(2, '0')}`,
-      tournamentName: 'Premier',
-      phase: 'regular' as const,
-      map: 'Lotus',
-      outcome: 'loss' as const,
-      shushScore: 8,
-      opponentScore: 13,
-    })),
-    playoffResults: [],
-  },
-  playoffEliminated: {
-    ...activePremierSeason,
-    id: 'scenario-playoff-eliminated',
-    name: 'Scenario Play-off Eliminated',
-    results: Array.from({ length: 6 }, (_, index) => ({
-      id: `playoff-regular-win-${index + 1}`,
-      date: `2026-06-${String(1 + index).padStart(2, '0')}`,
-      tournamentName: 'Premier',
-      phase: 'regular' as const,
-      map: 'Split',
-      outcome: 'win' as const,
-      shushScore: 13,
-      opponentScore: 7,
-    })),
-    playoffResults: [
-      {
-        id: 'playoff-game-1-loss',
-        date: '2026-07-26',
-        tournamentName: 'Premier',
-        phase: 'playoffs',
-        playoffRound: 1,
-        map: 'Bind',
-        outcome: 'loss',
-        shushScore: 9,
-        opponentScore: 13,
-      },
-    ],
-  },
-  champions: {
-    ...activePremierSeason,
-    id: 'scenario-champions',
-    name: 'Scenario Champions',
-    results: Array.from({ length: 6 }, (_, index) => ({
-      id: `champion-regular-win-${index + 1}`,
-      date: `2026-06-${String(1 + index).padStart(2, '0')}`,
-      tournamentName: 'Premier',
-      phase: 'regular' as const,
-      map: 'Ascent',
-      outcome: 'win' as const,
-      shushScore: 13,
-      opponentScore: 8,
-    })),
-    playoffResults: [
-      {
-        id: 'champions-game-1',
-        date: '2026-07-26',
-        tournamentName: 'Premier',
-        phase: 'playoffs',
-        playoffRound: 1,
-        map: 'Bind',
-        outcome: 'win',
-        shushScore: 13,
-        opponentScore: 10,
-      },
-      {
-        id: 'champions-game-2',
-        date: '2026-07-26',
-        tournamentName: 'Premier',
-        phase: 'playoffs',
-        playoffRound: 2,
-        map: 'Haven',
-        outcome: 'win',
-        shushScore: 13,
-        opponentScore: 11,
-      },
-      {
-        id: 'champions-final',
-        date: '2026-07-26',
-        tournamentName: 'Premier',
-        phase: 'playoffs',
-        playoffRound: 3,
-        map: 'Lotus',
-        outcome: 'win',
-        shushScore: 13,
-        opponentScore: 9,
-      },
-    ],
-  },
-};
-
-export const tournamentResults: TournamentResult[] = [
-  {
-    id: 'result-sample-champions',
-    seasonId: 'scenario-champions',
-    tournamentName: 'Premier Stage 2026',
-    finalStatus: 'champions',
-    finalScore: 600,
-    qualificationPoints: 600,
-    createdAt: '2026-07-26',
-  },
-  {
-    id: 'result-sample-playoff-eliminated',
-    seasonId: 'scenario-playoff-eliminated',
-    tournamentName: 'Premier Stage 2026',
-    finalStatus: '5th-8th',
-    finalScore: 600,
-    qualificationPoints: 600,
-    createdAt: '2026-07-26',
-  },
-  {
-    id: 'result-sample-eliminated',
-    seasonId: 'scenario-eliminated-before-playoffs',
-    tournamentName: 'Premier Stage 2026',
-    finalStatus: 'eliminated_before_playoffs',
-    finalScore: 175,
-    qualificationPoints: 600,
-    createdAt: '2026-06-25',
-  },
-];
-
-export function getPlayersByIds(ids: string[]): Player[] {
-  return ids.map((id) => players.find((player) => player.id === id)).filter((player): player is Player => Boolean(player));
-}
