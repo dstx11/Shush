@@ -70,7 +70,7 @@ export function Header() {
 
   return (
     <motion.header
-      className={`fixed left-0 right-0 top-0 z-50 px-4 py-3 ${isScrolled ? 'is-scrolled' : ''}`}
+      className={`site-header fixed left-0 right-0 top-0 z-50 px-4 py-3 ${isScrolled ? 'is-scrolled' : ''}`}
       initial={reduceMotion ? false : { opacity: 0, y: -12 }}
       animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       transition={reduceMotion ? undefined : { duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
