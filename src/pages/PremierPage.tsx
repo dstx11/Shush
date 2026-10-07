@@ -1,4 +1,3 @@
-import { ExternalLink, Trophy } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Reveal } from '../components/ui/Reveal';
 import { activePremierSeason } from '../data/season';
@@ -81,7 +80,7 @@ export function PremierPage() {
                   <span className="section-kicker">Calendário</span>
                   <h2>Season publicada</h2>
                 </div>
-                <Trophy aria-hidden="true" className="h-5 w-5" />
+                <span className="audit-section-mark" aria-hidden="true">P</span>
               </div>
 
               <div className="audit-week-list">
@@ -110,7 +109,7 @@ export function PremierPage() {
                   <h2>Jogos confirmados</h2>
                 </div>
                 <a href={trackerTeamUrl} target="_blank" rel="noreferrer" aria-label="Abrir Tracker">
-                  <ExternalLink aria-hidden="true" className="h-5 w-5" />
+                  <span aria-hidden="true">↗</span>
                 </a>
               </div>
 
