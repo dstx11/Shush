@@ -71,9 +71,29 @@ function RouteFallback() {
   );
 }
 
+const legacyRoutes = new Set([
+  '/esports',
+  '/esports/valorant',
+  '/esports/valorant/results',
+  '/esports/valorant/tournaments',
+  '/content/more',
+  '/content/th0maz7',
+  '/products',
+  '/products/jersey/custom',
+  '/company/partners',
+  '/company/contact',
+]);
+
 function useRouteMetadata(pathname: string) {
   useEffect(() => {
-    const metadata = routeMetadata[pathname] ?? defaultMetadata;
+    const isKnownRoute = Boolean(routeMetadata[pathname]) || legacyRoutes.has(pathname);
+    const metadata = isKnownRoute
+      ? routeMetadata[pathname] ?? defaultMetadata
+      : {
+          title: '404 — SHUSH',
+          description: 'Esta página não existe no site público da SHUSH.',
+          image: defaultMetadata.image,
+        };
     const canonicalUrl = `${siteUrl}${pathname === '/' ? '' : pathname}`;
     const image = metadata.image ?? defaultMetadata.image ?? '/assets/jersey/frontjersey.webp';
     const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
@@ -87,6 +107,7 @@ function useRouteMetadata(pathname: string) {
     setMeta('meta[name="twitter:title"]', metadata.title);
     setMeta('meta[name="twitter:description"]', metadata.description);
     setMeta('meta[name="twitter:image"]', absoluteImage);
+    setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow' : 'noindex,nofollow');
     setCanonical(canonicalUrl);
   }, [pathname]);
 }
