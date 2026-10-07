@@ -5,14 +5,6 @@ type PrimitiveProps = {
   className?: string;
 };
 
-export function AccentRail({ className = '' }: PrimitiveProps) {
-  return <span className={`accent-rail css-rail ${className}`} aria-hidden="true" />;
-}
-
 export function StatusBadge({ children, className = '', pulse = false }: PrimitiveProps & { pulse?: boolean }) {
   return <span className={`status-badge ${pulse ? 'is-pulse' : ''} ${className}`}>{children}</span>;
-}
-
-export function PlayerLockIndicator({ label = 'SELECIONADO' }: { label?: string }) {
-  return <span className="player-lock-indicator css-pop-in">{label}</span>;
 }

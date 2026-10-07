@@ -1,4 +1,5 @@
 import { creators } from '../../data/players';
+import { AppLink } from '../ui/AppLink';
 
 export function AboutSection() {
   return (
@@ -6,8 +7,8 @@ export function AboutSection() {
       <div className="about-shell css-reveal">
         <div className="audit-about-intro">
           <span className="section-kicker">About / SHUSH</span>
-          <h1 id="about-title">Competição, conteúdo e identidade.</h1>
-          <p>A SHUSH reúne Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
+          <h1 id="about-title">Uma equipa.<br />A mesma linguagem.</h1>
+          <p>Somos uma pequena organização de gaming. Jogamos Valorant Premier, reunimos creators e levamos a nossa identidade para o Drop 01.</p>
           <strong>Sem barulho. Só rounds.</strong>
         </div>
 
@@ -15,12 +16,13 @@ export function AboutSection() {
           <article>
             <span>01</span>
             <h2>Competitivo</h2>
-            <p>Premier e roster apresentados a partir dos dados que a equipa realmente publica.</p>
+            <p>Os rounds, o calendário e as pessoas que entram no servidor.</p>
+            <AppLink className="editorial-link" href="/esports/valorant/premier">Match Center <span aria-hidden="true">→</span></AppLink>
           </article>
           <article>
             <span>02</span>
             <h2>Creators</h2>
-            <p>Conteúdo ligado diretamente aos canais oficiais dos creators da SHUSH.</p>
+            <p>More e Th0maz7. A SHUSH também se acompanha fora do jogo.</p>
             <div className="audit-creator-links">
               {creators.map((creator) => (
                 <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
@@ -32,7 +34,8 @@ export function AboutSection() {
           <article>
             <span>03</span>
             <h2>Drop 01</h2>
-            <p>A jersey é o primeiro produto visível da SHUSH, com personalização preparada para pedido manual.</p>
+            <p>Preto, roxo e o teu nick. A nossa identidade, na tua camisola.</p>
+            <AppLink className="editorial-link" href="/products/jersey">Explorar Drop 01 <span aria-hidden="true">→</span></AppLink>
           </article>
         </div>
 

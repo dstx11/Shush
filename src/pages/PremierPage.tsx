@@ -30,7 +30,7 @@ export function PremierPage() {
           <Reveal className="audit-premier-intro">
             <span className="section-kicker">Valorant / Premier</span>
             <h1 id="premier-title">Match Center.</h1>
-            <p>Acompanha o estado competitivo da SHUSH num único sítio: pontuação, calendário e resultados publicados.</p>
+            <p>{activePremierSeason.name}. Pontuação, calendário e resultados publicados pela equipa.</p>
 
             <div className="audit-premier-state">
               <div>
@@ -50,6 +50,7 @@ export function PremierPage() {
               <strong>{score}</strong>
               <small>/ {activePremierSeason.qualificationPoints}</small>
             </div>
+            <meter min={0} max={activePremierSeason.qualificationPoints} value={Math.min(score, activePremierSeason.qualificationPoints)} aria-label="Pontuação publicada face ao limiar de qualificação" />
             <p>{formatSeasonStatus(status)}</p>
           </Reveal>
         </div>
@@ -77,7 +78,7 @@ export function PremierPage() {
           </div>
 
           <div className="audit-premier-columns">
-            <Reveal className="audit-premier-section">
+            <Reveal id="calendar" className="audit-premier-section scroll-mt-28">
               <div className="audit-section-heading">
                 <div>
                   <span className="section-kicker">Calendário</span>
@@ -95,7 +96,7 @@ export function PremierPage() {
                       <strong>{week.map ?? 'Mapa por definir'}</strong>
                       {week.selectedDays.length > 0 ? (
                         week.selectedDays.map((day) => (
-                          <small key={day.id}>{formatDate(day.date)} · {day.windowStart}-{day.windowEnd}</small>
+                          <small key={day.id}><time dateTime={day.date}>{formatDate(day.date)}</time> · {day.windowStart}–{day.windowEnd}</small>
                         ))
                       ) : (
                         <small>Sem dia publicado</small>
@@ -122,10 +123,10 @@ export function PremierPage() {
                   completedResults.map((result) => (
                     <article key={result.id} className={`audit-result-row is-${result.outcome}`}>
                       <div>
-                        <span>{formatDate(result.date)}</span>
+                        <time dateTime={result.date}>{formatDate(result.date)}</time>
                         <small>{result.map ?? 'Mapa por definir'}</small>
                       </div>
-                      <strong>{formatResultLine(result)}</strong>
+                      <strong><span className="sr-only">{result.outcome === 'win' ? 'Vitória: ' : 'Derrota: '}</span>{formatResultLine(result)}</strong>
                     </article>
                   ))
                 ) : (

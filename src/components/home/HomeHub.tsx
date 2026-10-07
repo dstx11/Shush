@@ -5,13 +5,13 @@ import { usePremierClock } from '../../lib/use-premier-clock';
 import { StatusBadge } from '../ui/VisualPrimitives';
 import { Button } from '../ui/Button';
 import { Reveal } from '../ui/Reveal';
+import { AppLink } from '../ui/AppLink';
 
 export function HomeHub() {
   const now = usePremierClock();
   const state = calculatePublicMatchDayState(activePremierSeason, now);
   const status = calculateSeasonStatus(activePremierSeason, now);
   const score = calculatePremierScore(activePremierSeason);
-  const rosterPreview = players.slice(0, 5);
 
   return (
     <section id="match-day" className="home-hub scroll-mt-28 px-5 py-20" aria-labelledby="home-hub-title">
@@ -19,9 +19,9 @@ export function HomeHub() {
         <Reveal className="hub-editorial-head">
           <div>
             <span className="section-kicker">SHUSH / agora</span>
-            <h2 id="home-hub-title">Tudo o que interessa, sem ruído.</h2>
+            <h2 id="home-hub-title">Dentro e fora<br />do servidor.</h2>
           </div>
-          <p>Premier, roster, creators e Drop 01 — os pontos centrais da SHUSH num só sítio.</p>
+          <p>A competição é o ponto de partida.<br />O roster, os creators e a camisola completam a SHUSH.</p>
         </Reveal>
 
         <div className="hub-editorial-grid">
@@ -34,7 +34,7 @@ export function HomeHub() {
               <h3>{state.title}</h3>
               <p>{state.detail}</p>
             </div>
-            <div className="hub-scoreline" aria-label={`Premier score ${score} de ${activePremierSeason.qualificationPoints}`}>
+            <div className="hub-scoreline" aria-label={`Pontuação publicada: ${score} de ${activePremierSeason.qualificationPoints}`}>
               <strong>{score}</strong>
               <span>/ {activePremierSeason.qualificationPoints}</span>
             </div>
@@ -47,14 +47,15 @@ export function HomeHub() {
               <small>{players.length} jogadores</small>
             </div>
             <div className="hub-avatar-row" aria-label="Jogadores SHUSH">
-              {rosterPreview.map((player) => (
-                <span key={player.id} title={player.displayName}>
-                  {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : player.initials}
-                </span>
+              {players.map((player) => (
+                <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`} aria-label={`Conhecer ${player.displayName}`}>
+                  <span>{player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : player.initials}</span>
+                  <small>{player.displayName}</small>
+                </AppLink>
               ))}
             </div>
-            <h3>Lineup pública.</h3>
-            <p>Funções claras, presença de equipa e perfis públicos quando disponíveis.</p>
+            <h3>Quem entra no lobby.</h3>
+            <p>{players.length} nomes, a mesma camisola.</p>
             <Button href="/esports/valorant/roster" variant="secondary">Ver roster</Button>
           </Reveal>
 
@@ -81,7 +82,7 @@ export function HomeHub() {
             </div>
             <div>
               <h3>Jersey SHUSH</h3>
-              <p>Frente, verso e personalização manual.</p>
+              <p>Preto. Roxo. O teu nick.</p>
             </div>
             <Button href="/products/jersey" variant="secondary">Ver Drop 01</Button>
           </Reveal>

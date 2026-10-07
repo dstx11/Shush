@@ -129,39 +129,11 @@ button {
   z-index: 4;
 }
 
-.home-identity-stage {
-  min-height: 82svh;
-}
-
-.accent-rail {
-  display: block;
-  width: min(10rem, 52vw);
-  height: 2px;
-  margin-top: .85rem;
-  background: linear-gradient(90deg, #6d35ff, #8b5cff 70%, transparent);
-  transform-origin: left center;
-}
-
 .status-badge {
   display: inline-flex;
   width: fit-content;
   align-items: center;
   gap: .4rem;
-}
-
-.player-lock-indicator {
-  display: inline-flex;
-  width: fit-content;
-  margin-bottom: .3rem;
-  border: 1px solid rgba(109, 53, 255, .4);
-  border-radius: .35rem;
-  background: rgba(35, 16, 68, .72);
-  padding: .3rem .55rem;
-  color: #d7caff;
-  font-family: var(--font-mono);
-  font-size: .62rem;
-  font-weight: 800;
-  letter-spacing: .12em;
 }
 
 .about-shell {

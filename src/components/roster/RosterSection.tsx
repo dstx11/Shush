@@ -1,15 +1,21 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { players } from '../../data/players';
-import { PlayerLockIndicator } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 
 export function RosterSection() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [params, setParams] = useSearchParams();
+  const selectedIndex = Math.max(0, players.findIndex((player) => player.id === params.get('player')));
   const selectedPlayer = players[selectedIndex] ?? players[0];
-  const roles = useMemo(() => selectedPlayer.roles.join(' / '), [selectedPlayer.roles]);
-
-  const selectNext = useCallback(() => setSelectedIndex((index) => (index + 1) % players.length), []);
-  const selectPrevious = useCallback(() => setSelectedIndex((index) => (index - 1 + players.length) % players.length), []);
+  const selectPlayer = useCallback((index: number) => {
+    setParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set('player', players[index].id);
+      return next;
+    }, { replace: true, preventScrollReset: true });
+  }, [setParams]);
+  const selectNext = () => selectPlayer((selectedIndex + 1) % players.length);
+  const selectPrevious = () => selectPlayer((selectedIndex - 1 + players.length) % players.length);
 
   return (
     <section id="roster" className="roster-section roster-select audit-roster relative scroll-mt-24 overflow-hidden px-5 pb-24 pt-36" aria-labelledby="roster-title">
@@ -19,13 +25,13 @@ export function RosterSection() {
             <span className="section-kicker">Valorant / Roster</span>
             <h1 id="roster-title">Quem entra no lobby.</h1>
           </div>
-          <p>{players.length} jogadores públicos. Funções claras e presença de equipa.</p>
+          <p>{players.length} jogadores. Uma identidade.<br />Seleciona um nome para conhecer as suas funções.</p>
         </div>
 
         <div className="character-select">
           <article key={selectedPlayer.id} className="character-spotlight character-swap" aria-live="polite">
             <div className="character-media">
-              <span className="character-index">{String(selectedIndex + 1).padStart(2, '0')}</span>
+              <span className="character-index">{selectedPlayer.number}</span>
               {selectedPlayer.avatar ? (
                 <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
               ) : (
@@ -37,14 +43,19 @@ export function RosterSection() {
             </div>
 
             <div className="character-copy">
-              <PlayerLockIndicator />
-              <span className="section-kicker">{roles}</span>
+              <span className="section-kicker">Valorant / {selectedPlayer.focus}</span>
               <h2>{selectedPlayer.displayName}</h2>
               <p>{selectedPlayer.quote}</p>
 
               <div className="role-stack">
                 {selectedPlayer.roles.map((role) => <span key={role} className="role-badge">{role}</span>)}
               </div>
+
+              {selectedPlayer.creatorUrl ? (
+                <AppLink href={selectedPlayer.creatorUrl} target="_blank" rel="noreferrer" className="editorial-link">
+                  {selectedPlayer.creatorType === 'twitch' ? 'Ver na Twitch' : 'Ver no YouTube'} <span aria-hidden="true">↗</span>
+                </AppLink>
+              ) : null}
 
               {selectedPlayer.trackerUrl ? (
                 <AppLink href={selectedPlayer.trackerUrl} target="_blank" rel="noreferrer" className="footer-link mt-5 inline-flex">
@@ -66,7 +77,7 @@ export function RosterSection() {
 
         <div className="character-strip" aria-label="Selecionar jogador">
           {players.map((player, index) => (
-            <button key={player.id} type="button" className={index === selectedIndex ? 'is-active' : ''} aria-pressed={index === selectedIndex} onClick={() => setSelectedIndex(index)}>
+            <button key={player.id} type="button" className={index === selectedIndex ? 'is-active' : ''} aria-pressed={index === selectedIndex} onClick={() => selectPlayer(index)}>
               <span className="strip-avatar">
                 {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span>{player.initials}</span>}
               </span>

@@ -1,8 +1,4 @@
 import { useState } from 'react';
-import { activePremierSeason } from '../../data/season';
-import { calculatePublicMatchDayState } from '../../lib/premier';
-import { usePremierClock } from '../../lib/use-premier-clock';
-import { AccentRail, StatusBadge } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
 
@@ -16,36 +12,26 @@ type JerseyView = keyof typeof jerseyViews;
 export function HeroShowcase() {
   const [view, setView] = useState<JerseyView>('front');
   const active = jerseyViews[view];
-  const now = usePremierClock();
-  const state = calculatePublicMatchDayState(activePremierSeason, now);
 
   return (
-    <section id="top" className="hero-stage home-identity-stage audit-hero relative overflow-hidden px-5 pt-24" aria-labelledby="hero-title">
-      <div className="audit-hero-glow" aria-hidden="true" />
-
-      <div className="hero-shell is-identity audit-hero-shell">
-        <div className="hero-copy identity audit-hero-copy hero-copy-enter">
+    <section id="top" className="hero-stage audit-hero px-5" aria-labelledby="hero-title">
+      <div className="hero-shell audit-hero-shell">
+        <div className="hero-masthead">
           <span className="section-kicker">SHUSH / Valorant + Creators</span>
-          <h1 id="hero-title">
-            Sem barulho.
-            <span>Só rounds.</span>
-          </h1>
-          <AccentRail className="hero-title-rail" />
-          <p>Valorant, creators e identidade própria. Um espaço para acompanhar a equipa, conhecer o roster e descobrir o Drop 01.</p>
-
-          <div className="audit-hero-status">
-            <StatusBadge pulse={state.kind === 'match_day_live' || state.kind === 'playoffs_live'}>{state.title}</StatusBadge>
-            <span>{state.detail}</span>
-          </div>
-
-          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <Button href="/esports/valorant/premier">Premier</Button>
-            <Button href="/esports/valorant/roster" variant="secondary">Ver roster</Button>
+          <span aria-hidden="true">Menos ruído. Mais jogo.</span>
+        </div>
+        <h1 id="hero-title" className="hero-headline hero-copy-enter">
+          Sem barulho.<span>Só rounds.</span>
+        </h1>
+        <div className="hero-introduction">
+          <p>Uma equipa no servidor.<br />A mesma identidade fora dele.</p>
+          <div className="hero-actions">
+            <Button href="/esports/valorant/premier">Match Center</Button>
+            <AppLink className="editorial-link" href="/esports/valorant/roster">Conhecer o roster <span aria-hidden="true">↗</span></AppLink>
           </div>
         </div>
 
         <div className="audit-hero-product hero-product-enter">
-          <span className="audit-product-index">DROP 01</span>
           <div className="audit-product-frame">
             <img
               key={view}
@@ -67,7 +53,7 @@ export function HeroShowcase() {
                 </button>
               ))}
             </div>
-            <AppLink href="/products/jersey">Explorar Drop 01 →</AppLink>
+            <AppLink href="/products/jersey">Drop 01 ↗</AppLink>
           </div>
         </div>
       </div>

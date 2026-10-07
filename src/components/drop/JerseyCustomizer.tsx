@@ -31,7 +31,7 @@ export function JerseyCustomizer({
       <div className="audit-customizer-head">
         <span className="section-kicker">Personalização</span>
         <h2>Faz a tua versão.</h2>
-        <p>Preenche apenas o que queres personalizar. O pedido continua manual nesta fase.</p>
+        <p>O teu nick e número aparecem no verso. Prepara o texto para um pedido manual.</p>
       </div>
 
       <div className="audit-customizer-grid">
@@ -64,7 +64,7 @@ export function JerseyCustomizer({
           <select value={size} onChange={(event) => onSizeChange(event.target.value)}>
             {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((option) => <option key={option}>{option}</option>)}
           </select>
-          <small>Escolha manual</small>
+          <small>A confirmar no pedido</small>
         </label>
 
         <label className="audit-customizer-wide">

@@ -20,11 +20,11 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   },
   '/esports/valorant/roster': {
     title: 'Roster — SHUSH',
-    description: 'Roster Valorant da SHUSH com jogadores públicos, funções e links confirmados.',
+    description: 'Conhece os jogadores de Valorant da SHUSH, as suas funções e os creators da equipa.',
   },
   '/content': {
     title: 'Creators — SHUSH',
-    description: 'Canais oficiais dos creators ligados à SHUSH.',
+    description: 'More na Twitch e Th0maz7 no YouTube. Acompanha os creators da SHUSH e conhece-os no roster.',
   },
   '/products/jersey': {
     title: 'Drop 01 — SHUSH',

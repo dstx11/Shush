@@ -32,7 +32,7 @@ pnpm run check:bundle
 pnpm run preview
 ```
 
-Use `pnpm run validate` for the full sequence. Premier tests cover runtime timezone independence, Lisbon DST boundaries, window edges, playoff outcomes and rejection of invalid static data. Pull requests to `master` run the same checks in GitHub Actions.
+Use `pnpm run validate` for the full sequence. Premier tests cover runtime timezone independence, Lisbon DST boundaries, window edges, playoff outcomes and rejection of invalid static data. Pull requests to `master` run the same checks on Linux and Windows in GitHub Actions. TypeScript also rejects unused locals and parameters.
 
 ## Public routes
 
@@ -61,3 +61,7 @@ Legacy URLs redirect to the closest current destination.
 The site only publishes information and assets that exist in the repository data. Product requests are manual. The customizer only prepares a request summary; it does not place or confirm an order.
 
 A closed calendar with incomplete results is labelled as a closed published phase with an unconfirmed outcome. Published points are not presented as a final score, and missing results never prove elimination. Confirmed playoff results determine placement and championships.
+
+## Design direction
+
+Research, product decisions and remaining release checks are recorded in [docs/design-evolution.md](docs/design-evolution.md). Roster selections can be shared through `?player=<player-id>` on the canonical roster route.

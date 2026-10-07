@@ -22,6 +22,7 @@ for (const file of files) {
   const source = await readFile(file, 'utf8');
   const patterns = [
     /(?:href|to)\s*=\s*(?:\{\s*)?["']([^"']+)["']/g,
+    /(?:href|to)\s*=\s*\{\s*`([^`]+)`/g,
     /href\s*:\s*["']([^"']+)["']/g,
   ];
 
