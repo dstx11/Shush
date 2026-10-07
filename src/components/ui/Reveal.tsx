@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, CSSProperties, ElementType, ReactNode } from 'react';
 
 type RevealProps<T extends ElementType> = {
   as?: T;
@@ -12,7 +12,7 @@ export function Reveal<T extends ElementType = 'div'>({ as, children, className 
   const revealStyle = {
     ...style,
     '--reveal-delay': `${delay}s`,
-  } as React.CSSProperties;
+  } as CSSProperties;
 
   return (
     <Component className={`css-reveal ${className}`} style={revealStyle} {...props}>
