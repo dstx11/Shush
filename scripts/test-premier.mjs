@@ -11,20 +11,23 @@ const output = await mkdtemp(join(tmpdir(), 'shush-premier-'));
 const tsc = join(
   root,
   'node_modules',
-  '.bin',
-  process.platform === 'win32' ? 'tsc.cmd' : 'tsc',
+  'typescript',
+  'bin',
+  'tsc',
 );
 
 try {
   execFileSync(
-    tsc,
+    process.execPath,
     [
+      tsc,
+      '--ignoreConfig',
       'src/lib/premier.ts',
       'src/data/season.ts',
       '--module',
       'commonjs',
       '--moduleResolution',
-      'node',
+      'bundler',
       '--target',
       'ES2020',
       '--lib',
