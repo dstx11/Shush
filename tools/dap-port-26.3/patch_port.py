@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import sys
+import subprocess
 
 root = Path(sys.argv[1]).resolve()
 
@@ -287,6 +288,29 @@ public class CoopShockwaveRenderer {
 }
 ''', encoding="utf-8")
     changed.append(str(shockwave.relative_to(root)) + " (restored 26.3 shockwave renderer)")
+
+
+# Remove two invalid, unused legacy assets that 26.3 rejects during resource scanning.
+bad_mp3 = root / "src/main/resources/assets/testcoop/sounds/pefectdap.MP3"
+if bad_mp3.exists():
+    bad_mp3.unlink()
+    changed.append(str(bad_mp3.relative_to(root)) + " (removed invalid unused MP3 asset)")
+
+bad_anim = root / "src/main/resources/assets/testcoop/player_animations/dap _hold.json"
+if bad_anim.exists():
+    bad_anim.unlink()
+    changed.append(str(bad_anim.relative_to(root)) + " (removed invalid duplicate animation path)")
+
+# The upstream mahito.png is actually WebP data with a .png suffix.
+# Convert it to a genuine PNG so Minecraft's PNG loader can decode it.
+mahito = root / "src/main/resources/assets/testcoop/textures/mob_effect/mahito.png"
+if mahito.exists():
+    header = mahito.read_bytes()[:12]
+    if not header.startswith(b"\x89PNG\r\n\x1a\n"):
+        converted = mahito.with_name("mahito.converted.png")
+        subprocess.run(["convert", str(mahito), "PNG:" + str(converted)], check=True)
+        converted.replace(mahito)
+        changed.append(str(mahito.relative_to(root)) + " (converted WebP payload to real PNG)")
 
 print("Patched files:")
 for p in sorted(set(changed)):
