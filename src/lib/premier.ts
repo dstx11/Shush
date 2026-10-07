@@ -207,9 +207,9 @@ export function formatDate(date: string) {
   return new Intl.DateTimeFormat('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
 }
 
-export function formatWindowCountdown(day: PremierPlayDay, now = new Date()) {
-  const start = makeDateTime(day.date, day.windowStart, season.timezone);
-  const end = makeDateTime(day.date, day.windowEnd, season.timezone);
+export function formatWindowCountdown(day: PremierPlayDay, now = new Date(), timezone = 'Europe/Lisbon') {
+  const start = makeDateTime(day.date, day.windowStart, timezone);
+  const end = makeDateTime(day.date, day.windowEnd, timezone);
 
   if (now >= start && now <= addMinutes(end, 40)) return 'Janela ativa';
   if (now > addMinutes(end, 40)) return 'Resultado a atualizar';
