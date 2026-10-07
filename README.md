@@ -9,7 +9,6 @@ Official SHUSH website. A static Vite + React + TypeScript experience focused on
 - TypeScript
 - Tailwind CSS v4
 - React Router
-- lucide-react
 
 There is no backend, authentication, checkout or payment integration.
 
