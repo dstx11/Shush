@@ -1,8 +1,20 @@
 # SHUSH
 
-SHUSH is a dark premium gamer site built with Vite, React, TypeScript, Tailwind CSS v4, Motion, React Router DOM v7, Supabase JS prep and lucide-react.
+Official SHUSH website. A static Vite + React + TypeScript experience focused on Valorant Premier, the public roster, creators and Drop 01.
 
-## Local Development
+## Stack
+
+- Vite
+- React
+- TypeScript
+- Tailwind CSS v4
+- Motion for React
+- React Router
+- lucide-react
+
+There is no backend, authentication, checkout or payment integration.
+
+## Local development
 
 ```powershell
 pnpm install
@@ -17,41 +29,26 @@ pnpm run build
 pnpm run preview
 ```
 
+Pull requests to `master` also run install, typecheck and production build in GitHub Actions.
+
+## Public routes
+
+- `/` — Home
+- `/esports/valorant/premier` — Premier Match Center
+- `/esports/valorant/roster` — Roster
+- `/content` — Creators
+- `/products/jersey` — Drop 01
+- `/company` — About
+
+Legacy URLs redirect to the closest current destination.
+
 ## Deploy
 
 - Build command: `pnpm run build`
-- Output directory: `dist`
-- Static SPA fallback: `public/_redirects` maps public routes to `index.html`.
-- Cloudflare Pages target: static Vite build from `dist`.
+- Output: `dist`
+- Static SPA fallback: `public/_redirects`
+- Target: Cloudflare Pages
 
-## Supabase Prep
+## Product rules
 
-Client integration is prepared in `src/lib/supabase.ts` with:
-
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
-
-No service role key, frontend password or real auth flow is implemented.
-
-## Site Structure
-
-- `/`
-- `/esports`
-- `/esports/valorant`
-- `/esports/valorant/premier`
-- `/esports/valorant/roster`
-- `/esports/valorant/results`
-- `/esports/valorant/tournaments`
-- `/content`
-- `/content/more`
-- `/content/th0maz7`
-- `/products`
-- `/products/jersey`
-- `/products/jersey/custom`
-- `/company`
-- `/company/partners`
-- `/company/contact`
-
-Products are manual. There is no checkout, payment integration or backend.
-
-Admin shell: hidden visual-only modal via `↑ ↑ ↓ ↓ ← → ← →`. It does not authenticate, persist or protect anything.
+The site only publishes information and assets that exist in the repository data. Product requests are manual. The customizer only prepares a request summary; it does not place or confirm an order.
