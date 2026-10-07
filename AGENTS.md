@@ -33,6 +33,7 @@ Use only:
 - React
 - TypeScript
 - Tailwind CSS
+- React Router
 
 Do not add:
 - Next.js
@@ -94,5 +95,7 @@ Run from the project root:
 pnpm install
 pnpm run typecheck
 pnpm run build
+pnpm run validate:dist
+pnpm run check:bundle
 pnpm run preview
 ```
