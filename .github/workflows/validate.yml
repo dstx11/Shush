@@ -101,10 +101,11 @@ jobs:
           pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/content visual-audit/creators-desktop.png
           pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/products/jersey visual-audit/drop-desktop.png
           pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="1440,1100" http://127.0.0.1:4173/company visual-audit/about-desktop.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --device="iPhone 13" http://127.0.0.1:4173/ visual-audit/home-mobile.png
-          pnpm dlx playwright@1.56.1 screenshot --full-page --device="iPhone 13" http://127.0.0.1:4173/products/jersey visual-audit/drop-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="390,844" http://127.0.0.1:4173/ visual-audit/home-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --viewport-size="390,844" http://127.0.0.1:4173/products/jersey visual-audit/drop-mobile.png
 
       - name: Upload screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: shush-visual-audit
