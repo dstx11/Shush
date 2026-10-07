@@ -1,9 +1,10 @@
 import { access, readFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = new URL('../', import.meta.url);
-const dist = join(root.pathname, 'dist');
+const root = fileURLToPath(new URL('../', import.meta.url));
+const dist = join(root, 'dist');
 
 const routeFiles = [
   ['esports/valorant/premier.html', 'https://shush.pt/esports/valorant/premier', 'Premier — SHUSH'],
