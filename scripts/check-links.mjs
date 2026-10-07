@@ -1,7 +1,8 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = new URL('../', import.meta.url).pathname;
+const root = fileURLToPath(new URL('../', import.meta.url));
 const canonicalRoutes = new Set([
   '/',
   '/esports/valorant/premier',
