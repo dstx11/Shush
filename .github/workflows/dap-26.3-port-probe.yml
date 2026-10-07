@@ -71,6 +71,12 @@ jobs:
           p.write_text(s)
           p=Path("src/main/resources/testcoop.mixins.json")
           p.write_text(p.read_text().replace('"compatibilityLevel": "JAVA_21"','"compatibilityLevel": "JAVA_25"'))
+
+          p=Path("src/main/resources/testcoop.accesswidener")
+          aw=p.read_text()
+          aw=aw.replace("accessWidener v2 named","accessWidener v2 official")
+          aw=aw.replace("net/minecraft/entity/Entity","net/minecraft/world/entity/Entity")
+          p.write_text(aw)
           PY
 
 
