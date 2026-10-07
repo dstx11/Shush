@@ -11,7 +11,6 @@ import { EsportsPage } from './pages/EsportsPage';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ProductsPage } from './pages/ProductsPage';
-import { RosterPage } from './pages/RosterPage';
 import {
   CompanyContactPage,
   CompanyPartnersPage,
@@ -21,6 +20,7 @@ import {
   JerseyCustomPage,
   JerseyPage,
   PremierPage,
+  RosterPage,
   ValorantPage,
 } from './pages/RoutePages';
 
