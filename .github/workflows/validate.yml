@@ -52,14 +52,14 @@ jobs:
           test -f dist/_redirects
           test -f dist/robots.txt
           test -f dist/sitemap.xml
-          test -f dist/esports/valorant/premier/index.html
-          test -f dist/esports/valorant/roster/index.html
-          test -f dist/content/index.html
-          test -f dist/products/jersey/index.html
-          test -f dist/company/index.html
+          test -f dist/esports/valorant/premier.html
+          test -f dist/esports/valorant/roster.html
+          test -f dist/content.html
+          test -f dist/products/jersey.html
+          test -f dist/company.html
           grep -q 'lang="pt-PT"' dist/index.html
           grep -q 'Content-Security-Policy' dist/_headers
-          grep -Fq '<title>Premier — SHUSH</title>' dist/esports/valorant/premier/index.html
-          grep -Fq 'https://shush.pt/esports/valorant/premier' dist/esports/valorant/premier/index.html
-          grep -Fq '<title>Drop 01 — SHUSH</title>' dist/products/jersey/index.html
+          grep -Fq '<title>Premier — SHUSH</title>' dist/esports/valorant/premier.html
+          grep -Fq 'https://shush.pt/esports/valorant/premier' dist/esports/valorant/premier.html
+          grep -Fq '<title>Drop 01 — SHUSH</title>' dist/products/jersey.html
           ! grep -Fq '/* /index.html 200' dist/_redirects
