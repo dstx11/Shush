@@ -1,4 +1,5 @@
 # Canonical legacy redirects
+/index.html / 301
 /esports /esports/valorant/premier 301
 /esports/valorant /esports/valorant/premier 301
 /esports/valorant/results /esports/valorant/premier#results 301
