@@ -1,6 +1,6 @@
 import { creators, players } from '../../data/players';
 import { activePremierSeason } from '../../data/season';
-import { calculatePremierScore, calculatePublicMatchDayState, calculateSeasonStatus } from '../../lib/premier';
+import { calculatePremierScore, calculatePublicMatchDayState, calculateSeasonStatus, formatSeasonStatus } from '../../lib/premier';
 import { StatusBadge } from '../motion/MotionPrimitives';
 import { Button } from '../ui/Button';
 import { Reveal } from '../ui/Reveal';
@@ -26,7 +26,7 @@ export function HomeHub() {
           <Reveal className="hub-feature hub-feature-premier">
             <div className="hub-feature-top">
               <span className="hub-label">Premier</span>
-              <StatusBadge pulse={state.kind === 'match_day_live' || state.kind === 'playoffs_live'}>{status}</StatusBadge>
+              <StatusBadge pulse={state.kind === 'match_day_live' || state.kind === 'playoffs_live'}>{formatSeasonStatus(status)}</StatusBadge>
             </div>
             <div className="hub-feature-copy">
               <h3>{state.title}</h3>
@@ -52,7 +52,7 @@ export function HomeHub() {
               ))}
             </div>
             <h3>Lineup pública.</h3>
-            <p>Roles claras, presença de equipa e perfis públicos quando disponíveis.</p>
+            <p>Funções claras, presença de equipa e perfis públicos quando disponíveis.</p>
             <Button href="/esports/valorant/roster" variant="secondary">Ver roster</Button>
           </Reveal>
 
