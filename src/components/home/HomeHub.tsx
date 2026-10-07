@@ -1,4 +1,3 @@
-import { ExternalLink, Shirt, Trophy, Users } from 'lucide-react';
 import { creators, players } from '../../data/players';
 import { activePremierSeason } from '../../data/season';
 import { calculatePremierScore, calculatePublicMatchDayState, calculateSeasonStatus } from '../../lib/premier';
@@ -26,10 +25,7 @@ export function HomeHub() {
         <div className="hub-editorial-grid">
           <Reveal className="hub-feature hub-feature-premier">
             <div className="hub-feature-top">
-              <span className="hub-label">
-                <Trophy aria-hidden="true" className="h-4 w-4" />
-                Premier
-              </span>
+              <span className="hub-label">Premier</span>
               <StatusBadge pulse={state.kind === 'match_day_live' || state.kind === 'playoffs_live'}>{status}</StatusBadge>
             </div>
             <div className="hub-feature-copy">
@@ -45,10 +41,7 @@ export function HomeHub() {
 
           <Reveal className="hub-feature hub-feature-roster" delay={0.05}>
             <div className="hub-feature-top">
-              <span className="hub-label">
-                <Users aria-hidden="true" className="h-4 w-4" />
-                Roster
-              </span>
+              <span className="hub-label">Roster</span>
               <small>{players.length} jogadores</small>
             </div>
             <div className="hub-avatar-row" aria-label="Jogadores SHUSH">
@@ -72,17 +65,14 @@ export function HomeHub() {
                     <strong>{creator.displayName}</strong>
                     <small>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</small>
                   </span>
-                  <ExternalLink aria-hidden="true" className="h-4 w-4" />
+                  <span aria-hidden="true">↗</span>
                 </a>
               ))}
             </div>
           </Reveal>
 
           <Reveal className="hub-feature hub-feature-drop" delay={0.15}>
-            <span className="hub-label">
-              <Shirt aria-hidden="true" className="h-4 w-4" />
-              Drop 01
-            </span>
+            <span className="hub-label">Drop 01</span>
             <div className="hub-drop-preview">
               <img src="/assets/jersey/frontjersey.webp" width="1280" height="1280" alt="Jersey SHUSH Drop 01" loading="lazy" decoding="async" />
             </div>
