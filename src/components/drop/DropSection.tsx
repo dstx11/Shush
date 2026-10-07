@@ -56,12 +56,12 @@ export function DropSection() {
   const activeView = jerseyViews[view];
 
   return (
-    <section id="products" className="audit-drop-page px-5 pb-28 pt-36">
+    <section id="products" className="audit-drop-page px-5 pb-28 pt-36" aria-labelledby="drop-title">
       <div className="audit-page-shell">
         <div className="audit-drop-head">
           <div>
             <span className="section-kicker">Drop 01 / Jersey</span>
-            <h1>A camisola da SHUSH.</h1>
+            <h1 id="drop-title">A camisola da SHUSH.</h1>
           </div>
           <p>Primeiro drop público da SHUSH. Preto, roxo e personalização de nick, número, tamanho e frase.</p>
         </div>
