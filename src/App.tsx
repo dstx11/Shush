@@ -1,64 +1,67 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { AnimatePresence, useReducedMotion } from 'motion/react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { PageTransition } from './components/ui/PageTransition';
 import { defaultMetadata, routeMetadata, siteUrl } from './data/meta';
-import { CompanyPage } from './pages/CompanyPage';
-import { ContentPage } from './pages/ContentPage';
-import { EsportsPage } from './pages/EsportsPage';
-import { HomePage } from './pages/HomePage';
-import { NotFoundPage } from './pages/NotFoundPage';
-import { ProductsPage } from './pages/ProductsPage';
-import {
-  CompanyContactPage,
-  CompanyPartnersPage,
-  ContentCreatorPage,
-  EsportsResultsPage,
-  EsportsTournamentsPage,
-  JerseyCustomPage,
-  JerseyPage,
-  PremierPage,
-  RosterPage,
-  ValorantPage,
-} from './pages/RoutePages';
+
+const HomePage = lazy(() => import('./pages/HomePage').then((module) => ({ default: module.HomePage })));
+const PremierPage = lazy(() => import('./pages/PremierPage').then((module) => ({ default: module.PremierPage })));
+const RosterPage = lazy(() => import('./pages/RosterPage').then((module) => ({ default: module.RosterPage })));
+const ContentPage = lazy(() => import('./pages/ContentPage').then((module) => ({ default: module.ContentPage })));
+const DropPage = lazy(() => import('./pages/DropPage').then((module) => ({ default: module.DropPage })));
+const AboutPage = lazy(() => import('./pages/AboutPage').then((module) => ({ default: module.AboutPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => ({ default: module.NotFoundPage })));
 
 export default function App() {
   const location = useLocation();
   const reduceMotion = useReducedMotion();
+
   useRouteMetadata(location.pathname);
   useRouteScroll(location.pathname, location.hash);
 
   return (
     <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <Header />
-      <main>
-        <AnimatePresence mode="wait" initial={!reduceMotion}>
-          <PageTransition key={location.pathname}>
-            <Routes location={location}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/esports" element={<EsportsPage />} />
-              <Route path="/esports/valorant" element={<ValorantPage />} />
-              <Route path="/esports/valorant/premier" element={<PremierPage />} />
-              <Route path="/esports/valorant/roster" element={<RosterPage />} />
-              <Route path="/esports/valorant/results" element={<EsportsResultsPage />} />
-              <Route path="/esports/valorant/tournaments" element={<EsportsTournamentsPage />} />
-              <Route path="/content" element={<ContentPage />} />
-              <Route path="/content/more" element={<ContentCreatorPage creatorId="more" />} />
-              <Route path="/content/th0maz7" element={<ContentCreatorPage creatorId="th0maz7" />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/jersey" element={<JerseyPage />} />
-              <Route path="/products/jersey/custom" element={<JerseyCustomPage />} />
-              <Route path="/company" element={<CompanyPage />} />
-              <Route path="/company/partners" element={<CompanyPartnersPage />} />
-              <Route path="/company/contact" element={<CompanyContactPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </PageTransition>
-        </AnimatePresence>
+      <main id="main-content">
+        <Suspense fallback={<RouteFallback />}>
+          <AnimatePresence mode="wait" initial={!reduceMotion}>
+            <PageTransition key={location.pathname}>
+              <Routes location={location}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/esports/valorant/premier" element={<PremierPage />} />
+                <Route path="/esports/valorant/roster" element={<RosterPage />} />
+                <Route path="/content" element={<ContentPage />} />
+                <Route path="/products/jersey" element={<DropPage />} />
+                <Route path="/company" element={<AboutPage />} />
+
+                <Route path="/esports" element={<Navigate to="/esports/valorant/premier" replace />} />
+                <Route path="/esports/valorant" element={<Navigate to="/esports/valorant/premier" replace />} />
+                <Route path="/esports/valorant/results" element={<Navigate to="/esports/valorant/premier#results" replace />} />
+                <Route path="/esports/valorant/tournaments" element={<Navigate to="/esports/valorant/premier#results" replace />} />
+                <Route path="/content/more" element={<Navigate to="/content" replace />} />
+                <Route path="/content/th0maz7" element={<Navigate to="/content" replace />} />
+                <Route path="/products" element={<Navigate to="/products/jersey" replace />} />
+                <Route path="/products/jersey/custom" element={<Navigate to="/products/jersey#customizacao" replace />} />
+                <Route path="/company/partners" element={<Navigate to="/company#partners" replace />} />
+                <Route path="/company/contact" element={<Navigate to="/company" replace />} />
+
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </PageTransition>
+          </AnimatePresence>
+        </Suspense>
       </main>
       <Footer />
+    </div>
+  );
+}
+
+function RouteFallback() {
+  return (
+    <div className="route-loading" role="status" aria-live="polite">
+      <span>SHUSH</span>
     </div>
   );
 }
