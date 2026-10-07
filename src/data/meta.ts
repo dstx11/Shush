@@ -14,64 +14,25 @@ export const defaultMetadata: RouteMetadata = {
 
 export const routeMetadata: Record<string, RouteMetadata> = {
   '/': defaultMetadata,
-  '/esports': {
-    title: 'SHUSH Esports',
-    description: 'Mapa competitivo da SHUSH: Valorant Premier, roster, calendário e resultados publicados.',
-  },
-  '/esports/valorant': {
-    title: 'SHUSH Valorant',
-    description: 'Valorant é o lobby competitivo da SHUSH, com Premier, roster e resultados públicos.',
-  },
   '/esports/valorant/premier': {
     title: 'Premier — SHUSH',
-    description: 'Calendário Premier, score, próxima janela e convocados da SHUSH.',
+    description: 'Match Center da SHUSH com estado da season, score, calendário e resultados publicados.',
   },
   '/esports/valorant/roster': {
     title: 'Roster — SHUSH',
-    description: 'Roster Valorant da SHUSH com jogadores públicos e roles.',
-  },
-  '/esports/valorant/results': {
-    title: 'SHUSH Results',
-    description: 'Últimos jogos publicados pela SHUSH.',
-  },
-  '/esports/valorant/tournaments': {
-    title: 'SHUSH Tournament Results',
-    description: 'Fechos de seasons e torneios quando houver resultado confirmado.',
+    description: 'Roster Valorant da SHUSH com jogadores públicos, roles e links confirmados.',
   },
   '/content': {
-    title: 'SHUSH Content',
-    description: 'Creators da SHUSH: More na Twitch e Th0maz7 no YouTube.',
-  },
-  '/content/more': {
-    title: 'More — SHUSH Creator',
-    description: 'More, creator SHUSH na Twitch.',
-  },
-  '/content/th0maz7': {
-    title: 'Th0maz7 — SHUSH Creator',
-    description: 'Th0maz7, creator SHUSH no YouTube.',
-  },
-  '/products': {
-    title: 'SHUSH Products',
-    description: 'Jersey / Clothing da SHUSH e pedido manual.',
+    title: 'Creators — SHUSH',
+    description: 'Canais oficiais dos creators ligados à SHUSH.',
   },
   '/products/jersey': {
     title: 'Drop 01 — SHUSH',
-    description: 'Showcase da jersey SHUSH em preto e roxo.',
-  },
-  '/products/jersey/custom': {
-    title: 'SHUSH Jersey Customização',
-    description: 'Pedido manual da jersey SHUSH com nick, número, tamanho e frase opcional.',
+    description: 'Drop 01 da SHUSH: jersey em preto e roxo com pré-visualização de personalização.',
+    image: '/assets/jersey/frontjersey.webp',
   },
   '/company': {
     title: 'About — SHUSH',
-    description: 'Sobre a SHUSH: gaming, esports, creators e identidade própria.',
-  },
-  '/company/partners': {
-    title: 'SHUSH Partners',
-    description: 'Backora como partner técnico/digital da SHUSH.',
-  },
-  '/company/contact': {
-    title: 'SHUSH Contact',
-    description: 'Contacto direto da SHUSH, a atualizar.',
+    description: 'A SHUSH: Valorant Premier, creators, Drop 01 e identidade própria.',
   },
 };
