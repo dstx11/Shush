@@ -43,3 +43,13 @@ jobs:
 
       - name: Bundle budget
         run: pnpm run check:bundle
+
+      - name: Static deploy smoke
+        run: |
+          test -f dist/index.html
+          test -f dist/_headers
+          test -f dist/_redirects
+          test -f dist/robots.txt
+          test -f dist/sitemap.xml
+          grep -q 'lang="pt-PT"' dist/index.html
+          grep -q 'Content-Security-Policy' dist/_headers
