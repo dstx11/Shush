@@ -4,104 +4,70 @@ on:
   push:
     branches:
       - dap-port-26.3-runner
-  workflow_dispatch:
 
 jobs:
   port-probe:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Checkout runner branch
-        uses: actions/checkout@v5
-
-      - name: Checkout DAP 1.21.11 source
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           repository: itsfirecat/Dap-ur-homie
           ref: 1.21.11
           path: dap-src
 
-      - name: Set up Java 25
-        uses: actions/setup-java@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '25'
 
-      - name: Show baseline
-        working-directory: dap-src
-        run: |
-          java -version
-          ./gradlew --version
-          cat gradle.properties
-
-      - name: Migrate Yarn to Mojang mappings on 1.21.11
+      - name: Migrate mappings
         working-directory: dap-src
         run: |
           chmod +x gradlew
           ./gradlew migrateMappings --mappings "net.minecraft:mappings:1.21.11" --overrideInputsIHaveABackup --stacktrace
 
-      - name: Patch build to Minecraft 26.3
+      - name: Patch to 26.3
         working-directory: dap-src
-        shell: python
         run: |
+          python - <<'PY'
           from pathlib import Path
-
-          p = Path("gradle.properties")
-          s = p.read_text()
-          replacements = {
-              "minecraft_version=1.21.11": "minecraft_version=26.3",
-              "loader_version=0.18.4": "loader_version=0.19.5",
-              "loom_version=1.15-SNAPSHOT": "loom_version=1.17",
-              "fabric_api_version=0.141.3+1.21.11": "fabric_api_version=0.161.0+26.3",
-              "mod_version=3.0.0+mc-1.21.11-alpha-2": "mod_version=3.0.0+mc-26.3-port",
-              "pal_version = 1.1.6+mc.1.21.11": "pal_version = 1.2.7+26.3",
-          }
-          for a,b in replacements.items():
-              s = s.replace(a,b)
-          s = "\n".join(line for line in s.splitlines() if not line.startswith("yarn_mappings=")) + "\n"
+          p=Path("gradle.properties")
+          s=p.read_text()
+          for a,b in {
+            "minecraft_version=1.21.11":"minecraft_version=26.3",
+            "loader_version=0.18.4":"loader_version=0.19.5",
+            "loom_version=1.15-SNAPSHOT":"loom_version=1.17",
+            "fabric_api_version=0.141.3+1.21.11":"fabric_api_version=0.161.0+26.3",
+            "mod_version=3.0.0+mc-1.21.11-alpha-2":"mod_version=3.0.0+mc-26.3-port"
+          }.items(): s=s.replace(a,b)
+          s="\n".join(x for x in s.splitlines() if not x.startswith("yarn_mappings="))+"\n"
           p.write_text(s)
 
-          p = Path("build.gradle")
-          s = p.read_text()
-          s = s.replace("id 'net.fabricmc.fabric-loom-remap' version \"\${loom_version}\"", "id 'net.fabricmc.fabric-loom' version \"\${loom_version}\"")
-          s = s.replace('    mappings "net.fabricmc:yarn:\${project.yarn_mappings}:v2"\n', '')
-          s = s.replace("options.release = 21", "options.release = 25")
-          s = s.replace("JavaVersion.VERSION_21", "JavaVersion.VERSION_25")
-          s = s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"', '    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
+          p=Path("build.gradle")
+          s=p.read_text()
+          s=s.replace("id 'net.fabricmc.fabric-loom-remap' version \"\${loom_version}\"","id 'net.fabricmc.fabric-loom' version \"\${loom_version}\"")
+          s=s.replace('    mappings "net.fabricmc:yarn:\${project.yarn_mappings}:v2"\n','')
+          s=s.replace("options.release = 21","options.release = 25").replace("JavaVersion.VERSION_21","JavaVersion.VERSION_25")
+          s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
           if "api.modrinth.com/maven" not in s:
-              marker = 'repositories {\n'
-              repo = '''repositories {
-    exclusiveContent {
-        forRepository {
-            maven {
-                name = "Modrinth"
-                url = "https://api.modrinth.com/maven"
-            }
-        }
-        filter { includeGroup "maven.modrinth" }
-    }
-'''
-              s = s.replace(marker, repo, 1)
+            s=s.replace("repositories {\n","repositories {\n    maven { url = \"https://api.modrinth.com/maven\" }\n",1)
           p.write_text(s)
 
-          p = Path("src/main/resources/fabric.mod.json")
-          s = p.read_text()
-          s = s.replace('"fabricloader": ">=0.18.4"', '"fabricloader": ">=0.19.5"')
-          s = s.replace('"minecraft": "~1.21.11"', '"minecraft": "~26.3"')
-          s = s.replace('"java": ">=21"', '"java": ">=25"')
-          s = s.replace('"player_animation_library": ">=1.1.6"', '"player_animation_library": ">=1.2.7"')
+          p=Path("src/main/resources/fabric.mod.json")
+          s=p.read_text().replace('"fabricloader": ">=0.18.4"','"fabricloader": ">=0.19.5"').replace('"minecraft": "~1.21.11"','"minecraft": "~26.3"').replace('"java": ">=21"','"java": ">=25"').replace('"player_animation_library": ">=1.1.6"','"player_animation_library": ">=1.2.7"')
           p.write_text(s)
+          p=Path("src/main/resources/testcoop.mixins.json")
+          p.write_text(p.read_text().replace('"compatibilityLevel": "JAVA_21"','"compatibilityLevel": "JAVA_25"'))
+          PY
 
-          p = Path("src/main/resources/testcoop.mixins.json")
-          p.write_text(p.read_text().replace('"compatibilityLevel": "JAVA_21"', '"compatibilityLevel": "JAVA_25"'))
-
-      - name: Upgrade wrapper to Gradle 9.6
+      - name: Gradle 9.6
         working-directory: dap-src
         run: |
           ./gradlew wrapper --gradle-version 9.6.0
-          ./gradlew --version
 
-      - name: Compile 26.3 and capture errors
+      - name: Compile
         id: compile
         working-directory: dap-src
         continue-on-error: true
@@ -109,20 +75,12 @@ jobs:
           set -o pipefail
           ./gradlew compileJava --stacktrace --console=plain 2>&1 | tee ../compile-26.3.log
 
-      - name: Package probe state
-        if: always()
-        run: |
-          tar -czf dap-port-probe.tgz dap-src compile-26.3.log || true
-
-      - name: Upload logs and migrated source
+      - name: Upload compile log
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: dap-26.3-port-probe
-          path: |
-            compile-26.3.log
-            dap-port-probe.tgz
-          if-no-files-found: warn
+          path: compile-26.3.log
 
       - name: Fail if compile failed
         if: steps.compile.outcome == 'failure'
