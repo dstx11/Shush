@@ -1,7 +1,7 @@
 import { creators, players } from '../../data/players';
 import { activePremierSeason } from '../../data/season';
 import { calculatePremierScore, calculatePublicMatchDayState, calculateSeasonStatus, formatSeasonStatus } from '../../lib/premier';
-import { StatusBadge } from '../motion/MotionPrimitives';
+import { StatusBadge } from '../ui/VisualPrimitives';
 import { Button } from '../ui/Button';
 import { Reveal } from '../ui/Reveal';
 
