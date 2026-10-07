@@ -1,19 +1,10 @@
-import { motion, useReducedMotion } from 'motion/react';
 import { ExternalLink } from 'lucide-react';
 import { creators } from '../../data/players';
 
 export function AboutSection() {
-  const reduceMotion = useReducedMotion();
-
   return (
     <section id="about" className="about-section audit-about scroll-mt-28 px-5 pb-28 pt-36">
-      <motion.div
-        className="about-shell"
-        initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-12%' }}
-        transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div className="about-shell css-reveal">
         <div className="audit-about-intro">
           <span className="section-kicker">About / SHUSH</span>
           <h1>Pequena por escala. Clara por identidade.</h1>
@@ -55,7 +46,7 @@ export function AboutSection() {
           <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
           <ExternalLink aria-hidden="true" className="h-5 w-5" />
         </a>
-      </motion.div>
+      </div>
     </section>
   );
 }
