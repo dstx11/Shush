@@ -427,7 +427,7 @@ body {
   border-radius: 50%;
   background: #17131f;
   color: white;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .hub-avatar-row > span:first-child {
@@ -850,7 +850,7 @@ select:focus-visible {
   padding: .65rem .85rem;
   color: #050507;
   font-size: .78rem;
-  font-weight: 900;
+  font-weight: 800;
   transition: transform .18s ease;
 }
 
@@ -869,7 +869,7 @@ select:focus-visible {
   color: #7a48ff;
   font-family: var(--font-mono);
   font-size: .72rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .25em;
 }
 
@@ -953,7 +953,7 @@ select:focus-visible {
 .audit-premier-state strong {
   color: var(--text);
   font-size: .95rem;
-  font-weight: 900;
+  font-weight: 800;
 }
 
 .audit-premier-state p {
@@ -1104,7 +1104,7 @@ select:focus-visible {
   color: #7548ed;
   font-family: var(--font-mono);
   font-size: .7rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .audit-week-row > div {
@@ -1346,7 +1346,7 @@ select:focus-visible {
   color: #8b5cff;
   font-family: var(--font-mono);
   font-size: .68rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .13em;
 }
 
@@ -1402,7 +1402,7 @@ select:focus-visible {
 .audit-live-print span {
   font-family: var(--font-heading);
   font-size: clamp(.9rem, 1.7vw, 1.35rem);
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .08em;
 }
 
@@ -1437,7 +1437,7 @@ select:focus-visible {
   padding: .8rem 1rem;
   color: var(--muted);
   font-size: .75rem;
-  font-weight: 900;
+  font-weight: 800;
   text-align: left;
 }
 
@@ -1509,7 +1509,7 @@ select:focus-visible {
 .audit-customizer-grid label > span {
   color: var(--muted);
   font-size: .65rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -1545,7 +1545,7 @@ select:focus-visible {
 .audit-order-preview > span {
   color: var(--muted);
   font-size: .65rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
@@ -1577,7 +1577,7 @@ select:focus-visible {
   background: #6d35ff;
   color: white;
   font-size: .75rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: .04em;
   transition: background .18s ease, border-color .18s ease;
 }
@@ -1630,7 +1630,7 @@ select:focus-visible {
 
 .audit-footer-brand a span {
   font-size: .74rem;
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: .18em;
 }
 
@@ -1653,7 +1653,7 @@ select:focus-visible {
   color: #6f6978;
   font-family: var(--font-mono);
   font-size: .6rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: .1em;
   text-transform: uppercase;
 }
@@ -2029,7 +2029,7 @@ select:focus-visible {
   color: #8b5cff;
   font-family: var(--font-mono);
   font-size: .68rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 
@@ -2079,7 +2079,7 @@ select:focus-visible {
   padding: 0 .95rem;
   color: white;
   font-size: .72rem;
-  font-weight: 900;
+  font-weight: 800;
   text-decoration: none;
 }
 
