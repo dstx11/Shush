@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { activePremierSeason } from '../../data/season';
 import { calculatePublicMatchDayState } from '../../lib/premier';
-import { MotionRail, StatusBadge } from '../motion/MotionPrimitives';
+import { AccentRail, StatusBadge } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
 
