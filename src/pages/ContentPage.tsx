@@ -9,7 +9,7 @@ export function ContentPage() {
         <Reveal className="audit-content-head">
           <span className="section-kicker">Creators / SHUSH</span>
           <h1 id="content-title">Conteúdo sem intermediários.</h1>
-          <p>Os canais oficiais dos creators ligados à SHUSH. Sem páginas vazias entre ti e o conteúdo.</p>
+          <p>Os canais oficiais dos creators ligados à SHUSH, com acesso direto à Twitch e ao YouTube.</p>
         </Reveal>
 
         <div className="audit-creator-grid">
