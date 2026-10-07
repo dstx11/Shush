@@ -32,6 +32,13 @@ jobs:
         with:
           gradle-version: "9.7.0"
 
+      - name: Set up software graphics for Minecraft smoke tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            xvfb mesa-utils libgl1-mesa-dri libglx-mesa0 libegl-mesa0 \
+            libvulkan1 mesa-vulkan-drivers
+
       - name: Fetch DAP 26.3 source baseline
         run: |
           git clone --depth 1 --branch port-26.3-v3 \
@@ -71,14 +78,16 @@ jobs:
         shell: bash
         run: |
           set +e
-          timeout 75s xvfb-run -a gradle --no-daemon runClient > ../dap-client-smoke.log 2>&1
+          timeout 90s env LIBGL_ALWAYS_SOFTWARE=1 SDL_VIDEODRIVER=x11 \
+            xvfb-run -a -s "-screen 0 1280x720x24 -ac +extension GLX +render -noreset" \
+            gradle --no-daemon runClient > ../dap-client-smoke.log 2>&1
           rc=$?
           set -e
 
           echo "runClient exit code: $rc"
           tail -n 250 ../dap-client-smoke.log || true
 
-          if grep -Eiq "Mixin.*(failed|error)|MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|The game crashed" ../dap-client-smoke.log; then
+          if grep -Eiq "Mixin.*(failed|error)|MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|BackendCreationException|Failed to create backend|The game crashed" ../dap-client-smoke.log; then
             echo "Fatal startup signature found in client log."
             exit 1
           fi
@@ -86,7 +95,7 @@ jobs:
           if [ "$rc" -eq 0 ]; then
             echo "Client exited cleanly."
           elif [ "$rc" -eq 124 ]; then
-            echo "Client remained alive for 75 seconds; treating as startup smoke-test success."
+            echo "Client remained alive for 90 seconds with a graphics backend; treating as startup smoke-test success."
           else
             echo "Client exited unexpectedly with code $rc."
             exit "$rc"
@@ -119,14 +128,16 @@ jobs:
         run: |
           rm -f run/session.lock || true
           set +e
-          timeout 120s xvfb-run -a gradle --no-daemon runClient > ../dap-shush-cozy-smoke.log 2>&1
+          timeout 150s env LIBGL_ALWAYS_SOFTWARE=1 SDL_VIDEODRIVER=x11 \
+            xvfb-run -a -s "-screen 0 1280x720x24 -ac +extension GLX +render -noreset" \
+            gradle --no-daemon runClient > ../dap-shush-cozy-smoke.log 2>&1
           rc=$?
           set -e
 
           echo "Shush Cozy runClient exit code: $rc"
           tail -n 350 ../dap-shush-cozy-smoke.log || true
 
-          if grep -Eiq "MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|Incompatible mod set|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|The game crashed|Uncaught exception in thread" ../dap-shush-cozy-smoke.log; then
+          if grep -Eiq "MixinApplyError|InvalidMixinException|Could not execute entrypoint|ModResolutionException|Incompatible mod set|NoClassDefFoundError|NoSuchMethodError|NoSuchFieldError|VerifyError|ExceptionInInitializerError|BackendCreationException|Failed to create backend|The game crashed|Uncaught exception in thread" ../dap-shush-cozy-smoke.log; then
             echo "Fatal compatibility signature found in Shush Cozy client log."
             exit 1
           fi
@@ -134,7 +145,7 @@ jobs:
           if [ "$rc" -eq 0 ]; then
             echo "Shush Cozy client exited cleanly."
           elif [ "$rc" -eq 124 ]; then
-            echo "Shush Cozy client remained alive for 120 seconds; treating as compatibility smoke-test success."
+            echo "Shush Cozy client remained alive for 150 seconds with a graphics backend; treating as compatibility smoke-test success."
           else
             echo "Shush Cozy client exited unexpectedly with code $rc."
             exit "$rc"
