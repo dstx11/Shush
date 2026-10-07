@@ -56,7 +56,7 @@ export function PremierPage() {
         </div>
       </section>
 
-      <section className="audit-premier-body px-5 pb-24">
+      <section className="audit-premier-body px-5 pb-24" aria-label="Calendário e resultados">
         <div className="audit-page-shell">
           <div className="audit-premier-stats">
             <Reveal>
@@ -85,7 +85,6 @@ export function PremierPage() {
                   <h2>Fase publicada</h2>
                   <small className="audit-timezone-note">Horários em Lisboa · Europe/Lisbon</small>
                 </div>
-                <span className="audit-section-mark" aria-hidden="true">P</span>
               </div>
 
               <div className="audit-week-list">
@@ -126,7 +125,7 @@ export function PremierPage() {
                         <time dateTime={result.date}>{formatDate(result.date)}</time>
                         <small>{result.map ?? 'Mapa por definir'}</small>
                       </div>
-                      <strong><span className="sr-only">{result.outcome === 'win' ? 'Vitória: ' : 'Derrota: '}</span>{formatResultLine(result)}</strong>
+                      <strong><span className="result-outcome" aria-hidden="true">{result.outcome === 'win' ? 'W' : 'L'}</span><span className="sr-only">{result.outcome === 'win' ? 'Vitória: ' : 'Derrota: '}</span>{formatResultLine(result)}</strong>
                     </article>
                   ))
                 ) : (

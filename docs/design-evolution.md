@@ -28,6 +28,7 @@ The Home remains short: identity, competitive context, players, creators and a c
 - Real roster numbers replace positional indexes. No country, biography, statistics or achievement is inferred.
 - The Premier qualification meter shows published points against the configured threshold; it does not establish a final outcome. Results expose win/loss to assistive technology and dates use `time`.
 - Drop fields explain where personalisation appears; requests remain manual. Input text is 16px to avoid small-text zoom on iOS.
+- Drop field names remain stable while counters and constraints are separate accessible descriptions. Result letters are decorative; assistive technology receives the Portuguese win/loss label.
 - Footer contrast and link target height improved. The header is flatter, without backdrop blur. Shared hover/focus and reduced-motion rules remain.
 - Obsolete rail/selected-badge primitives and their styles/animations removed. TypeScript rejects unused locals/parameters, link checks include template-literal destinations, and CI runs on Linux and Windows.
 

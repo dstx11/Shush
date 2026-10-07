@@ -36,46 +36,52 @@ export function JerseyCustomizer({
 
       <div className="audit-customizer-grid">
         <label>
-          <span>Nick</span>
+          <span id="drop-nick-label">Nick</span>
           <input
+            aria-labelledby="drop-nick-label"
+            aria-describedby="drop-nick-hint"
             value={name}
             maxLength={14}
             autoComplete="off"
             onChange={(event) => onNameChange(event.target.value.slice(0, 14))}
             placeholder="SHUSH"
           />
-          <small>{name.length}/14</small>
+          <small id="drop-nick-hint">{name.length}/14</small>
         </label>
 
         <label>
-          <span>Número</span>
+          <span id="drop-number-label">Número</span>
           <input
+            aria-labelledby="drop-number-label"
+            aria-describedby="drop-number-hint"
             value={number}
             inputMode="numeric"
             maxLength={2}
             onChange={(event) => onNumberChange(event.target.value.replace(/\D/g, '').slice(0, 2))}
             placeholder="01"
           />
-          <small>00–99</small>
+          <small id="drop-number-hint">00–99</small>
         </label>
 
         <label>
-          <span>Tamanho</span>
-          <select value={size} onChange={(event) => onSizeChange(event.target.value)}>
+          <span id="drop-size-label">Tamanho</span>
+          <select aria-labelledby="drop-size-label" aria-describedby="drop-size-hint" value={size} onChange={(event) => onSizeChange(event.target.value)}>
             {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((option) => <option key={option}>{option}</option>)}
           </select>
-          <small>A confirmar no pedido</small>
+          <small id="drop-size-hint">A confirmar no pedido</small>
         </label>
 
         <label className="audit-customizer-wide">
-          <span>Frase opcional</span>
+          <span id="drop-phrase-label">Frase opcional</span>
           <input
+            aria-labelledby="drop-phrase-label"
+            aria-describedby="drop-phrase-hint"
             value={phrase}
             maxLength={44}
             onChange={(event) => onPhraseChange(event.target.value.slice(0, 44))}
             placeholder="Sem barulho. Só rounds."
           />
-          <small>{phrase.length}/44</small>
+          <small id="drop-phrase-hint">{phrase.length}/44</small>
         </label>
       </div>
 

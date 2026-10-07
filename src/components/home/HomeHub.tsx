@@ -31,7 +31,7 @@ export function HomeHub() {
               <StatusBadge pulse={state.kind === 'match_day_live' || state.kind === 'playoffs_live'}>{formatSeasonStatus(status)}</StatusBadge>
             </div>
             <div className="hub-feature-copy">
-              <h3>{state.title}</h3>
+              <h3>{activePremierSeason.name}</h3>
               <p>{state.detail}</p>
             </div>
             <div className="hub-scoreline" aria-label={`Pontuação publicada: ${score} de ${activePremierSeason.qualificationPoints}`}>

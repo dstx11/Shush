@@ -124,11 +124,6 @@ button {
   margin: 0 auto;
 }
 
-.hero-copy {
-  position: relative;
-  z-index: 4;
-}
-
 .status-badge {
   display: inline-flex;
   width: fit-content;

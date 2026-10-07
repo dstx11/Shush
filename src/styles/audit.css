@@ -1033,19 +1033,10 @@ textarea:focus-visible {
   text-align: right;
 }
 
-.audit-result-row.is-win strong::before {
-  content: "W";
+.audit-result-row .result-outcome {
   margin-right: .65rem;
-  color: #8b5cff;
+  color: #9b79ff;
   font-family: var(--font-mono);
-}
-
-.audit-result-row.is-loss strong::before {
-  content: "L";
-  margin-right: .65rem;
-  color: #8b5cff;
-  font-family: var(--font-mono);
-  opacity: .55;
 }
 
 .audit-empty-copy {
@@ -1812,18 +1803,6 @@ textarea:focus-visible {
   display: inline-block;
   font-size: 1rem;
   line-height: 1;
-}
-
-.audit-section-mark {
-  display: grid;
-  width: 1.8rem;
-  height: 1.8rem;
-  place-items: center;
-  border: 1px solid rgba(139, 92, 255, .45);
-  color: #8b5cff;
-  font-family: var(--font-mono);
-  font-size: .68rem;
-  font-weight: 700;
 }
 
 
