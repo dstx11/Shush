@@ -36,6 +36,9 @@ jobs:
       - name: Typecheck
         run: pnpm run typecheck
 
+      - name: Asset integrity
+        run: pnpm run check:assets
+
       - name: Build
         run: pnpm run build
 
