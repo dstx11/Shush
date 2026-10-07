@@ -7,71 +7,24 @@ export type RouteMetadata = {
 export const siteUrl = 'https://shush.pt';
 
 export const defaultMetadata: RouteMetadata = {
-  title: 'SHUSH — Gaming, Premier e Creators',
-  description: 'SHUSH é um grupo gaming, esports e entertainment focado em Valorant Premier, creators e jersey/clothing.',
+  title: 'SHUSH — Sem barulho. Só rounds.',
+  description: 'SHUSH é um grupo gaming focado em Valorant, creators e identidade própria.',
   image: '/og-shush.png',
 };
 
 export const routeMetadata: Record<string, RouteMetadata> = {
   '/': defaultMetadata,
-  '/esports': {
-    title: 'SHUSH Esports',
-    description: 'Mapa competitivo da SHUSH: Valorant Premier, roster, calendário e resultados publicados.',
+  '/roster': {
+    title: 'Roster — SHUSH',
+    description: 'Roster público da SHUSH com jogadores, funções e presença de equipa.',
   },
-  '/esports/valorant': {
-    title: 'SHUSH Valorant',
-    description: 'Valorant é o lobby competitivo da SHUSH, com Premier, roster e resultados públicos.',
+  '/drop-01': {
+    title: 'Drop 01 — SHUSH',
+    description: 'Drop 01 da SHUSH: jersey, frente e verso, com personalização de nick, número e tamanho.',
+    image: '/assets/jersey/frontjersey.webp',
   },
-  '/esports/valorant/premier': {
-    title: 'SHUSH Premier Calendar',
-    description: 'Calendário Premier, score, próxima janela e convocados da SHUSH.',
-  },
-  '/esports/valorant/roster': {
-    title: 'SHUSH Valorant Roster',
-    description: 'Roster Valorant da SHUSH com jogadores públicos e roles.',
-  },
-  '/esports/valorant/results': {
-    title: 'SHUSH Results',
-    description: 'Últimos jogos publicados pela SHUSH.',
-  },
-  '/esports/valorant/tournaments': {
-    title: 'SHUSH Tournament Results',
-    description: 'Fechos de seasons e torneios quando houver resultado confirmado.',
-  },
-  '/content': {
-    title: 'SHUSH Content',
-    description: 'Creators da SHUSH: More na Twitch e Th0maz7 no YouTube.',
-  },
-  '/content/more': {
-    title: 'More — SHUSH Creator',
-    description: 'More, creator SHUSH na Twitch.',
-  },
-  '/content/th0maz7': {
-    title: 'Th0maz7 — SHUSH Creator',
-    description: 'Th0maz7, creator SHUSH no YouTube.',
-  },
-  '/products': {
-    title: 'SHUSH Products',
-    description: 'Jersey / Clothing da SHUSH e pedido manual.',
-  },
-  '/products/jersey': {
-    title: 'SHUSH Jersey / Clothing',
-    description: 'Showcase da jersey SHUSH em preto e roxo.',
-  },
-  '/products/jersey/custom': {
-    title: 'SHUSH Jersey Customização',
-    description: 'Pedido manual da jersey SHUSH com nick, número, tamanho e frase opcional.',
-  },
-  '/company': {
-    title: 'SHUSH Company',
-    description: 'Sobre a SHUSH: gaming, esports, creators e identidade própria.',
-  },
-  '/company/partners': {
-    title: 'SHUSH Partners',
-    description: 'Backora como partner técnico/digital da SHUSH.',
-  },
-  '/company/contact': {
-    title: 'SHUSH Contact',
-    description: 'Contacto direto da SHUSH, a atualizar.',
+  '/about': {
+    title: 'About — SHUSH',
+    description: 'A SHUSH em poucas linhas: gaming, Valorant, creators, identidade e partner técnico.',
   },
 };
