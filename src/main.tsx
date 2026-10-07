@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { preloadRoute } from './lib/routes';
 import './styles/base.css';
 import './styles/audit.css';
 
@@ -18,6 +19,8 @@ window.addEventListener('vite:preloadError', (event) => {
   window.sessionStorage.setItem(PRELOAD_RECOVERY_KEY, String(now));
   window.location.reload();
 });
+
+preloadRoute(window.location.pathname);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
