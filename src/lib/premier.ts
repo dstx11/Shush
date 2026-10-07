@@ -73,8 +73,8 @@ export function calculateSeasonStatus(season: PremierSeason, now = new Date()): 
   if (placement?.status === 'playoffs_active') return 'Play-offs';
 
   const score = calculatePremierScore(season);
-  const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart);
-  const regularWindowEnded = getAllPlayDays(season).every(({ day }) => addMinutes(makeDateTime(day.date, day.windowEnd), 40) < now);
+  const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart, season.timezone);
+  const regularWindowEnded = getAllPlayDays(season).every(({ day }) => addMinutes(makeDateTime(day.date, day.windowEnd, season.timezone), 40) < now);
 
   if (now >= playoffsStart && score >= season.qualificationPoints) return 'Play-offs';
   if (regularWindowEnded && score >= season.qualificationPoints) return 'Qualified';
@@ -108,15 +108,15 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
     return { kind: 'champions', title: 'CAMPEÕES PREMIER', detail: 'Resultado final publicado pela equipa.', result: latestPlayoffResult };
   }
 
-  const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart);
-  const playoffsEnd = addMinutes(makeDateTime(season.playoffsDate, season.playoffsWindowEnd), 40);
+  const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart, season.timezone);
+  const playoffsEnd = addMinutes(makeDateTime(season.playoffsDate, season.playoffsWindowEnd, season.timezone), 40);
   if (score >= season.qualificationPoints && now >= playoffsStart && now <= playoffsEnd && placement?.status !== 'champions') {
     return { kind: 'playoffs_live', title: 'PLAY-OFFS EM DIRETO', detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}` };
   }
 
   const liveRegular = getAllPlayDays(season).find(({ day }) => {
-    const start = makeDateTime(day.date, day.windowStart);
-    const embedEnd = addMinutes(makeDateTime(day.date, day.windowEnd), 40);
+    const start = makeDateTime(day.date, day.windowStart, season.timezone);
+    const embedEnd = addMinutes(makeDateTime(day.date, day.windowEnd, season.timezone), 40);
     return now >= start && now <= embedEnd;
   });
 
@@ -132,8 +132,8 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   }
 
   const upcoming = getAllPlayDays(season)
-    .filter(({ day }) => makeDateTime(day.date, day.windowStart) > now)
-    .sort((a, b) => makeDateTime(a.day.date, a.day.windowStart).getTime() - makeDateTime(b.day.date, b.day.windowStart).getTime())[0];
+    .filter(({ day }) => makeDateTime(day.date, day.windowStart, season.timezone) > now)
+    .sort((a, b) => makeDateTime(a.day.date, a.day.windowStart, season.timezone).getTime() - makeDateTime(b.day.date, b.day.windowStart, season.timezone).getTime())[0];
 
   if (upcoming) {
     return {
@@ -163,8 +163,8 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   }
 
   const pending = getAllPlayDays(season)
-    .filter(({ week, day }) => addMinutes(makeDateTime(day.date, day.windowEnd), 40) < now && !hasResultForPlayDay(season, week, day))
-    .sort((a, b) => makeDateTime(b.day.date, b.day.windowEnd).getTime() - makeDateTime(a.day.date, a.day.windowEnd).getTime())[0];
+    .filter(({ week, day }) => addMinutes(makeDateTime(day.date, day.windowEnd, season.timezone), 40) < now && !hasResultForPlayDay(season, week, day))
+    .sort((a, b) => makeDateTime(b.day.date, b.day.windowEnd, season.timezone).getTime() - makeDateTime(a.day.date, a.day.windowEnd, season.timezone).getTime())[0];
 
   if (pending) {
     return {
@@ -208,8 +208,8 @@ export function formatDate(date: string) {
 }
 
 export function formatWindowCountdown(day: PremierPlayDay, now = new Date()) {
-  const start = makeDateTime(day.date, day.windowStart);
-  const end = makeDateTime(day.date, day.windowEnd);
+  const start = makeDateTime(day.date, day.windowStart, season.timezone);
+  const end = makeDateTime(day.date, day.windowEnd, season.timezone);
 
   if (now >= start && now <= addMinutes(end, 40)) return 'Janela ativa';
   if (now > addMinutes(end, 40)) return 'Resultado a atualizar';
@@ -238,8 +238,56 @@ function getLatestResult<T extends MatchResult>(results: T[], now: Date) {
     .sort((a, b) => new Date(`${b.date}T12:00:00`).getTime() - new Date(`${a.date}T12:00:00`).getTime())[0];
 }
 
-function makeDateTime(date: string, time: string) {
-  return new Date(`${date}T${time}:00`);
+function makeDateTime(date: string, time: string, timezone = 'Europe/Lisbon') {
+  const [year, month, day] = date.split('-').map(Number);
+  const [hour, minute] = time.split(':').map(Number);
+  const utcGuess = Date.UTC(year, month - 1, day, hour, minute, 0);
+
+  // Convert a wall-clock time in the season timezone into an absolute instant.
+  // Recalculate once so DST boundaries resolve correctly without depending on
+  // the visitor's local browser timezone.
+  let instant = utcGuess - timezoneOffsetMs(utcGuess, timezone);
+  instant = utcGuess - timezoneOffsetMs(instant, timezone);
+
+  return new Date(instant);
+}
+
+const timezoneFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function timezoneOffsetMs(timestamp: number, timezone: string) {
+  let formatter = timezoneFormatters.get(timezone);
+
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: timezone,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    timezoneFormatters.set(timezone, formatter);
+  }
+
+  const parts = Object.fromEntries(
+    formatter
+      .formatToParts(new Date(timestamp))
+      .filter((part) => part.type !== 'literal')
+      .map((part) => [part.type, part.value]),
+  );
+
+  const representedAsUtc = Date.UTC(
+    Number(parts.year),
+    Number(parts.month) - 1,
+    Number(parts.day),
+    Number(parts.hour),
+    Number(parts.minute),
+    Number(parts.second),
+  );
+
+  return representedAsUtc - Math.floor(timestamp / 1000) * 1000;
 }
 
 function addMinutes(date: Date, minutes: number) {
