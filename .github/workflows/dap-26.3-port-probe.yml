@@ -22,11 +22,14 @@ jobs:
           distribution: temurin
           java-version: '25'
 
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.4.1'
+
       - name: Migrate mappings
         working-directory: dap-src
         run: |
-          chmod +x gradlew
-          ./gradlew migrateMappings --mappings "net.minecraft:mappings:1.21.11" --overrideInputsIHaveABackup --stacktrace
+          gradle migrateMappings --mappings "net.minecraft:mappings:1.21.11" --overrideInputsIHaveABackup --stacktrace
 
       - name: Patch to 26.3
         working-directory: dap-src
@@ -65,7 +68,8 @@ jobs:
       - name: Gradle 9.6
         working-directory: dap-src
         run: |
-          ./gradlew wrapper --gradle-version 9.6.0
+          gradle wrapper --gradle-version 9.6.0
+          gradle --version
 
       - name: Compile
         id: compile
@@ -73,7 +77,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          ./gradlew compileJava --stacktrace --console=plain 2>&1 | tee ../compile-26.3.log
+          gradle compileJava --stacktrace --console=plain 2>&1 | tee ../compile-26.3.log
 
       - name: Upload compile log
         if: always()
