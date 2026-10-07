@@ -36,7 +36,7 @@ export function HeroShowcase() {
             <span>Só rounds.</span>
           </h1>
           <MotionRail className="hero-title-rail" />
-          <p>Uma micro-org gaming com identidade própria, roster público, Premier e um primeiro drop que não precisa de fingir ser maior do que é.</p>
+          <p>Valorant, creators e identidade própria. Um espaço para acompanhar a equipa, conhecer o roster e descobrir o Drop 01.</p>
 
           <div className="audit-hero-status">
             <StatusBadge pulse={state.kind === 'match_day_live' || state.kind === 'playoffs_live'}>{state.title}</StatusBadge>
