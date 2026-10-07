@@ -23,11 +23,11 @@ export function PremierPage() {
 
   return (
     <div className="audit-premier-page">
-      <section className="audit-premier-hero px-5 pb-14 pt-36">
+      <section className="audit-premier-hero px-5 pb-14 pt-36" aria-labelledby="premier-title">
         <div className="audit-page-shell">
           <Reveal className="audit-premier-intro">
             <span className="section-kicker">Valorant / Premier</span>
-            <h1>Match Center.</h1>
+            <h1 id="premier-title">Match Center.</h1>
             <p>Acompanha o estado competitivo da SHUSH num único sítio: pontuação, calendário e resultados publicados.</p>
 
             <div className="audit-premier-state">
