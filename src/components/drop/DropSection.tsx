@@ -64,7 +64,7 @@ export function DropSection() {
             <span className="section-kicker">Drop 01 / Jersey</span>
             <h1>A camisola da SHUSH.</h1>
           </div>
-          <p>Primeiro drop público da SHUSH. Preto, roxo e personalização simples — sem checkout falso nem stock inventado.</p>
+          <p>Primeiro drop público da SHUSH. Preto, roxo e personalização de nick, número, tamanho e frase.</p>
         </div>
 
         <div className="audit-drop-layout">
