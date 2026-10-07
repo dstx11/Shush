@@ -173,10 +173,17 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
 }
 
 export function formatResultLine(result: MatchResult) {
-  if (result.shushScore === undefined || result.opponentScore === undefined) return result.outcome === 'win' ? 'SHUSH venceu' : 'SHUSH perdeu';
   const confirmedRival = result.opponent && !/^opp/i.test(result.opponent) ? result.opponent : null;
-  if (!confirmedRival) return 'Resultado a atualizar';
-  return `SHUSH ${result.shushScore}-${result.opponentScore} ${confirmedRival}`;
+
+  if (result.shushScore !== undefined && result.opponentScore !== undefined) {
+    return confirmedRival
+      ? `SHUSH ${result.shushScore}-${result.opponentScore} ${confirmedRival}`
+      : `SHUSH ${result.shushScore}-${result.opponentScore} · adversário não publicado`;
+  }
+
+  if (result.outcome === 'win') return 'Vitória publicada';
+  if (result.outcome === 'loss') return 'Derrota publicada';
+  return 'Resultado sem score publicado';
 }
 
 export function formatDate(date: string) {
