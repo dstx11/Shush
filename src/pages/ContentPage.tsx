@@ -1,4 +1,3 @@
-import { ExternalLink } from 'lucide-react';
 import { Reveal } from '../components/ui/Reveal';
 import { creators } from '../data/players';
 
@@ -34,7 +33,7 @@ export function ContentPage() {
                   <p>{creator.quote}</p>
                   <strong>
                     Abrir canal oficial
-                    <ExternalLink aria-hidden="true" className="h-4 w-4" />
+                    <span aria-hidden="true">↗</span>
                   </strong>
                 </div>
               </a>
