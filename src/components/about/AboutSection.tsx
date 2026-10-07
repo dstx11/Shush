@@ -2,11 +2,11 @@ import { creators } from '../../data/players';
 
 export function AboutSection() {
   return (
-    <section id="about" className="about-section audit-about scroll-mt-28 px-5 pb-28 pt-36">
+    <section id="about" className="about-section audit-about scroll-mt-28 px-5 pb-28 pt-36" aria-labelledby="about-title">
       <div className="about-shell css-reveal">
         <div className="audit-about-intro">
           <span className="section-kicker">About / SHUSH</span>
-          <h1>Competição, conteúdo e identidade.</h1>
+          <h1 id="about-title">Competição, conteúdo e identidade.</h1>
           <p>A SHUSH reúne Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
           <strong>Sem barulho. Só rounds.</strong>
         </div>
