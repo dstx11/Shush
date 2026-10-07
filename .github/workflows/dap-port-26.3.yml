@@ -1,0 +1,109 @@
+name: DAP 26.3 Port CI
+
+on:
+  push:
+    branches:
+      - dap-26.3-port-ci
+    paths:
+      - ".github/workflows/dap-port-26.3.yml"
+      - "tools/dap-port-26.3/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout Shush port tooling
+        uses: actions/checkout@v4
+
+      - name: Set up Java 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Set up Gradle 9.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.7.0"
+
+      - name: Fetch DAP 26.3 source baseline
+        run: |
+          git clone --depth 1 --branch port-26.3-v3 \
+            https://github.com/piolly/Dap-ur-homie-fork.git dap-src
+
+      - name: Apply Shush compatibility patches
+        run: python tools/dap-port-26.3/patch_port.py dap-src
+
+      - name: Validate 26.3 input migration
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          root = Path("dap-src/src/main/java")
+          bad = []
+          for p in root.rglob("*.java"):
+              s = p.read_text(encoding="utf-8")
+              if "org.lwjgl.glfw.GLFW" in s or "glfwGetKey" in s or "glfwGetMouseButton" in s:
+                  bad.append((p, "direct GLFW"))
+              if re.search(r"InputConstants\.isKeyDown\(\s*\d+\s*\)", s):
+                  bad.append((p, "numeric isKeyDown"))
+              if re.search(r"InputConstants\.Type\.KEYBOARD\s*,\s*\d+\s*,", s):
+                  bad.append((p, "numeric KeyMapping default"))
+          if bad:
+              for p, why in bad:
+                  print(f"{p}: {why}")
+              raise SystemExit("Input migration validation failed")
+          print("Input migration validation passed")
+          PY
+
+      - name: Build DAP for Minecraft 26.3
+        working-directory: dap-src
+        run: gradle --no-daemon clean build --stacktrace
+
+      - name: Inspect candidate jars
+        run: |
+          ls -lah dap-src/build/libs
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import json
+          jars = [p for p in Path("dap-src/build/libs").glob("*.jar") if "-sources" not in p.name]
+          if not jars:
+              raise SystemExit("No candidate jar produced")
+          for jar in jars:
+              print("Checking", jar)
+              with ZipFile(jar) as z:
+                  names = z.namelist()
+                  if "fabric.mod.json" not in names:
+                      continue
+                  meta = json.loads(z.read("fabric.mod.json"))
+                  print(" mod version:", meta.get("version"))
+                  print(" minecraft:", meta.get("depends", {}).get("minecraft"))
+                  bad = []
+                  for n in names:
+                      if not n.endswith(".class"):
+                          continue
+                      b = z.read(n)
+                      if b"org/lwjgl/glfw/GLFW" in b:
+                          bad.append((n, "GLFW"))
+                      if b"net/minecraft/class_" in b:
+                          bad.append((n, "Intermediary"))
+                  if bad:
+                      for x in bad[:50]:
+                          print("BAD", x)
+                      raise SystemExit(f"Candidate still has {len(bad)} incompatible class references")
+          PY
+
+      - name: Upload candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: dap-ur-homies-mc26.3-candidate
+          path: |
+            dap-src/build/libs/*.jar
+          if-no-files-found: error
