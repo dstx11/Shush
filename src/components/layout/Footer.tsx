@@ -32,7 +32,7 @@ export function Footer() {
         </div>
 
         <div className="audit-footer-partner">
-          <span>Technical partner</span>
+          <span>Parceiro técnico</span>
           <a href="https://backora.org/" target="_blank" rel="noreferrer">
             <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" />
             Backora

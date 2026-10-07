@@ -77,7 +77,7 @@ export function HomeHub() {
               <img src="/assets/jersey/frontjersey.webp" width="1280" height="1280" alt="Jersey SHUSH Drop 01" loading="lazy" decoding="async" />
             </div>
             <div>
-              <h3>Jersey / Clothing</h3>
+              <h3>Jersey SHUSH</h3>
               <p>Frente, verso e personalização manual.</p>
             </div>
             <Button href="/products/jersey" variant="secondary">Ver Drop 01</Button>

@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: '.node-version'
           cache: pnpm
 
       - name: Install
@@ -49,8 +49,17 @@ jobs:
           test -f dist/_redirects
           test -f dist/robots.txt
           test -f dist/sitemap.xml
+          test -f dist/esports/valorant/premier/index.html
+          test -f dist/esports/valorant/roster/index.html
+          test -f dist/content/index.html
+          test -f dist/products/jersey/index.html
+          test -f dist/company/index.html
           grep -q 'lang="pt-PT"' dist/index.html
           grep -q 'Content-Security-Policy' dist/_headers
+          grep -Fq '<title>Premier — SHUSH</title>' dist/esports/valorant/premier/index.html
+          grep -Fq 'https://shush.pt/esports/valorant/premier' dist/esports/valorant/premier/index.html
+          grep -Fq '<title>Drop 01 — SHUSH</title>' dist/products/jersey/index.html
+          ! grep -Fq '/* /index.html 200' dist/_redirects
 
 
   visual-audit:
@@ -67,7 +76,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: '.node-version'
           cache: pnpm
 
       - name: Install
@@ -102,7 +111,11 @@ jobs:
           pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/products/jersey visual-audit/drop-desktop.png
           pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="1440,1100" http://127.0.0.1:4173/company visual-audit/about-desktop.png
           pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/ visual-audit/home-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/esports/valorant/premier visual-audit/premier-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/esports/valorant/roster visual-audit/roster-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/content visual-audit/creators-mobile.png
           pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/products/jersey visual-audit/drop-mobile.png
+          pnpm dlx playwright@1.56.1 screenshot --full-page --wait-for-selector="h1" --wait-for-timeout=500 --viewport-size="390,844" http://127.0.0.1:4173/company visual-audit/about-mobile.png
 
       - name: Upload screenshots
         if: always()

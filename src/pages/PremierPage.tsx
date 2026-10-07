@@ -28,7 +28,7 @@ export function PremierPage() {
           <Reveal className="audit-premier-intro">
             <span className="section-kicker">Valorant / Premier</span>
             <h1>Match Center.</h1>
-            <p>O estado competitivo da SHUSH num único sítio. Só mostramos o que está confirmado nos dados publicados.</p>
+            <p>Acompanha o estado competitivo da SHUSH num único sítio: pontuação, calendário e resultados publicados.</p>
 
             <div className="audit-premier-state">
               <div>

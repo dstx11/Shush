@@ -7,7 +7,7 @@ export function AboutSection() {
         <div className="audit-about-intro">
           <span className="section-kicker">About / SHUSH</span>
           <h1>Competição, conteúdo e identidade.</h1>
-          <p>A SHUSH junta Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
+          <p>A SHUSH reúne Valorant Premier, creators e uma identidade visual própria. Competição, conteúdo e produto com a mesma linguagem.</p>
           <strong>Sem barulho. Só rounds.</strong>
         </div>
 
@@ -38,11 +38,11 @@ export function AboutSection() {
 
         <a id="partners" href="https://backora.org/" target="_blank" rel="noreferrer" className="audit-partner scroll-mt-28">
           <span>
-            <small>Technical / digital partner</small>
+            <small>Parceiro técnico / digital</small>
             <strong>Backora</strong>
           </span>
           <p>Estrutura web e suporte técnico da SHUSH.</p>
-          <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
+          <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" />
           <span aria-hidden="true">↗</span>
         </a>
       </div>

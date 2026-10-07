@@ -44,7 +44,9 @@ Legacy URLs redirect to the closest current destination.
 
 - Build command: `pnpm run build`
 - Output: `dist`
-- Static SPA fallback: `public/_redirects`
+- Canonical routes get route-specific static metadata pages during the Vite build.
+- `public/_redirects` only contains legacy URL redirects; Cloudflare Pages handles unmatched SPA routes natively.
+- Node.js is pinned through `.node-version`.
 - Target: Cloudflare Pages
 
 ## Product rules
