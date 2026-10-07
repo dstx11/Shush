@@ -1,40 +1,51 @@
-﻿import { motion, useReducedMotion } from 'motion/react';
+import { ExternalLink } from 'lucide-react';
 import { footerLinks } from '../../data/nav';
-import { motionPresets } from '../../lib/motion';
-import { SnakeLine } from '../motion/MotionPrimitives';
+import { creators } from '../../data/players';
 import { AppLink } from '../ui/AppLink';
 
-const MotionAppLink = motion.create(AppLink);
-
 export function Footer() {
-  const reduceMotion = useReducedMotion();
-
   return (
-    <footer className="relative px-5 py-14">
-      <SnakeLine className="footer-snake-divider" />
-      <motion.div
-        className="footer-shell mx-auto flex max-w-7xl flex-col gap-6 border-t border-white/10 pt-8 text-sm text-shush-muted lg:flex-row lg:items-center lg:justify-between"
-        variants={reduceMotion ? undefined : motionPresets.staggerParent}
-        initial={reduceMotion ? false : 'hidden'}
-        whileInView={reduceMotion ? undefined : 'visible'}
-        viewport={{ once: true, margin: '-10%' }}
-      >
-        <div>
-          <strong className="block text-shush-text">SHUSH</strong>
-          <span>Sem barulho. Só rounds.</span>
+    <footer className="audit-footer px-5 pb-10 pt-16">
+      <div className="audit-footer-shell">
+        <div className="audit-footer-brand">
+          <AppLink href="/" aria-label="SHUSH — Home">
+            <img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="" loading="lazy" decoding="async" />
+            <span>SHUSH</span>
+          </AppLink>
+          <p>Sem barulho. Só rounds.</p>
         </div>
-        <motion.div className="flex flex-wrap gap-2" variants={reduceMotion ? undefined : motionPresets.staggerParent}>
+
+        <nav className="audit-footer-nav" aria-label="Navegação de rodapé">
+          <span>Site</span>
           {footerLinks.map((item) => (
-            <MotionAppLink key={item.href} href={item.href} className="footer-link" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
-              {item.label}
-            </MotionAppLink>
+            <AppLink key={item.href} href={item.href}>{item.label}</AppLink>
           ))}
-          <motion.a href="https://backora.org/" target="_blank" rel="noreferrer" className="footer-link footer-backora inline-flex items-center gap-3" variants={reduceMotion ? undefined : motionPresets.staggerItem}>
-            <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" className="h-5 w-auto" loading="lazy" decoding="async" />
-            <span>Backora</span>
-          </motion.a>
-        </motion.div>
-      </motion.div>
+        </nav>
+
+        <div className="audit-footer-nav">
+          <span>Creators</span>
+          {creators.map((creator) => (
+            <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
+              {creator.displayName}
+              <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
+            </a>
+          ))}
+        </div>
+
+        <div className="audit-footer-partner">
+          <span>Technical partner</span>
+          <a href="https://backora.org/" target="_blank" rel="noreferrer">
+            <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" />
+            Backora
+            <ExternalLink aria-hidden="true" className="h-3.5 w-3.5" />
+          </a>
+        </div>
+      </div>
+
+      <div className="audit-footer-bottom">
+        <span>SHUSH © {new Date().getFullYear()}</span>
+        <span>Gaming · Valorant · Creators</span>
+      </div>
     </footer>
   );
 }
