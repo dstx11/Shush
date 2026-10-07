@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { AnimatePresence, useReducedMotion } from 'motion/react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
@@ -16,8 +15,6 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((module) => 
 
 export default function App() {
   const location = useLocation();
-  const reduceMotion = useReducedMotion();
-
   useRouteMetadata(location.pathname);
   useRouteScroll(location.pathname, location.hash);
 
@@ -27,9 +24,8 @@ export default function App() {
       <Header />
       <main id="main-content">
         <Suspense fallback={<RouteFallback />}>
-          <AnimatePresence mode="wait" initial={!reduceMotion}>
-            <PageTransition key={location.pathname}>
-              <Routes location={location}>
+          <PageTransition key={location.pathname}>
+            <Routes location={location}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/esports/valorant/premier" element={<PremierPage />} />
                 <Route path="/esports/valorant/roster" element={<RosterPage />} />
@@ -49,9 +45,8 @@ export default function App() {
                 <Route path="/company/contact" element={<Navigate to="/company" replace />} />
 
                 <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </PageTransition>
-          </AnimatePresence>
+            </Routes>
+          </PageTransition>
         </Suspense>
       </main>
       <Footer />
@@ -88,9 +83,8 @@ function useRouteMetadata(pathname: string) {
 }
 
 function useRouteScroll(pathname: string, hash: string) {
-  const reduceMotion = useReducedMotion();
-
   useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let frame = 0;
     let timeout = 0;
     let attempts = 0;
@@ -119,7 +113,7 @@ function useRouteScroll(pathname: string, hash: string) {
       window.cancelAnimationFrame(frame);
       window.clearTimeout(timeout);
     };
-  }, [pathname, hash, reduceMotion]);
+  }, [pathname, hash]);
 }
 
 function setMeta(selector: string, content: string) {
