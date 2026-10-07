@@ -18,13 +18,13 @@ export function HeroShowcase() {
   const state = calculatePublicMatchDayState(activePremierSeason);
 
   return (
-    <section id="top" className="hero-stage home-identity-stage audit-hero relative overflow-hidden px-5 pt-24">
+    <section id="top" className="hero-stage home-identity-stage audit-hero relative overflow-hidden px-5 pt-24" aria-labelledby="hero-title">
       <div className="audit-hero-glow" aria-hidden="true" />
 
       <div className="hero-shell is-identity audit-hero-shell">
         <div className="hero-copy identity audit-hero-copy hero-copy-enter">
           <span className="section-kicker">SHUSH / Valorant + Creators</span>
-          <h1>
+          <h1 id="hero-title">
             Sem barulho.
             <span>Só rounds.</span>
           </h1>
