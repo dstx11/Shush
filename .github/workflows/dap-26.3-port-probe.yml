@@ -51,7 +51,7 @@ jobs:
           p=Path("build.gradle")
           s=p.read_text()
           s=s.replace("net.fabricmc.fabric-loom-remap","net.fabricmc.fabric-loom")
-          s=s.replace('    mappings "net.fabricmc:yarn:\${project.yarn_mappings}:v2"\n','')
+          s="\n".join(line for line in s.splitlines() if "mappings \"net.fabricmc:yarn:" not in line)+"\n"
           s=s.replace("options.release = 21","options.release = 25").replace("JavaVersion.VERSION_21","JavaVersion.VERSION_25")
           s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
           if "api.modrinth.com/maven" not in s:
