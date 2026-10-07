@@ -27,7 +27,7 @@ export function RosterSection() {
             <div className="character-media">
               <span className="character-index">{String(selectedIndex + 1).padStart(2, '0')}</span>
               {selectedPlayer.avatar ? (
-                <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="eager" decoding="async" />
+                <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
               ) : (
                 <div className="avatar-fallback character-fallback">
                   <span className="avatar-ring" aria-hidden="true" />
