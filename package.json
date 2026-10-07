@@ -11,7 +11,8 @@
     "check:bundle": "node scripts/check-build-budget.mjs",
     "validate:dist": "node scripts/validate-dist.mjs",
     "check:assets": "node scripts/check-assets.mjs",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "test:premier": "node scripts/test-premier.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
