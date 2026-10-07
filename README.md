@@ -24,10 +24,12 @@ pnpm run dev
 ```powershell
 pnpm run typecheck
 pnpm run build
+pnpm run validate:dist
+pnpm run check:bundle
 pnpm run preview
 ```
 
-Pull requests to `master` also run install, typecheck and production build in GitHub Actions.
+Pull requests to `master` validate install, typecheck, production build, route metadata, deploy artifacts and bundle budgets in GitHub Actions.
 
 ## Public routes
 
@@ -45,7 +47,9 @@ Legacy URLs redirect to the closest current destination.
 - Build command: `pnpm run build`
 - Output: `dist`
 - Canonical routes get route-specific static metadata pages during the Vite build.
-- `public/_redirects` only contains legacy URL redirects; Cloudflare Pages handles unmatched SPA routes natively.
+- `public/_redirects` contains canonical legacy/trailing-slash redirects.
+- A top-level `404.html` gives unknown direct URLs a real 404 response.
+- Known deep routes are emitted as static HTML files and hydrate into the React app.
 - Node.js is pinned through `.node-version`.
 - Target: Cloudflare Pages
 
