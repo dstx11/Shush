@@ -20,7 +20,7 @@ export function HomeHub() {
             <span className="section-kicker">SHUSH / agora</span>
             <h2 id="home-hub-title">Tudo o que interessa, sem ruído.</h2>
           </div>
-          <p>Premier, roster, creators e Drop 01. Sem páginas de enchimento nem informação inventada.</p>
+          <p>Premier, roster, creators e Drop 01 — os pontos centrais da SHUSH num só sítio.</p>
         </Reveal>
 
         <div className="hub-editorial-grid">
@@ -59,7 +59,7 @@ export function HomeHub() {
               ))}
             </div>
             <h3>Lineup pública.</h3>
-            <p>Roles claras, presença visual e zero estatísticas inventadas.</p>
+            <p>Roles claras, presença de equipa e perfis públicos quando disponíveis.</p>
             <Button href="/esports/valorant/roster" variant="secondary">Ver roster</Button>
           </Reveal>
 
