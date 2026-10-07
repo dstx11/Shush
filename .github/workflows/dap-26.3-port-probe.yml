@@ -67,6 +67,123 @@ jobs:
             s=s.split("\npublishing {",1)[0]+"\n"
           p.write_text(s)
 
+          
+          # First broad source migration pass for Fabric/Minecraft 26.3.
+          import re
+          for jf in Path("src/main/java").rglob("*.java"):
+            code=jf.read_text()
+            code=code.replace("net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper",
+                              "net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper")
+            code=code.replace("KeyBindingHelper", "KeyMappingHelper")
+            code=code.replace("registerKeyBinding", "registerKeyMapping")
+            code=code.replace("net.minecraft.client.gui.GuiGraphics",
+                              "net.minecraft.client.gui.GuiGraphicsExtractor")
+            code=re.sub(r"\bGuiGraphics\b", "GuiGraphicsExtractor", code)
+            code=code.replace("PayloadTypeRegistry.playS2C()", "PayloadTypeRegistry.clientboundPlay()")
+            code=code.replace("PayloadTypeRegistry.playC2S()", "PayloadTypeRegistry.serverboundPlay()")
+            code=code.replace("net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents",
+                              "net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents")
+            code=code.replace("ItemGroupEvents", "CreativeModeTabEvents")
+            code=code.replace("modifyEntriesEvent", "modifyOutputEvent")
+            code=code.replace(".random.next", ".getRandom().next")
+            jf.write_text(code)
+
+          # Compatibility bridge for the removed legacy HUD callback. This uses the
+          # 26.3 HudElementRegistry internally, allowing the original handlers to be
+          # migrated incrementally without losing their registration semantics.
+          hud=Path("src/main/java/net/fabricmc/fabric/api/client/rendering/v1/HudRenderCallback.java")
+          hud.parent.mkdir(parents=True, exist_ok=True)
+          hud.write_text("""package net.fabricmc.fabric.api.client.rendering.v1;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.resources.Identifier;
+
+@FunctionalInterface
+public interface HudRenderCallback {
+    Event EVENT = new Event();
+    void onHudRender(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker);
+
+    final class Event {
+        private final AtomicInteger ids = new AtomicInteger();
+        public void register(HudRenderCallback callback) {
+            HudElementRegistry.addLast(
+                Identifier.fromNamespaceAndPath("testcoop", "legacy_hud_" + ids.getAndIncrement()),
+                callback::onHudRender
+            );
+        }
+    }
+}
+""")
+
+          # Temporary source-compatible GLFW bridge. Minecraft 26.3 no longer
+          # supplies GLFW; this maps the legacy queries to InputConstants/MouseHandler.
+          # It is intentionally small and only implements the API surface DAP uses.
+          glfw=Path("src/main/java/org/lwjgl/glfw/GLFW.java")
+          glfw.parent.mkdir(parents=True, exist_ok=True)
+          glfw.write_text("""package org.lwjgl.glfw;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.Minecraft;
+
+public final class GLFW {
+    private GLFW() {}
+    public static final int GLFW_PRESS = 1;
+    public static final int GLFW_RELEASE = 0;
+    public static final int GLFW_KEY_A = InputConstants.KEY_A;
+    public static final int GLFW_KEY_B = InputConstants.KEY_B;
+    public static final int GLFW_KEY_C = InputConstants.KEY_C;
+    public static final int GLFW_KEY_D = InputConstants.KEY_D;
+    public static final int GLFW_KEY_E = InputConstants.KEY_E;
+    public static final int GLFW_KEY_F = InputConstants.KEY_F;
+    public static final int GLFW_KEY_G = InputConstants.KEY_G;
+    public static final int GLFW_KEY_H = InputConstants.KEY_H;
+    public static final int GLFW_KEY_I = InputConstants.KEY_I;
+    public static final int GLFW_KEY_J = InputConstants.KEY_J;
+    public static final int GLFW_KEY_K = InputConstants.KEY_K;
+    public static final int GLFW_KEY_L = InputConstants.KEY_L;
+    public static final int GLFW_KEY_M = InputConstants.KEY_M;
+    public static final int GLFW_KEY_N = InputConstants.KEY_N;
+    public static final int GLFW_KEY_O = InputConstants.KEY_O;
+    public static final int GLFW_KEY_P = InputConstants.KEY_P;
+    public static final int GLFW_KEY_Q = InputConstants.KEY_Q;
+    public static final int GLFW_KEY_R = InputConstants.KEY_R;
+    public static final int GLFW_KEY_S = InputConstants.KEY_S;
+    public static final int GLFW_KEY_T = InputConstants.KEY_T;
+    public static final int GLFW_KEY_U = InputConstants.KEY_U;
+    public static final int GLFW_KEY_V = InputConstants.KEY_V;
+    public static final int GLFW_KEY_W = InputConstants.KEY_W;
+    public static final int GLFW_KEY_X = InputConstants.KEY_X;
+    public static final int GLFW_KEY_Y = InputConstants.KEY_Y;
+    public static final int GLFW_KEY_Z = InputConstants.KEY_Z;
+    public static final int GLFW_KEY_SPACE = InputConstants.KEY_SPACE;
+    public static final int GLFW_KEY_LEFT_SHIFT = InputConstants.KEY_LSHIFT;
+    public static final int GLFW_KEY_RIGHT_SHIFT = InputConstants.KEY_RSHIFT;
+    public static final int GLFW_KEY_LEFT_CONTROL = InputConstants.KEY_LCONTROL;
+    public static final int GLFW_KEY_RIGHT_CONTROL = InputConstants.KEY_RCONTROL;
+    public static final int GLFW_MOUSE_BUTTON_LEFT = 0;
+    public static final int GLFW_MOUSE_BUTTON_RIGHT = 1;
+    public static final int GLFW_MOUSE_BUTTON_MIDDLE = 2;
+
+    public static int glfwGetKey(long window, int key) {
+        return InputConstants.isKeyDown(window, key) ? GLFW_PRESS : GLFW_RELEASE;
+    }
+
+    public static int glfwGetMouseButton(long window, int button) {
+        var mouse = Minecraft.getInstance().mouseHandler;
+        boolean down = switch (button) {
+            case GLFW_MOUSE_BUTTON_LEFT -> mouse.isLeftPressed();
+            case GLFW_MOUSE_BUTTON_RIGHT -> mouse.isRightPressed();
+            case GLFW_MOUSE_BUTTON_MIDDLE -> mouse.isMiddlePressed();
+            default -> false;
+        };
+        return down ? GLFW_PRESS : GLFW_RELEASE;
+    }
+}
+""")
+
           p=Path("src/main/resources/fabric.mod.json")
           s=p.read_text().replace('"fabricloader": ">=0.18.4"','"fabricloader": ">=0.19.5"').replace('"minecraft": "~1.21.11"','"minecraft": "~26.3"').replace('"java": ">=21"','"java": ">=25"').replace('"player_animation_library": ">=1.1.6"','"player_animation_library": ">=1.2.8"')
           p.write_text(s)
