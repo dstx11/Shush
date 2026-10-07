@@ -69,6 +69,7 @@ export function HomeHub() {
                 </a>
               ))}
             </div>
+            <Button href="/content" variant="secondary">Ver creators</Button>
           </Reveal>
 
           <Reveal className="hub-feature hub-feature-drop" delay={0.15}>
