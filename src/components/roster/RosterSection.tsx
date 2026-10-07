@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { players } from '../../data/players';
 import { PlayerLockIndicator } from '../motion/MotionPrimitives';
 import { AppLink } from '../ui/AppLink';
@@ -49,7 +48,7 @@ export function RosterSection() {
 
               {selectedPlayer.trackerUrl ? (
                 <AppLink href={selectedPlayer.trackerUrl} target="_blank" rel="noreferrer" className="footer-link mt-5 inline-flex">
-                  Tracker profile <ExternalLink aria-hidden="true" className="h-4 w-4" />
+                  Tracker profile <span aria-hidden="true">↗</span>
                 </AppLink>
               ) : null}
             </div>
@@ -57,10 +56,10 @@ export function RosterSection() {
 
           <div className="character-controls">
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
-              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+              <span aria-hidden="true">←</span>
             </button>
             <button type="button" onClick={selectNext} aria-label="Jogador seguinte">
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>
