@@ -17,6 +17,7 @@ export function Header() {
   const reduceMotion = useReducedMotion();
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobilePanelRef = useRef<HTMLDivElement>(null);
   const publicState = calculatePublicMatchDayState(activePremierSeason);
 
   useEffect(() => {
@@ -33,6 +34,12 @@ export function Header() {
   useEffect(() => {
     if (!isOpen) return;
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusFrame = window.requestAnimationFrame(() => {
+      mobilePanelRef.current?.querySelector<HTMLAnchorElement>('a')?.focus();
+    });
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
       setIsOpen(false);
@@ -48,6 +55,8 @@ export function Header() {
     window.addEventListener('keydown', onKeyDown);
     document.addEventListener('pointerdown', onPointerDown);
     return () => {
+      document.body.style.overflow = previousOverflow;
+      window.cancelAnimationFrame(focusFrame);
       window.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);
     };
@@ -105,6 +114,7 @@ export function Header() {
         <AnimatePresence>
           {isOpen ? (
             <motion.div
+              ref={mobilePanelRef}
               id="mobile-navigation"
               className="mobile-nav-panel absolute left-0 right-0 top-[calc(100%+.65rem)] p-2 md:hidden"
               variants={reduceMotion ? undefined : motionPresets.dropdown}
