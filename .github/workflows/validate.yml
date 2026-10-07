@@ -39,6 +39,9 @@ jobs:
       - name: Asset integrity
         run: pnpm run check:assets
 
+      - name: Internal links
+        run: pnpm run check:links
+
       - name: Build
         run: pnpm run build
 
