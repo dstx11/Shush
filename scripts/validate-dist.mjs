@@ -48,6 +48,7 @@ const sitemap = await readText('sitemap.xml');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');
+expect(index, 'property="og:image:alt" content="SHUSH — Sem barulho. Só rounds."', 'root OG image alt');
 expect(index, 'rel="canonical" href="https://shush.pt"', 'root canonical URL');
 expect(index, 'rel="preload" as="image" href="/assets/jersey/frontjersey.webp"', 'hero image preload');
 
@@ -59,6 +60,7 @@ for (const [path, canonical, title] of routeFiles) {
   expect(html, `<title>${title}</title>`, `${path} title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
+  expect(html, `property="og:image:alt" content="${title}"`, `${path} OG image alt`);
   expect(html, '<meta name="robots" content="index,follow"', `${path} robots`);
 }
 
