@@ -75,7 +75,7 @@ function staticRouteMetadata(): Plugin {
 
         this.emitFile({
           type: 'asset',
-          fileName: `${route.slice(1)}/index.html`,
+          fileName: `${route.slice(1)}.html`,
           source: html,
         });
       }
