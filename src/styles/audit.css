@@ -1999,3 +1999,29 @@ select:focus-visible {
     animation: none !important;
   }
 }
+
+
+.menu-glyph {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.button-arrow {
+  display: inline-block;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.audit-section-mark {
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border: 1px solid rgba(139, 92, 255, .45);
+  color: #8b5cff;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  font-weight: 900;
+}
