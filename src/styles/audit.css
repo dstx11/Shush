@@ -155,10 +155,10 @@ body {
 }
 
 .audit-hero-shell {
-  grid-template-columns: minmax(0, 1fr) minmax(20rem, .82fr) !important;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, .82fr);
   width: min(100%, var(--audit-max));
-  min-height: calc(92svh - 6rem) !important;
-  gap: clamp(2rem, 5vw, 6rem) !important;
+  min-height: calc(92svh - 6rem);
+  gap: clamp(2rem, 5vw, 6rem);
   align-items: center;
 }
 
@@ -171,10 +171,10 @@ body {
   max-width: 9ch;
   color: #f7f5ff;
   font-family: var(--font-heading);
-  font-size: clamp(3.9rem, 8.4vw, 8.7rem) !important;
+  font-size: clamp(3.9rem, 8.4vw, 8.7rem);
   font-weight: 700;
   letter-spacing: -.065em;
-  line-height: .82 !important;
+  line-height: .82;
 }
 
 .audit-hero-copy h1 span {
@@ -183,10 +183,10 @@ body {
 }
 
 .audit-hero-copy > p {
-  max-width: 39rem !important;
+  max-width: 39rem;
   margin-top: 1.55rem;
   color: #b1aabd;
-  font-size: clamp(.95rem, 1.2vw, 1.08rem) !important;
+  font-size: clamp(.95rem, 1.2vw, 1.08rem);
   line-height: 1.75;
 }
 
@@ -305,7 +305,7 @@ body {
 }
 
 .home-hub-shell {
-  width: min(100%, var(--audit-max)) !important;
+  width: min(100%, var(--audit-max));
   margin: 0 auto;
 }
 
@@ -503,7 +503,7 @@ body {
 
 /* Roster */
 .audit-roster {
-  background: #050507 !important;
+  background: #050507;
 }
 
 .audit-roster .roster-select-head h1 {
@@ -664,61 +664,19 @@ body {
   object-fit: contain;
 }
 
-/* Product refinement */
-.drop-section > #jersey h1 {
-  letter-spacing: -.045em !important;
-}
-
-.drop-shell {
-  border-radius: .7rem !important;
-  background: #08080c !important;
-  box-shadow: none !important;
-}
-
-.drop-control-panel {
-  border-radius: .55rem !important;
-  background: #0c0c12 !important;
-  box-shadow: none !important;
-}
-
-.drop-toggle,
-.customizer input,
-.customizer select,
-.customizer pre,
-.copy-button {
-  border-radius: .45rem !important;
-}
-
-/* Footer */
-footer {
-  background: #030305;
-}
-
-.footer-snake-divider {
-  display: none;
-}
-
-.footer-shell {
-  border-color: var(--audit-border) !important;
-}
-
-.footer-link {
-  border-radius: .35rem !important;
-}
-
 /* Focus is visible even on dark surfaces. */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid #9b79ff !important;
+  outline: 2px solid #9b79ff;
   outline-offset: 3px;
 }
 
 @media (max-width: 1020px) {
   .audit-hero-shell {
-    grid-template-columns: 1fr .72fr !important;
-    gap: 2rem !important;
+    grid-template-columns: 1fr .72fr;
+    gap: 2rem;
   }
 
   .hub-editorial-grid {
@@ -739,13 +697,13 @@ select:focus-visible {
   }
 
   .audit-hero-shell {
-    grid-template-columns: 1fr !important;
-    min-height: auto !important;
-    padding-top: 4rem !important;
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding-top: 4rem;
   }
 
   .audit-hero-copy h1 {
-    font-size: clamp(3.4rem, 16vw, 6rem) !important;
+    font-size: clamp(3.4rem, 16vw, 6rem);
   }
 
   .audit-hero-product {
@@ -835,8 +793,8 @@ select:focus-visible {
 }
 
 .motion-button {
-  border-radius: .42rem !important;
-  box-shadow: none !important;
+  border-radius: .42rem;
+  box-shadow: none;
 }
 
 .skip-link {
@@ -2002,7 +1960,7 @@ select:focus-visible {
   .css-rail,
   .css-pop-in,
   .motion-status-badge.is-pulse {
-    animation: none !important;
+    animation: none;
   }
 }
 
