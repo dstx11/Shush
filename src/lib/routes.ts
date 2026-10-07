@@ -40,15 +40,25 @@ export const loadNotFoundPage = once<PageModule>(() =>
 
 const routeLoaders = new Map<string, () => Promise<PageModule>>([
   ['/', loadHomePage],
+  ['/esports', loadPremierPage],
+  ['/esports/valorant', loadPremierPage],
   ['/esports/valorant/premier', loadPremierPage],
+  ['/esports/valorant/results', loadPremierPage],
+  ['/esports/valorant/tournaments', loadPremierPage],
   ['/esports/valorant/roster', loadRosterPage],
   ['/content', loadContentPage],
+  ['/content/more', loadContentPage],
+  ['/content/th0maz7', loadContentPage],
+  ['/products', loadDropPage],
   ['/products/jersey', loadDropPage],
+  ['/products/jersey/custom', loadDropPage],
   ['/company', loadAboutPage],
+  ['/company/partners', loadAboutPage],
+  ['/company/contact', loadAboutPage],
 ]);
 
 export function preloadRoute(href: string) {
   const pathname = href.split(/[?#]/, 1)[0] || '/';
-  const loader = routeLoaders.get(pathname);
-  if (loader) void loader();
+  const loader = routeLoaders.get(pathname) ?? loadNotFoundPage;
+  void loader();
 }
