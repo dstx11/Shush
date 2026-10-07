@@ -2103,3 +2103,13 @@ select:focus-visible {
   padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
   padding-left: max(1.25rem, env(safe-area-inset-left));
 }
+
+
+.audit-timezone-note {
+  display: block;
+  margin-top: .38rem;
+  color: #77717f;
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  letter-spacing: .04em;
+}
