@@ -8,7 +8,7 @@ export const siteUrl = 'https://shush.pt';
 
 export const defaultMetadata: RouteMetadata = {
   title: 'SHUSH — Sem barulho. Só rounds.',
-  description: 'SHUSH é uma micro-org gaming focada em Valorant Premier, creators e identidade própria.',
+  description: 'SHUSH reúne Valorant Premier, roster, creators e o Drop 01 numa identidade própria.',
   image: '/og-shush.png',
 };
 
@@ -16,11 +16,11 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   '/': defaultMetadata,
   '/esports/valorant/premier': {
     title: 'Premier — SHUSH',
-    description: 'Match Center da SHUSH com estado da season, score, calendário e resultados publicados.',
+    description: 'Match Center da SHUSH com estado da fase, pontuação, calendário e resultados publicados.',
   },
   '/esports/valorant/roster': {
     title: 'Roster — SHUSH',
-    description: 'Roster Valorant da SHUSH com jogadores públicos, roles e links confirmados.',
+    description: 'Roster Valorant da SHUSH com jogadores públicos, funções e links confirmados.',
   },
   '/content': {
     title: 'Creators — SHUSH',
