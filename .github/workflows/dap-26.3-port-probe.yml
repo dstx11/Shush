@@ -41,7 +41,7 @@ jobs:
           for a,b in {
             "minecraft_version=1.21.11":"minecraft_version=26.3",
             "loader_version=0.18.4":"loader_version=0.19.5",
-            "loom_version=1.15-SNAPSHOT":"loom_version=1.17",
+            "loom_version=1.15-SNAPSHOT":"loom_version=1.17.21",
             "fabric_api_version=0.141.3+1.21.11":"fabric_api_version=0.161.0+26.3",
             "mod_version=3.0.0+mc-1.21.11-alpha-2":"mod_version=3.0.0+mc-26.3-port"
           }.items(): s=s.replace(a,b)
