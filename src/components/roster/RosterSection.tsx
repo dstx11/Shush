@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { players } from '../../data/players';
-import { PlayerLockIndicator } from '../motion/MotionPrimitives';
+import { PlayerLockIndicator } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 
 export function RosterSection() {
