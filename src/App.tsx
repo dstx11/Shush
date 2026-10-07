@@ -1,13 +1,9 @@
 import { useEffect } from 'react';
 import { AnimatePresence, useReducedMotion } from 'motion/react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { AdminUnlockModal } from './components/admin/AdminUnlockModal';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
-import { ScrollProgressRail } from './components/motion/MotionPrimitives';
-import { InitialLoader } from './components/ui/InitialLoader';
 import { PageTransition } from './components/ui/PageTransition';
-import { QuickNav } from './components/ui/QuickNav';
 import { defaultMetadata, routeMetadata, siteUrl } from './data/meta';
 import { CompanyPage } from './pages/CompanyPage';
 import { ContentPage } from './pages/ContentPage';
@@ -15,6 +11,7 @@ import { EsportsPage } from './pages/EsportsPage';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ProductsPage } from './pages/ProductsPage';
+import { RosterPage } from './pages/RosterPage';
 import {
   CompanyContactPage,
   CompanyPartnersPage,
@@ -24,7 +21,6 @@ import {
   JerseyCustomPage,
   JerseyPage,
   PremierPage,
-  RosterPage,
   ValorantPage,
 } from './pages/RoutePages';
 
@@ -36,8 +32,6 @@ export default function App() {
 
   return (
     <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
-      <ScrollProgressRail />
-      <InitialLoader />
       <Header />
       <main>
         <AnimatePresence mode="wait" initial={!reduceMotion}>
@@ -65,8 +59,6 @@ export default function App() {
         </AnimatePresence>
       </main>
       <Footer />
-      <QuickNav />
-      <AdminUnlockModal />
     </div>
   );
 }
