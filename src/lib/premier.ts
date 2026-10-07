@@ -102,9 +102,9 @@ export function formatSeasonStatus(status: SeasonStatus) {
 export function calculatePublicMatchDayState(season: PremierSeason, now = new Date()): PublicMatchDayState {
   const score = calculatePremierScore(season);
   const placement = calculatePlayoffPlacement(season.playoffResults);
-  const latestPlayoffResult = getLatestResult(season.playoffResults, now);
+  const latestPlayoffResult = getLatestResult(season.playoffResults, now, season.timezone);
 
-  if (placement?.status === 'champions' && latestPlayoffResult && daysBetween(new Date(latestPlayoffResult.date), now) <= 21) {
+  if (placement?.status === 'champions' && latestPlayoffResult && daysBetween(makeDateTime(latestPlayoffResult.date, '12:00', season.timezone), now) <= 21) {
     return { kind: 'champions', title: 'CAMPEÕES PREMIER', detail: 'Resultado final publicado pela equipa.', result: latestPlayoffResult };
   }
 
@@ -176,7 +176,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
     };
   }
 
-  const latestResult = getLatestResult(season.results, now);
+  const latestResult = getLatestResult(season.results, now, season.timezone);
   if (latestResult) {
     return {
       kind: 'last_result',
@@ -232,10 +232,14 @@ function hasResultForPlayDay(season: PremierSeason, week: PremierWeek, day: Prem
   return season.results.some((result) => result.phase === 'regular' && result.date === day.date && (!week.map || result.map === week.map));
 }
 
-function getLatestResult<T extends MatchResult>(results: T[], now: Date) {
+function getLatestResult<T extends MatchResult>(results: T[], now: Date, timezone = 'Europe/Lisbon') {
   return [...results]
-    .filter((result) => new Date(`${result.date}T12:00:00`) <= now)
-    .sort((a, b) => new Date(`${b.date}T12:00:00`).getTime() - new Date(`${a.date}T12:00:00`).getTime())[0];
+    .filter((result) => makeDateTime(result.date, '12:00', timezone) <= now)
+    .sort(
+      (a, b) =>
+        makeDateTime(b.date, '12:00', timezone).getTime() -
+        makeDateTime(a.date, '12:00', timezone).getTime(),
+    )[0];
 }
 
 function makeDateTime(date: string, time: string, timezone = 'Europe/Lisbon') {
