@@ -1,5 +1,4 @@
 import type { ComponentProps, ReactNode } from 'react';
-import { ArrowRight } from 'lucide-react';
 import { AppLink } from './AppLink';
 
 type ButtonProps = ComponentProps<typeof AppLink> & {
@@ -18,7 +17,7 @@ export function Button({ children, variant = 'primary', className = '', ...props
   return (
     <AppLink className={`${base} motion-button ${styles} ${className}`} {...props}>
       <span>{children}</span>
-      <ArrowRight aria-hidden="true" className="h-4 w-4 transition group-hover:translate-x-1" />
+      <span aria-hidden="true" className="button-arrow transition group-hover:translate-x-1">→</span>
     </AppLink>
   );
 }
