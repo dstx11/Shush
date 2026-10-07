@@ -54,6 +54,11 @@ jobs:
           s="\n".join(line for line in s.splitlines() if "mappings \"net.fabricmc:yarn:" not in line)+"\n"
           s=s.replace("options.release = 21","options.release = 25").replace("JavaVersion.VERSION_21","JavaVersion.VERSION_25")
           s=s.replace("modImplementation ","implementation ")
+          s=s.replace('''            artifact(remapJar) {
+                builtBy remapJar
+            }
+
+            artifact(sourcesJar)''','''            from components.java''')
           s=s.replace('    modImplementation "com.zigythebird.playeranim:PlayerAnimationLibFabric:$pal_version"','    modImplementation "maven.modrinth:ha1mEyJS:kemJXVHZ"')
           if "api.modrinth.com/maven" not in s:
             s=s.replace("repositories {\n","repositories {\n    maven { url = \"https://api.modrinth.com/maven\" }\n",1)
