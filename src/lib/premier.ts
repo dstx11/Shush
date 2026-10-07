@@ -128,6 +128,23 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
     };
   }
 
+  const seasonStatus = calculateSeasonStatus(season, now);
+  if (seasonStatus === 'Qualified') {
+    return {
+      kind: 'qualified',
+      title: 'QUALIFIED FOR PREMIER PLAY-OFFS',
+      detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}`,
+    };
+  }
+
+  if (seasonStatus === 'Eliminated before play-offs' || seasonStatus === 'Finished') {
+    return {
+      kind: 'eliminated',
+      title: 'PREMIER RUN ENDED',
+      detail: `Final score: ${score} / ${season.qualificationPoints}`,
+    };
+  }
+
   const pending = getAllPlayDays(season)
     .filter(({ week, day }) => addMinutes(makeDateTime(day.date, day.windowEnd), 40) < now && !hasResultForPlayDay(season, week, day))
     .sort((a, b) => makeDateTime(b.day.date, b.day.windowEnd).getTime() - makeDateTime(a.day.date, a.day.windowEnd).getTime())[0];
@@ -149,23 +166,6 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
       title: 'LAST RESULT',
       detail: `${formatDate(latestResult.date)} · ${latestResult.tournamentName} · ${latestResult.map ?? 'Mapa por definir'}`,
       result: latestResult,
-    };
-  }
-
-  const seasonStatus = calculateSeasonStatus(season, now);
-  if (seasonStatus === 'Qualified') {
-    return {
-      kind: 'qualified',
-      title: 'QUALIFIED FOR PREMIER PLAY-OFFS',
-      detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}`,
-    };
-  }
-
-  if (seasonStatus === 'Eliminated before play-offs' || seasonStatus === 'Finished') {
-    return {
-      kind: 'eliminated',
-      title: 'PREMIER RUN ENDED',
-      detail: `Final score: ${score} / ${season.qualificationPoints}`,
     };
   }
 
