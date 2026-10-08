@@ -19,6 +19,14 @@ export function RosterSection() {
   const selectedIndex = Math.max(0, players.findIndex((player) => player.id === params.get('player')));
   const selectedPlayer = players[selectedIndex] ?? players[0];
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
+  const stripRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const strip = stripRef.current;
+    const card = strip?.children[selectedIndex] as HTMLElement | undefined;
+    if (!strip || !card || strip.scrollWidth <= strip.clientWidth) return;
+    const target = strip.scrollLeft + card.getBoundingClientRect().left - strip.getBoundingClientRect().left - (strip.clientWidth - card.offsetWidth) / 2;
+    strip.scrollTo({ left: Math.max(0, target), behavior: 'instant' });
+  }, [selectedIndex]);
   const selectPlayer = useCallback((index: number) => {
     setParams((current) => {
       const next = new URLSearchParams(current);
@@ -41,7 +49,7 @@ export function RosterSection() {
         </div>
 
         <div className="player-stage">
-        <div className="character-strip" role="group" aria-label="Selecionar jogador">
+        <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
             const profile = getCompetitiveProfile(player.id);
             return (

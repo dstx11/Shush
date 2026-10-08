@@ -1,3 +1,341 @@
+/* Player UI foundations: selection controls and external account actions. */
+.character-select {
+  position: relative;
+  min-height: 34rem;
+}
+
+.character-spotlight {
+  display: grid;
+  grid-template-columns: minmax(17rem, .82fr) minmax(0, 1fr);
+  min-height: 34rem;
+  overflow: hidden;
+  border: 1px solid var(--solid-border);
+  background: #0b0b10;
+}
+
+.character-media {
+  position: relative;
+  display: grid;
+  min-height: 100%;
+  overflow: hidden;
+  place-items: center;
+  background: #08080d;
+}
+
+.character-media img {
+  position: relative;
+  z-index: 2;
+  width: min(88%, 34rem);
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.character-index {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 3;
+  color: #8b5cff;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+}
+
+.avatar-fallback {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 24rem;
+  overflow: hidden;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(109, 53, 255, .3), transparent 13rem),
+    #08080d;
+}
+
+.avatar-ring {
+  position: absolute;
+  width: 8rem;
+  height: 8rem;
+  border: 1px solid rgba(109, 53, 255, .42);
+  border-radius: 999px;
+}
+
+.character-fallback > span:last-child,
+.strip-avatar .strip-initials {
+  position: relative;
+  z-index: 2;
+  color: white;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  font-weight: 700;
+}
+
+.character-copy {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  padding: clamp(1.2rem, 4vw, 3.25rem);
+}
+
+.character-copy p {
+  max-width: 34rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.competitive-profile {
+  display: grid;
+  gap: .85rem;
+  margin-top: .5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--solid-border);
+}
+
+.competitive-identity {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  min-width: 0;
+}
+
+.competitive-identity div { min-width: 0; }
+
+.competitive-identity dt {
+  margin-bottom: .35rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.competitive-identity dd {
+  color: var(--text);
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.character-copy .competitive-note,
+.character-copy .competitive-period {
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
+.character-copy .competitive-period { color: #c4afff; }
+
+.role-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(245, 242, 255, .11);
+  border-radius: 0;
+  background: rgba(255, 255, 255, .035);
+  padding: .48rem .6rem;
+  color: var(--muted);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.character-controls {
+  margin-top: .75rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+}
+
+.character-controls button {
+  display: grid;
+  width: 2.8rem;
+  height: 2.8rem;
+  place-items: center;
+  border: 1px solid rgba(139, 92, 255, .55);
+  border-radius: 0;
+  background: #151020;
+  color: white;
+  transition: background .18s ease, transform .18s ease;
+}
+
+.character-controls button:hover,
+.character-controls button:focus-visible {
+  background: #6d35ff;
+  transform: translateY(-1px);
+}
+
+.character-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.player-select-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--solid-border);
+  background: #0b0b10;
+  transition: border-color .18s ease, background .18s ease;
+}
+
+.player-select-card.is-active,
+.player-select-card:focus-within {
+  border-color: #8b5cff;
+  background: #12101a;
+}
+
+.character-strip .player-card-select {
+  display: grid;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+}
+
+.player-card-select:hover .player-card-name strong {
+  color: #c4afff;
+}
+
+.strip-avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: #11111a;
+}
+
+.strip-avatar .player-card-number {
+  position: absolute;
+  z-index: 2;
+  top: .6rem;
+  left: .6rem;
+  padding: .3rem .4rem;
+  background: #08080de8;
+  color: #c4afff;
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  line-height: 1;
+}
+
+.strip-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.player-card-name {
+  display: grid;
+  gap: .3rem;
+  padding: .85rem .65rem .55rem;
+}
+
+.player-card-name strong {
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.player-card-name small {
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.player-card-account {
+  display: grid;
+  gap: .65rem;
+  flex: 1;
+  align-content: space-between;
+  padding: 0 .65rem .65rem;
+}
+
+.player-card-riot-id {
+  min-height: 2.8em;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.tracker-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 3.5rem;
+  padding: .65rem .7rem .65rem 1.2rem;
+  border: 1px solid #8b5cff;
+  border-radius: 0;
+  background: #6d35ff;
+  color: #fff;
+  font-size: .88rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.tracker-button-arrow {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-left: 1px solid #ffffff40;
+  font-size: 1.25rem;
+}
+
+.tracker-button-compact {
+  width: 100%;
+  min-height: 2.75rem;
+  gap: .25rem;
+  padding: .45rem .5rem .45rem .7rem;
+  border-color: #6843a0;
+  background: #1b122b;
+  font-size: .72rem;
+}
+
+.tracker-button-compact .tracker-button-arrow {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #c4afff;
+  border-left: 0;
+  font-size: 1rem;
+}
+
+.tracker-button:hover,
+.tracker-button:focus-visible {
+  border-color: #b794ff;
+  background: #5422d6;
+}
+
+.tracker-button-compact:hover .tracker-button-arrow,
+.tracker-button-compact:focus-visible .tracker-button-arrow {
+  color: #fff;
+}
+
+
 /* Player Select: a compact discovery rail, one focused editorial profile. */
 .player-page { padding-block: max(8.5rem, calc(7.5rem + env(safe-area-inset-top))) 5rem; }
 .page-heading { display: grid; grid-template-columns: 1fr .55fr; align-items: end; gap: 2rem; padding-bottom: 2.5rem; }
@@ -34,12 +372,12 @@
 .player-stage .competitive-note { font-size: .72rem; line-height: 1.7; }
 .tracker-button { border-radius: 0; background: #6130d4; border-color: #8555f7; font-size: .8rem; }
 .player-stage .tracker-button:not(.tracker-button-compact) { width: 100%; }
-.utility-button { display: inline-flex; gap: .7rem; align-items: center; justify-content: space-between; min-height: 2.75rem; border: 1px solid #504858; background: transparent; padding: .6rem .75rem; color: var(--paper); font-size: .7rem; font-weight: 700; }
+.utility-button { display: inline-flex; gap: .7rem; align-items: center; justify-content: space-between; min-height: 2.75rem; border: 1px solid #766687; background: transparent; padding: .6rem .75rem; color: var(--paper); font-size: .7rem; font-weight: 700; }
 .utility-button:hover { background: #21182c; border-color: var(--signal); }
 .player-utilities .action-row { gap: .5rem; }
 .action-feedback { min-height: 1.5em; color: #c9b5fa; font-size: .75rem; line-height: 1.6; margin-top: .6rem; }
 .manual-copy { display: grid; gap: .5rem; color: var(--muted); font-size: .75rem; margin-top: .6rem; }
-.manual-copy input { min-width: 0; width: 100%; border: 1px solid #504858; background: #08080b; color: white; padding: .75rem; font-size: 1rem; }
+.manual-copy input { min-width: 0; width: 100%; border: 1px solid #766687; background: #08080b; color: white; padding: .75rem; font-size: 1rem; }
 .player-stage .character-controls { justify-content: space-between; padding-block: .5rem; }
 .player-stage .character-controls button { border-radius: 0; }
 @media (max-width: 1180px) {

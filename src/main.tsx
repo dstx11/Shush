@@ -5,7 +5,7 @@ import App from './App';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { preloadRoute } from './lib/routes';
 import './styles/base.css';
-import './styles/audit.css';
+import './styles/system.css';
 import './styles/editorial.css';
 import './styles/players.css';
 import './styles/premier.css';
