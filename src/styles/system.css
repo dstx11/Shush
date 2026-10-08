@@ -31,7 +31,7 @@
 .status-badge.is-pulse { animation: shush-pulse 2.2s ease-in-out infinite; }
 
 /* Shared contextual actions and transfer feedback. */
-.utility-button { display: inline-flex; gap: .7rem; align-items: center; justify-content: space-between; min-height: 2.75rem; border: 1px solid #766687; background: transparent; padding: .6rem .75rem; color: var(--paper); font-size: .7rem; font-weight: 700; }
+.utility-button { display: inline-flex; gap: .7rem; align-items: center; justify-content: space-between; min-height: 2.75rem; border: 1px solid #766687; background: transparent; padding: .6rem .75rem; color: var(--paper); font-size: .8rem; font-weight: 700; }
 .utility-button:hover { background: #21182c; border-color: var(--signal); }
 .action-feedback { min-height: 1.5em; color: #c9b5fa; font-size: .75rem; line-height: 1.6; margin-top: .6rem; }
 .manual-copy { display: grid; gap: .5rem; color: var(--muted); font-size: .75rem; margin-top: .6rem; }

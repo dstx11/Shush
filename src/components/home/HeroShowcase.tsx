@@ -27,7 +27,6 @@ export function HeroShowcase() {
           </AppLink>
         </div>
         <div className="opening-product hero-product-enter">
-          <span className="opening-wordmark" aria-hidden="true">SHUSH</span>
           <div className="opening-product-label"><span className="product-edition">Drop 01</span><span className="mono">A camisola da equipa</span></div>
           <div className="opening-jersey"><img key={view} className="product-swap" src={views[view].src} alt={views[view].alt} width="1254" height="1254" fetchPriority="high" decoding="async" /></div>
           <div className="opening-controls">
