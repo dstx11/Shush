@@ -48,6 +48,9 @@ jobs:
       - name: Competitive profiles
         run: pnpm run test:profiles
 
+      - name: Drop configurations
+        run: pnpm run test:drop
+
       - name: Asset integrity
         run: pnpm run check:assets
 

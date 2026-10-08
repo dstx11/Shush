@@ -18,7 +18,7 @@ for (const [name, path] of routes) {
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     // Render lazy images before recording the full-page visual evidence.
-    for (const image of await page.locator('main img').all()) {
+    for (const image of await page.locator('main img:visible').all()) {
       await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
@@ -146,7 +146,7 @@ test('Drop: real front/back preview and manual request values', async ({ page },
   await page.goto('/products/jersey');
   await page.getByLabel('Nick', { exact: true }).fill('SHUSH');
   await page.getByLabel('Número', { exact: true }).fill('07');
-  await page.getByLabel('Tamanho', { exact: true }).selectOption('L');
+  await page.getByRole('radio', { name: 'L', exact: true }).check();
   await page.getByLabel('Frase opcional', { exact: true }).fill('Só rounds.');
   await page.getByRole('button', { name: /Verso/ }).click();
   await expect(page.getByRole('button', { name: /Verso/ })).toHaveAttribute('aria-pressed', 'true');
@@ -250,4 +250,67 @@ test('Creators: confirmed channels and contextual player destinations', async ({
     await expect(features.nth(index).locator('.creator-roster')).toHaveAttribute('href', '/esports/valorant/roster?player=' + id);
     await expect(features.nth(index).locator('.creator-channel')).toHaveAttribute('rel', /noopener/);
   }
+});
+
+test('Drop: URL restore, Unicode bounds, TXT, share, reset and explicit local draft', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', { value: undefined, configurable: true });
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: async (text: string) => { document.body.dataset.copied = text; } }, configurable: true });
+  });
+  const family = '👨‍👩‍👧‍👦';
+  await page.goto('/products/jersey?drop=1&nick=' + encodeURIComponent(family.repeat(15)) + '&number=999&size=huge');
+  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue(family.repeat(14));
+  await expect(page.getByLabel('Número', { exact: true })).toHaveValue('01');
+  await expect(page.getByRole('radio', { name: 'M', exact: true })).toBeChecked();
+  await expect(page.getByRole('status').filter({ hasText: 'valores inválidos' })).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('shush:drop01:draft:v1'))).toBeNull();
+  await page.getByLabel('Nick', { exact: true }).fill('愛してる彼');
+  await page.getByLabel('Número', { exact: true }).fill('07');
+  await page.getByRole('radio', { name: 'XL', exact: true }).check();
+  await page.getByLabel('Frase opcional', { exact: true }).fill('Só rounds. ' + family);
+  await page.getByRole('button', { name: 'Copiar resumo' }).click();
+  await expect(page.locator('body')).toHaveAttribute('data-copied', /Nick: 愛してる彼\nNúmero: 07\nTamanho: XL/);
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Descarregar TXT' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe('shush-drop01.txt');
+  const text = Buffer.concat(await (await download.createReadStream())!.toArray()).toString('utf8');
+  expect(text).toContain('Frase: Só rounds. ' + family);
+  await page.getByRole('button', { name: 'Partilhar personalização' }).click();
+  const shared = new URL((await page.locator('body').getAttribute('data-copied'))!);
+  expect(shared.searchParams.get('nick')).toBe('愛してる彼');
+  expect(shared.searchParams.get('size')).toBe('XL');
+  await page.goto(shared.href);
+  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('愛してる彼');
+  await expect(page.getByLabel('Frase opcional', { exact: true })).toHaveValue('Só rounds. ' + family);
+  await expect(page.getByLabel('Pré-visualização: 愛してる彼 07')).toBeVisible();
+  await page.locator('.drop-draft summary').click();
+  await page.getByRole('button', { name: 'Guardar rascunho', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Rascunho guardado' })).toBeVisible();
+  await page.getByRole('button', { name: 'Repor', exact: true }).click();
+  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('SHUSH');
+  expect(new URL(page.url()).searchParams.has('drop')).toBe(false);
+  await page.getByRole('button', { name: 'Recuperar rascunho', exact: true }).click();
+  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('愛してる彼');
+  await page.getByRole('button', { name: 'Remover rascunho', exact: true }).click();
+  expect(await page.evaluate(() => localStorage.getItem('shush:drop01:draft:v1'))).toBeNull();
+});
+
+test('Drop: blocked APIs recover without losing fields', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', { value: undefined, configurable: true });
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: async () => { throw new Error('blocked'); } }, configurable: true });
+    Object.defineProperty(Storage.prototype, 'setItem', { value: () => { throw new DOMException('blocked', 'SecurityError'); }, configurable: true });
+  });
+  await page.goto('/products/jersey');
+  await page.getByLabel('Nick', { exact: true }).fill('SHUSH 愛');
+  await page.getByRole('button', { name: 'Copiar resumo' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Seleciona o resumo' })).toBeVisible();
+  await expect(page.getByLabel('Resumo do pedido')).toHaveValue(/Nick: SHUSH 愛/);
+  await page.getByRole('button', { name: 'Partilhar personalização' }).click();
+  await expect(page.getByLabel('Ligação para copiar')).toHaveValue(/drop=1/);
+  await page.locator('.drop-draft summary').click();
+  await page.getByRole('button', { name: 'Guardar rascunho', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'não permitiu guardar' })).toBeVisible();
+  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('SHUSH 愛');
 });

@@ -9,8 +9,8 @@ Baseline: ec79c6cd04b05f233975e62d7c04ec8fdd3258cd, CI #146 passed (Linux, Windo
 | A | Identity, header, editorial Home | Validated locally and CI #147 (six-width browser/Cloudflare checks) |
 | B | Player Select, copy Riot ID, sharing, mobile selector | Validated locally and CI #148 |
 | C | Match Center, expandable weeks, call-ups, streams, ICS | Validated locally and CI #150; disclosure image QA correction verified |
-| D | Dedicated creator compositions | Local validate passed; CI pending |
-| E | Drop configurator, Unicode, URL restore/share, reset, TXT, optional draft | Pending |
+| D | Dedicated creator compositions | Validated locally and CI #151 |
+| E | Drop configurator, Unicode, URL restore/share, reset, TXT, optional draft | Local validate passed; browser/CI pending |
 | F | About, Backora, brand download, footer and true 404 | Pending |
 | G | Responsive, keyboard, motion, interactions and accessibility QA | Pending |
 | H | CSS/dead code cleanup, bundles, deploy and final audit | Pending |
