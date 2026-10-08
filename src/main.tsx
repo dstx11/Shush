@@ -9,6 +9,7 @@ import './styles/audit.css';
 import './styles/editorial.css';
 import './styles/players.css';
 import './styles/premier.css';
+import './styles/creators.css';
 
 const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
 
