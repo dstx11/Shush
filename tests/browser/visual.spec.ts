@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// Reviewed Linux Chromium baselines: CI #155. Changes require deliberate review.
+// Reviewed Linux Chromium baselines: campaign redesign, CI #158 onward.
+// Changes require deliberate review of the actual screenshots.
 const regions = [
   ['home-hero', '/', '.opening'],
   ['player-profile', '/esports/valorant/roster?player=more', '#selected-player'],

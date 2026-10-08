@@ -24,7 +24,7 @@
 .match-body { display: grid; grid-template-columns: 1.2fr .8fr; gap: 3rem; padding-top: 4rem; }
 .match-body h2 { font: 600 clamp(1.8rem, 3vw, 2.7rem)/1.05 var(--font-heading); letter-spacing: -.05em; }
 .match-body .section-index { margin-bottom: 1.5rem; flex-wrap: wrap; }
-.match-body .section-index .mono { font-size: .58rem; }
+.match-body .section-index .mono { font-size: .75rem; }
 .calendar-heading { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
 .calendar-filters { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.5rem; }
 .calendar-filters button { min-height: 2.75rem; padding: .6rem .8rem; background: #100d15; border: 1px solid var(--line); color: var(--muted); font-size: .8rem; }
@@ -41,7 +41,7 @@
 .match-week[open] .week-map { color: var(--signal); }
 .week-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; padding: .5rem 0 1.75rem 3.8rem; animation: shush-reveal .2s both; }
 .week-windows, .week-callups, .week-streams { display: grid; gap: .75rem; align-content: start; }
-.week-windows p, .week-callups p { color: var(--muted); font-size: .72rem; line-height: 1.7; }
+.week-windows p, .week-callups p { color: var(--muted); font-size: .8rem; line-height: 1.7; }
 .week-windows p { display: grid; gap: .3rem; }
 .week-windows strong { color: var(--paper); font-family: var(--font-mono); font-weight: 400; }
 .week-windows .utility-button { width: fit-content; font-size: .8rem; }
@@ -49,15 +49,15 @@
 .callup-list a { display: grid; grid-template-columns: 2rem 1fr auto; min-height: 2.75rem; align-items: center; gap: .6rem; color: var(--paper); font-size: .875rem; text-decoration: none; }
 .callup-list a:hover { color: var(--signal); }
 .callup-list img, .callup-initials { width: 2rem; height: 2rem; object-fit: cover; }
-.callup-initials { display: grid; place-items: center; background: #251934; color: var(--signal); font: .6rem var(--font-mono); }
+.callup-initials { display: grid; place-items: center; background: #251934; color: var(--signal); font: .75rem var(--font-mono); }
 .callup-list a > span:last-child { color: var(--signal); }
 .week-streams, .week-results, .week-result-note { grid-column: 1 / -1; }
 .week-streams { border-top: 1px solid var(--line); padding-top: 1rem; }
-.week-streams .editorial-link { font-size: .73rem; }
-.week-streams small, .week-result-note { color: var(--muted); font-size: .68rem; line-height: 1.7; }
+.week-streams .editorial-link { font-size: .8rem; }
+.week-streams small, .week-result-note { color: var(--muted); font-size: .8rem; line-height: 1.7; }
 .result-list { margin-top: 1.5rem; }
 .match-result { padding-block: 1.2rem; border-block: 1px solid var(--line); margin-top: -1px; }
-.result-meta { display: flex; justify-content: space-between; align-items: center; gap: .75rem; color: var(--muted); font: .62rem var(--font-mono); }
+.result-meta { display: flex; justify-content: space-between; align-items: center; gap: .75rem; color: var(--muted); font: .75rem var(--font-mono); }
 .result-mark { color: #b9d8c3; }
 .is-loss .result-mark { color: #e9b6c4; }
 .result-teams { display: flex; flex-wrap: wrap; gap: .5rem 1rem; justify-content: space-between; margin-top: 1rem; color: var(--muted); font-size: .8rem; }
@@ -75,7 +75,7 @@
   .match-page { padding-block: max(6.5rem, calc(5.5rem + env(safe-area-inset-top))) 3rem; }
   .match-heading { grid-template-columns: 1fr; gap: 1.5rem; }
   .match-heading h1 { font-size: clamp(3.8rem, 15vw, 6rem); }
-  .match-score { border-left: 0; border-top: 1px solid var(--line); padding: 1.5rem 0 0; gap: 1rem; }
+  .match-score { border: 0; padding: 1.5rem; gap: 1rem; }
   .match-score > strong { font-size: 7rem; }
   .season-state { margin-top: 2rem; }
   .match-totals { grid-template-columns: 1fr 1fr; }

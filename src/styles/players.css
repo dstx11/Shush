@@ -51,7 +51,13 @@
 .player-card-riot-id { display: block; min-height: 2.7em; color: #c4b7ce; font: .75rem/1.35 var(--font-mono); overflow-wrap: anywhere; margin-bottom: .5rem; }
 .tracker-button-compact { min-height: 2.75rem; font-size: .8rem; padding: .5rem .65rem; }
 .tracker-button-compact .tracker-button-arrow { font-size: 1rem; }
-@media (min-width: 768px) { .character-select { order: -1; } }
+@media (min-width: 1051px) {
+  .player-card-select { display: grid; grid-template-columns: 2.75rem 1fr; gap: .6rem; align-items: center; }
+  .strip-avatar { aspect-ratio: 1; }
+  .player-card-name { margin-top: 0; }
+  .player-card-number { display: none; }
+  .strip-initials { font-size: 1.5rem; }
+}
 @media (max-width: 1050px) {
   .character-spotlight { grid-template-columns: .8fr 1.2fr; }
   .character-copy { padding: 1.5rem; }
