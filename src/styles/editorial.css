@@ -140,3 +140,14 @@ body { background: var(--ink); }
   .home-drop-image { width: min(100%, 30rem); margin-inline: auto; }
 }
 @media (prefers-reduced-motion: reduce) { .shush-header, .desktop-nav-link::after, .home-player-image img, .home-channel, .button-arrow { transition: none; } }
+
+/* Shared editorial page introductions. */
+.page-heading { display: grid; grid-template-columns: 1fr .55fr; align-items: end; gap: 2rem; padding-bottom: 2.5rem; }
+.page-heading h1 { margin-top: 1rem; font: 700 clamp(3.8rem, 7.8vw, 8rem)/.93 var(--font-heading); letter-spacing: -.07em; }
+.page-heading h1 span { color: var(--signal); }
+.page-heading > p { max-width: 26rem; color: var(--muted); font-size: .9rem; line-height: 1.8; }
+@media (max-width: 767px) {
+  .page-heading { grid-template-columns: 1fr; gap: 1.25rem; padding-bottom: 1.75rem; }
+  .page-heading h1 { font-size: clamp(3.7rem, 15vw, 6rem); }
+  .page-heading > p { font-size: .85rem; }
+}

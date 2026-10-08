@@ -338,10 +338,6 @@
 
 /* Player Select: a compact discovery rail, one focused editorial profile. */
 .player-page { padding-block: max(8.5rem, calc(7.5rem + env(safe-area-inset-top))) 5rem; }
-.page-heading { display: grid; grid-template-columns: 1fr .55fr; align-items: end; gap: 2rem; padding-bottom: 2.5rem; }
-.page-heading h1 { margin-top: 1rem; font: 700 clamp(3.8rem, 7.8vw, 8rem)/.93 var(--font-heading); letter-spacing: -.07em; }
-.page-heading h1 span { color: var(--signal); }
-.page-heading > p { max-width: 26rem; color: var(--muted); font-size: .9rem; line-height: 1.8; }
 .player-stage { display: grid; grid-template-columns: 21rem minmax(0, 1fr); gap: 1.5rem; align-items: start; border-top: 1px solid var(--line); padding-top: 1.5rem; }
 .player-stage .character-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
 .player-stage .player-select-card { background: #0d0b11; border-color: var(--line); }
@@ -372,12 +368,7 @@
 .player-stage .competitive-note { font-size: .72rem; line-height: 1.7; }
 .tracker-button { border-radius: 0; background: #6130d4; border-color: #8555f7; font-size: .8rem; }
 .player-stage .tracker-button:not(.tracker-button-compact) { width: 100%; }
-.utility-button { display: inline-flex; gap: .7rem; align-items: center; justify-content: space-between; min-height: 2.75rem; border: 1px solid #766687; background: transparent; padding: .6rem .75rem; color: var(--paper); font-size: .7rem; font-weight: 700; }
-.utility-button:hover { background: #21182c; border-color: var(--signal); }
 .player-utilities .action-row { gap: .5rem; }
-.action-feedback { min-height: 1.5em; color: #c9b5fa; font-size: .75rem; line-height: 1.6; margin-top: .6rem; }
-.manual-copy { display: grid; gap: .5rem; color: var(--muted); font-size: .75rem; margin-top: .6rem; }
-.manual-copy input { min-width: 0; width: 100%; border: 1px solid #766687; background: #08080b; color: white; padding: .75rem; font-size: 1rem; }
 .player-stage .character-controls { justify-content: space-between; padding-block: .5rem; }
 .player-stage .character-controls button { border-radius: 0; }
 @media (max-width: 1180px) {
@@ -388,9 +379,6 @@
 }
 @media (max-width: 767px) {
   .player-page { padding-block: max(6.5rem, calc(5.5rem + env(safe-area-inset-top))) 3rem; }
-  .page-heading { grid-template-columns: 1fr; gap: 1.25rem; padding-bottom: 1.75rem; }
-  .page-heading h1 { font-size: clamp(3.7rem, 15vw, 6rem); }
-  .page-heading > p { font-size: .85rem; }
   .player-stage { grid-template-columns: 1fr; gap: 1rem; padding-top: 1rem; }
   .player-stage .character-strip { display: grid; grid-template-columns: repeat(7, 8.5rem); overflow-x: auto; padding: .2rem .2rem 1rem; scroll-snap-type: x proximity; }
   .player-select-card { scroll-snap-align: start; }

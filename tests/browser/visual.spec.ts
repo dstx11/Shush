@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Capture reviewed candidates first; the release audit commits these as baselines.
+// Reviewed Linux Chromium baselines: CI #155. Changes require deliberate review.
 const regions = [
   ['home-hero', '/', '.opening'],
   ['player-profile', '/esports/valorant/roster?player=more', '#selected-player'],
@@ -22,6 +22,13 @@ for (const [name, path, selector] of regions) {
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
     }
-    await region.screenshot({ path: testInfo.outputPath(`${name}-${testInfo.project.name}.png`), animations: 'disabled' });
+    if (name === 'home-hero') {
+      // A tall element capture can paint off-viewport fixed UI into the hero.
+      // Compare the actual visitor viewport, including the header, instead.
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await expect(page).toHaveScreenshot(`${name}.png`, { animations: 'disabled', maxDiffPixelRatio: .001 });
+    } else {
+      await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled', maxDiffPixelRatio: .001 });
+    }
   });
 }

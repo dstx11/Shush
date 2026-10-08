@@ -5,6 +5,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,
+  updateSnapshots: 'none',
+  snapshotPathTemplate: '{testDir}/baselines/{projectName}/{arg}{ext}',
   workers: process.env.CI ? 2 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
