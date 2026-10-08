@@ -45,6 +45,9 @@ jobs:
       - name: Premier logic
         run: pnpm run test:premier
 
+      - name: Competitive profiles
+        run: pnpm run test:profiles
+
       - name: Asset integrity
         run: pnpm run check:assets
 
@@ -79,3 +82,30 @@ jobs:
           grep -Fq 'https://shush.pt/esports/valorant/premier' dist/esports/valorant/premier.html
           grep -Fq '<title>Drop 01 — SHUSH</title>' dist/products/jersey.html
           ! grep -Fq '/* /index.html 200' dist/_redirects
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - run: pnpm run build
+      - name: Responsive and interaction QA
+        run: pnpm run test:browser
+      - name: Save screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: responsive-qa
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14

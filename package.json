@@ -13,7 +13,9 @@
     "check:assets": "node scripts/check-assets.mjs",
     "check:links": "node scripts/check-links.mjs",
     "test:premier": "node scripts/test-premier.mjs",
-    "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle"
+    "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run test:profiles && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle",
+    "test:profiles": "node scripts/test-competitive-profiles.mjs",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "react": "^19.2.7",
@@ -21,6 +23,7 @@
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/vite": "^4.3.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

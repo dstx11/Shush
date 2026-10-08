@@ -1,5 +1,7 @@
 import type { Player } from '../data/players';
 import type { PremierSeason } from '../data/season';
+import { competitiveProfiles } from '../data/competitive-profiles';
+import { validateCompetitiveProfiles } from './validate-profiles';
 
 export function validateStaticData(players: Player[], season: PremierSeason) {
   const errors: string[] = [];
@@ -26,7 +28,6 @@ export function validateStaticData(players: Player[], season: PremierSeason) {
     if (player.creatorUrl && !isHttpsUrl(player.creatorUrl)) {
       errors.push(`creator ${player.id} has a non-HTTPS URL`);
     }
-    if (player.trackerUrl && !isHttpsUrl(player.trackerUrl)) errors.push(`player ${player.id} has a non-HTTPS tracker URL`);
   }
 
   const weekIds = new Set<string>();
@@ -111,6 +112,7 @@ export function validateStaticData(players: Player[], season: PremierSeason) {
   if (errors.length) {
     throw new Error(`SHUSH static data validation failed:\n- ${errors.join('\n- ')}`);
   }
+  validateCompetitiveProfiles(competitiveProfiles, players);
 }
 
 function isHttpsUrl(value: string) {

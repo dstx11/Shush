@@ -6,8 +6,6 @@ export type Player = {
   roles: string[];
   status?: string;
   avatar?: string;
-  trackerUrl?: string;
-  trackerScore?: number;
   isCreator?: boolean;
   creatorType?: 'twitch' | 'youtube';
   creatorUrl?: string;

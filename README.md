@@ -24,6 +24,7 @@ pnpm run dev
 ```powershell
 pnpm run typecheck
 pnpm run test:premier
+pnpm run test:profiles
 pnpm run check:assets
 pnpm run check:links
 pnpm run build
@@ -33,6 +34,14 @@ pnpm run preview
 ```
 
 Use `pnpm run validate` for the full sequence. Premier tests cover runtime timezone independence, Lisbon DST boundaries, window edges, playoff outcomes and rejection of invalid static data. Pull requests to `master` run the same checks on Linux and Windows in GitHub Actions. TypeScript also rejects unused locals and parameters.
+
+Browser QA runs separately in CI against the production build: Chromium at 320, 390, 768, 1366 and 1920px, plus mobile WebKit. It checks layout overflow, headings, images, metadata, mobile menu/keyboard focus, player profiles and Drop interactions, and saves screenshots in the `responsive-qa` artifact. To run locally after building: `pnpm exec playwright install --with-deps chromium webkit`, then `pnpm run test:browser`. Playwright is a development-only dependency.
+
+## Competitive profiles
+
+The seven owner-confirmed account associations live in `src/data/competitive-profiles.ts`, independently of public player names. The roster displays Riot ID and queue and opens the exact corresponding Tracker.gg profile. Build and Node tests reject mismatched accounts, Unicode/URL encoding errors and incompatible season/queue metadata.
+
+There is no authorized public Tracker VALORANT API, so the site does not fetch or mirror statistics. [Research and the future authorization/snapshot requirements](docs/competitive-profiles.md) document this decision. The supplied DSTX link retains its selected Competitive season; the UI never presents it as the current season or compares it to Premier profiles.
 
 ## Public routes
 

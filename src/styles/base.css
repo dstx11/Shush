@@ -237,6 +237,46 @@ button {
   line-height: 1.7;
 }
 
+.competitive-profile {
+  display: grid;
+  gap: .85rem;
+  margin-top: .5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--solid-border);
+}
+
+.competitive-identity {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  min-width: 0;
+}
+
+.competitive-identity div { min-width: 0; }
+
+.competitive-identity dt {
+  margin-bottom: .35rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .66rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.competitive-identity dd {
+  color: var(--text);
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.character-copy .competitive-note,
+.character-copy .competitive-period {
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
+.character-copy .competitive-period { color: #c4afff; }
+
 .role-stack {
   display: flex;
   flex-wrap: wrap;
@@ -259,11 +299,9 @@ button {
 }
 
 .character-controls {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 4;
+  margin-top: .75rem;
   display: flex;
+  justify-content: flex-end;
   gap: .5rem;
 }
 
@@ -367,11 +405,6 @@ button {
 
   .character-media {
     min-height: 23rem;
-  }
-
-  .character-controls {
-    position: static;
-    margin-top: .75rem;
   }
 
   .character-strip {
