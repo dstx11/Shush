@@ -178,3 +178,6 @@ export const activePremierSeason: PremierSeason = {
   ],
   playoffResults: [],
 };
+
+/** Registered seasons only. No selector while there is one real record. */
+export const premierSeasons: readonly PremierSeason[] = [activePremierSeason];

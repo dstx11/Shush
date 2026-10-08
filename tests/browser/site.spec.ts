@@ -197,3 +197,35 @@ test('mobile menu contains keyboard focus and player selector stays compact', as
   await page.keyboard.press('Escape');
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', false);
 });
+
+test('Premier: filters, real call-ups, missing states and calendar download', async ({ page }) => {
+  await page.goto('/esports/valorant/premier');
+  await expect(page.getByText('Jun — Jul')).toBeVisible();
+  await expect(page.locator('.match-week')).toHaveCount(7);
+  const first = page.locator('.match-week').first();
+  await first.locator('summary').press('Enter');
+  await expect(first).toHaveAttribute('open', '');
+  const callups = first.locator('.callup-list a');
+  await expect(callups).toHaveCount(5);
+  expect(await callups.evaluateAll((links) => links.map((link) => new URL((link as HTMLAnchorElement).href).searchParams.get('player')))).toEqual(['dstx', 'more', 'th0maz7', 'lyel', 'tz']);
+  await expect(first.locator('.week-streams a')).toHaveCount(2);
+  await expect(first).toContainText('não indicam uma transmissão em direto');
+  await page.getByRole('button', { name: 'Com resultado', exact: true }).click();
+  await expect(page.locator('.match-week')).toHaveCount(2);
+  await page.getByRole('button', { name: 'Janelas publicadas', exact: true }).click();
+  await expect(page.locator('.match-week')).toHaveCount(5);
+  await page.getByRole('button', { name: 'Todas', exact: true }).click();
+  const missing = page.locator('.match-week').nth(2);
+  await missing.locator('summary').click();
+  await expect(missing).toContainText('Convocatória não publicada.');
+  await expect(missing).toContainText('Não existe uma data publicada');
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Descarregar calendário (.ics)' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe('shush-premier-2026.ics');
+  const chunks = await (await download.createReadStream())!.toArray();
+  const calendar = Buffer.concat(chunks).toString('utf8');
+  expect(calendar).toContain('DTSTART:20260612T170000Z');
+  expect(calendar).toContain('STATUS:TENTATIVE');
+  expect(calendar.match(/BEGIN:VEVENT/g)).toHaveLength(8);
+});

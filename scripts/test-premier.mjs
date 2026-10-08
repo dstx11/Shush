@@ -24,6 +24,7 @@ try {
       tsc,
       '--ignoreConfig',
       'src/lib/premier.ts',
+      'src/lib/premier-calendar.ts',
       'src/data/season.ts',
       'src/lib/validate-data.ts',
       '--module',
@@ -46,10 +47,33 @@ try {
 
   const require = createRequire(import.meta.url);
   const premier = require(join(output, 'lib', 'premier.js'));
+  const { buildPremierCalendar } = require(join(output, 'lib', 'premier-calendar.js'));
   const { activePremierSeason } = require(join(output, 'data', 'season.js'));
   const { players } = require(join(output, 'data', 'players.js'));
   const { validateStaticData } = require(join(output, 'lib', 'validate-data.js'));
   assert.doesNotThrow(() => validateStaticData(players, activePremierSeason));
+  const stamp = new Date('2026-10-08T10:00:00Z');
+  const calendar = buildPremierCalendar(activePremierSeason, stamp);
+  assert.equal((calendar.match(/BEGIN:VEVENT/g) || []).length, 8);
+  assert.ok(calendar.includes('DTSTART:20260612T170000Z'));
+  assert.ok(calendar.includes('DTEND:20260612T180000Z'));
+  assert.ok(calendar.includes('DTSTART:20260726T170000Z'));
+  assert.ok(calendar.includes('STATUS:TENTATIVE'));
+  assert.ok(calendar.includes('TRANSP:TRANSPARENT'));
+  assert.ok(calendar.includes('UID:premier-stage-2026-local-week-1-day-1@shush.pt'));
+  assert.equal((buildPremierCalendar(activePremierSeason, stamp, 'week-2').match(/BEGIN:VEVENT/g) || []).length, 2);
+  assert.throws(() => buildPremierCalendar(activePremierSeason, stamp, 'week-3'), /No published windows/);
+  assert.throws(() => buildPremierCalendar(activePremierSeason, stamp, 'invalid'), /No published windows/);
+  for (const tz of ['UTC', 'America/Sao_Paulo', 'Asia/Tokyo']) {
+    process.env.TZ = tz;
+    assert.equal(buildPremierCalendar(activePremierSeason, stamp), calendar);
+  }
+  assert.equal(premier.makeDateTime('2026-01-20', '18:00').toISOString(), '2026-01-20T18:00:00.000Z');
+  assert.equal(premier.makeDateTime('2026-07-20', '18:00').toISOString(), '2026-07-20T17:00:00.000Z');
+  const long = buildPremierCalendar({ ...activePremierSeason, name: '愛'.repeat(60) + ', round; seguro\nOutra linha' }, stamp);
+  assert.ok(long.replace(/\r\n /g, '').includes('\\, round\\; seguro\\nOutra linha'));
+  for (const line of long.split('\r\n')) assert.ok(Buffer.byteLength(line) <= 75);
+
   const invalidSeasonCases = [
     { ...activePremierSeason, qualificationPoints: NaN },
     { ...activePremierSeason, winPoints: -1 },

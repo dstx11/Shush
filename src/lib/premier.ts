@@ -234,7 +234,7 @@ function getLatestResult<T extends MatchResult>(results: T[], now: Date, timezon
     )[0];
 }
 
-function makeDateTime(date: string, time: string, timezone = 'Europe/Lisbon') {
+export function makeDateTime(date: string, time: string, timezone = 'Europe/Lisbon') {
   const [year, month, day] = date.split('-').map(Number);
   const [hour, minute] = time.split(':').map(Number);
   const utcGuess = Date.UTC(year, month - 1, day, hour, minute, 0);
