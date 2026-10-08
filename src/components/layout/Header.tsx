@@ -41,11 +41,21 @@ export function Header() {
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    const background = [document.getElementById('main-content'), document.querySelector('footer')];
+    const inertStates = background.map((element) => element?.inert ?? false);
+    background.forEach((element) => { if (element) element.inert = true; });
     const focusFrame = window.requestAnimationFrame(() => {
       mobilePanelRef.current?.querySelector<HTMLAnchorElement>('a')?.focus();
     });
 
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        const links = Array.from(mobilePanelRef.current?.querySelectorAll<HTMLAnchorElement>('a') ?? []);
+        const controls = [menuButtonRef.current, ...links].filter((element): element is HTMLButtonElement | HTMLAnchorElement => Boolean(element));
+        const index = controls.indexOf(document.activeElement as HTMLButtonElement | HTMLAnchorElement);
+        if (event.shiftKey && index <= 0) { event.preventDefault(); controls[controls.length - 1]?.focus(); }
+        else if (!event.shiftKey && (index === controls.length - 1 || index === -1)) { event.preventDefault(); controls[0]?.focus(); }
+      }
       if (event.key !== 'Escape') return;
       setIsOpen(false);
       menuButtonRef.current?.focus();
@@ -62,6 +72,7 @@ export function Header() {
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      background.forEach((element, index) => { if (element) element.inert = inertStates[index]; });
       window.cancelAnimationFrame(focusFrame);
       window.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);
@@ -75,8 +86,8 @@ export function Header() {
   };
 
   return (
-    <header className={`site-header fixed left-0 right-0 top-0 z-50 px-4 py-3 ${isScrolled ? 'is-scrolled' : ''}`}>
-      <nav ref={navRef} className="site-nav relative mx-auto flex max-w-7xl items-center justify-between" aria-label="Navegação principal"
+    <header className={`site-header shush-header ${isScrolled ? 'is-scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
+      <nav ref={navRef} className="shush-navigation shell" aria-label="Navegação principal"
         onBlur={(event) => {
           if (isOpen && !event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
         }}>
@@ -85,44 +96,44 @@ export function Header() {
           <span>SHUSH</span>
         </AppLink>
 
-        <div className="primary-nav hidden md:flex md:items-center md:gap-1" id="primary-navigation">
+        <div className="desktop-navigation" id="primary-navigation">
           {navItems.map((item) => (
             <AppLink
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? 'page' : undefined}
-              className={`nav-link ${isActive(item.href) ? 'is-active' : ''}`}
+              className="desktop-nav-link"
             >
               {item.label}
             </AppLink>
           ))}
         </div>
 
-        <AppLink href="/esports/valorant/premier" className="header-status header-status-compact hidden lg:flex" aria-label={`Premier: ${publicState.title}`}>
+        <AppLink href="/esports/valorant/premier" className="competition-signal" aria-label={`Premier: ${publicState.title}`}>
           <StatusBadge pulse={publicState.kind === 'match_day_live' || publicState.kind === 'playoffs_live'}>Premier</StatusBadge>
           <strong>{publicState.title}</strong>
         </AppLink>
 
         <button
           ref={menuButtonRef}
-          className="mobile-menu-button grid h-11 w-11 place-items-center md:hidden"
+          className="navigation-toggle"
           type="button"
           aria-label={isOpen ? 'Fechar navegação' : 'Abrir navegação'}
           aria-expanded={isOpen}
           aria-controls="mobile-navigation"
           onClick={() => setIsOpen((value) => !value)}
         >
-          <span aria-hidden="true" className="menu-glyph">{isOpen ? '×' : '☰'}</span>
+          <span aria-hidden="true">{isOpen ? 'Fechar' : 'Menu'}</span><span aria-hidden="true" className="menu-glyph">{isOpen ? '×' : '+'}</span>
         </button>
 
         {isOpen ? (
           <div
             ref={mobilePanelRef}
             id="mobile-navigation"
-            className="mobile-nav-panel mobile-panel-enter absolute left-0 right-0 top-[calc(100%+.65rem)] p-2 md:hidden"
+            className="navigation-overlay mobile-panel-enter"
           >
-            <div className="grid gap-1">
-              {navItems.map((item) => (
+            <div className="overlay-links">
+              {navItems.map((item, index) => (
                 <AppLink
                   key={item.href}
                   href={item.href}
@@ -131,12 +142,13 @@ export function Header() {
                     setIsOpen(false);
                     document.getElementById('main-content')?.focus({ preventScroll: true });
                   }}
-                  className={`mobile-nav-link ${isActive(item.href) ? 'is-active' : ''}`}
+                  className="overlay-link"
                 >
-                  <span>{item.label}</span>
+                  <span className="mono" aria-hidden="true">0{index + 1}</span><span>{item.label}</span><span aria-hidden="true">↗</span>
                 </AppLink>
               ))}
             </div>
+            <div className="overlay-foot"><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
           </div>
         ) : null}
       </nav>
