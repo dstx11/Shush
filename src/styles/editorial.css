@@ -152,7 +152,8 @@ body { background: var(--ink); }
   .section-heading { flex-wrap: wrap; gap: .75rem; margin-bottom: 1.75rem; }
   .home-editorial h2 { font-size: clamp(2.1rem, 8.5vw, 3.5rem); }
   .home-channel-list, .home-archive, .home-drop-grid, .page-heading { grid-template-columns: 1fr; }
-  .home-channel strong { font-size: clamp(2rem, 8vw, 3.5rem); }
+  .home-channel { grid-template-columns: .65fr 1fr; }
+  .home-channel strong { font-size: clamp(1.75rem, 6.5vw, 3rem); }
   .home-channel-copy { padding: 1.25rem; }
   .home-channel-art > span { font-size: 4rem; }
   .home-competition { padding-block: 3rem; }
