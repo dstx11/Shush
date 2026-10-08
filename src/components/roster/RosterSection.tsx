@@ -4,6 +4,15 @@ import { players } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { AppLink } from '../ui/AppLink';
 
+function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
+  return (
+    <AppLink href={href} target="_blank" rel="noopener noreferrer" className={`tracker-button${compact ? ' tracker-button-compact' : ''}`} aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
+      <span>{compact ? 'Tracker.gg' : 'Abrir Tracker.gg'}</span>
+      <span className="tracker-button-arrow" aria-hidden="true">↗</span>
+    </AppLink>
+  );
+}
+
 export function RosterSection() {
   const [params, setParams] = useSearchParams();
   const selectedIndex = Math.max(0, players.findIndex((player) => player.id === params.get('player')));
@@ -31,15 +40,26 @@ export function RosterSection() {
         </div>
 
         <div className="character-strip" role="group" aria-label="Selecionar jogador">
-          {players.map((player, index) => (
-            <button key={player.id} type="button" className={index === selectedIndex ? 'is-active' : ''} aria-pressed={index === selectedIndex} aria-controls="selected-player" onClick={() => selectPlayer(index)}>
-              <span className="strip-avatar">
-                {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span>{player.initials}</span>}
-              </span>
-              <strong>{player.displayName}</strong>
-              <small>{player.roles[0]}</small>
-            </button>
-          ))}
+          {players.map((player, index) => {
+            const profile = getCompetitiveProfile(player.id);
+            return (
+              <div key={player.id} className={`player-select-card${index === selectedIndex ? ' is-active' : ''}`}>
+                <button type="button" className="player-card-select" aria-pressed={index === selectedIndex} aria-controls="selected-player" onClick={() => selectPlayer(index)}>
+                  <span className="strip-avatar">
+                    <span className="player-card-number" aria-hidden="true">{player.number}</span>
+                    {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span className="strip-initials">{player.initials}</span>}
+                  </span>
+                  <span className="player-card-name"><strong>{player.displayName}</strong><small>{player.roles[0]}</small></span>
+                </button>
+                {profile ? (
+                  <div className="player-card-account">
+                    <span className="player-card-riot-id">{profile.riotId}</span>
+                    <TrackerButton href={profile.trackerUrl} playerName={player.displayName} compact />
+                  </div>
+                ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
+              </div>
+            );
+          })}
         </div>
 
         <div className="character-select">
@@ -80,9 +100,7 @@ export function RosterSection() {
                     </div>
                   </dl>
                   {competitiveProfile.seasonId ? <p className="competitive-period">Ligação à temporada selecionada no perfil, não à temporada atual.</p> : null}
-                  <AppLink href={competitiveProfile.trackerUrl} target="_blank" rel="noopener noreferrer" className="editorial-link" aria-label={`Consultar ${selectedPlayer.displayName} no Tracker.gg (abre numa nova janela)`}>
-                    Consultar perfil <span aria-hidden="true">↗</span>
-                  </AppLink>
+                  <TrackerButton href={competitiveProfile.trackerUrl} playerName={selectedPlayer.displayName} />
                   <p className="competitive-note">Rank, estatísticas e histórico no Tracker.gg. A disponibilidade depende da privacidade da conta.</p>
                 </div>
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}

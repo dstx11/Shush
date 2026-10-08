@@ -15,6 +15,8 @@ Research date: 8 October 2026. Associations were supplied and confirmed by the p
 
 Seven real player selection cards lead to a shareable `?player=<id>` spotlight with avatar/initials, existing public identity, roles, Riot ID, mode and a named external Tracker link. Selectors precede the spotlight so mobile visitors can choose a player immediately. Public names such as More and tz remain distinct from their account names. No separate profile routes are added without more real content.
 
+Every card also shows its account identity and a dedicated Tracker.gg button, independent of player selection. The mobile roster is a two-column grid rather than a horizontal strip, making all seven account destinations discoverable. The selected spotlight has a larger purple action using the same button treatment. Links and selection buttons are separate controls, with named external destinations, visible focus and at least 44px link targets.
+
 DSTX's supplied link intentionally selects Competitive and a specific season UUID. The UI labels this as a selected season, never the current season. Other links retain their Premier/default-period queries. No comparison, rank, K/D, win rate, ACS, agents or match count is inferred. Profile availability/privacy is explained beside the link.
 
 There are no network requests to Tracker, scraping, API keys, iframes, imported Tracker branding, loading skeletons or simulated error states. The official source remains directly accessible even if its data is private. The site does not depend on Tracker availability for rendering. SHUSH credits Tracker.gg by name and links to the actual account.

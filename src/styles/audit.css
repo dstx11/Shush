@@ -521,8 +521,6 @@ body {
   line-height: .82;
 }
 
-.audit-roster .character-strip button { border-radius: 0; }
-
 /* About */
 .audit-about {
   background: #050507;

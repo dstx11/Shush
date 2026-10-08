@@ -215,7 +215,7 @@ button {
 }
 
 .character-fallback > span:last-child,
-.strip-avatar > span {
+.strip-avatar .strip-initials {
   position: relative;
   z-index: 2;
   color: white;
@@ -326,35 +326,59 @@ button {
 .character-strip {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: .55rem;
+  gap: .75rem;
 }
 
-.character-strip button {
-  display: grid;
+.player-select-card {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  gap: .45rem;
+  overflow: hidden;
   border: 1px solid var(--solid-border);
   background: #0b0b10;
-  padding: .55rem;
-  color: var(--muted);
-  text-align: left;
-  transition: border-color .18s ease, background .18s ease, color .18s ease;
+  transition: border-color .18s ease, background .18s ease;
 }
 
-.character-strip button:hover,
-.character-strip button:focus-visible,
-.character-strip button.is-active {
-  border-color: #6d35ff;
-  background: #14101d;
-  color: white;
+.player-select-card.is-active,
+.player-select-card:focus-within {
+  border-color: #8b5cff;
+  background: #12101a;
+}
+
+.character-strip .player-card-select {
+  display: grid;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+}
+
+.player-card-select:hover .player-card-name strong {
+  color: #c4afff;
 }
 
 .strip-avatar {
+  position: relative;
   display: grid;
   place-items: center;
   overflow: hidden;
   aspect-ratio: 1;
   background: #11111a;
+}
+
+.strip-avatar .player-card-number {
+  position: absolute;
+  z-index: 2;
+  top: .6rem;
+  left: .6rem;
+  padding: .3rem .4rem;
+  background: #08080de8;
+  color: #c4afff;
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  line-height: 1;
 }
 
 .strip-avatar img {
@@ -364,23 +388,101 @@ button {
   object-position: center top;
 }
 
-.character-strip strong {
-  overflow: hidden;
-  color: var(--text);
-  font-size: .82rem;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.player-card-name {
+  display: grid;
+  gap: .3rem;
+  padding: .85rem .65rem .55rem;
 }
 
-.character-strip small {
-  overflow: hidden;
+.player-card-name strong {
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.player-card-name small {
   font-size: .64rem;
   font-weight: 800;
   letter-spacing: .07em;
-  text-overflow: ellipsis;
   text-transform: uppercase;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
+.player-card-account {
+  display: grid;
+  gap: .65rem;
+  flex: 1;
+  align-content: space-between;
+  padding: 0 .65rem .65rem;
+}
+
+.player-card-riot-id {
+  min-height: 2.8em;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.tracker-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 3.5rem;
+  padding: .65rem .7rem .65rem 1.2rem;
+  border: 1px solid #8b5cff;
+  border-radius: .25rem;
+  background: #6d35ff;
+  color: #fff;
+  font-size: .88rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.tracker-button-arrow {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-left: 1px solid #ffffff40;
+  font-size: 1.25rem;
+}
+
+.tracker-button-compact {
+  width: 100%;
+  min-height: 2.75rem;
+  gap: .25rem;
+  padding: .45rem .5rem .45rem .7rem;
+  border-color: #6843a0;
+  background: #1b122b;
+  font-size: .72rem;
+}
+
+.tracker-button-compact .tracker-button-arrow {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #c4afff;
+  border-left: 0;
+  font-size: 1rem;
+}
+
+.tracker-button:hover,
+.tracker-button:focus-visible {
+  border-color: #b794ff;
+  background: #5422d6;
+}
+
+.tracker-button-compact:hover .tracker-button-arrow,
+.tracker-button-compact:focus-visible .tracker-button-arrow {
+  color: #fff;
 }
 
 @media (max-width: 1180px) {
@@ -412,16 +514,7 @@ button {
   .character-media .avatar-fallback { min-height: 0; }
 
   .character-strip {
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: .35rem;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: thin;
-  }
-
-  .character-strip button {
-    min-width: 8.8rem;
-    scroll-snap-align: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
