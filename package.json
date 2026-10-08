@@ -15,7 +15,8 @@
     "test:premier": "node scripts/test-premier.mjs",
     "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run test:profiles && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle",
     "test:profiles": "node scripts/test-competitive-profiles.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "check:preview": "node scripts/check-preview.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

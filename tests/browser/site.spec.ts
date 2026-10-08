@@ -98,6 +98,27 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
 
+test('slow initial Home does not steal focus after the menu closes', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Mobile menu only');
+  let release!: () => void;
+  const ready = new Promise<void>((resolve) => { release = resolve; });
+  await page.route('**/assets/HomePage-*.js', async (route) => {
+    await ready;
+    await route.continue();
+  });
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const open = page.getByRole('button', { name: 'Abrir navegação' });
+  await open.click();
+  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Home', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(open).toBeFocused();
+  release();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+  await expect(open).toBeFocused();
+  await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
+});
+
 test('Drop: real front/back preview and manual request values', async ({ page }, testInfo) => {
   await page.goto('/products/jersey');
   await page.getByLabel('Nick', { exact: true }).fill('SHUSH');

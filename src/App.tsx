@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
@@ -24,6 +24,7 @@ const NotFoundPage = lazy(loadNotFoundPage);
 
 export default function App() {
   const location = useLocation();
+  const initialLocationKey = useRef(location.key);
   useRouteMetadata(location.pathname);
 
   return (
@@ -32,7 +33,7 @@ export default function App() {
       <Header />
       <main id="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>
-          <PageTransition key={location.pathname}>
+          <PageTransition initialNavigation={location.key === initialLocationKey.current}>
             <Routes location={location}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/esports/valorant/premier" element={<PremierPage />} />

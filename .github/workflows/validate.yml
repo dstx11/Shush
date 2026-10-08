@@ -100,6 +100,11 @@ jobs:
       - run: pnpm run build
       - name: Responsive and interaction QA
         run: pnpm run test:browser
+      - name: Cloudflare preview HTTP smoke
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          SHUSH_PREVIEW_BRANCH: ${{ github.head_ref }}
+        run: pnpm run check:preview
       - name: Save screenshots and report
         if: always()
         uses: actions/upload-artifact@v7
