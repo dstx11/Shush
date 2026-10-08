@@ -48,6 +48,8 @@ button:disabled { cursor: default; opacity: .55; }
 .drop-process p { color: var(--muted); font-size: .75rem; line-height: 1.8; margin-top: .75rem; }
 .drop-mobile-preview { display: none; }
 #product-preview, #customizacao { scroll-margin-top: 6rem; }
+@media (min-width: 768px) and (min-height: 600px) { .audit-drop-image { width: min(100%, calc(100svh - 15rem)); margin-inline: auto; } }
+@media (min-width: 768px) and (max-height: 599px) { .audit-drop-gallery { position: static; } }
 @media (max-width: 1050px) { .drop-layout { gap: 1.5rem; grid-template-columns: 1fr 1fr; } .drop-editor { padding-left: 1.5rem; } .drop-process { grid-template-columns: 1fr; gap: 1.5rem; } }
 @media (max-width: 767px) {
   .drop-page { padding-block: max(6.5rem, calc(5.5rem + env(safe-area-inset-top))) 3rem; }

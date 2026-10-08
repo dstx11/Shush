@@ -22,6 +22,7 @@ Baseline: ec79c6cd04b05f233975e62d7c04ec8fdd3258cd, CI #146 passed (Linux, Windo
 - Only June/July 2026 is registered; incomplete results cannot establish final points or playoff outcomes.
 - No confirmed clips/thumbnails, future season, order contact, price, stock, size chart, manufacturing facts or contact email exists. Conditional features needing these facts stay absent.
 - Screenshot inspection, automated accessibility checks and deployment validation are release gates.
+- CI #154 passed all 48 route axe scans and expanded navigation scans. Eight reload tests exposed an inaccurate history-event counter; it now counts document requests. Global overflow hiding was removed to restore sticky positioning and make overflow checks meaningful.
 - Body pre-rendering is P2 and is evaluated after the interactive experience is stable.
 
 This ledger is updated per block for immediate resumption without rebuilding or treating pending QA as passed.

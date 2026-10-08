@@ -25,12 +25,14 @@ for (const path of routes) {
 
 test('a failed lazy route recovers once and exposes usable recovery controls', async ({ page }) => {
   let navigations = 0;
-  page.on('framenavigated', (frame) => { if (frame === page.mainFrame()) navigations += 1; });
+  // React Router's initial replaceState also emits framenavigated. Count only
+  // document requests so the assertion detects reloads, not same-document history.
+  page.on('request', (request) => { if (request.isNavigationRequest() && request.frame() === page.mainFrame()) navigations += 1; });
   await page.route('**/assets/ContentPage-*.js', (route) => route.abort());
   await page.goto('/content', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { name: 'Não foi possível carregar esta página.' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Recarregar' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Voltar à Home' })).toHaveAttribute('href', '/');
-  expect(navigations).toBeLessThanOrEqual(2);
+  expect(navigations).toBe(2);
   expect(Number(await page.evaluate(() => sessionStorage.getItem('shush:preload-recovery-at')))).toBeGreaterThan(0);
 });

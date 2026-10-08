@@ -338,3 +338,32 @@ test('About: real brand download and partner; static and SPA 404 recovery', asyn
   await expect(page.getByRole('navigation', { name: 'Recuperar navegação' })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('static-404.png'), fullPage: true });
 });
+
+test('Drop: small-height form reflow and reduced motion remain usable', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Narrow form reflow only');
+  await page.goto('/products/jersey');
+  await page.setViewportSize({ width: 390, height: 320 });
+  const nick = page.getByLabel('Nick', { exact: true });
+  await nick.fill('SHUSH');
+  await nick.scrollIntoViewIfNeeded();
+  await expect(nick).toBeFocused();
+  const field = (await nick.boundingBox())!;
+  const header = (await page.locator('header').boundingBox())!;
+  expect(field.y).toBeGreaterThanOrEqual(header.y + header.height);
+  expect(field.y + field.height).toBeLessThanOrEqual(320);
+  await expect(page.locator('.drop-mobile-preview')).toHaveCSS('position', 'static');
+  await expect(page.locator('.route-enter')).toHaveCSS('animation-name', 'none');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+});
+
+test('Drop: desktop preview follows the form without an overflow scroll container', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) < 768 || (page.viewportSize()?.height ?? 0) < 600, 'Tall desktop preview only');
+  await page.goto('/products/jersey');
+  const gallery = page.locator('.audit-drop-gallery');
+  const initial = (await gallery.boundingBox())!;
+  await page.evaluate((top) => window.scrollTo(0, top), initial.y - 96 + 20);
+  const sticky = (await gallery.boundingBox())!;
+  const header = (await page.locator('header').boundingBox())!;
+  expect(sticky.y).toBeGreaterThanOrEqual(header.y + header.height);
+  expect(sticky.y + sticky.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+});

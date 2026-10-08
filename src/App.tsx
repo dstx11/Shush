@@ -28,7 +28,7 @@ export default function App() {
   useRouteMetadata(location.pathname);
 
   return (
-    <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
+    <div className={`min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <Header />
       <main id="main-content" tabIndex={-1}>
