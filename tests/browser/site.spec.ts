@@ -13,11 +13,19 @@ for (const [name, path] of routes) {
     await page.goto(path);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
+    // Hidden lazy images belong to disclosures; exercise those UI states first.
+    if (name === 'premier') {
+      for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
+    }
     // Render lazy images before recording the full-page visual evidence.
     for (const image of await page.locator('main img').all()) {
       await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
+    }
+    if (name === 'premier') {
+      await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
+      for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
