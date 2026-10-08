@@ -6,8 +6,8 @@ Baseline: ec79c6cd04b05f233975e62d7c04ec8fdd3258cd, CI #146 passed (Linux, Windo
 
 | Block | Scope | Status |
 | --- | --- | --- |
-| A | Identity, header, editorial Home | Implemented; local validate passed; CI/browser pending |
-| B | Player Select, copy Riot ID, sharing, mobile selector | Pending |
+| A | Identity, header, editorial Home | Validated locally and CI #147 (six-width browser/Cloudflare checks) |
+| B | Player Select, copy Riot ID, sharing, mobile selector | Local validate passed; new interaction tests awaiting CI |
 | C | Match Center, expandable weeks, call-ups, streams, ICS | Pending |
 | D | Dedicated creator compositions | Pending |
 | E | Drop configurator, Unicode, URL restore/share, reset, TXT, optional draft | Pending |

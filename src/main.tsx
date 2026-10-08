@@ -7,6 +7,7 @@ import { preloadRoute } from './lib/routes';
 import './styles/base.css';
 import './styles/audit.css';
 import './styles/editorial.css';
+import './styles/players.css';
 
 const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
 

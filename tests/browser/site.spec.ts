@@ -108,7 +108,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await open.click();
   await page.locator('#mobile-navigation').getByRole('link', { name: 'Roster', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Quem entra no lobby.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('PlayerSelect.');
   await expect(page.locator('#main-content')).toBeFocused();
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
@@ -157,4 +157,43 @@ test('Drop: real front/back preview and manual request values', async ({ page },
   expect(print!.y + print!.height).toBeLessThan(image!.y + image!.height * .55);
   expect(Math.abs((print!.x + print!.width / 2) - (image!.x + image!.width / 2))).toBeLessThan(2);
   await page.locator('.audit-drop-gallery').screenshot({ path: testInfo.outputPath('drop-back.png') });
+});
+
+test('player actions: exact Unicode clipboard, share URL and manual recovery', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'share', { value: undefined, configurable: true });
+    Object.defineProperty(navigator, 'clipboard', { value: { writeText: async (text: string) => { document.body.dataset.copied = text; } }, configurable: true });
+  });
+  await page.goto('/esports/valorant/roster?player=th0maz7');
+  await page.getByRole('button', { name: 'Copiar Riot ID' }).click();
+  await expect(page.locator('body')).toHaveAttribute('data-copied', 'Th0maz7#愛してる彼');
+  await expect(page.getByRole('status').filter({ hasText: 'Riot ID copiado.' })).toBeVisible();
+  await page.getByRole('button', { name: 'Partilhar jogador' }).click();
+  await expect(page.locator('body')).toHaveAttribute('data-copied', /\/esports\/valorant\/roster\?player=th0maz7$/);
+  await page.evaluate(() => { Object.defineProperty(navigator, 'clipboard', { value: { writeText: async () => { throw new Error('blocked'); } }, configurable: true }); });
+  await page.getByRole('button', { name: 'Copiar Riot ID' }).click();
+  await expect(page.getByLabel('Texto para copiar')).toHaveValue('Th0maz7#愛してる彼');
+  await page.evaluate(() => { Object.defineProperty(navigator, 'share', { value: async () => { throw new DOMException('Cancelled', 'AbortError'); }, configurable: true }); });
+  await page.getByRole('button', { name: 'Partilhar jogador' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Partilha cancelada.' })).toBeVisible();
+  await expect(page.getByLabel('Texto para copiar')).toHaveCount(0);
+});
+
+test('mobile menu contains keyboard focus and player selector stays compact', async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Mobile layout only');
+  await page.goto('/esports/valorant/roster?player=levi');
+  const bounds = await page.locator('.character-strip').boundingBox();
+  expect(bounds!.height).toBeLessThan(280);
+  const selector = page.getByRole('group', { name: 'Selecionar jogador' });
+  await selector.getByRole('button').last().click();
+  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await page.getByRole('button', { name: 'Abrir navegação' }).click();
+  await expect(page.locator('#main-content')).toHaveJSProperty('inert', true);
+  await page.locator('#mobile-navigation').getByRole('link', { name: 'About', exact: true }).focus();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('button', { name: 'Fechar navegação' })).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'About', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#main-content')).toHaveJSProperty('inert', false);
 });

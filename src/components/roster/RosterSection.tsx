@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
 import { players } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
@@ -29,16 +30,17 @@ export function RosterSection() {
   const selectPrevious = () => selectPlayer((selectedIndex - 1 + players.length) % players.length);
 
   return (
-    <section id="roster" className="roster-section roster-select audit-roster relative scroll-mt-24 overflow-hidden px-5 pb-24 pt-36" aria-labelledby="roster-title">
-      <div className="mx-auto grid max-w-7xl gap-8">
-        <div className="roster-select-head css-reveal">
+    <section id="roster" className="player-page" aria-labelledby="roster-title">
+      <div className="shell">
+        <div className="page-heading player-heading">
           <div>
             <span className="section-kicker">Valorant / Roster</span>
-            <h1 id="roster-title">Quem entra no lobby.</h1>
+            <h1 id="roster-title">Player<br /><span>Select.</span></h1>
           </div>
           <p>{players.length} jogadores. Uma identidade.<br />Conhece a equipa e acompanha os seus perfis competitivos.</p>
         </div>
 
+        <div className="player-stage">
         <div className="character-strip" role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
             const profile = getCompetitiveProfile(player.id);
@@ -66,7 +68,8 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" key={selectedPlayer.id} className="character-spotlight character-swap" aria-labelledby="selected-player-name">
             <div className="character-media">
-              <span className="character-index">{selectedPlayer.number}</span>
+              <span className="character-index" aria-hidden="true">{selectedPlayer.number}</span>
+              <span className="player-image-label mono">SHUSH / Valorant</span>
               {selectedPlayer.avatar ? (
                 <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
               ) : (
@@ -101,6 +104,7 @@ export function RosterSection() {
                   </dl>
                   {competitiveProfile.seasonId ? <p className="competitive-period">Ligação à temporada selecionada no perfil, não à temporada atual.</p> : null}
                   <TrackerButton href={competitiveProfile.trackerUrl} playerName={selectedPlayer.displayName} />
+                  <PlayerActions key={selectedPlayer.id} playerId={selectedPlayer.id} playerName={selectedPlayer.displayName} riotId={competitiveProfile.riotId} />
                   <p className="competitive-note">Rank, estatísticas e histórico no Tracker.gg. A disponibilidade depende da privacidade da conta.</p>
                 </div>
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
@@ -123,8 +127,34 @@ export function RosterSection() {
             </button>
           </div>
         </div>
-
+        </div>
       </div>
     </section>
   );
+}
+
+function PlayerActions({ playerId, playerName, riotId }: { playerId: string; playerName: string; riotId: string }) {
+  const [feedback, setFeedback] = useState('');
+  const [manual, setManual] = useState('');
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  const copy = async () => {
+    const copied = await copyText(riotId);
+    if (!mounted.current) return;
+    setManual(copied ? '' : riotId);
+    setFeedback(copied ? 'Riot ID copiado.' : 'Não foi possível copiar. Seleciona o Riot ID abaixo.');
+  };
+  const share = async () => {
+    const url = new URL('/esports/valorant/roster', window.location.origin);
+    url.searchParams.set('player', playerId);
+    const result = await shareUrl(url.href, `${playerName} — SHUSH`);
+    if (!mounted.current) return;
+    setManual(result === 'manual' ? url.href : '');
+    setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
+  };
+  return <div className="player-utilities">
+    <div className="action-row"><button type="button" className="utility-button" onClick={copy}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share}>Partilhar jogador <span aria-hidden="true">↗</span></button></div>
+    <p className="action-feedback" role="status">{feedback}</p>
+    {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
+  </div>;
 }
