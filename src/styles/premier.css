@@ -5,7 +5,7 @@
 .match-heading h1 > span { color: var(--signal); }
 .match-score { --paper: #24172f; --muted: #64526f; --signal: #6130d4; display: grid; align-content: center; gap: 1.25rem; border: 0; border-radius: .5rem; padding: 2rem; background: #eee6f5; color: #24172f; }
 .match-score > strong { font: 600 clamp(5rem, 11vw, 11rem)/1 var(--font-heading); letter-spacing: -.08em; }
-.match-score strong > small { font: .2em var(--font-mono); color: var(--muted); letter-spacing: -.02em; }
+.match-score strong > small { font: .2em var(--font-mono); color: var(--muted); letter-spacing: -.02em; white-space: nowrap; }
 .match-score p { color: var(--muted); font-size: .875rem; line-height: 1.7; }
 .match-score meter { width: 100%; height: .35rem; background: #27212f; accent-color: var(--signal); }
 .match-score meter::-webkit-meter-bar { background: #27212f; border: 0; border-radius: 0; }
@@ -76,7 +76,7 @@
   .match-heading { grid-template-columns: 1fr; gap: 1.5rem; }
   .match-heading h1 { font-size: clamp(3.8rem, 15vw, 6rem); }
   .match-score { border: 0; padding: 1.5rem; gap: 1rem; }
-  .match-score > strong { font-size: 7rem; }
+  .match-score > strong { font-size: clamp(5rem, 20vw, 7rem); }
   .season-state { margin-top: 2rem; }
   .match-totals { grid-template-columns: 1fr 1fr; }
   .match-totals > div { padding: 1.25rem 0; }
