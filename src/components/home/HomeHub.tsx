@@ -4,6 +4,7 @@ import { calculatePremierScore, calculatePublicMatchDayState, formatDate } from 
 import { usePremierClock } from '../../lib/use-premier-clock';
 import { Button } from '../ui/Button';
 import { AppLink } from '../ui/AppLink';
+import { HomePlayerRail } from './HomePlayerRail';
 
 export function HomeHub() {
   const state = calculatePublicMatchDayState(season, usePremierClock());
@@ -15,10 +16,7 @@ export function HomeHub() {
         <div className="shell">
           <div className="section-index"><span className="section-kicker">01 / A equipa</span><span className="mono">Valorant · {players.length} jogadores</span></div>
           <div className="section-heading"><div><h2 id="home-roster-title">Nomes diferentes.<br /><span>A mesma SHUSH.</span></h2><p className="body-copy">Quem joga, quem cria, quem entra contigo no lobby.</p></div><AppLink className="editorial-link" href="/esports/valorant/roster">Conhecer o roster <span aria-hidden="true">↗</span></AppLink></div>
-          <div className="home-player-rail" aria-label="Jogadores SHUSH">
-            {players.map((player) => <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`} className="home-player" aria-label={`Conhecer ${player.displayName}`}><div className="home-player-image">{player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span className="initial-art" aria-hidden="true">{player.initials}</span>}<span className="home-player-number" aria-hidden="true">{player.number}</span></div><span className="home-player-name">{player.displayName}<span aria-hidden="true">↗</span></span><small>{player.roles[0]}</small></AppLink>)}
-          </div>
-          <p className="rail-hint mono">Escolhe um jogador para abrir o perfil e o Tracker.gg.</p>
+          <HomePlayerRail />
         </div>
       </section>
       <section id="creator-pulse" className="home-creators" aria-labelledby="home-creators-title">

@@ -28,6 +28,7 @@ for (const [name, path] of routes) {
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
+    if (name === 'home') await page.locator('.home-player-rail').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
     const layout = await page.evaluate(() => ({
