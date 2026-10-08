@@ -20,7 +20,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   },
   '/esports/valorant/roster': {
     title: 'Roster — SHUSH',
-    description: 'Conhece os jogadores de Valorant da SHUSH, as suas funções e os creators da equipa.',
+    description: 'Conhece os jogadores de Valorant da SHUSH, as suas funções, Riot IDs e perfis competitivos no Tracker.gg.',
   },
   '/content': {
     title: 'Creators — SHUSH',

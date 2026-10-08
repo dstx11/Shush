@@ -20,6 +20,7 @@ for (const [name, path] of routes) {
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
     }
     await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
     const layout = await page.evaluate(() => ({
       width: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
@@ -34,9 +35,8 @@ for (const [name, path] of routes) {
       expect(heading.scrollWidth, `Clipped heading: ${heading.text}`).toBeLessThanOrEqual(heading.width + 1);
     }
     await expect(page.locator('html')).toHaveAttribute('lang', 'pt-PT');
-    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://shush.pt${path === '/' ? '/' : path}`);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://shush.pt${path === '/' ? '' : path}`);
     expect(errors).toEqual([]);
-    await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
   });
 }
 

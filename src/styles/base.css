@@ -350,7 +350,8 @@ button {
 }
 
 .strip-avatar {
-  display: block;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   aspect-ratio: 1;
   background: #11111a;

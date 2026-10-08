@@ -43,7 +43,8 @@ export function RosterSection() {
         </div>
 
         <div className="character-select">
-          <article id="selected-player" key={selectedPlayer.id} className="character-spotlight character-swap" aria-live="polite" aria-labelledby="selected-player-name">
+          <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
+          <article id="selected-player" key={selectedPlayer.id} className="character-spotlight character-swap" aria-labelledby="selected-player-name">
             <div className="character-media">
               <span className="character-index">{selectedPlayer.number}</span>
               {selectedPlayer.avatar ? (
