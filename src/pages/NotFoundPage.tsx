@@ -1,14 +1,5 @@
 import { Button } from '../components/ui/Button';
 
 export function NotFoundPage() {
-  return (
-    <section className="audit-not-found px-5 pb-24 pt-36">
-      <div className="audit-page-shell">
-        <span className="section-kicker">404 / SHUSH</span>
-        <h1>Página não encontrada.</h1>
-        <p>Esta rota não faz parte do site público atual.</p>
-        <Button href="/">Voltar à Home</Button>
-      </div>
-    </section>
-  );
+  return <section className="not-found-page" aria-labelledby="not-found-title"><div className="shell not-found-grid"><div><span className="section-kicker">404 / SHUSH</span><h1 id="not-found-title">Fora do<br /><span>mapa.</span></h1><p>Esta página não existe no site público da SHUSH.</p><div className="action-row"><Button href="/">Voltar à Home</Button><Button href="/esports/valorant/roster" variant="secondary">Conhecer o roster</Button></div></div><span className="not-found-number" aria-hidden="true">404</span></div></section>;
 }

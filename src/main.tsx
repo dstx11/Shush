@@ -11,6 +11,8 @@ import './styles/players.css';
 import './styles/premier.css';
 import './styles/creators.css';
 import './styles/drop.css';
+import './styles/about.css';
+import './styles/footer.css';
 
 const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
 

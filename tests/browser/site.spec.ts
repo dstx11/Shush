@@ -314,3 +314,27 @@ test('Drop: blocked APIs recover without losing fields', async ({ page }) => {
   await expect(page.getByRole('status').filter({ hasText: 'não permitiu guardar' })).toBeVisible();
   await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('SHUSH 愛');
 });
+
+test('About: real brand download and partner; static and SPA 404 recovery', async ({ page }, testInfo) => {
+  await page.goto('/company');
+  await expect(page.getByRole('link', { name: 'Conhecer Backora' })).toHaveAttribute('href', 'https://backora.org/');
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('link', { name: 'Descarregar logótipo (WebP)' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe('shush-logo.webp');
+  const image = Buffer.concat(await (await download.createReadStream())!.toArray());
+  expect(image.subarray(0, 4).toString()).toBe('RIFF');
+  expect(image.subarray(8, 12).toString()).toBe('WEBP');
+  await page.goto('/unknown-shush-test');
+  await expect(page).toHaveTitle('404 — SHUSH');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,nofollow');
+  await expect(page.getByRole('heading', { name: /Fora do/ })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('spa-404.png'), fullPage: true });
+  await page.getByRole('link', { name: 'Conhecer o roster', exact: true }).click();
+  await expect(page.locator('#selected-player-name')).toHaveText('dstx');
+  await page.goto('/404.html');
+  await expect(page).toHaveTitle('404 — SHUSH');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,nofollow');
+  await expect(page.getByRole('navigation', { name: 'Recuperar navegação' })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('static-404.png'), fullPage: true });
+});

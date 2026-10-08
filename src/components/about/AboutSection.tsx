@@ -1,53 +1,16 @@
-import { creators } from '../../data/players';
+import { creators, players } from '../../data/players';
 import { AppLink } from '../ui/AppLink';
+import { Button } from '../ui/Button';
 
 export function AboutSection() {
   return (
-    <section id="about" className="about-section audit-about scroll-mt-28 px-5 pb-28 pt-36" aria-labelledby="about-title">
-      <div className="about-shell css-reveal">
-        <div className="audit-about-intro">
-          <span className="section-kicker">About / SHUSH</span>
-          <h1 id="about-title">Uma equipa.<br />A mesma linguagem.</h1>
-          <p>Somos uma pequena organização de gaming. Jogamos Valorant Premier, reunimos creators e levamos a nossa identidade para o Drop 01.</p>
-          <strong>Sem barulho. Só rounds.</strong>
-        </div>
-
-        <div className="audit-about-grid">
-          <article>
-            <span>01</span>
-            <h2>Competitivo</h2>
-            <p>Os rounds, o calendário e as pessoas que entram no servidor.</p>
-            <AppLink className="editorial-link" href="/esports/valorant/premier">Match Center <span aria-hidden="true">→</span></AppLink>
-          </article>
-          <article>
-            <span>02</span>
-            <h2>Creators</h2>
-            <p>More e Th0maz7. A SHUSH também se acompanha fora do jogo.</p>
-            <div className="audit-creator-links">
-              {creators.map((creator) => (
-                <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
-                  {creator.displayName}<span aria-hidden="true">↗</span>
-                </a>
-              ))}
-            </div>
-          </article>
-          <article>
-            <span>03</span>
-            <h2>Drop 01</h2>
-            <p>Preto, roxo e o teu nick. A nossa identidade, na tua camisola.</p>
-            <AppLink className="editorial-link" href="/products/jersey">Explorar Drop 01 <span aria-hidden="true">→</span></AppLink>
-          </article>
-        </div>
-
-        <a id="partners" href="https://backora.org/" target="_blank" rel="noreferrer" className="audit-partner scroll-mt-28">
-          <span>
-            <small>Parceiro técnico / digital</small>
-            <strong>Backora</strong>
-          </span>
-          <p>Estrutura web e suporte técnico da SHUSH.</p>
-          <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" />
-          <span aria-hidden="true">↗</span>
-        </a>
+    <section id="about" className="about-page" aria-labelledby="about-title">
+      <div className="shell">
+        <div className="about-opening"><div><span className="section-kicker">About / SHUSH</span><h1 id="about-title">Pequena<br />equipa.<br /><span>Identidade<br />inteira.</span></h1></div><div className="about-brand-panel"><div className="about-brand-image"><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="Logótipo SHUSH" decoding="async" /></div><p>Somos uma pequena organização de gaming. Jogamos Valorant Premier, reunimos creators e levamos a nossa identidade para o Drop 01.</p><div className="about-counts"><span><strong>{players.length}</strong> jogadores</span><span><strong>{creators.length}</strong> creators</span></div></div></div>
+        <section className="about-manifesto" aria-labelledby="identity-title"><span className="section-kicker">01 / Identidade</span><div><h2 id="identity-title">Sem barulho.<br /><span>Só rounds.</span></h2><p>Dentro do servidor, os jogadores. Fora dele, os creators e a camisola. A SHUSH liga estas partes com a mesma identidade.</p></div></section>
+        <div className="about-paths"><AppLink href="/esports/valorant/roster"><span className="mono">02 / A equipa</span><strong>Quem joga.</strong><span>Conhecer o roster</span><span aria-hidden="true">↗</span></AppLink><AppLink href="/content"><span className="mono">03 / Os creators</span><strong>Quem cria.</strong><span>More + Th0maz7</span><span aria-hidden="true">↗</span></AppLink><AppLink href="/products/jersey"><span className="mono">04 / A camisola</span><strong>O que nos liga.</strong><span>Explorar Drop 01</span><span aria-hidden="true">↗</span></AppLink></div>
+        <section id="partners" className="about-partner" aria-labelledby="partner-title"><span className="section-kicker">05 / Parceiro técnico + digital</span><div className="partner-content"><img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" /><div><h2 id="partner-title">Backora.</h2><p>Estrutura web e suporte técnico da SHUSH.</p></div><Button href="https://backora.org/" target="_blank" rel="noopener noreferrer" variant="secondary">Conhecer Backora</Button></div></section>
+        <section className="about-brand-download" aria-labelledby="brand-title"><div><span className="section-kicker">06 / Marca</span><h2 id="brand-title">A nossa assinatura.</h2><p>Logótipo SHUSH · WebP · 1167 × 647</p></div><Button href="/assets/brand/shush-logo.webp" download="shush-logo.webp" variant="secondary">Descarregar logótipo (WebP)</Button></section>
       </div>
     </section>
   );
