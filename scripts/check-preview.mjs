@@ -40,7 +40,6 @@ function checkSecurity(response) {
   assert.equal(response.headers.get('referrer-policy'), 'strict-origin-when-cross-origin');
   assert.equal(response.headers.get('cross-origin-opener-policy'), 'same-origin');
   assert.match(response.headers.get('permissions-policy') ?? '', /camera=\(\)/);
-  assert.match(response.headers.get('x-robots-tag') ?? '', /noindex/);
 }
 
 for (const path of routes) {
@@ -48,6 +47,7 @@ for (const path of routes) {
   const response = await get(path);
   assert.equal(response.status, 200, path);
   checkSecurity(response);
+  assert.match(response.headers.get('x-robots-tag') ?? '', /noindex/);
   const html = await response.text();
   for (const pattern of [/<title>.*?<\/title>/, /<link rel="canonical"[^>]+>/, /<meta property="og:title"[^>]+>/, /<meta property="og:image"[^>]+>/, /<meta name="twitter:title"[^>]+>/]) {
     const expected = local.match(pattern)?.[0];

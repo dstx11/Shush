@@ -1,6 +1,6 @@
 # SHUSH — design evolution
 
-Research and implementation audit: 7 October 2026. Source of truth: the existing repository, its real assets and static data. This evolution continues the professional rebuild; it does not replace the application or add services.
+Research and implementation audit: 7–8 October 2026. Source of truth: the existing repository, its real assets and static data. This evolution continues the professional rebuild; it does not replace the application or add services.
 
 ## Research and choices
 
@@ -31,11 +31,16 @@ The Home remains short: identity, competitive context, players, creators and a c
 - Drop field names remain stable while counters and constraints are separate accessible descriptions. Result letters are decorative; assistive technology receives the Portuguese win/loss label.
 - Footer contrast and link target height improved. The header is flatter, without backdrop blur. Shared hover/focus and reduced-motion rules remain.
 - Obsolete rail/selected-badge primitives and their styles/animations removed. TypeScript rejects unused locals/parameters, link checks include template-literal destinations, and CI runs on Linux and Windows.
+- Seven owner-confirmed Riot accounts are integrated into the roster spotlight, with mode, attribution and exact external Tracker destinations. Public nicknames remain unchanged. The selected Competitive season is labelled; no statistics are inferred or scraped. [Access research and future requirements](competitive-profiles.md).
+- Player selectors precede the spotlight, initials are centred and mobile portraits are proportional. Selection changes announce the player's name in a persistent status region.
+- Rendered responsive QA exposed a page-sized focus outline and empty space around the mobile jersey. The Drop now uses a square image frame and scales preview text to that frame, keeping nick/number on the jersey across screen sizes.
+- Slow initial Home loading no longer steals focus from the mobile menu. Later SPA routes still move focus after their content commits; selection query changes preserve scroll/focus.
+- Browser CI covers Chromium widths 320/390/768/1366/1920 and mobile WebKit. Live HTTP smoke checks wait for the actual built entry asset before validating the Cloudflare alias, metadata, security, redirect and real 404. Tailwind scans application source only, so documentation/test text cannot add production utilities.
 
 ## Intentionally absent
 
-Individual profile pages lack sufficient real content. There is no maintained news dataset, verified organisation social profile list, subscription service or checkout. More routes, search, newsletters, notifications and integrations would create maintenance and factual gaps without a current user benefit.
+Individual profile pages lack sufficient real content; existing shareable roster selections now contain competitive identities. There is no maintained news dataset, verified organisation social profile list, subscription service or checkout. Automatic player statistics require separate provider authorization and player opt-in; public Tracker links do not grant those rights. More routes, search, newsletters and notifications would create maintenance and factual gaps without a current user benefit.
 
 ## Verification limits
 
-Full local validation and GitHub CI must pass for the published commit. Live desktop QA and HTTP checks are performed on its deployment. The current browser API does not expose viewport resizing: narrow/mobile and tablet visual QA remains a release gate. CSS review is not a substitute for that check. No field LCP/INP/CLS measurements are claimed and no automatic merge is authorised.
+Full local validation, browser QA and the live Cloudflare HTTP check must pass for the published commit. Desktop interaction QA uses the real deployment. The browser interface cannot resize its live window, so narrow/mobile and tablet QA now uses isolated Chromium/WebKit CI renders and their actual screenshots, which have been visually inspected. This closes the previous narrow-viewport release gate; it is emulation, not a claim of physical-device testing. No field LCP/INP/CLS measurements are claimed and no automatic merge is authorised. The PR records the final commit, CI result and deployment.
