@@ -17,7 +17,14 @@ test('Home: roster controls reach the last player and return to the start', asyn
   await expect(previous).toBeEnabled();
   await previous.press('Enter');
   await expect.poll(() => rail.evaluate((element) => element.scrollLeft)).toBeLessThan(3);
-  for (let step = 0; step < 7 && await next.isEnabled(); step += 1) await next.click();
+  await expect(previous).toBeDisabled();
+  const range = controls.locator('[aria-label^="Jogadores visíveis:"]');
+  for (let step = 0; step < 7 && await next.isEnabled(); step += 1) {
+    const before = await range.getAttribute('aria-label');
+    await next.click();
+    // Wait for the scroll measurement to update both the range and end control.
+    await expect.poll(async () => await next.isDisabled() || await range.getAttribute('aria-label') !== before).toBe(true);
+  }
   await expect(next).toBeDisabled();
   const visible = await rail.evaluate((element) => {
     const bounds = element.getBoundingClientRect();

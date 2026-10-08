@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
+import { JerseyLightbox } from '../ui/JerseyLightbox';
 import { players } from '../../data/players';
 
 const views = {
@@ -10,6 +11,7 @@ const views = {
 
 export function HeroShowcase() {
   const [view, setView] = useState<keyof typeof views>('front');
+  const [expanded, setExpanded] = useState(false);
   return (
     <section id="top" className="opening" aria-labelledby="hero-title">
       <div className="shell opening-grid">
@@ -28,7 +30,7 @@ export function HeroShowcase() {
         </div>
         <div className="opening-product hero-product-enter">
           <div className="opening-product-label"><span className="product-edition">Drop 01</span><span className="mono">A camisola da equipa</span></div>
-          <div className="opening-jersey"><img key={view} className="product-swap" src={views[view].src} alt={views[view].alt} width="1254" height="1254" fetchPriority="high" decoding="async" /></div>
+          <div className="opening-jersey"><button type="button" className="jersey-zoom-surface" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><img key={view} className="product-swap" src={views[view].src} alt={views[view].alt} width="1254" height="1254" fetchPriority="high" decoding="async" /><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span>↗</span></span></button></div>
           <div className="opening-controls">
             <div className="view-control" role="group" aria-label="Vista da jersey">{(Object.keys(views) as (keyof typeof views)[]).map((key) => <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)}>{views[key].label}</button>)}</div>
             <AppLink className="editorial-link" href="/products/jersey">Personalizar <span aria-hidden="true">↗</span></AppLink>
@@ -36,6 +38,7 @@ export function HeroShowcase() {
         </div>
         <div className="opening-foot"><span className="mono">Sem barulho. Dentro e fora do servidor.</span><a className="editorial-link" href="#home-roster-title">Explorar a SHUSH <span aria-hidden="true">↓</span></a></div>
       </div>
+      {expanded ? <JerseyLightbox view={view} onViewChange={setView} onClose={() => setExpanded(false)}><img src={views[view].src} alt={views[view].alt} width="1254" height="1254" decoding="async" /></JerseyLightbox> : null}
     </section>
   );
 }

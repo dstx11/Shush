@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { JerseyCustomizer } from './JerseyCustomizer';
+import { JerseyLightbox } from '../ui/JerseyLightbox';
 import { copyText, downloadText, shareUrl } from '../../lib/browser-transfer';
 import { buildDropUrl, defaultDropConfig, dropDraftKey, dropSummary, graphemes, readDropConfig, readDropDraft, sanitizeDropText, type DropConfig } from '../../lib/drop-config';
 
@@ -25,6 +26,7 @@ export function DropSection() {
   const initial = readDropConfig(params);
   const [config, setConfig] = useState<DropConfig>(() => initial.config);
   const [view, setView] = useState<View>(() => initial.shared ? 'back' : 'front');
+  const [expanded, setExpanded] = useState(false);
   const [feedback, setFeedback] = useState(() => initial.corrected ? 'A ligação tinha valores inválidos. Foram usados valores seguros.' : initial.shared ? 'Personalização carregada da ligação.' : '');
   const [manualLink, setManualLink] = useState('');
   const [draftAvailable, setDraftAvailable] = useState(false);
@@ -54,6 +56,7 @@ export function DropSection() {
 
   const edit = (next: DropConfig) => {
     operation.current += 1;
+    if (next.nick !== config.nick || next.number !== config.number || next.phrase !== config.phrase) setView('back');
     setConfig(next);
     setFeedback('');
     setManualLink('');
@@ -126,7 +129,7 @@ export function DropSection() {
         <div className="drop-layout">
           <div id="product-preview" className="audit-drop-gallery">
             <div className="drop-gallery-label"><span className="mono">SHS / Drop 01</span><span className="mono">{views[view].label}</span></div>
-            <JerseyPreview config={config} view={view} />
+            <button type="button" className="jersey-zoom-surface drop-gallery-image-button" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><JerseyPreview config={config} view={view} /><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span>↗</span></span></button>
             <div className="view-control drop-view-control" role="group" aria-label="Vista da jersey">{(Object.keys(views) as View[]).map((key) => <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)}><span aria-hidden="true">{key === 'front' ? '01' : '02'}</span> {views[key].label}</button>)}</div>
             <p className="drop-preview-note">Pré-visualização indicativa. A posição, a frase e a impressão são confirmadas no pedido manual.</p>
           </div>
@@ -141,6 +144,7 @@ export function DropSection() {
         </div>
         <section className="drop-process" aria-labelledby="drop-process-title"><div><span className="section-kicker">Depois da personalização</span><h2 id="drop-process-title">Prepara. Partilha.<br />Confirma com a equipa.</h2></div><ol><li><span className="mono">01 / Personaliza</span><p>Escolhe o nick, número, tamanho e uma frase opcional.</p></li><li><span className="mono">02 / Guarda o resumo</span><p>Copia o texto, descarrega o TXT ou partilha a tua versão.</p></li><li><span className="mono">03 / Pedido manual</span><p>Os detalhes, tamanho e disponibilidade são acordados com a equipa. A pré-visualização não reserva uma jersey.</p></li></ol></section>
       </div>
+      {expanded ? <JerseyLightbox view={view} onViewChange={setView} onClose={() => setExpanded(false)}><JerseyPreview config={config} view={view} /></JerseyLightbox> : null}
     </section>
   );
 }

@@ -11,6 +11,7 @@ import './styles/players.css';
 import './styles/premier.css';
 import './styles/creators.css';
 import './styles/drop.css';
+import './styles/gallery.css';
 import './styles/about.css';
 import './styles/footer.css';
 

@@ -62,7 +62,7 @@ body { background: var(--ink); }
 .opening-product-label { display: flex; justify-content: space-between; align-items: center; gap: 1rem; position: relative; z-index: 1; }
 .product-edition { border: 1px solid #6e558e; border-radius: 2rem; padding: .45rem .8rem; font: .75rem var(--font-mono); }
 .opening-jersey { position: relative; width: 100%; aspect-ratio: 1; margin-top: -1rem; }
-.opening-jersey img { width: 100%; height: 100%; object-fit: contain; transform: rotate(-5deg) scale(1.06); }
+.opening-jersey img { width: 100%; height: 100%; object-fit: contain; }
 .opening-controls { position: relative; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; border-top: 1px solid var(--line); padding-top: .6rem; }
 .view-control { display: flex; gap: .25rem; }
 .view-control button { min-width: 4rem; min-height: 2.75rem; padding-inline: .65rem; border: 1px solid transparent; border-radius: .25rem; background: transparent; color: var(--muted); font: .8rem var(--font-mono); }
