@@ -19,6 +19,7 @@ for (const [name, path] of routes) {
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
     }
+    if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
     const layout = await page.evaluate(() => ({
@@ -97,7 +98,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
 
-test('Drop: real front/back preview and manual request values', async ({ page }) => {
+test('Drop: real front/back preview and manual request values', async ({ page }, testInfo) => {
   await page.goto('/products/jersey');
   await page.getByLabel('Nick', { exact: true }).fill('SHUSH');
   await page.getByLabel('Número', { exact: true }).fill('07');
@@ -111,4 +112,13 @@ test('Drop: real front/back preview and manual request values', async ({ page })
   await expect(summary).toHaveValue(/07/);
   await expect(summary).toHaveValue(/Só rounds\./);
   await expect(summary).toHaveValue(/Tamanho: L/);
+  const image = await page.locator('.audit-drop-image').boundingBox();
+  const print = await page.getByLabel('Pré-visualização: SHUSH 07').boundingBox();
+  expect(image).not.toBeNull();
+  expect(print).not.toBeNull();
+  expect(Math.abs(image!.width - image!.height)).toBeLessThan(2);
+  expect(print!.y).toBeGreaterThan(image!.y + image!.height * .1);
+  expect(print!.y + print!.height).toBeLessThan(image!.y + image!.height * .55);
+  expect(Math.abs((print!.x + print!.width / 2) - (image!.x + image!.width / 2))).toBeLessThan(2);
+  await page.locator('.audit-drop-gallery').screenshot({ path: testInfo.outputPath('drop-back.png') });
 });

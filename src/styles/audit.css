@@ -663,6 +663,9 @@ textarea:focus-visible {
   outline-offset: 3px;
 }
 
+/* Route focus lands on this landmark, not on a page-sized control. */
+#main-content:focus { outline: none; }
+
 @media (max-width: 820px) {
   .audit-hero { padding-top: 7.5rem; }
   .hero-headline { font-size: clamp(3rem, 14vw, 7.2rem); }
@@ -1173,7 +1176,10 @@ textarea:focus-visible {
 .audit-drop-image {
   position: relative;
   display: grid;
-  min-height: 38rem;
+  width: min(100%, 48rem);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  container-type: inline-size;
   overflow: hidden;
   place-items: center;
   background: #040406;
@@ -1182,8 +1188,9 @@ textarea:focus-visible {
 .audit-drop-image img {
   position: relative;
   z-index: 2;
-  width: min(100%, 48rem);
-  height: min(72svh, 48rem);
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: contain;
 }
 
@@ -1193,8 +1200,7 @@ textarea:focus-visible {
   top: 13%;
   z-index: 4;
   display: grid;
-  min-width: 9rem;
-  max-width: 70%;
+  width: 55%;
   transform: translateX(-50%);
   place-items: center;
   color: white;
@@ -1208,7 +1214,7 @@ textarea:focus-visible {
   max-width: 100%;
   overflow-wrap: anywhere;
   font-family: var(--font-heading);
-  font-size: clamp(.9rem, 1.7vw, 1.35rem);
+  font-size: clamp(.65rem, 3.2cqi, 1.35rem);
   font-weight: 700;
   letter-spacing: .08em;
 }
@@ -1216,15 +1222,15 @@ textarea:focus-visible {
 .audit-live-print strong {
   color: #8b5cff;
   font-family: var(--font-mono);
-  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  font-size: clamp(1.5rem, 10cqi, 4.8rem);
   line-height: .9;
 }
 
 .audit-live-print small {
   overflow-wrap: anywhere;
-  max-width: 12rem;
+  max-width: 100%;
   margin-top: .25rem;
-  font-size: .58rem;
+  font-size: clamp(.45rem, 1.8cqi, .65rem);
   letter-spacing: .08em;
 }
 
@@ -1563,14 +1569,6 @@ textarea:focus-visible {
     grid-template-columns: 9rem minmax(0, 1fr);
   }
 
-  .audit-drop-image {
-    min-height: 27rem;
-  }
-
-  .audit-drop-image img {
-    height: min(60svh, 34rem);
-  }
-
   .audit-customizer-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1624,10 +1622,6 @@ textarea:focus-visible {
 
   .audit-creator-visual {
     width: min(100%, 20rem);
-  }
-
-  .audit-drop-image {
-    min-height: 22rem;
   }
 
   .audit-customizer-grid {

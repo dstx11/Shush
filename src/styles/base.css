@@ -405,8 +405,11 @@ button {
   }
 
   .character-media {
-    min-height: 23rem;
+    min-height: 0;
+    aspect-ratio: 1;
   }
+
+  .character-media .avatar-fallback { min-height: 0; }
 
   .character-strip {
     display: flex;
