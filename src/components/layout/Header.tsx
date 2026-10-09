@@ -44,9 +44,9 @@ export function Header() {
     const background = [document.getElementById('main-content'), document.querySelector('footer')];
     const inertStates = background.map((element) => element?.inert ?? false);
     background.forEach((element) => { if (element) element.inert = true; });
-    const focusFrame = window.requestAnimationFrame(() => {
-      mobilePanelRef.current?.querySelector<HTMLAnchorElement>('a')?.focus();
-    });
+    // The panel has committed: focus it now so a queued frame cannot override
+    // a visitor who has already started tabbing through the open menu.
+    mobilePanelRef.current?.querySelector<HTMLAnchorElement>('a')?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Tab') {
@@ -73,7 +73,6 @@ export function Header() {
     return () => {
       document.body.style.overflow = previousOverflow;
       background.forEach((element, index) => { if (element) element.inert = inertStates[index]; });
-      window.cancelAnimationFrame(focusFrame);
       window.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);
     };
