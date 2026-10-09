@@ -10,8 +10,8 @@ export type PlayoffPlacement =
 
 export type PublicMatchDayState =
   | { kind: 'champions'; title: 'CAMPEÕES PREMIER'; detail: string; result?: MatchResult }
-  | { kind: 'playoffs_live'; title: 'PLAY-OFFS EM DIRETO'; detail: string }
-  | { kind: 'match_day_live'; title: 'MATCH DAY EM DIRETO'; week: PremierWeek; day: PremierPlayDay; detail: string; showStreams: boolean }
+  | { kind: 'playoffs_live'; title: 'JANELA DE PLAY-OFFS'; detail: string }
+  | { kind: 'match_day_live'; title: 'JANELA PREMIER ABERTA'; week: PremierWeek; day: PremierPlayDay; detail: string; showStreams: boolean }
   | { kind: 'upcoming'; title: 'PRÓXIMA JANELA PREMIER'; week: PremierWeek; day: PremierPlayDay; detail: string }
   | { kind: 'result_pending'; title: 'RESULTADO POR CONFIRMAR'; week: PremierWeek; day: PremierPlayDay; detail: string }
   | { kind: 'last_result'; title: 'ÚLTIMO RESULTADO'; detail: string; result: MatchResult }
@@ -120,7 +120,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   const playoffsStart = makeDateTime(season.playoffsDate, season.playoffsWindowStart, season.timezone);
   const playoffsEnd = addMinutes(makeDateTime(season.playoffsDate, season.playoffsWindowEnd, season.timezone), 40);
   if (score >= season.qualificationPoints && now >= playoffsStart && now <= playoffsEnd && placement?.status !== 'champions') {
-    return { kind: 'playoffs_live', title: 'PLAY-OFFS EM DIRETO', detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}` };
+    return { kind: 'playoffs_live', title: 'JANELA DE PLAY-OFFS', detail: `${formatDate(season.playoffsDate)} · ${season.playoffsWindowStart}-${season.playoffsWindowEnd}` };
   }
 
   const liveRegular = getAllPlayDays(season).find(({ day }) => {
@@ -132,7 +132,7 @@ export function calculatePublicMatchDayState(season: PremierSeason, now = new Da
   if (liveRegular) {
     return {
       kind: 'match_day_live',
-      title: 'MATCH DAY EM DIRETO',
+      title: 'JANELA PREMIER ABERTA',
       week: liveRegular.week,
       day: liveRegular.day,
       detail: `Premier · ${liveRegular.week.map ?? 'Mapa por definir'}`,

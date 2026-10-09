@@ -24,6 +24,7 @@ try {
       tsc,
       '--ignoreConfig',
       'src/lib/premier.ts',
+      'src/lib/matchday.ts',
       'src/lib/premier-calendar.ts',
       'src/data/season.ts',
       'src/lib/validate-data.ts',
@@ -48,6 +49,7 @@ try {
   const require = createRequire(import.meta.url);
   const premier = require(join(output, 'lib', 'premier.js'));
   const { buildPremierCalendar } = require(join(output, 'lib', 'premier-calendar.js'));
+  const { resolveMatchday } = require(join(output, 'lib', 'matchday.js'));
   const { activePremierSeason } = require(join(output, 'data', 'season.js'));
   const { players } = require(join(output, 'data', 'players.js'));
   const { validateStaticData } = require(join(output, 'lib', 'validate-data.js'));
@@ -202,7 +204,28 @@ try {
   assert.equal(premier.calculatePlayoffPlacement([playoffWins[0], { ...playoffWins[1], outcome: 'cancelled' }, playoffWins[2]]).status,
     'playoffs_active', 'a cancelled semifinal cannot create a championship');
 
-  console.log('Premier logic tests passed.');
+  const before = new Date('2026-06-30T16:59:00Z');
+  assert.equal(resolveMatchday(activePremierSeason, before).phase, 'upcoming');
+  assert.equal(resolveMatchday(activePremierSeason, before).countdown, '0h 01m');
+  assert.equal(resolveMatchday(activePremierSeason, new Date('2026-06-30T17:00:00Z')).phase, 'window');
+  assert.equal(resolveMatchday(activePremierSeason, new Date('2026-06-30T18:01:00Z')).phase, 'pending');
+  assert.equal(resolveMatchday(activePremierSeason, new Date('2026-07-01T00:01:00Z')), null);
+  assert.equal(resolveMatchday(activePremierSeason, stamp), null);
+  assert.equal(resolveMatchday(activePremierSeason, stamp, 'invalid'), null);
+  const archive = resolveMatchday(activePremierSeason, stamp, 'week-2-day-1');
+  assert.equal(archive.archive, true);
+  assert.equal(archive.phase, 'result');
+  assert.equal(archive.result.shushScore, 10);
+  assert.deepEqual(archive.week.convocados, ['dstx', 'more', 'th0maz7', 'catty', 'levi']);
+  assert.equal(resolveMatchday(activePremierSeason, new Date('2026-06-12T15:00:00Z')).result, undefined, 'do not reveal a future result before its window');
+  const cancelledSeason = structuredClone(activePremierSeason);
+  cancelledSeason.results.push({id: 'cancel-test', date: '2026-06-30', tournamentName: 'Premier', phase: 'regular', map: 'Bind', outcome: 'cancelled'});
+  assert.equal(resolveMatchday(cancelledSeason, before).phase, 'cancelled');
+  for (const timezone of ['UTC', 'America/Sao_Paulo', 'Asia/Tokyo']) {
+    process.env.TZ = timezone;
+    assert.equal(resolveMatchday(activePremierSeason, before).countdown, '0h 01m');
+  }
+  console.log('Premier and Matchday logic tests passed.');
 } finally {
   if (originalTimezone === undefined) delete process.env.TZ;
   else process.env.TZ = originalTimezone;

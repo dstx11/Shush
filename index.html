@@ -21,6 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/loading.css" />
     <link rel="icon" type="image/png" href="/assets/brand/favicon.png" />
     <link rel="canonical" href="https://shush.pt" />
     <link rel="preload" as="image" href="/assets/jersey/frontjersey.webp" type="image/webp" fetchpriority="high" />
@@ -29,7 +30,8 @@
     <title>SHUSH — Sem barulho. Só rounds.</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><main class="shush-loading" aria-label="A carregar SHUSH"><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="SHUSH" /><strong>O silêncio antes do round.</strong><span class="loading-line" aria-hidden="true"></span><p role="status">A preparar o lobby.</p><a href="">Recarregar página</a></main></div>
+    <noscript><p style="padding:2rem;color:#f3eff8;font-family:system-ui">Ativa o JavaScript para explorar a equipa, os jogos e personalizar a camisola SHUSH.</p></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

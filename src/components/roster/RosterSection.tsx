@@ -38,11 +38,11 @@ export function RosterSection() {
   const selectPrevious = () => selectPlayer((selectedIndex - 1 + players.length) % players.length);
 
   return (
-    <section id="roster" className="player-page" aria-labelledby="roster-title">
+    <section id="roster" className="player-page" data-player={selectedPlayer.id} aria-labelledby="roster-title">
       <div className="shell">
         <div className="page-heading player-heading">
           <div>
-            <span className="section-kicker">Valorant / Roster</span>
+            <span className="section-kicker">Character Select 2.0 / Valorant</span>
             <h1 id="roster-title">Player<br /><span>Select.</span></h1>
           </div>
           <p>{players.length} jogadores. Uma identidade.<br />Conhece a equipa e acompanha os seus perfis competitivos.</p>
@@ -76,6 +76,7 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" key={selectedPlayer.id} className="character-spotlight character-swap" aria-labelledby="selected-player-name">
             <div className="character-media">
+              <span className="character-codename" aria-hidden="true">{selectedPlayer.displayName}</span>
               <span className="character-index" aria-hidden="true">{selectedPlayer.number}</span>
               <span className="player-image-label mono">SHUSH / Valorant</span>
               {selectedPlayer.avatar ? (
@@ -89,7 +90,7 @@ export function RosterSection() {
             </div>
 
             <div className="character-copy">
-              <span className="section-kicker">Valorant / {selectedPlayer.focus}</span>
+              <span className="section-kicker">SHUSH / Perfil {selectedPlayer.number}</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
               <p>{selectedPlayer.quote}</p>
 
@@ -98,6 +99,8 @@ export function RosterSection() {
               </div>
 
               {competitiveProfile ? (
+                <>
+                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div><div><dt>Estilo publicado</dt><dd>{selectedPlayer.focus}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl>{!selectedPlayer.agents?.length && !selectedPlayer.sensitivity && !selectedPlayer.equipment ? <p>Agentes favoritos, sensibilidade e equipamento ainda não publicados.</p> : null}</details>
                 <div className="competitive-profile">
                   <span className="section-kicker">Tracker.gg / Perfil competitivo</span>
                   <dl className="competitive-identity">
@@ -115,6 +118,7 @@ export function RosterSection() {
                   <PlayerActions key={selectedPlayer.id} playerId={selectedPlayer.id} playerName={selectedPlayer.displayName} riotId={competitiveProfile.riotId} />
                   <p className="competitive-note">Rank, estatísticas e histórico no Tracker.gg. A disponibilidade depende da privacidade da conta.</p>
                 </div>
+                </>
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
 
               {selectedPlayer.creatorUrl ? (
@@ -126,7 +130,7 @@ export function RosterSection() {
             </div>
           </article>
 
-          <div className="character-controls">
+          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')} · {selectedPlayer.displayName}</span>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
               <span aria-hidden="true">←</span>
             </button>

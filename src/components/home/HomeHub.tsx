@@ -10,6 +10,7 @@ export function HomeHub() {
   const state = calculatePublicMatchDayState(season, usePremierClock());
   const score = calculatePremierScore(season);
   const last = season.results[season.results.length - 1];
+  const lastDay = season.weeks.flatMap(week => week.selectedDays.map(day => ({ week, day }))).find(item => last && item.day.date === last.date && item.week.map === last.map);
   return (
     <div className="home-editorial">
       <section className="home-roster" aria-labelledby="home-roster-title">
@@ -28,7 +29,7 @@ export function HomeHub() {
       </section>
       <section id="match-day" className="home-competition" aria-labelledby="home-premier-title">
         <div className="shell home-archive">
-          <div className="archive-intro"><span className="section-kicker">03 / Premier · Junho — Julho 2026</span><h2 id="home-premier-title">Os rounds<br />ficam no registo.</h2><p className="body-copy">{state.detail}</p><Button href="/esports/valorant/premier" variant="secondary">Abrir Match Center</Button></div>
+          <div className="archive-intro"><span className="section-kicker">03 / Premier · Junho — Julho 2026</span><h2 id="home-premier-title">Os rounds<br />ficam no registo.</h2><p className="body-copy">{state.detail}</p><Button href="/esports/valorant/premier" variant="secondary">Abrir Match Center</Button>{lastDay ? <AppLink className="editorial-link" href={`/?matchday=${lastDay.day.id}#top`}>Rever Matchday · {lastDay.week.map} ↗</AppLink> : null}</div>
           <div className="archive-record"><div className="home-score"><span className="mono">Pontuação publicada · {season.name}</span><strong>{score}<small> / {season.qualificationPoints}</small></strong><span className="state-label">{state.title}</span></div>{last ? <div className="home-result"><span className="mono">Último resultado publicado</span><time dateTime={last.date}>{formatDate(last.date)} / {last.map}</time><strong>SHUSH <span>{last.shushScore} : {last.opponentScore}</span></strong><small>Adversário não publicado</small></div> : null}</div>
         </div>
       </section>

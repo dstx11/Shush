@@ -21,3 +21,13 @@ The Home roster now exposes previous/next controls and a visible-card range when
 The real jersey can be opened from Home or Drop in a native modal gallery. Visitors can switch front/back, enlarge the image for details, pan with touch or keyboard, close with Escape and return to the original control. Personalized names, numbers and phrases remain visible in the Drop gallery. Editing those fields automatically selects the back view. The Home image now keeps the same unrotated framing with or without motion preferences.
 
 Browser coverage exercises roster endpoints, gallery zoom/panning, modal focus containment/restoration, enlarged-gallery accessibility and preservation of the personalized request. Native modal behavior follows the [HTML dialog guidance](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog).
+
+## Esports experience — first delivery
+
+MATCHDAY now replaces the Home hero on a published playing date in the season timezone. The countdown targets the registration window; it does not claim that a match or stream is live. It changes to the window state and then to a pending result. Published cancellations take priority. Real score records and highlight links appear only when available. An explicit matchday query opens the real historical lineup and record; Home offers an archive link derived from the latest recorded result. The regular Home remains accessible during matchday.
+
+Character Select 2.0 gives every player a separate colour direction, a portrait reveal, a name treatment and expandable Player DNA. Roles/style use the existing roster data. Optional agents, sensitivity and equipment fields can be supplied in `players.ts`; none has been invented. Missing photos still use initials.
+
+The boot document and React route fallback share a small branded loading stylesheet. There is no minimum display time or artificial percentage. Reduced motion disables the sweep/reveal. A static reload link and no-JavaScript explanation cover the boot document.
+
+The remaining ideas are not presented as delivered: REPLAY and MAP ROOM need real clips and tactical material; ROAD TO THE TOP needs dated milestones; LIVE WALL needs verified live/video data; community voting needs an agreed persistent data service. Jersey image export, SHUSH ID and BROADCAST remain separate implementation steps. The current static site does not collect accounts, votes or predictions.

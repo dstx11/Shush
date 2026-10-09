@@ -14,6 +14,7 @@ import './styles/drop.css';
 import './styles/gallery.css';
 import './styles/about.css';
 import './styles/footer.css';
+import './styles/experience.css';
 
 const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
 

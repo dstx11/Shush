@@ -11,6 +11,9 @@ export type Player = {
   creatorUrl?: string;
   quote: string;
   focus: string;
+  agents?: string[];
+  sensitivity?: string;
+  equipment?: string;
 };
 
 export const players: Player[] = [
