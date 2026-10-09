@@ -17,7 +17,7 @@ test('Matchday: published archive, real call-up links and a usable return to Hom
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('matchday.png'), fullPage: false });
   await match.getByRole('link', { name: 'Explorar a Home' }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Sem barulho. Só rounds.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Sem barulho. Só rounds.', { useInnerText: true });
 });
 
 test('Matchday: automatic home countdown moves into the window and pending result', async ({ page }) => {
@@ -47,7 +47,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.player-dna')).not.toHaveAttribute('open');
 });
 
-test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page }, testInfo) => {
+test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page, browserName }, testInfo) => {
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
   let releaseEntry!: () => void;
@@ -60,7 +60,9 @@ test('Loading: branded route fallback is removed as soon as the route is ready',
   await expect(page.getByRole('link', { name: 'Recarregar página' })).toHaveCount(0);
   await expect(page.locator('.shush-loading')).toBeVisible();
   await expect(page.getByText('O silêncio antes do round.')).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath('loading.png') });
+  // WebKit waits for document load before capture; the intentionally held module prevents it.
+  // Keep the loading assertions above and release/removal assertions below on every engine.
+  if (browserName !== 'webkit') await page.screenshot({ path: testInfo.outputPath('loading.png') });
   release();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.shush-loading')).toHaveCount(0);
