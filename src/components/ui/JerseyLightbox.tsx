@@ -43,6 +43,18 @@ export function JerseyLightbox({ view, onViewChange, onClose, children }: {
       if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
     }}
     onKeyDown={(event) => {
+      if (event.key === 'Tab') {
+        const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), [tabindex="0"]'));
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         // The image region keeps the arrow keys for panning when enlarged.
         if (zoomed && event.target === stage.current) return;
