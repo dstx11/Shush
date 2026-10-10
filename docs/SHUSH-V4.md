@@ -30,3 +30,9 @@ Visual review, browser matrix and branch deployment are pending until the implem
 - Inspected actual CI screenshots for Home, roster, Premier, About, Creators and Drop, including the narrowest viewport. Home mobile and About desktop/mobile references approved from run 172.
 - Roster reference capture needed repair: iterating lazy portraits scrolled the selector away from the selected player, and a tall element capture composited the fixed header over the portrait. The revised test restores the selected card and captures the full page, preserving actual header placement. Its new captures must be inspected before acceptance.
 - Local browser execution is unavailable because the installed Playwright browser binary is absent. CI supplies the browsers. Direct cloud-browser preview inspection was denied by automatic approval review because the account usage limit was reached; no alternative browser control was attempted. CI screenshots and native Cloudflare deployment checks remain the evidence sources.
+
+## Final capture approval
+
+CI run 173: 264 passes, 21 intentional skips, and only the three remaining expected image-reference differences. The revised full-page roster captures were inspected at 390 and 1366 px: selected More card visible, correct teal identity, no fixed-header compositing, complete profile and footer. The desktop Home capture was also inspected after the verified-match header update. These three actual images are now the approved references. No visual threshold was relaxed and no test was disabled. The final workflow on the baseline commit must pass before the PR is marked ready.
+
+Known content limits: More has no supplied photograph and deliberately uses initials; optional equipment, sensitivity and favourite-agent fields are omitted until supplied. Match data is a dated manual snapshot, not live statistics. Production has not been merged or changed by V4.
