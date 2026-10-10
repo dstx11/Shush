@@ -110,10 +110,9 @@ export function RosterSection() {
                     </div>
                     <div>
                       <dt>Modo</dt>
-                      <dd>{competitiveProfile.playlist === 'premier' ? 'Premier' : 'Competitive'}</dd>
+                      <dd>Competitive</dd>
                     </div>
                   </dl>
-                  {competitiveProfile.seasonId ? <p className="competitive-period">Ligação à temporada selecionada no perfil, não à temporada atual.</p> : null}
                   <TrackerButton href={competitiveProfile.trackerUrl} playerName={selectedPlayer.displayName} />
                   <PlayerActions key={selectedPlayer.id} playerId={selectedPlayer.id} playerName={selectedPlayer.displayName} riotId={competitiveProfile.riotId} />
                   <p className="competitive-note">Rank, estatísticas e histórico no Tracker.gg. A disponibilidade depende da privacidade da conta.</p>
