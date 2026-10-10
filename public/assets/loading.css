@@ -1,11 +1,27 @@
-/* Available before JavaScript and shared by route loading. */
+/* First paint and lazy routes use the same emblem. No timer delays readiness. */
 html, body { margin: 0; background: #15131a; }
-.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; box-sizing: border-box; color: #f3eef4; background: radial-gradient(ellipse at center, #302637, #15131a 68%); text-align: center; font-family: Manrope, system-ui, sans-serif; }
-.shush-loading img { width: 10rem; height: auto; }
-.shush-loading p { margin: 0; color: #b9b0c3; font-size: .875rem; letter-spacing: .035em; }
-.shush-loading strong { font-size: clamp(1.5rem, 5vw, 2.5rem); letter-spacing: -.035em; }
-.loading-line { display: block; width: 10rem; height: 3px; border-radius: 1rem; background: #49315e; overflow: hidden; }
-.loading-line::after { content: ''; display: block; width: 45%; height: 100%; background: #c4afe9; animation: loading-scan 1.4s ease-in-out infinite alternate; }
+.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; box-sizing: border-box; color: #f3eef4; background: #15131a; text-align: center; font-family: Manrope, system-ui, sans-serif; }
+.loading-emblem { position: relative; display: grid; place-items: center; width: clamp(12rem, 45vw, 18rem); aspect-ratio: 1; isolation: isolate; }
+.loading-emblem::before, .loading-emblem::after { content: ''; position: absolute; inset: 12%; border: 1px solid #493e55; border-radius: 28%; transform: rotate(45deg); }
+.loading-emblem::after { inset: 25%; border-color: #c4afe966; }
+.shush-loading img { width: 68%; height: auto; z-index: 1; }
+.loading-orbit { position: absolute; inset: 0; border: 1px solid #302b38; border-radius: 50%; }
+.loading-orbit::before, .loading-orbit::after { content: ''; position: absolute; width: .5rem; height: .5rem; border-radius: 50%; background: #c4afe9; left: calc(50% - .25rem); top: -.25rem; }
+.loading-orbit::after { top: auto; bottom: -.25rem; }
+.loading-shutter { position: absolute; z-index: 2; inset: 0; background: #15131a; transform: scaleX(0); transform-origin: right; }
+.shush-loading p { margin: 0; color: #b9b0c3; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
+.shush-loading strong { max-width: 18ch; font-size: clamp(1.4rem, 5vw, 2.2rem); line-height: 1.25; letter-spacing: -.04em; }
+.loading-line { display: flex; width: 3rem; height: .5rem; gap: .25rem; }
+.loading-line::before, .loading-line::after { content: ''; flex: 1; background: #c4afe9; border-radius: 2px; }
 .shush-loading a { color: #b9b0c3; font-size: .75rem; padding: .75rem; }
-@keyframes loading-scan { from { transform: translateX(-100%); } to { transform: translateX(220%); } }
-@media (prefers-reduced-motion: reduce) { .loading-line::after { animation: none; width: 100%; } }
+@media (prefers-reduced-motion: no-preference) {
+ .loading-orbit { animation: loading-turn 4s linear infinite; }
+ .loading-emblem::before { animation: loading-fold 2s ease-in-out infinite alternate; }
+ .loading-shutter { animation: loading-unveil .7s cubic-bezier(.16,1,.3,1) both; }
+ .loading-line::before { animation: loading-pulse .7s ease-in-out infinite alternate; }
+ .loading-line::after { animation: loading-pulse .7s .35s ease-in-out infinite alternate; }
+ @keyframes loading-turn { to { transform: rotate(360deg); } }
+ @keyframes loading-fold { to { transform: rotate(135deg) scale(.85); opacity: .5; } }
+ @keyframes loading-unveil { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+ @keyframes loading-pulse { to { opacity: .25; transform: scaleY(.4); } }
+}

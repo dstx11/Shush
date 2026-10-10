@@ -118,7 +118,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await open.click();
   await page.locator('#mobile-navigation').getByRole('link', { name: 'Roster', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Escolhe o teuponto de vista.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Roster / 07');
   await expect(page.locator('#main-content')).toBeFocused();
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });

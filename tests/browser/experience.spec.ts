@@ -94,3 +94,39 @@ test('Home leads with real players and sourced results, while the jersey belongs
   await expect(page.locator('.verified-match').first()).toContainText('Haven');
   await expect(page.locator('.verified-match-source').first()).toContainText('10');
 });
+
+test('Character Select: swipe intent, cancellation and player jersey link', async ({ page }) => {
+  await page.goto('/esports/valorant/roster?player=lyel&origin=community');
+  const media = page.locator('.character-media');
+  // Vertical browsing and cancelled gestures must not select another player.
+  await media.dispatchEvent('pointerdown', { pointerType: 'touch', clientX: 200, clientY: 100 });
+  await media.dispatchEvent('pointerup', { pointerType: 'touch', clientX: 180, clientY: 240 });
+  await expect(page.locator('#selected-player-name')).toHaveText('lyel');
+  await media.dispatchEvent('pointerdown', { pointerType: 'touch', clientX: 200, clientY: 100 });
+  await media.dispatchEvent('pointercancel');
+  await media.dispatchEvent('pointerup', { pointerType: 'touch', clientX: 50, clientY: 100 });
+  await expect(page.locator('#selected-player-name')).toHaveText('lyel');
+  await media.dispatchEvent('pointerdown', { pointerType: 'touch', clientX: 200, clientY: 100 });
+  await media.dispatchEvent('pointerup', { pointerType: 'touch', clientX: 90, clientY: 110 });
+  await expect(page.locator('#selected-player-name')).toHaveText('tz');
+  expect(new URL(page.url()).searchParams.get('origin')).toBe('community');
+  await page.getByRole('link', { name: 'Ver camisola tz' }).click();
+  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('tz');
+  await expect(page.getByLabel('Número', { exact: true })).toHaveValue('05');
+  await expect(page.getByLabel('Pré-visualização: tz 05')).toBeVisible();
+});
+
+test('Motion: portrait arrival completes and reduced motion can be enabled at runtime', async ({ page }, testInfo) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/esports/valorant/roster?player=catty');
+  const portrait = page.locator('.character-media > img');
+  await expect(portrait).toHaveCSS('animation-name', 'portrait-arrive');
+  await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
+  await expect(portrait).toHaveCSS('opacity', '1');
+  await page.screenshot({ path: testInfo.outputPath('roster-motion-settled.png'), fullPage: true });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(portrait).toHaveCSS('animation-name', 'none');
+  await page.getByRole('button', { name: 'Jogador seguinte' }).click();
+  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await expect(portrait).toHaveCSS('animation-name', 'none');
+});

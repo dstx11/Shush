@@ -66,10 +66,10 @@ export default function App() {
 function RouteFallback() {
   return (
     <div className="shush-loading" role="status" aria-live="polite">
-      <img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="SHUSH" />
+      <div className="loading-emblem"><span className="loading-orbit" aria-hidden="true" /><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="SHUSH" /><span className="loading-shutter" aria-hidden="true" /></div>
       <strong>O silêncio antes do round.</strong>
       <span className="loading-line" aria-hidden="true" />
-      <p>A preparar o lobby.</p>
+      <p>A carregar SHUSH<span aria-hidden="true">…</span></p>
     </div>
   );
 }

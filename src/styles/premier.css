@@ -1,6 +1,6 @@
 /* Competition reads as a match record, not a generic dashboard. */
 .match-page { padding-block: var(--page-top) var(--section-space); }
-.match-heading { display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 4rem; }
+.match-heading { display: grid; grid-template-columns: 1fr; align-items: center; gap: 4rem; }
 .match-heading h1 { margin-top: 1rem; font: 600 var(--title-size)/1.15 var(--font-heading); letter-spacing: -.035em; }
 .match-heading h1 > span { color: var(--signal); }
 .match-body { display: grid; grid-template-columns: 1.2fr .8fr; gap: 3rem; padding-top: 4rem; }
@@ -69,9 +69,6 @@
 @media (prefers-reduced-motion: reduce) { .week-detail { animation: none; } .week-expand { transition: none; } }
 /* Sourced match reports are independent of the internal calendar archive. */
 .match-heading { margin-bottom: 4rem; }
-.match-editor-note { padding: 2rem 0 2rem 2rem; border-left: 1px solid var(--line); }
-.match-editor-note p { margin-top: 1.5rem; color: var(--muted); font: 500 clamp(1.2rem, 2vw, 1.9rem)/1.65 var(--font-heading); letter-spacing: -.025em; }
-.match-editor-note strong { color: var(--signal); font-weight: 500; }
 #verified-results { scroll-margin-top: 7rem; }
 #verified-title { font: 500 1.2rem var(--font-heading); }
 .verified-match-list { display: grid; gap: 1rem; }
@@ -98,9 +95,7 @@
 .legacy-archive .match-body { padding-top: 2rem; }
 @media (max-width: 767px) {
  .match-heading { margin-bottom: 2.5rem; }
- .match-editor-note { padding: 1.25rem 0 0; border-left: 0; border-top: 1px solid var(--line); }
- .match-editor-note p { margin-top: .75rem; font-size: 1.15rem; }
- .verified-match { padding: 1rem; }
+   .verified-match { padding: 1rem; }
  .verified-match-meta { font-size: .65rem; gap: .5rem .7rem; }
  .verified-match-score { grid-template-columns: 1fr auto; gap: .75rem; padding-block: 1.25rem; }
  .verified-match-score > strong:last-child { grid-column: 1; grid-row: 2; text-align: left; color: var(--muted); font-size: 1rem; }

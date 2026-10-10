@@ -17,7 +17,6 @@
 .platform-label { display: inline-flex; align-items: center; gap: .65rem; font: .8rem var(--font-mono); color: var(--signal); }
 .platform-label > span { font-size: 1.5rem; }
 .creator-feature-copy h2 { font: 600 var(--section-size)/1.15 var(--font-heading); letter-spacing: -.035em; overflow-wrap: anywhere; }
-.creator-quote { color: var(--muted); font-size: 1rem; line-height: 1.8; }
 .creator-player-context { width: 100%; border-top: 1px solid var(--line); padding-top: 1rem; }
 .creator-player-context .mono { color: var(--muted); }
 .creator-player-context p { font-size: .875rem; margin-top: .4rem; }
@@ -28,8 +27,6 @@
 .creator-feature.is-youtube .site-button { background: #ddbac7; border-color: #ddbac7; }
 .creator-feature.is-youtube .site-button:hover { background: #eed3dc; }
 .creator-feature.is-youtube .platform-label { color: #ddbac7; }
-.creator-closing { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem; padding-top: 2.5rem; margin-top: 2.5rem; border-top: 1px solid var(--line); }
-.creator-closing p { font: 600 clamp(1.7rem, 3vw, 3rem)/1.1 var(--font-heading); letter-spacing: -.035em; }
 @media (max-width: 767px) {
  .creator-page { padding-top: var(--page-top); }
  .creator-features, .creator-feature { grid-template-columns: 1fr; }
@@ -38,6 +35,5 @@
  .creator-feature-meta { flex-wrap: wrap; gap: .5rem; }
  .creator-feature-copy { padding: 1.5rem; }
  .creator-feature-copy h2 { font-size: var(--section-size); }
- .creator-closing { display: grid; gap: 1rem; }
-}
+ }
 @media (prefers-reduced-motion: reduce) { .creator-art img { transition: none; } }

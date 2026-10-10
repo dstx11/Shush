@@ -2,8 +2,6 @@
 .shush-footer { border-top: 1px solid var(--line); background: var(--surface); padding: 3rem 0 max(1.5rem, env(safe-area-inset-bottom)); }
 .footer-signature { display: flex; justify-content: space-between; align-items: start; gap: 2rem; padding-bottom: 2.5rem; }
 .footer-signature .brand-mark { min-height: 2.75rem; }
-.footer-signature p { font: 600 var(--section-size)/1.16 var(--font-heading); letter-spacing: -.035em; }
-.footer-signature p span { color: var(--signal); }
 .footer-navigation { display: grid; grid-template-columns: 1.5fr .7fr .7fr; gap: 3rem; padding-block: 1.5rem; border-block: 1px solid var(--line); }
 .footer-navigation .mono { display: block; margin-bottom: .7rem; font-size: .875rem; }
 .footer-site-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: .1rem 1.5rem; }
@@ -16,9 +14,8 @@
 .footer-colophon a { color: var(--paper); display: inline-flex; min-height: 2.75rem; align-items: center; gap: 1rem; text-decoration: none; }
 @media (max-width: 767px) {
   .shush-footer { padding-top: 2rem; }
-  .footer-signature { display: grid; gap: 1.25rem; padding-bottom: 2rem; }
-  .footer-signature p { font-size: var(--section-size); }
-  .footer-navigation { grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
+  .footer-signature { display: flex; gap: 1.25rem; padding-bottom: 2rem; }
+    .footer-navigation { grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; }
   .footer-navigation > nav { grid-column: 1 / -1; }
   .footer-site-links { grid-template-columns: repeat(2, 1fr); gap: .25rem 1.5rem; }
   .footer-navigation a { font-size: .78rem; }
