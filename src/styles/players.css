@@ -78,7 +78,7 @@
  .character-number { display: none; }
  .character-strip { grid-template-columns: repeat(7, 7rem); overflow-x: auto; scroll-snap-type: x proximity; }
  .player-select-card { scroll-snap-align: center; }
- .character-media { height: 30rem; }
+ .character-media { height: 30rem; width: calc(100% - 2rem); margin-inline: 1rem; }
  .competitive-identity { grid-template-columns: 1fr; }
 }
 @media (max-width: 767px) {
