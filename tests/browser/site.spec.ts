@@ -15,6 +15,7 @@ for (const [name, path] of routes) {
     await page.evaluate(() => document.fonts.ready);
     // Hidden lazy images belong to disclosures; exercise those UI states first.
     if (name === 'premier') {
+      await page.locator('.legacy-archive > summary').click();
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     // Render lazy images before recording the full-page visual evidence.
@@ -83,19 +84,19 @@ test('roster: seven confirmed accounts, selection, sharing and Unicode', async (
     await expect(selectors.nth(index)).toHaveAttribute('aria-pressed', 'true');
     await expect(page.locator('#selected-player-name')).toHaveText(name);
     await expect(page.locator('.competitive-identity')).toContainText(riotId);
-    const link = page.locator('#selected-player').getByRole('link', { name: `Consultar ${name} no Tracker.gg (abre numa nova janela)`, exact: true });
+    const link = page.locator('.competitive-profile').getByRole('link', { name: `Consultar ${name} no Tracker.gg (abre numa nova janela)`, exact: true });
     await expect(link).toHaveAttribute('href', cardUrl.href);
     const url = new URL((await link.getAttribute('href'))!);
     expect(url.origin).toBe('https://tracker.gg');
     expect(decodeURIComponent(url.pathname.split('/')[4])).toBe(riotId);
-    expect(url.searchParams.get('playlist')).toBe(id === 'dstx' ? 'competitive' : 'premier');
-    expect(url.searchParams.get('season')).toBe(id === 'dstx' ? '8102cd81-43a0-d0d7-bd59-47b8fe9bed1b' : null);
+    expect(url.searchParams.get('playlist')).toBe('competitive');
+    expect(url.searchParams.get('season')).toBeNull();
     await expect(link).toHaveAttribute('target', '_blank');
     await expect(link).toHaveAttribute('rel', /noopener/);
   }
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('dstx');
-  await expect(page.getByText('Ligação à temporada selecionada no perfil, não à temporada atual.')).toBeVisible();
+  await expect(page.locator('.competitive-identity')).toContainText('Competitive');
   await page.getByRole('button', { name: 'Jogador anterior' }).press('Enter');
   await expect(page.locator('#selected-player-name')).toHaveText('Levi');
   await page.reload();
@@ -117,7 +118,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await open.click();
   await page.locator('#mobile-navigation').getByRole('link', { name: 'Roster', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('PlayerSelect.');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Escolhe o teuponto de vista.');
   await expect(page.locator('#main-content')).toBeFocused();
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
@@ -209,7 +210,10 @@ test('mobile menu contains keyboard focus and player selector stays compact', as
 
 test('Premier: filters, real call-ups, missing states and calendar download', async ({ page }) => {
   await page.goto('/esports/valorant/premier');
-  await expect(page.getByText('Jun — Jul')).toBeVisible();
+  await expect(page.locator('.verified-match')).toHaveCount(5);
+  await expect(page.locator('.verified-match').first()).toContainText('EnLitro');
+  await expect(page.locator('meter')).toHaveCount(0);
+  await page.locator('.legacy-archive > summary').click();
   await expect(page.locator('.match-week')).toHaveCount(7);
   const first = page.locator('.match-week').first();
   await first.locator('summary').press('Enter');

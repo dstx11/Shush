@@ -16,7 +16,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   '/': defaultMetadata,
   '/esports/valorant/premier': {
     title: 'Premier — SHUSH',
-    description: 'Match Center da SHUSH com estado da fase, pontuação, calendário e resultados publicados.',
+    description: 'Partidas Premier da SHUSH com adversários, mapas e resultados verificados. Fontes e data de verificação em cada registo.',
   },
   '/esports/valorant/roster': {
     title: 'Roster — SHUSH',
@@ -33,6 +33,6 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   },
   '/company': {
     title: 'About — SHUSH',
-    description: 'A SHUSH: Valorant Premier, creators, Drop 01 e identidade própria.',
+    description: 'A história da SHUSH: um grupo de amigos, a vontade de competir e uma identidade construída em conjunto.',
   },
 };

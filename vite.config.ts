@@ -74,19 +74,11 @@ function staticRouteMetadata(): Plugin {
         html = setMeta(html, 'name', 'twitter:image', image);
         html = setMeta(html, 'name', 'twitter:image:alt', metadata.title);
 
-        if (route !== '/products/jersey') {
-          html = html.replace(
-            /\s*<link rel="preload" as="image" href="\/assets\/jersey\/frontjersey\.webp"[^>]*\/>/,
-            '',
-          );
-        }
-
-        if (route === '/esports/valorant/roster') {
-          html = html.replace(
-            '</head>',
-            '    <link rel="preload" as="image" href="/assets/avatars/delcio.webp" type="image/webp" fetchpriority="high" />\n  </head>',
-          );
-        }
+        // The Home preloads its central player. Other routes preload only their own hero.
+        html = html.replace(/\s*<link rel="preload" as="image"[^>]*\/>/, '');
+        const hero = route === '/products/jersey' ? '/assets/jersey/frontjersey.webp'
+          : route === '/esports/valorant/roster' ? '/assets/avatars/delcio.webp' : null;
+        if (hero) html = html.replace('</head>', `    <link rel="preload" as="image" href="${hero}" type="image/webp" fetchpriority="high" />\n  </head>`);
 
         this.emitFile({
           type: 'asset',

@@ -37,7 +37,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'lyel');
   await page.getByText('Player DNA', { exact: false }).click();
   await expect(page.locator('.player-dna')).toContainText('Iniciador / Flex');
-  await expect(page.locator('.player-dna')).toContainText('ainda não publicados');
+  await expect(page.locator('.player-dna')).toContainText('Ritmo');
   await expect(page.locator('.character-media > img')).toHaveCSS('animation-name', 'none');
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   expect(axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
@@ -66,4 +66,31 @@ test('Loading: branded route fallback is removed as soon as the route is ready',
   release();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.shush-loading')).toHaveCount(0);
+});
+
+
+test('Character Select: arrow keys, Home/End, stable focus and preserved query parameters', async ({ page }) => {
+  await page.goto('/esports/valorant/roster?player=dstx&origin=community');
+  const buttons = page.getByRole('group', { name: 'Selecionar jogador' }).getByRole('button');
+  await buttons.first().press('ArrowLeft');
+  await expect(buttons.last()).toBeFocused();
+  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await buttons.last().press('Home');
+  await expect(buttons.first()).toBeFocused();
+  await buttons.first().press('ArrowRight');
+  await expect(page.locator('#selected-player-name')).toHaveText('More');
+  await buttons.nth(1).press('End');
+  await expect(buttons.last()).toBeFocused();
+  expect(new URL(page.url()).searchParams.get('origin')).toBe('community');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
+test('Home leads with real players and sourced results, while the jersey belongs to Drop', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.team-cover-player')).toHaveCount(3);
+  await expect(page.locator('.opening img[src*="jersey"]')).toHaveCount(0);
+  await expect(page.locator('.verified-match')).toHaveCount(3);
+  await expect(page.locator('.verified-match').first()).toContainText('EnLitro');
+  await expect(page.locator('.verified-match').first()).toContainText('Haven');
+  await expect(page.locator('.verified-match-source').first()).toContainText('10');
 });

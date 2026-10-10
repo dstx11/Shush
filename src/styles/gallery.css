@@ -1,6 +1,5 @@
 /* Native modal gallery: real assets, bounded zoom, keyboard and touch. */
 .jersey-zoom-surface { display: block; position: relative; width: 100%; padding: 0; border: 0; border-radius: var(--radius-md); background: transparent; color: #fff; cursor: zoom-in; }
-.opening-jersey .jersey-zoom-surface { height: 100%; }
 .jersey-zoom-label { position: absolute; z-index: 2; right: .75rem; bottom: .75rem; display: inline-flex; align-items: center; gap: .65rem; min-height: 2.75rem; border: 1px solid var(--control-line); border-radius: var(--radius-sm); padding: .6rem .8rem; background: #130d1ced; color: var(--text); font: 600 .75rem var(--font-ui); pointer-events: none; }
 .jersey-zoom-surface:hover .jersey-zoom-label { background: var(--surface-2); border-color: var(--signal); }
 .drop-gallery-image-button { margin-inline: auto; }

@@ -18,7 +18,7 @@
 .customizer-heading p { color: var(--muted); font-size: .8rem; line-height: 1.7; }
 .customizer-fields { display: grid; grid-template-columns: 1fr .45fr; gap: 1.25rem 1rem; margin-top: 1.75rem; }
 .customizer-fields > label { display: grid; min-width: 0; gap: .5rem; color: var(--paper); font-size: .8rem; }
-.customizer-fields input:not([type='radio']) { min-width: 0; width: 100%; min-height: 3.2rem; border: 1px solid var(--control-line); border-radius: 0; background: var(--bg); padding: .75rem; color: white; font-size: 1rem; }
+.customizer-fields input:not([type='radio']) { min-width: 0; width: 100%; min-height: 3.2rem; border: 1px solid var(--control-line); border-radius: var(--radius-sm); background: var(--field); padding: .75rem; color: white; font-size: 1rem; }
 .customizer-fields input::placeholder { color: #aaa2b5; }
 .customizer-fields small { color: var(--muted); font: .75rem/1.8 var(--font-mono); }
 .size-options, .customizer-wide { grid-column: 1 / -1; }
@@ -27,7 +27,7 @@
 .size-options > div { display: grid; grid-template-columns: repeat(6, 1fr); gap: .35rem; }
 .size-options label { display: block; position: relative; }
 .size-input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
-.size-options label > span { display: grid; place-items: center; min-height: 2.9rem; border: 1px solid var(--control-line); background: var(--bg); font: .8rem var(--font-mono); cursor: pointer; }
+.size-options label > span { border-radius: var(--radius-sm); display: grid; place-items: center; min-height: 2.9rem; border: 1px solid var(--control-line); background: var(--bg); font: .8rem var(--font-mono); cursor: pointer; }
 .size-options input:checked + span { color: #fff; border-color: var(--signal); background: #35214f; }
 .size-options input:focus-visible + span { outline: 2px solid var(--signal); outline-offset: 3px; }
 .size-options small { display: block; margin-top: .5rem; }
