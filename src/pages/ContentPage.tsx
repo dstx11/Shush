@@ -1,37 +1,33 @@
-import { ExternalLink } from 'lucide-react';
-import { SectionBreadcrumb, SignalBars } from '../components/motion/MotionPrimitives';
-import { AppLink } from '../components/ui/AppLink';
-import { Reveal } from '../components/ui/Reveal';
 import { creators } from '../data/players';
+import { AppLink } from '../components/ui/AppLink';
+import { Button } from '../components/ui/Button';
 
 export function ContentPage() {
   return (
-    <section id="content-creators" className="content-page scroll-mt-28 px-5 pb-24 pt-36" aria-labelledby="content-title">
-      <div className="page-shell">
-        <Reveal>
-          <SectionBreadcrumb items={['Content']} />
-          <span className="section-kicker">Content Creators</span>
-          <h1 id="content-title">More e Th0maz7.</h1>
-          <p>Links oficiais dos creators da SHUSH. More na Twitch, Th0maz7 no YouTube.</p>
-        </Reveal>
-
-        <div className="creator-grid">
-          {creators.map((creator, index) => (
-            <Reveal
-              key={creator.id}
-              className="scroll-mt-28"
-              delay={index * 0.08}
-            >
-              <AppLink id={creator.creatorType === 'twitch' ? 'more-twitch' : 'th0maz7-youtube'} href={creator.id === 'more' ? '/content/more' : '/content/th0maz7'} className="creator-card">
-                <SignalBars className={creator.creatorType === 'twitch' ? 'is-twitch' : 'is-youtube'} />
-                <span>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</span>
-                <strong>{creator.displayName}</strong>
-                <small>Abrir canal oficial</small>
-                <ExternalLink aria-hidden="true" className="h-5 w-5" />
-              </AppLink>
-            </Reveal>
-          ))}
+    <section id="content-creators" className="creator-page" aria-labelledby="content-title">
+      <div className="shell">
+        <div className="page-heading creator-heading"><div><span className="section-kicker">SHUSH / Creators</span><h1 id="content-title">Fora do<br /><span>servidor.</span></h1></div><p>More na Twitch. Th0maz7 no YouTube.<br />Do roster para o teu próximo canal.</p></div>
+        <div className="creator-features">
+          {creators.map((creator, index) => {
+            const platform = creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube';
+            return <article key={creator.id} className={`creator-feature is-${creator.creatorType}`} aria-labelledby={`creator-${creator.id}`}>
+              <div className="creator-feature-meta"><span className="mono">0{index + 1} / {platform}</span><span className="mono">SHUSH / Creator + Player</span></div>
+              <div className="creator-art">
+                {creator.avatar ? <img src={creator.avatar} alt={`Avatar de ${creator.displayName}`} width="768" height="768" loading="lazy" decoding="async" /> : <div className="creator-lettering" aria-hidden="true"><span>{creator.initials}</span><span className="lettering-line" /></div>}
+                <span className="creator-number mono" aria-hidden="true">SHS / {creator.number}</span>
+              </div>
+              <div className="creator-feature-copy">
+                <span className="platform-label"><span aria-hidden="true">{creator.creatorType === 'twitch' ? '◧' : '▷'}</span> Canal {platform}</span>
+                <h2 id={`creator-${creator.id}`}>{creator.displayName}</h2>
+                <p className="creator-quote">“{creator.quote}”</p>
+                <div className="creator-player-context"><span className="mono">Também no roster</span><p>{creator.roles.join(' / ')}</p></div>
+                <Button className="creator-channel" href={creator.creatorUrl!} target="_blank" rel="noopener noreferrer">Abrir {platform}</Button>
+                <AppLink className="editorial-link creator-roster" href={`/esports/valorant/roster?player=${creator.id}`}>Conhecer no roster <span aria-hidden="true">↗</span></AppLink>
+              </div>
+            </article>;
+          })}
         </div>
+        <div className="creator-closing"><span className="section-kicker">Dentro + fora</span><p>A mesma camisola.<br />Outro ponto de vista.</p><AppLink className="editorial-link" href="/esports/valorant/roster">Conhecer a equipa <span aria-hidden="true">→</span></AppLink></div>
       </div>
     </section>
   );

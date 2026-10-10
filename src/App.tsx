@@ -1,128 +1,120 @@
-import { useEffect } from 'react';
-import { AnimatePresence, useReducedMotion } from 'motion/react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { AdminUnlockModal } from './components/admin/AdminUnlockModal';
+import { lazy, Suspense, useEffect, useRef } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
-import { ScrollProgressRail } from './components/motion/MotionPrimitives';
-import { InitialLoader } from './components/ui/InitialLoader';
 import { PageTransition } from './components/ui/PageTransition';
-import { QuickNav } from './components/ui/QuickNav';
 import { defaultMetadata, routeMetadata, siteUrl } from './data/meta';
-import { CompanyPage } from './pages/CompanyPage';
-import { ContentPage } from './pages/ContentPage';
-import { EsportsPage } from './pages/EsportsPage';
-import { HomePage } from './pages/HomePage';
-import { NotFoundPage } from './pages/NotFoundPage';
-import { ProductsPage } from './pages/ProductsPage';
 import {
-  CompanyContactPage,
-  CompanyPartnersPage,
-  ContentCreatorPage,
-  EsportsResultsPage,
-  EsportsTournamentsPage,
-  JerseyCustomPage,
-  JerseyPage,
-  PremierPage,
-  RosterPage,
-  ValorantPage,
-} from './pages/RoutePages';
+  loadAboutPage,
+  loadContentPage,
+  loadDropPage,
+  loadHomePage,
+  loadNotFoundPage,
+  loadPremierPage,
+  loadRosterPage,
+} from './lib/routes';
+
+const HomePage = lazy(loadHomePage);
+const PremierPage = lazy(loadPremierPage);
+const RosterPage = lazy(loadRosterPage);
+const ContentPage = lazy(loadContentPage);
+const DropPage = lazy(loadDropPage);
+const AboutPage = lazy(loadAboutPage);
+const NotFoundPage = lazy(loadNotFoundPage);
 
 export default function App() {
   const location = useLocation();
-  const reduceMotion = useReducedMotion();
+  const initialLocationKey = useRef(location.key);
   useRouteMetadata(location.pathname);
-  useRouteScroll(location.pathname, location.hash);
 
   return (
-    <div className={`min-h-screen overflow-x-hidden bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
-      <ScrollProgressRail />
-      <InitialLoader />
+    <div className={`min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
+      <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <Header />
-      <main>
-        <AnimatePresence mode="wait" initial={!reduceMotion}>
-          <PageTransition key={location.pathname}>
+      <main id="main-content" tabIndex={-1}>
+        <Suspense fallback={<RouteFallback />}>
+          <PageTransition initialNavigation={location.key === initialLocationKey.current}>
             <Routes location={location}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/esports" element={<EsportsPage />} />
-              <Route path="/esports/valorant" element={<ValorantPage />} />
-              <Route path="/esports/valorant/premier" element={<PremierPage />} />
-              <Route path="/esports/valorant/roster" element={<RosterPage />} />
-              <Route path="/esports/valorant/results" element={<EsportsResultsPage />} />
-              <Route path="/esports/valorant/tournaments" element={<EsportsTournamentsPage />} />
-              <Route path="/content" element={<ContentPage />} />
-              <Route path="/content/more" element={<ContentCreatorPage creatorId="more" />} />
-              <Route path="/content/th0maz7" element={<ContentCreatorPage creatorId="th0maz7" />} />
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/jersey" element={<JerseyPage />} />
-              <Route path="/products/jersey/custom" element={<JerseyCustomPage />} />
-              <Route path="/company" element={<CompanyPage />} />
-              <Route path="/company/partners" element={<CompanyPartnersPage />} />
-              <Route path="/company/contact" element={<CompanyContactPage />} />
-              <Route path="*" element={<NotFoundPage />} />
+                <Route path="/" element={<HomePage />} />
+                <Route path="/esports/valorant/premier" element={<PremierPage />} />
+                <Route path="/esports/valorant/roster" element={<RosterPage />} />
+                <Route path="/content" element={<ContentPage />} />
+                <Route path="/products/jersey" element={<DropPage />} />
+                <Route path="/company" element={<AboutPage />} />
+
+                <Route path="/esports" element={<Navigate to="/esports/valorant/premier" replace />} />
+                <Route path="/esports/valorant" element={<Navigate to="/esports/valorant/premier" replace />} />
+                <Route path="/esports/valorant/results" element={<Navigate to="/esports/valorant/premier#results" replace />} />
+                <Route path="/esports/valorant/tournaments" element={<Navigate to="/esports/valorant/premier#results" replace />} />
+                <Route path="/content/more" element={<Navigate to="/content" replace />} />
+                <Route path="/content/th0maz7" element={<Navigate to="/content" replace />} />
+                <Route path="/products" element={<Navigate to="/products/jersey" replace />} />
+                <Route path="/products/jersey/custom" element={<Navigate to="/products/jersey#customizacao" replace />} />
+                <Route path="/company/partners" element={<Navigate to="/company#partners" replace />} />
+                <Route path="/company/contact" element={<Navigate to="/company" replace />} />
+
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </PageTransition>
-        </AnimatePresence>
+        </Suspense>
       </main>
       <Footer />
-      <QuickNav />
-      <AdminUnlockModal />
     </div>
   );
 }
 
+function RouteFallback() {
+  return (
+    <div className="shush-loading" role="status" aria-live="polite">
+      <img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="SHUSH" />
+      <strong>O silêncio antes do round.</strong>
+      <span className="loading-line" aria-hidden="true" />
+      <p>A preparar o lobby.</p>
+    </div>
+  );
+}
+
+const legacyRoutes = new Set([
+  '/esports',
+  '/esports/valorant',
+  '/esports/valorant/results',
+  '/esports/valorant/tournaments',
+  '/content/more',
+  '/content/th0maz7',
+  '/products',
+  '/products/jersey/custom',
+  '/company/partners',
+  '/company/contact',
+]);
+
 function useRouteMetadata(pathname: string) {
   useEffect(() => {
-    const metadata = routeMetadata[pathname] ?? defaultMetadata;
+    const isKnownRoute = Boolean(routeMetadata[pathname]) || legacyRoutes.has(pathname);
+    const metadata = isKnownRoute
+      ? routeMetadata[pathname] ?? defaultMetadata
+      : {
+          title: '404 — SHUSH',
+          description: 'Esta página não existe no site público da SHUSH.',
+          image: defaultMetadata.image,
+        };
     const canonicalUrl = `${siteUrl}${pathname === '/' ? '' : pathname}`;
     const image = metadata.image ?? defaultMetadata.image ?? '/assets/jersey/frontjersey.webp';
+    const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
     document.title = metadata.title;
     setMeta('meta[name="description"]', metadata.description);
     setMeta('meta[property="og:title"]', metadata.title);
     setMeta('meta[property="og:description"]', metadata.description);
     setMeta('meta[property="og:url"]', canonicalUrl);
-    setMeta('meta[property="og:image"]', image);
+    setMeta('meta[property="og:image"]', absoluteImage);
+    setMeta('meta[property="og:image:alt"]', metadata.title);
     setMeta('meta[name="twitter:title"]', metadata.title);
     setMeta('meta[name="twitter:description"]', metadata.description);
-    setMeta('meta[name="twitter:image"]', image);
+    setMeta('meta[name="twitter:image"]', absoluteImage);
+    setMeta('meta[name="twitter:image:alt"]', metadata.title);
+    setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow' : 'noindex,nofollow');
     setCanonical(canonicalUrl);
   }, [pathname]);
-}
-
-function useRouteScroll(pathname: string, hash: string) {
-  const reduceMotion = useReducedMotion();
-
-  useEffect(() => {
-    let frame = 0;
-    let timeout = 0;
-    let attempts = 0;
-
-    const scrollToLocation = () => {
-      if (hash) {
-        const target = document.getElementById(decodeURIComponent(hash.slice(1)));
-        if (target) {
-          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-          return;
-        }
-
-        if (attempts < 12) {
-          attempts += 1;
-          timeout = window.setTimeout(scrollToLocation, 50);
-          return;
-        }
-      }
-
-      window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-    };
-
-    frame = window.requestAnimationFrame(scrollToLocation);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(timeout);
-    };
-  }, [pathname, hash, reduceMotion]);
 }
 
 function setMeta(selector: string, content: string) {

@@ -1,116 +1,39 @@
-import { Radio, Shirt, Trophy, Users } from 'lucide-react';
-import { creators } from '../../data/players';
-import { activePremierSeason, getPlayersByIds } from '../../data/season';
-import { calculatePublicMatchDayState, calculateSeasonStatus, formatDate, formatWindowCountdown } from '../../lib/premier';
-import { MapPing, SignalBars, SnakeLine, StatusBadge } from '../motion/MotionPrimitives';
+import { creators, players } from '../../data/players';
+import { activePremierSeason as season } from '../../data/season';
+import { calculatePremierScore, calculatePublicMatchDayState, formatDate } from '../../lib/premier';
+import { usePremierClock } from '../../lib/use-premier-clock';
 import { Button } from '../ui/Button';
-import { Reveal } from '../ui/Reveal';
+import { AppLink } from '../ui/AppLink';
+import { HomePlayerRail } from './HomePlayerRail';
 
 export function HomeHub() {
-  const state = calculatePublicMatchDayState(activePremierSeason);
-  const status = calculateSeasonStatus(activePremierSeason);
-  const week = 'week' in state ? state.week : null;
-  const day = 'day' in state ? state.day : null;
-  const convocados = week ? getPlayersByIds(week.convocados) : [];
-
+  const state = calculatePublicMatchDayState(season, usePremierClock());
+  const score = calculatePremierScore(season);
+  const last = season.results[season.results.length - 1];
+  const lastDay = season.weeks.flatMap(week => week.selectedDays.map(day => ({ week, day }))).find(item => last && item.day.date === last.date && item.week.map === last.map);
   return (
-    <section id="match-day" className="home-hub scroll-mt-28 px-5 py-16" aria-labelledby="home-hub-title">
-      <div className="home-hub-shell">
-        <Reveal className="hub-main">
-          <div className="hub-main-copy">
-            <span className="section-kicker">SHUSH hub</span>
-            <h2 id="home-hub-title">{state.title}</h2>
-            <p>{state.detail}</p>
-          </div>
-
-          <div className="hub-state">
-            <span>{activePremierSeason.tournamentName}</span>
-            <StatusBadge pulse>{status}</StatusBadge>
-            <small>Premier derivado dos dados publicados.</small>
-          </div>
-        </Reveal>
-        <SnakeLine className="home-section-snake" />
-
-        <div className="hub-grid">
-          <Reveal className="hub-block hub-block-wide" delay={0.05}>
-            <span className="hub-label">Premier Calendar</span>
-            {week && day ? (
-              <>
-                <h3>
-                  Week {week.weekNumber} · {week.map ?? 'Mapa por definir'}
-                  {week.map ? <MapPing label={`Mapa ${week.map}`} /> : null}
-                </h3>
-                <p>
-                  {formatDate(day.date)} · {day.windowStart}-{day.windowEnd}
-                </p>
-                <span className="hub-live">{formatWindowCountdown(day)}</span>
-              </>
-            ) : (
-              <>
-                <h3>Dia a confirmar.</h3>
-                <p>{state.detail}</p>
-              </>
-            )}
-            {state.kind === 'match_day_live' && state.showStreams ? (
-              <span className="hub-live">
-                <Radio aria-hidden="true" className="h-4 w-4" />
-                Streams manuais disponíveis
-              </span>
-            ) : null}
-          </Reveal>
-
-          <Reveal id="convocados" className="hub-block scroll-mt-28" delay={0.1}>
-            <span className="hub-label">
-              <Users aria-hidden="true" className="h-4 w-4" />
-              Convocados
-            </span>
-            {convocados.length > 0 ? (
-              <div className="hub-roster">
-                {convocados.map((player, index) => (
-                  <span key={player.id}>
-                    <small className="lineup-slot">{String(index + 1).padStart(2, '0')}</small>
-                    {player.displayName} <small>{player.roles[0]}</small>
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p>Roster definido pela SHUSH quando houver janela confirmada.</p>
-            )}
-          </Reveal>
-
-          <Reveal id="creator-pulse" className="hub-block scroll-mt-28" delay={0.15}>
-            <span className="hub-label">Creators pulse</span>
-            <div className="hub-links">
-              {creators.map((creator) => (
-                <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noreferrer">
-                  <SignalBars />
-                  {creator.displayName}
-                  <small>{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</small>
-                </a>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal className="hub-block" delay={0.2}>
-            <span className="hub-label">
-              <Trophy aria-hidden="true" className="h-4 w-4" />
-              Season status
-            </span>
-            <h3>{status}</h3>
-            <p>Resultados entram aqui quando forem confirmados pela equipa.</p>
-          </Reveal>
-
-          <Reveal id="home-products" className="hub-block hub-product scroll-mt-28" delay={0.25}>
-            <span className="hub-label">
-              <Shirt aria-hidden="true" className="h-4 w-4" />
-              Products
-            </span>
-            <h3>Jersey / Clothing</h3>
-            <p>Pedido manual com nick, número e tamanho.</p>
-            <Button href="/products/jersey">Ver jersey</Button>
-          </Reveal>
+    <div className="home-editorial">
+      <section className="home-roster" aria-labelledby="home-roster-title">
+        <div className="shell">
+          <div className="section-index"><span className="section-kicker">01 / A equipa</span><span className="mono">Valorant · {players.length} jogadores</span></div>
+          <div className="section-heading"><div><h2 id="home-roster-title">Nomes diferentes.<br /><span>A mesma SHUSH.</span></h2><p className="body-copy">Quem joga, quem cria, quem entra contigo no lobby.</p></div><AppLink className="editorial-link" href="/esports/valorant/roster">Conhecer o roster <span aria-hidden="true">↗</span></AppLink></div>
+          <HomePlayerRail />
         </div>
-      </div>
-    </section>
+      </section>
+      <section id="creator-pulse" className="home-creators" aria-labelledby="home-creators-title">
+        <div className="shell">
+          <div className="section-index"><span className="section-kicker">02 / Creators</span><span className="mono">Twitch + YouTube</span></div>
+          <div className="section-heading"><h2 id="home-creators-title">O round acaba.<br /><span>O canal continua.</span></h2><AppLink className="editorial-link" href="/content">Ver creators <span aria-hidden="true">↗</span></AppLink></div>
+          <div className="home-channel-list">{creators.map((creator) => <a key={creator.id} href={creator.creatorUrl} target="_blank" rel="noopener noreferrer" className={`home-channel is-${creator.creatorType}`}><div className="home-channel-art" aria-hidden="true">{creator.avatar ? <img src={creator.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span>{creator.initials}</span>}</div><div className="home-channel-copy"><span className="platform-name">{creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</span><strong>{creator.displayName}</strong><span className="channel-destination">Abrir canal <span aria-hidden="true">↗</span></span></div></a>)}</div>
+        </div>
+      </section>
+      <section id="match-day" className="home-competition" aria-labelledby="home-premier-title">
+        <div className="shell home-archive">
+          <div className="archive-intro"><span className="section-kicker">03 / Premier · Junho — Julho 2026</span><h2 id="home-premier-title">Os rounds<br />ficam no registo.</h2><p className="body-copy">{state.detail}</p><Button href="/esports/valorant/premier" variant="secondary">Abrir Match Center</Button>{lastDay ? <AppLink className="editorial-link" href={`/?matchday=${lastDay.day.id}#top`}>Rever Matchday · {lastDay.week.map} ↗</AppLink> : null}</div>
+          <div className="archive-record"><div className="home-score"><span className="mono">Pontuação publicada · {season.name}</span><strong>{score}<small> / {season.qualificationPoints}</small></strong><span className="state-label">{state.title}</span></div>{last ? <div className="home-result"><span className="mono">Último resultado publicado</span><time dateTime={last.date}>{formatDate(last.date)} / {last.map}</time><strong>SHUSH <span>{last.shushScore} : {last.opponentScore}</span></strong><small>Adversário não publicado</small></div> : null}</div>
+        </div>
+      </section>
+      <section className="home-drop" aria-labelledby="home-drop-title"><div className="shell home-drop-grid"><div className="home-drop-copy"><span className="section-kicker">04 / Drop 01</span><h2 id="home-drop-title">Veste a<br /><span>SHUSH.</span></h2><p className="body-copy">Preto, roxo e o teu nick.<br />A mesma assinatura. A tua versão.</p><Button href="/products/jersey">Personalizar a minha jersey</Button></div><div className="home-drop-image"><img src="/assets/jersey/backjersey.webp" width="1254" height="1254" alt="Verso da jersey SHUSH Drop 01" loading="lazy" decoding="async" /></div></div></section>
+    </div>
   );
 }

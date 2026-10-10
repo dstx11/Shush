@@ -1,1 +1,19 @@
-/* /index.html 200
+# Canonical legacy redirects
+/index.html / 301
+/esports /esports/valorant/premier 301
+/esports/valorant /esports/valorant/premier 301
+/esports/valorant/results /esports/valorant/premier#results 301
+/esports/valorant/tournaments /esports/valorant/premier#results 301
+/content/more /content 301
+/content/th0maz7 /content 301
+/products /products/jersey 301
+/products/jersey/custom /products/jersey#customizacao 301
+/company/partners /company#partners 301
+/company/contact /company 301
+
+# Canonical trailing-slash redirects
+/esports/valorant/premier/ /esports/valorant/premier 301
+/esports/valorant/roster/ /esports/valorant/roster 301
+/content/ /content 301
+/products/jersey/ /products/jersey 301
+/company/ /company 301

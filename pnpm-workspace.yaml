@@ -1,27 +1,2 @@
 allowBuilds:
   esbuild: true
-minimumReleaseAgeExclude:
-  - '@supabase/auth-js@2.109.0'
-  - '@supabase/functions-js@2.109.0'
-  - '@supabase/postgrest-js@2.109.0'
-  - '@supabase/realtime-js@2.109.0'
-  - '@supabase/storage-js@2.109.0'
-  - '@supabase/supabase-js@2.109.0'
-  - react-router-dom@7.18.1
-  - react-router@7.18.1
-  - '@tailwindcss/node@4.3.2'
-  - '@tailwindcss/oxide-android-arm64@4.3.2'
-  - '@tailwindcss/oxide-darwin-arm64@4.3.2'
-  - '@tailwindcss/oxide-darwin-x64@4.3.2'
-  - '@tailwindcss/oxide-freebsd-x64@4.3.2'
-  - '@tailwindcss/oxide-linux-arm-gnueabihf@4.3.2'
-  - '@tailwindcss/oxide-linux-arm64-gnu@4.3.2'
-  - '@tailwindcss/oxide-linux-arm64-musl@4.3.2'
-  - '@tailwindcss/oxide-linux-x64-gnu@4.3.2'
-  - '@tailwindcss/oxide-linux-x64-musl@4.3.2'
-  - '@tailwindcss/oxide-wasm32-wasi@4.3.2'
-  - '@tailwindcss/oxide-win32-arm64-msvc@4.3.2'
-  - '@tailwindcss/oxide-win32-x64-msvc@4.3.2'
-  - '@tailwindcss/oxide@4.3.2'
-  - '@tailwindcss/vite@4.3.2'
-  - tailwindcss@4.3.2

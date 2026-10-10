@@ -1,78 +1,17 @@
-﻿import { motion, useReducedMotion } from 'motion/react';
-import { Cpu, EyeOff, Shirt, Users } from 'lucide-react';
-import { MotionRail, SectionBreadcrumb, SnakeLine } from '../motion/MotionPrimitives';
-
-const principles = [
-  {
-    icon: EyeOff,
-    title: 'Sem barulho',
-    copy: 'Identidade escura, direta e controlada.',
-  },
-  {
-    icon: Users,
-    title: 'Grupo pequeno',
-    copy: 'Gaming, esports e entertainment entre amigos.',
-  },
-  {
-    icon: Shirt,
-    title: 'Produto manual',
-    copy: 'Jersey / Clothing com pedido manual.',
-  },
-  {
-    icon: Cpu,
-    title: 'Backora',
-    copy: 'Partner técnico/digital da SHUSH.',
-  },
-];
+import { creators, players } from '../../data/players';
+import { AppLink } from '../ui/AppLink';
+import { Button } from '../ui/Button';
 
 export function AboutSection() {
-  const reduceMotion = useReducedMotion();
-
   return (
-    <section id="about" className="about-section scroll-mt-28 px-5 pb-28 pt-36">
-      <motion.div
-        className="about-shell"
-        initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-15%' }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="about-copy">
-          <SectionBreadcrumb items={['Company', 'About']} />
-          <span className="section-kicker">About / SHUSH</span>
-          <h1>Grupo gaming, esports e entertainment.</h1>
-          <MotionRail className="route-title-rail" />
-          <p>SHUSH é um grupo gaming, esports e entertainment criado à volta de Valorant, creators e identidade própria.</p>
-          <p className="about-line">Sem barulho. Só rounds.</p>
-        </div>
-
-        <div className="about-principles">
-          {principles.map((principle, index) => {
-            const Icon = principle.icon;
-            return (
-              <motion.div
-                key={principle.title}
-                className="about-principle"
-                initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-10%' }}
-                transition={{ duration: 0.42, delay: index * 0.06 }}
-              >
-                <Icon aria-hidden="true" className="h-7 w-7 text-shush-purpleGlow" />
-                <h3>{principle.title}</h3>
-                <p>{principle.copy}</p>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        <a id="partners" href="https://backora.org/" target="_blank" rel="noreferrer" className="about-backora scroll-mt-28">
-          <SnakeLine className="backora-system-line" />
-          <span className="section-kicker">Partners</span>
-          <span>Backora é o partner técnico/digital por trás da estrutura web e suporte técnico.</span>
-          <img src="/assets/brand/backora-logo.png" width="320" height="293" alt="Backora" loading="lazy" decoding="async" />
-        </a>
-      </motion.div>
+    <section id="about" className="about-page" aria-labelledby="about-title">
+      <div className="shell">
+        <div className="about-opening"><div><span className="section-kicker">About / SHUSH</span><h1 id="about-title">Pequena equipa.<br /><span>Identidade inteira.</span></h1></div><div className="about-brand-panel"><div className="about-brand-image"><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="Logótipo SHUSH" decoding="async" /></div><p>Somos uma pequena organização de gaming. Jogamos Valorant Premier, reunimos creators e levamos a nossa identidade para o Drop 01.</p><div className="about-counts"><span><strong>{players.length}</strong> jogadores</span><span><strong>{creators.length}</strong> creators</span></div></div></div>
+        <section className="about-manifesto" aria-labelledby="identity-title"><span className="section-kicker">01 / Identidade</span><div><h2 id="identity-title">Sem barulho.<br /><span>Só rounds.</span></h2><p>Dentro do servidor, os jogadores. Fora dele, os creators e a camisola. A SHUSH liga estas partes com a mesma identidade.</p></div></section>
+        <div className="about-paths"><AppLink href="/esports/valorant/roster"><span className="mono">02 / A equipa</span><strong>Quem joga.</strong><span>Conhecer o roster</span><span aria-hidden="true">↗</span></AppLink><AppLink href="/content"><span className="mono">03 / Os creators</span><strong>Quem cria.</strong><span>More + Th0maz7</span><span aria-hidden="true">↗</span></AppLink><AppLink href="/products/jersey"><span className="mono">04 / A camisola</span><strong>O que nos liga.</strong><span>Explorar Drop 01</span><span aria-hidden="true">↗</span></AppLink></div>
+        <section id="partners" className="about-partner" aria-labelledby="partner-title"><span className="section-kicker">05 / Parceiro técnico + digital</span><div className="partner-content"><img src="/assets/brand/backora-logo.png" width="320" height="293" alt="" loading="lazy" decoding="async" /><div><h2 id="partner-title">Backora.</h2><p>Estrutura web e suporte técnico da SHUSH.</p></div><Button href="https://backora.org/" target="_blank" rel="noopener noreferrer" variant="secondary">Conhecer Backora</Button></div></section>
+        <section className="about-brand-download" aria-labelledby="brand-title"><div><span className="section-kicker">06 / Marca</span><h2 id="brand-title">A nossa assinatura.</h2><p>Logótipo SHUSH · WebP · 1167 × 647</p></div><Button href="/assets/brand/shush-logo.webp" download="shush-logo.webp" variant="secondary">Descarregar logótipo (WebP)</Button></section>
+      </div>
     </section>
   );
 }

@@ -1,83 +1,16 @@
-﻿import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { Check, Copy } from 'lucide-react';
-import { motionPresets } from '../../lib/motion';
+import { dropSizes, graphemes, type DropConfig } from '../../lib/drop-config';
 
-type JerseyCustomizerProps = {
-  name: string;
-  number: string;
-  size: string;
-  phrase: string;
-  message: string;
-  copyStatus: 'idle' | 'copied' | 'failed';
-  onNameChange: (value: string) => void;
-  onNumberChange: (value: string) => void;
-  onSizeChange: (value: string) => void;
-  onPhraseChange: (value: string) => void;
-  onCopy: () => void;
-};
+type Props = { config: DropConfig; message: string; onChange: (config: DropConfig) => void };
 
-export function JerseyCustomizer({
-  name,
-  number,
-  size,
-  phrase,
-  message,
-  copyStatus,
-  onNameChange,
-  onNumberChange,
-  onSizeChange,
-  onPhraseChange,
-  onCopy,
-}: JerseyCustomizerProps) {
-  const reduceMotion = useReducedMotion();
-
-  return (
-    <div className="customizer">
-      <span className="section-kicker">Personalização</span>
-      <h3>Nome. Número. Tamanho.</h3>
-
-      <motion.div className="customizer-grid" variants={reduceMotion ? undefined : motionPresets.staggerParent} initial={reduceMotion ? false : 'hidden'} whileInView={reduceMotion ? undefined : 'visible'} viewport={{ once: true }}>
-        <motion.label variants={reduceMotion ? undefined : motionPresets.formField}>
-          <span>Nome</span>
-          <input value={name} onChange={(event) => onNameChange(event.target.value.slice(0, 14))} />
-        </motion.label>
-        <motion.label variants={reduceMotion ? undefined : motionPresets.formField}>
-          <span>Número</span>
-          <input value={number} onChange={(event) => onNumberChange(event.target.value.replace(/\D/g, '').slice(0, 2))} />
-        </motion.label>
-        <motion.label variants={reduceMotion ? undefined : motionPresets.formField}>
-          <span>Tamanho</span>
-          <select value={size} onChange={(event) => onSizeChange(event.target.value)}>
-            {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((option) => (
-              <option key={option}>{option}</option>
-            ))}
-          </select>
-        </motion.label>
-      </motion.div>
-
-      <motion.label className="customizer-wide" variants={reduceMotion ? undefined : motionPresets.formField} initial={reduceMotion ? false : 'hidden'} whileInView={reduceMotion ? undefined : 'visible'} viewport={{ once: true }}>
-        <span>Frase opcional</span>
-        <input value={phrase} onChange={(event) => onPhraseChange(event.target.value.slice(0, 44))} placeholder="Ex: Sem barulho" />
-      </motion.label>
-
-      <motion.pre key={message} aria-live="polite" variants={reduceMotion ? undefined : motionPresets.panelLayer} initial={reduceMotion ? false : 'hidden'} animate={reduceMotion ? undefined : 'visible'}>
-        {message}
-      </motion.pre>
-      <motion.button
-        type="button"
-        onClick={onCopy}
-        className={`copy-button ${copyStatus === 'failed' ? 'is-error' : ''}`}
-        aria-live="polite"
-        whileTap={reduceMotion ? undefined : { scale: 0.97 }}
-        animate={!reduceMotion && copyStatus === 'failed' ? motionPresets.errorShake.animate : undefined}
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span key={copyStatus} variants={reduceMotion ? undefined : motionPresets.success} initial={reduceMotion ? false : 'initial'} animate={reduceMotion ? undefined : 'animate'} exit={reduceMotion ? undefined : 'exit'}>
-            {copyStatus === 'copied' ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
-            {copyStatus === 'copied' ? 'Copiado' : copyStatus === 'failed' ? 'Copia manualmente' : 'Copiar pedido'}
-          </motion.span>
-        </AnimatePresence>
-      </motion.button>
+export function JerseyCustomizer({ config, message, onChange }: Props) {
+  return <div className="jersey-customizer">
+    <div className="customizer-heading"><span className="section-kicker">01 / Personalização</span><h2 id="customizer-title">Faz a tua versão.</h2><p>O nick e número aparecem no verso.</p></div>
+    <div className="customizer-fields">
+      <label><span id="drop-nick-label">Nick</span><input aria-labelledby="drop-nick-label" aria-describedby="drop-nick-hint" value={config.nick} maxLength={224} autoComplete="off" onChange={(event) => onChange({ ...config, nick: event.target.value })} placeholder="SHUSH" /><small id="drop-nick-hint">{graphemes(config.nick).length}/14 caracteres</small></label>
+      <label><span id="drop-number-label">Número</span><input aria-labelledby="drop-number-label" aria-describedby="drop-number-hint" value={config.number} inputMode="numeric" maxLength={2} onChange={(event) => onChange({ ...config, number: event.target.value.replace(/\D/g, '').slice(0, 2) })} placeholder="01" /><small id="drop-number-hint">00–99</small></label>
+      <fieldset className="size-options"><legend>Tamanho</legend><div>{dropSizes.map((size) => <label key={size}><input type="radio" name="jersey-size" className="size-input" value={size} checked={config.size === size} onChange={() => onChange({ ...config, size })} /><span>{size}</span></label>)}</div><small>A confirmar no pedido manual.</small></fieldset>
+      <label className="customizer-wide"><span id="drop-phrase-label">Frase opcional</span><input aria-labelledby="drop-phrase-label" aria-describedby="drop-phrase-hint" value={config.phrase} maxLength={704} onChange={(event) => onChange({ ...config, phrase: event.target.value })} placeholder="Sem barulho. Só rounds." /><small id="drop-phrase-hint">{graphemes(config.phrase).length}/44 caracteres · posição indicativa</small></label>
     </div>
-  );
+    <div className="order-summary"><label htmlFor="order-summary">02 / Resumo do pedido</label><textarea id="order-summary" value={message} readOnly rows={7} onFocus={(event) => event.target.select()} aria-label="Resumo do pedido" /></div>
+  </div>;
 }

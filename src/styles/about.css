@@ -1,0 +1,58 @@
+/* About uses a brand statement and linked editorial rows. */
+.about-page { padding-block: var(--page-top) var(--section-space); }
+.about-opening { display: grid; grid-template-columns: 1fr .85fr; align-items: center; gap: 4rem; }
+.about-opening h1 { font: 600 var(--title-size)/1.15 var(--font-heading); letter-spacing: -.035em; margin-top: 1.25rem; }
+.about-opening h1 > span { color: var(--signal); }
+.about-brand-panel { --paper: var(--text); min-width: 0; padding: var(--space-4); border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); color: var(--text); }
+.about-brand-image { display: grid; aspect-ratio: 1.6; place-items: center; background: var(--surface-2); border-radius: var(--radius-sm); }
+.about-brand-image img { width: 78%; height: auto; object-fit: contain; }
+.about-brand-panel > p { margin-block: 1.5rem; color: var(--muted); font-size: .94rem; line-height: 1.9; }
+.about-counts { display: flex; gap: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .8rem var(--font-mono); }
+.about-counts strong { font: 600 2rem var(--font-heading); color: var(--paper); padding-right: .5rem; }
+.about-manifesto { display: grid; grid-template-columns: .35fr 1fr; gap: 3rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); margin-top: 3rem; padding: 2rem; }
+.about-manifesto h2 { font: 600 var(--section-size)/1.16 var(--font-heading); letter-spacing: -.035em; }
+.about-manifesto h2 span { color: var(--signal); }
+.about-manifesto p { max-width: 37rem; color: var(--muted); font-size: .9rem; line-height: 1.9; margin-top: 1.5rem; }
+.about-paths { display: grid; margin-top: 2rem; }
+.about-paths a { display: grid; grid-template-columns: .4fr 1fr .5fr 2rem; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding-block: 1.5rem; color: var(--paper); text-decoration: none; }
+.about-paths strong { font: 600 clamp(1.7rem, 3.2vw, 3.2rem)/1.1 var(--font-heading); letter-spacing: -.035em; }
+.about-paths a > span:nth-child(3) { color: var(--muted); font-size: .875rem; }
+.about-paths a > span:last-child { color: var(--signal); font-size: 1.5rem; text-align: right; transition: transform .18s; }
+.about-paths a:hover > span:last-child { transform: translate(3px, -3px); }
+.about-paths a:hover strong { color: var(--signal); }
+.about-partner { margin-top: 3rem; border: 1px solid #51453e; border-radius: var(--radius-lg); padding: var(--space-4); background: #28211f; scroll-margin-top: 6rem; }
+.about-partner > .section-kicker { color: #e2a576; }
+.partner-content { display: grid; grid-template-columns: 5rem 1fr auto; align-items: center; gap: 2rem; margin-top: 1.5rem; }
+.partner-content img { width: 5rem; height: auto; }
+.partner-content h2 { font: 600 clamp(2rem, 4vw, 4rem)/1 var(--font-heading); letter-spacing: -.035em; }
+.partner-content p { margin-top: .75rem; color: var(--muted); font-size: .875rem; line-height: 1.8; }
+.about-brand-download { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.about-brand-download h2 { font: 600 1.7rem/1.2 var(--font-heading); letter-spacing: -.035em; margin-top: .8rem; }
+.about-brand-download p { color: var(--muted); font: .8rem var(--font-mono); margin-top: .75rem; }
+.not-found-page { padding-block: max(9rem, calc(8rem + env(safe-area-inset-top))) 5rem; min-height: 80svh; display: grid; align-items: center; }
+.not-found-grid { display: grid; grid-template-columns: 1fr .8fr; align-items: center; gap: 3rem; }
+.not-found-page h1 { font: 600 clamp(3.7rem, 8vw, 8rem)/.95 var(--font-heading); letter-spacing: -.035em; margin-top: 1rem; }
+.not-found-page h1 span { color: var(--signal); }
+.not-found-page p { color: var(--muted); font-size: .9rem; line-height: 1.8; margin-block: 1.5rem; }
+.not-found-number { font: 600 clamp(6rem, 23vw, 20rem)/1 var(--font-heading); color: #241a32; letter-spacing: -.1em; }
+@media (max-width: 1050px) { .about-opening { gap: 2rem; } .about-brand-panel { padding: 1.5rem; } .partner-content { grid-template-columns: 4rem 1fr; } .partner-content .site-button { grid-column: 2; width: fit-content; } }
+@media (max-width: 767px) {
+  .about-page { padding-block: var(--page-top) var(--section-space); }
+  .about-opening { grid-template-columns: 1fr; gap: 2rem; }
+  .about-opening h1 { font-size: var(--title-size); }
+  .about-brand-panel { border: 0; padding: 1.25rem; }
+  .about-brand-image { max-width: 28rem; }
+  .about-manifesto { grid-template-columns: 1fr; gap: 1.2rem; margin-top: 2.5rem; padding: 1.5rem; }
+  .about-manifesto h2 { font-size: var(--section-size); }
+  .about-paths a { grid-template-columns: 1fr 2rem; gap: .8rem; }
+  .about-paths .mono, .about-paths strong, .about-paths a > span:nth-child(3) { grid-column: 1; }
+  .about-paths a > span:last-child { grid-column: 2; grid-row: 1 / 4; }
+  .about-partner { padding: 1.25rem; margin-top: 2.5rem; }
+  .partner-content { grid-template-columns: 3rem 1fr; gap: 1.2rem; }
+  .partner-content img { width: 3rem; }
+  .partner-content .site-button { grid-column: 1 / -1; }
+  .not-found-grid { grid-template-columns: 1fr; }
+  .not-found-page { padding-top: 7rem; }
+  .not-found-number { font-size: 7rem; }
+}
+@media (prefers-reduced-motion: reduce) { .about-paths a > span:last-child { transition: none; } }

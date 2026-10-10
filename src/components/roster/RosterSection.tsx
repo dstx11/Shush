@@ -1,113 +1,172 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { copyText, shareUrl } from '../../lib/browser-transfer';
+import { useSearchParams } from 'react-router-dom';
 import { players } from '../../data/players';
-import { motionPresets } from '../../lib/motion';
-import { PlayerLockIndicator, Waveform } from '../motion/MotionPrimitives';
+import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { AppLink } from '../ui/AppLink';
 
+function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
+  return (
+    <AppLink href={href} target="_blank" rel="noopener noreferrer" className={`tracker-button${compact ? ' tracker-button-compact' : ''}`} aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
+      <span>{compact ? 'Tracker.gg' : 'Abrir Tracker.gg'}</span>
+      <span className="tracker-button-arrow" aria-hidden="true">↗</span>
+    </AppLink>
+  );
+}
+
 export function RosterSection() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const reduceMotion = useReducedMotion();
+  const [params, setParams] = useSearchParams();
+  const selectedIndex = Math.max(0, players.findIndex((player) => player.id === params.get('player')));
   const selectedPlayer = players[selectedIndex] ?? players[0];
-  const roles = useMemo(() => selectedPlayer.roles.join(' / '), [selectedPlayer.roles]);
-
-  const selectNext = useCallback(() => setSelectedIndex((index) => (index + 1) % players.length), []);
-  const selectPrevious = useCallback(() => setSelectedIndex((index) => (index - 1 + players.length) % players.length), []);
-
+  const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
+  const stripRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.altKey || event.ctrlKey || event.metaKey) return;
-      if (event.key === 'ArrowRight') selectNext();
-      if (event.key === 'ArrowLeft') selectPrevious();
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [selectNext, selectPrevious]);
+    const strip = stripRef.current;
+    const card = strip?.children[selectedIndex] as HTMLElement | undefined;
+    if (!strip || !card || strip.scrollWidth <= strip.clientWidth) return;
+    const target = strip.scrollLeft + card.getBoundingClientRect().left - strip.getBoundingClientRect().left - (strip.clientWidth - card.offsetWidth) / 2;
+    strip.scrollTo({ left: Math.max(0, target), behavior: 'instant' });
+  }, [selectedIndex]);
+  const selectPlayer = useCallback((index: number) => {
+    setParams((current) => {
+      const next = new URLSearchParams(current);
+      next.set('player', players[index].id);
+      return next;
+    }, { replace: true, preventScrollReset: true });
+  }, [setParams]);
+  const selectNext = () => selectPlayer((selectedIndex + 1) % players.length);
+  const selectPrevious = () => selectPlayer((selectedIndex - 1 + players.length) % players.length);
 
   return (
-    <section id="roster" className="roster-section roster-select relative scroll-mt-24 overflow-hidden px-5 py-28" aria-labelledby="roster-title">
-      <div className="roster-backdrop" aria-hidden="true">
-        <span>{selectedPlayer.displayName}</span>
-        <Waveform />
-      </div>
-
-      <div className="mx-auto grid max-w-7xl gap-8">
-        <div className="roster-select-head">
+    <section id="roster" className="player-page" data-player={selectedPlayer.id} aria-labelledby="roster-title">
+      <div className="shell">
+        <div className="page-heading player-heading">
           <div>
-            <span className="section-kicker">Roster / Character select</span>
-            <h2 id="roster-title">Quem entra no lobby connosco.</h2>
-            <Waveform className="mt-4" />
+            <span className="section-kicker">Character Select 2.0 / Valorant</span>
+            <h1 id="roster-title">Player<br /><span>Select.</span></h1>
           </div>
-          <p>Sete jogadores públicos. Roles claras. Presença visual sem inventar estatísticas.</p>
+          <p>{players.length} jogadores. Uma identidade.<br />Conhece a equipa e acompanha os seus perfis competitivos.</p>
         </div>
 
-        <div className="character-select" aria-live="polite">
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={selectedPlayer.id}
-              className="character-spotlight"
-              initial={reduceMotion ? false : { opacity: 0, x: 38, clipPath: 'inset(0 8% 0 0)' }}
-              animate={reduceMotion ? undefined : { opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0)' }}
-              exit={reduceMotion ? undefined : { opacity: 0, x: -28, clipPath: 'inset(0 0 0 8%)' }}
-              transition={reduceMotion ? undefined : motionPresets.rosterSwap.animate.transition}
-            >
-              <div className="character-media">
-                <span className="character-index">{String(selectedIndex + 1).padStart(2, '0')}</span>
-                {selectedPlayer.avatar ? (
-                  <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="lazy" decoding="async" />
-                ) : (
-                  <div className="avatar-fallback character-fallback">
-                    <span className="avatar-ring" aria-hidden="true" />
-                    <span>{selectedPlayer.initials}</span>
+        <div className="player-stage">
+        <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
+          {players.map((player, index) => {
+            const profile = getCompetitiveProfile(player.id);
+            return (
+              <div key={player.id} className={`player-select-card${index === selectedIndex ? ' is-active' : ''}`}>
+                <button type="button" className="player-card-select" aria-pressed={index === selectedIndex} aria-controls="selected-player" onClick={() => selectPlayer(index)}>
+                  <span className="strip-avatar">
+                    <span className="player-card-number" aria-hidden="true">{player.number}</span>
+                    {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span className="strip-initials">{player.initials}</span>}
+                  </span>
+                  <span className="player-card-name"><strong>{player.displayName}</strong><small>{player.roles[0]}</small></span>
+                </button>
+                {profile ? (
+                  <div className="player-card-account">
+                    <span className="player-card-riot-id">{profile.riotId}</span>
+                    <TrackerButton href={profile.trackerUrl} playerName={player.displayName} compact />
                   </div>
-                )}
+                ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
               </div>
+            );
+          })}
+        </div>
 
-              <div className="character-copy">
-                <PlayerLockIndicator label="SELECTED" />
-                <span className="section-kicker">{roles}</span>
-                <h3>{selectedPlayer.displayName}</h3>
-                <p>{selectedPlayer.quote}</p>
-                <div className="role-stack">
-                  {selectedPlayer.roles.map((role) => (
-                    <span key={role} className="role-badge">
-                      {role}
-                    </span>
-                  ))}
+        <div className="character-select">
+          <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
+          <article id="selected-player" key={selectedPlayer.id} className="character-spotlight character-swap" aria-labelledby="selected-player-name">
+            <div className="character-media">
+              <span className="character-codename" aria-hidden="true">{selectedPlayer.displayName}</span>
+              <span className="character-index" aria-hidden="true">{selectedPlayer.number}</span>
+              <span className="player-image-label mono">SHUSH / Valorant</span>
+              {selectedPlayer.avatar ? (
+                <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
+              ) : (
+                <div className="avatar-fallback character-fallback">
+                  <span className="avatar-ring" aria-hidden="true" />
+                  <span>{selectedPlayer.initials}</span>
                 </div>
-                {selectedPlayer.trackerUrl ? (
-                  <AppLink href={selectedPlayer.trackerUrl} target="_blank" rel="noreferrer" className="footer-link mt-5 inline-flex">
-                    Tracker profile <ExternalLink aria-hidden="true" className="h-4 w-4" />
-                  </AppLink>
-                ) : null}
-              </div>
-            </motion.article>
-          </AnimatePresence>
+              )}
+            </div>
 
-          <div className="character-controls">
+            <div className="character-copy">
+              <span className="section-kicker">SHUSH / Perfil {selectedPlayer.number}</span>
+              <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
+              <p>{selectedPlayer.quote}</p>
+
+              <div className="role-stack">
+                {selectedPlayer.roles.map((role) => <span key={role} className="role-badge">{role}</span>)}
+              </div>
+
+              {competitiveProfile ? (
+                <>
+                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div><div><dt>Estilo publicado</dt><dd>{selectedPlayer.focus}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl>{!selectedPlayer.agents?.length && !selectedPlayer.sensitivity && !selectedPlayer.equipment ? <p>Agentes favoritos, sensibilidade e equipamento ainda não publicados.</p> : null}</details>
+                <div className="competitive-profile">
+                  <span className="section-kicker">Tracker.gg / Perfil competitivo</span>
+                  <dl className="competitive-identity">
+                    <div>
+                      <dt>Riot ID</dt>
+                      <dd>{competitiveProfile.riotId}</dd>
+                    </div>
+                    <div>
+                      <dt>Modo</dt>
+                      <dd>{competitiveProfile.playlist === 'premier' ? 'Premier' : 'Competitive'}</dd>
+                    </div>
+                  </dl>
+                  {competitiveProfile.seasonId ? <p className="competitive-period">Ligação à temporada selecionada no perfil, não à temporada atual.</p> : null}
+                  <TrackerButton href={competitiveProfile.trackerUrl} playerName={selectedPlayer.displayName} />
+                  <PlayerActions key={selectedPlayer.id} playerId={selectedPlayer.id} playerName={selectedPlayer.displayName} riotId={competitiveProfile.riotId} />
+                  <p className="competitive-note">Rank, estatísticas e histórico no Tracker.gg. A disponibilidade depende da privacidade da conta.</p>
+                </div>
+                </>
+              ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
+
+              {selectedPlayer.creatorUrl ? (
+                <AppLink href={selectedPlayer.creatorUrl} target="_blank" rel="noreferrer" className="editorial-link">
+                  {selectedPlayer.creatorType === 'twitch' ? 'Ver na Twitch' : 'Ver no YouTube'} <span aria-hidden="true">↗</span>
+                </AppLink>
+              ) : null}
+
+            </div>
+          </article>
+
+          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')} · {selectedPlayer.displayName}</span>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
-              <ArrowLeft aria-hidden="true" className="h-4 w-4" />
+              <span aria-hidden="true">←</span>
             </button>
             <button type="button" onClick={selectNext} aria-label="Jogador seguinte">
-              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+              <span aria-hidden="true">→</span>
             </button>
           </div>
         </div>
-
-        <div className="character-strip" aria-label="Selecionar jogador">
-          {players.map((player, index) => (
-            <button key={player.id} type="button" className={index === selectedIndex ? 'is-active' : ''} aria-pressed={index === selectedIndex} onClick={() => setSelectedIndex(index)}>
-              <span className="strip-avatar">
-                {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span>{player.initials}</span>}
-              </span>
-              <strong>{player.displayName}</strong>
-              <small>{player.roles[0]}</small>
-            </button>
-          ))}
         </div>
       </div>
     </section>
   );
+}
+
+function PlayerActions({ playerId, playerName, riotId }: { playerId: string; playerName: string; riotId: string }) {
+  const [feedback, setFeedback] = useState('');
+  const [manual, setManual] = useState('');
+  const mounted = useRef(true);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  const copy = async () => {
+    const copied = await copyText(riotId);
+    if (!mounted.current) return;
+    setManual(copied ? '' : riotId);
+    setFeedback(copied ? 'Riot ID copiado.' : 'Não foi possível copiar. Seleciona o Riot ID abaixo.');
+  };
+  const share = async () => {
+    const url = new URL('/esports/valorant/roster', window.location.origin);
+    url.searchParams.set('player', playerId);
+    const result = await shareUrl(url.href, `${playerName} — SHUSH`);
+    if (!mounted.current) return;
+    setManual(result === 'manual' ? url.href : '');
+    setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
+  };
+  return <div className="player-utilities">
+    <div className="action-row"><button type="button" className="utility-button" onClick={copy}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share}>Partilhar jogador <span aria-hidden="true">↗</span></button></div>
+    <p className="action-feedback" role="status">{feedback}</p>
+    {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
+  </div>;
 }

@@ -6,13 +6,14 @@ export type Player = {
   roles: string[];
   status?: string;
   avatar?: string;
-  trackerUrl?: string;
-  trackerScore?: number;
   isCreator?: boolean;
   creatorType?: 'twitch' | 'youtube';
   creatorUrl?: string;
   quote: string;
   focus: string;
+  agents?: string[];
+  sensitivity?: string;
+  equipment?: string;
 };
 
 export const players: Player[] = [
@@ -35,7 +36,7 @@ export const players: Player[] = [
     isCreator: true,
     creatorType: 'twitch',
     creatorUrl: 'https://www.twitch.tv/kandimba13',
-    quote: 'Leitura calma, espaco bem fechado.',
+    quote: 'Leitura calma, espaço bem fechado.',
     focus: 'Controlo',
   },
   {

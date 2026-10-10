@@ -1,172 +1,44 @@
-﻿import { useState } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { Radio, Users } from 'lucide-react';
-import { activePremierSeason, getPlayersByIds } from '../../data/season';
-import { motionPresets } from '../../lib/motion';
-import { calculatePublicMatchDayState, formatDate, formatWindowCountdown } from '../../lib/premier';
-import { MapPing, MotionRail, SnakeLine, StatusBadge, TacticalGrid, UltrawideClampLines } from '../motion/MotionPrimitives';
+import { useState } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
+import { JerseyLightbox } from '../ui/JerseyLightbox';
+import { players } from '../../data/players';
 
-const jerseyViews = {
-  front: {
-    label: 'Frente',
-    src: '/assets/jersey/frontjersey.webp',
-    alt: 'Jersey SHUSH vista de frente',
-  },
-  back: {
-    label: 'Verso',
-    src: '/assets/jersey/backjersey.webp',
-    alt: 'Jersey SHUSH vista de costas',
-  },
+const views = {
+  front: { label: 'Frente', src: '/assets/jersey/frontjersey.webp', alt: 'Jersey SHUSH vista de frente' },
+  back: { label: 'Verso', src: '/assets/jersey/backjersey.webp', alt: 'Jersey SHUSH vista de costas' },
 } as const;
 
-type JerseyView = keyof typeof jerseyViews;
-
 export function HeroShowcase() {
-  const [view, setView] = useState<JerseyView>('front');
-  const reduceMotion = useReducedMotion();
-  const active = jerseyViews[view];
-  const state = calculatePublicMatchDayState(activePremierSeason);
-  const week = 'week' in state ? state.week : null;
-  const day = 'day' in state ? state.day : null;
-  const convocados = week ? getPlayersByIds(week.convocados).slice(0, 5) : [];
-  const meta = week && day ? `${week.map ?? 'Mapa por definir'} · ${formatDate(day.date)} · ${day.windowStart}-${day.windowEnd}` : state.detail;
-  const countdown = day ? formatWindowCountdown(day) : 'A atualizar';
-
+  const [view, setView] = useState<keyof typeof views>('front');
+  const [expanded, setExpanded] = useState(false);
   return (
-    <section id="top" className="hero-stage home-identity-stage relative overflow-hidden px-5 pb-8 pt-24">
-      <div className="absolute inset-0 serpent-texture" aria-hidden="true" />
-      <div className="hero-vignette" aria-hidden="true" />
-      <div className="serpent-trail trail-one" aria-hidden="true" />
-      <div className="serpent-trail trail-two" aria-hidden="true" />
-      <TacticalGrid className="hero-tactical-grid" />
-      <UltrawideClampLines />
-
-      <motion.p
-        aria-hidden="true"
-        className="ghost-word"
-        initial={reduceMotion ? false : { opacity: 0, scale: 0.92, y: 26 }}
-        animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 1.05, ease: [0.16, 1, 0.3, 1] }}
-      >
-        SHUSH
-      </motion.p>
-
-      <div className="hero-shell is-identity">
-        <motion.div
-          className="hero-copy identity"
-          initial={reduceMotion ? false : { opacity: 0, y: 24 }}
-          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-        >
-          <span className="section-kicker">SHUSH</span>
-          <h1>SHUSH</h1>
-          <MotionRail className="hero-title-rail" />
-          <p>Gaming, Premier e creators no mesmo sítio. Sem barulho. Só rounds.</p>
-
-          <div className="hero-status-strip" aria-label="Estado atual SHUSH">
-            <StatusBadge pulse>
-              <Radio aria-hidden="true" className="h-4 w-4" />
-              {state.title}
-            </StatusBadge>
-            <strong>{meta}</strong>
-            {week?.map ? <MapPing label={`Mapa ${week.map}`} /> : null}
+    <section id="top" className="opening" aria-labelledby="hero-title">
+      <div className="shell opening-grid">
+        <div className="opening-label"><span className="section-kicker">SHUSH / Valorant + Creators</span><span className="mono">Dentro e fora do servidor</span></div>
+        <div className="opening-copy">
+          <h1 id="hero-title" className="hero-copy-enter"><span>Sem barulho.</span> <span className="opening-accent">Só rounds.</span></h1>
+          <p>Valorant. Creators. Uma camisola.<br />Sete jogadores com a mesma assinatura.</p>
+          <div className="action-row">
+            <Button href="/esports/valorant/roster">Conhecer o roster</Button>
+            <Button href="/esports/valorant/premier" variant="secondary">Match Center</Button>
           </div>
-
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Button href="/esports/valorant/premier">Acompanhar Premier</Button>
-            <Button href="/esports/valorant/roster" variant="secondary">
-              Ver roster
-            </Button>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="hero-mini-card"
-          variants={reduceMotion ? undefined : motionPresets.panel}
-          initial={reduceMotion ? false : 'hidden'}
-          animate={reduceMotion ? undefined : 'visible'}
-        >
-          <SnakeLine className="hero-mini-snake" />
-          <span>
-            <Users aria-hidden="true" className="h-4 w-4" />
-            Now panel
-          </span>
-          <strong>{state.title}</strong>
-          <p>{meta}</p>
-          <div className="now-panel-meta">
-            <small>{countdown}</small>
-            <small>{convocados.length > 0 ? `${convocados.length} convocados` : 'Convocados a atualizar'}</small>
-          </div>
-          {convocados.length > 0 ? (
-            <div className="now-panel-lineup" aria-label="Convocados">
-              {convocados.map((player) => (
-                <span key={player.id}>
-                  {player.displayName}
-                  <small>{player.roles[0]}</small>
-                </span>
-              ))}
-            </div>
-          ) : null}
-          <a href="#match-day">Ver estado vivo</a>
-        </motion.div>
-
-        <motion.div
-          className="hero-product is-secondary"
-          initial={reduceMotion ? false : { opacity: 0, scale: 0.84, y: 42, rotateX: 8 }}
-          animate={reduceMotion ? undefined : { opacity: 1, scale: 1, y: [0, -10, 0], rotateX: 0 }}
-          transition={
-            reduceMotion
-              ? undefined
-              : {
-                  opacity: { duration: 0.55 },
-                  scale: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
-                  rotateX: { duration: 0.9, ease: [0.16, 1, 0.3, 1] },
-                  y: { duration: 7.5, repeat: Infinity, ease: 'easeInOut' },
-                }
-          }
-        >
-          <div className="jersey-orbit">
-            <div className="jersey-aura" aria-hidden="true" />
-            <AnimatePresence mode="wait" initial={!reduceMotion}>
-              <motion.img
-                key={view}
-                src={active.src}
-                alt={active.alt}
-                width="1280"
-                height="1280"
-                fetchPriority="high"
-                decoding="async"
-                className="jersey-hero-image"
-                initial={reduceMotion ? false : motionPresets.jerseySwap.initial}
-                animate={reduceMotion ? undefined : motionPresets.jerseySwap.animate}
-                exit={reduceMotion ? undefined : motionPresets.jerseySwap.exit}
-              />
-            </AnimatePresence>
-            <div className="pedestal" aria-hidden="true" />
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="hero-switcher"
-          initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-          animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.48 }}
-        >
-          <span>Jersey / Clothing</span>
-          <div className="grid grid-cols-2 gap-2">
-            {(Object.keys(jerseyViews) as JerseyView[]).map((key) => (
-              <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)} className={`hero-view-button ${view === key ? 'is-active' : ''}`}>
-                {jerseyViews[key].label}
-              </button>
-            ))}
-          </div>
-          <AppLink href="/products/jersey" className="hero-product-link">
-            Pedido manual
+          <AppLink className="opening-team" href="/esports/valorant/roster" aria-label="Conhecer os sete jogadores da SHUSH">
+            <span className="opening-faces" aria-hidden="true">{players.filter((player) => player.avatar).slice(0, 4).map((player) => <img key={player.id} src={player.avatar} alt="" width="768" height="768" decoding="async" />)}</span>
+            <span><strong>7 jogadores. Uma equipa.</strong><small>Conhece quem entra no lobby ↗</small></span>
           </AppLink>
-        </motion.div>
+        </div>
+        <div className="opening-product hero-product-enter">
+          <div className="opening-product-label"><span className="product-edition">Drop 01</span><span className="mono">A camisola da equipa</span></div>
+          <div className="opening-jersey"><button type="button" className="jersey-zoom-surface" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><img key={view} className="product-swap" src={views[view].src} alt={views[view].alt} width="1254" height="1254" fetchPriority="high" decoding="async" /><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span>↗</span></span></button></div>
+          <div className="opening-controls">
+            <div className="view-control" role="group" aria-label="Vista da jersey">{(Object.keys(views) as (keyof typeof views)[]).map((key) => <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)}>{views[key].label}</button>)}</div>
+            <AppLink className="editorial-link" href="/products/jersey">Personalizar <span aria-hidden="true">↗</span></AppLink>
+          </div>
+        </div>
+        <div className="opening-foot"><span className="mono">Sem barulho. Dentro e fora do servidor.</span><a className="editorial-link" href="#home-roster-title">Explorar a SHUSH <span aria-hidden="true">↓</span></a></div>
       </div>
+      {expanded ? <JerseyLightbox view={view} onViewChange={setView} onClose={() => setExpanded(false)}><img src={views[view].src} alt={views[view].alt} width="1254" height="1254" decoding="async" /></JerseyLightbox> : null}
     </section>
   );
 }

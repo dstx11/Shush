@@ -1,0 +1,119 @@
+name: Validate site
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Premier logic
+        run: pnpm run test:premier
+
+      - name: Competitive profiles
+        run: pnpm run test:profiles
+
+      - name: Drop configurations
+        run: pnpm run test:drop
+
+      - name: Asset integrity
+        run: pnpm run check:assets
+
+      - name: Internal links
+        run: pnpm run check:links
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Validate dist
+        run: pnpm run validate:dist
+
+      - name: Bundle budget
+        run: pnpm run check:bundle
+
+      - name: Static deploy smoke
+        shell: bash
+        run: |
+          test -f dist/index.html
+          test -f dist/_headers
+          test -f dist/_redirects
+          test -f dist/robots.txt
+          test -f dist/sitemap.xml
+          test -f dist/esports/valorant/premier.html
+          test -f dist/esports/valorant/roster.html
+          test -f dist/content.html
+          test -f dist/products/jersey.html
+          test -f dist/company.html
+          grep -q 'lang="pt-PT"' dist/index.html
+          grep -q 'Content-Security-Policy' dist/_headers
+          grep -Fq '<title>Premier — SHUSH</title>' dist/esports/valorant/premier.html
+          grep -Fq 'https://shush.pt/esports/valorant/premier' dist/esports/valorant/premier.html
+          grep -Fq '<title>Drop 01 — SHUSH</title>' dist/products/jersey.html
+          ! grep -Fq '/* /index.html 200' dist/_redirects
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium webkit
+      - run: pnpm run build
+      - name: Responsive and interaction QA
+        run: pnpm run test:browser
+      - name: Cloudflare preview HTTP smoke
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          SHUSH_PREVIEW_BRANCH: ${{ github.head_ref }}
+        run: pnpm run check:preview
+      - name: Save screenshots and report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: responsive-qa
+          path: |
+            test-results/
+            playwright-report/
+          retention-days: 14

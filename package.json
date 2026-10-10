@@ -5,26 +5,38 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/clean-dist.mjs && tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "typecheck": "tsc -b --pretty"
+    "typecheck": "tsc -b --pretty",
+    "check:bundle": "node scripts/check-build-budget.mjs",
+    "validate:dist": "node scripts/validate-dist.mjs",
+    "check:assets": "node scripts/check-assets.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "test:premier": "node scripts/test-premier.mjs",
+    "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run test:profiles && pnpm run test:drop && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle",
+    "test:profiles": "node scripts/test-competitive-profiles.mjs",
+    "test:browser": "playwright test",
+    "check:preview": "node scripts/check-preview.mjs",
+    "test:drop": "node scripts/test-drop-config.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.109.0",
-    "lucide-react": "^1.22.0",
-    "motion": "^12.42.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1"
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/vite": "^4.3.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
-    "sharp": "^0.35.2",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
     "vite": "^8.1.0"
+  },
+  "packageManager": "pnpm@10.34.6",
+  "engines": {
+    "node": ">=22"
   }
 }

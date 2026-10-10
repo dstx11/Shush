@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://shush.pt/</loc></url>
-  <url><loc>https://shush.pt/esports</loc></url>
-  <url><loc>https://shush.pt/esports/valorant</loc></url>
   <url><loc>https://shush.pt/esports/valorant/premier</loc></url>
   <url><loc>https://shush.pt/esports/valorant/roster</loc></url>
-  <url><loc>https://shush.pt/esports/valorant/results</loc></url>
-  <url><loc>https://shush.pt/esports/valorant/tournaments</loc></url>
   <url><loc>https://shush.pt/content</loc></url>
-  <url><loc>https://shush.pt/content/more</loc></url>
-  <url><loc>https://shush.pt/content/th0maz7</loc></url>
-  <url><loc>https://shush.pt/products</loc></url>
   <url><loc>https://shush.pt/products/jersey</loc></url>
-  <url><loc>https://shush.pt/products/jersey/custom</loc></url>
   <url><loc>https://shush.pt/company</loc></url>
-  <url><loc>https://shush.pt/company/partners</loc></url>
-  <url><loc>https://shush.pt/company/contact</loc></url>
 </urlset>

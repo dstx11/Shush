@@ -1,35 +1,45 @@
-﻿import { motion, useReducedMotion } from 'motion/react';
-import type { ReactNode } from 'react';
-import { motionPresets } from '../../lib/motion';
+import { useEffect, useRef, type ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 
 type PageTransitionProps = {
   children: ReactNode;
+  initialNavigation: boolean;
 };
 
-export function PageTransition({ children }: PageTransitionProps) {
-  const reduceMotion = useReducedMotion();
+export function PageTransition({ children, initialNavigation }: PageTransitionProps) {
+  const { pathname, hash } = useLocation();
+  const firstNavigation = useRef(initialNavigation);
+  const hasCommitted = useRef(false);
 
-  return (
-    <motion.div
-      className="route-frame"
-      initial={reduceMotion ? false : motionPresets.page.initial}
-      animate={reduceMotion ? undefined : motionPresets.page.animate}
-      exit={reduceMotion ? undefined : motionPresets.page.exit}
-      transition={reduceMotion ? undefined : motionPresets.page.transition}
-    >
-      <motion.span
-        aria-hidden="true"
-        className="page-wipe"
-        variants={reduceMotion ? undefined : motionPresets.pageWipe}
-        initial={reduceMotion ? false : 'initial'}
-        animate={reduceMotion ? undefined : 'animate'}
-        exit={reduceMotion ? undefined : 'exit'}
-      />
-      <motion.span aria-hidden="true" className="route-top-bar" variants={reduceMotion ? undefined : motionPresets.railDraw} initial={reduceMotion ? false : 'hidden'} animate={reduceMotion ? undefined : 'visible'} />
-      <svg className="route-snake" viewBox="0 0 420 42" aria-hidden="true" focusable="false">
-        <motion.path d="M8 28 C78 4, 118 42, 184 20 S303 2, 412 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" variants={reduceMotion ? undefined : motionPresets.snakeLine} initial={reduceMotion ? false : 'hidden'} animate={reduceMotion ? undefined : 'visible'} />
-      </svg>
-      {children}
-    </motion.div>
-  );
+  // This effect runs after Suspense commits the loaded page, including on a
+  // slow first visit. Anchors and keyboard focus cannot race the route import.
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const isInitialCommit = firstNavigation.current && !hasCommitted.current;
+      hasCommitted.current = true;
+      // A slow initial route must not steal focus from a visitor who has
+      // already opened/closed the header menu. Subsequent SPA routes still
+      // move focus to their content after the lazy page commits.
+      if (isInitialCommit && document.activeElement !== document.body &&
+          document.activeElement !== document.getElementById('main-content')) return;
+      let anchor = hash.slice(1);
+      try {
+        anchor = decodeURIComponent(anchor);
+      } catch {
+        // A malformed URL fragment should never break navigation.
+      }
+      const target = anchor ? document.getElementById(anchor) : null;
+      if (target) {
+        target.scrollIntoView({ behavior: 'instant', block: 'start' });
+        if (!target.hasAttribute('tabindex')) target.tabIndex = -1;
+        target.focus({ preventScroll: true });
+      } else {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        document.getElementById('main-content')?.focus({ preventScroll: true });
+      }
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [pathname, hash]);
+
+  return <div key={pathname} className="route-frame route-enter">{children}</div>;
 }

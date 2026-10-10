@@ -3,9 +3,11 @@
 ## Project Purpose
 This repository is the SHUSH website. The root project is now the production source for a Vite + React + TypeScript + Tailwind CSS static site.
 
-Final site sections:
+Final public areas:
 - Home
+- Premier
 - Roster
+- Creators
 - Drop 01
 - About
 
@@ -31,8 +33,7 @@ Use only:
 - React
 - TypeScript
 - Tailwind CSS
-- Framer Motion
-- lucide-react
+- React Router
 
 Do not add:
 - Next.js
@@ -94,5 +95,7 @@ Run from the project root:
 pnpm install
 pnpm run typecheck
 pnpm run build
+pnpm run validate:dist
+pnpm run check:bundle
 pnpm run preview
 ```
