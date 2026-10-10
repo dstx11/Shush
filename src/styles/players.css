@@ -70,6 +70,7 @@
 .character-controls button:hover { background: var(--surface-2); }
 .selection-help { font-size: .7rem; color: var(--muted); margin-right: 1rem; }
 @media (max-width: 1050px) {
+ .character-spotlight::before { display: none; }
  .character-spotlight { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-areas: 'identity identity' 'portrait info' 'selector selector'; }
  .character-identity { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 0 2rem; padding: 0 0 1rem; }
  .character-identity .section-kicker { grid-column: 1 / -1; }
@@ -110,3 +111,5 @@
  @keyframes orbit-arrive { from { opacity: 0; transform: rotate(-8deg) scale(.93); } to { opacity: .5; transform: rotate(5deg); } }
  @keyframes profile-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 }
+
+.character-copy .player-drop-link { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding-top: .8rem; }

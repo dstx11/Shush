@@ -56,10 +56,15 @@ test('Loading: branded route fallback is removed as soon as the route is ready',
   await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/', { waitUntil: 'commit' });
   await expect(page.getByRole('link', { name: 'Recarregar página' })).toBeVisible();
+  await expect(page.locator('.loading-emblem')).toBeVisible();
   releaseEntry();
   await expect(page.getByRole('link', { name: 'Recarregar página' })).toHaveCount(0);
   await expect(page.locator('.shush-loading')).toBeVisible();
   await expect(page.getByText('O silêncio antes do round.')).toBeVisible();
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'loading-turn');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'none');
   // WebKit waits for document load before capture; the intentionally held module prevents it.
   // Keep the loading assertions above and release/removal assertions below on every engine.
   if (browserName !== 'webkit') await page.screenshot({ path: testInfo.outputPath('loading.png') });

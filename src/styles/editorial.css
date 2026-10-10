@@ -206,4 +206,3 @@ body { background: var(--ink); }
 .home-competition .verified-match { background: transparent; border-radius: 0; border-width: 1px 0 0; padding-inline: 0; }
 .home-competition .verified-match-source { border: 0; }
 .home-competition .verified-match-score { padding-block: 1rem; }
-.player-drop-link { display: flex !important; justify-content: space-between; border-top: 1px solid var(--line); padding-top: .8rem; }

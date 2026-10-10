@@ -31,6 +31,7 @@ export const players: Player[] = [
     id: 'more',
     displayName: 'More',
     initials: 'MR',
+    avatar: '/assets/avatars/more.webp',
     number: '02',
     roles: ['Sentinela', 'Iniciador'],
     isCreator: true,
