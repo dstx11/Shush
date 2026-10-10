@@ -17,7 +17,7 @@ export function HeroShowcase() {
       <div className="shell opening-grid">
         <div className="opening-label"><span className="section-kicker">SHUSH / Valorant + Creators</span><span className="mono">Dentro e fora do servidor</span></div>
         <div className="opening-copy">
-          <h1 id="hero-title" className="hero-copy-enter"><span>Sem<br />barulho.</span> <span className="opening-accent">Só rounds.</span></h1>
+          <h1 id="hero-title" className="hero-copy-enter"><span>Sem barulho.</span> <span className="opening-accent">Só rounds.</span></h1>
           <p>Valorant. Creators. Uma camisola.<br />Sete jogadores com a mesma assinatura.</p>
           <div className="action-row">
             <Button href="/esports/valorant/roster">Conhecer o roster</Button>

@@ -1,5 +1,7 @@
 # SHUSH campaign redesign — October 2026
 
+The current visual direction is documented in [the design system](design-system.md). The 10 October refinement replaces the earlier pale campaign panels with a shared warm charcoal/plum surface system, soft lavender actions, consistent hierarchy and rounded components across all six routes. The earlier notes below describe the preceding campaign iteration and preserved functionality.
+
 The opening now uses a pale lavender campaign surface, large black type, a purple accent and the real jersey on a dark product stage. The home page introduces the seven players first, then the two creators, the dated Premier record and the Drop.
 
 The roster pairs a large player portrait with a light profile panel. All seven player selectors remain before the selected profile, including in keyboard order. Creators have dedicated photo/platform cards. The Drop uses a light editing surface with white inputs, a dark jersey preview and the existing manual request flow. About and Premier use light panels to give the information more contrast.

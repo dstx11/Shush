@@ -1,11 +1,11 @@
 /* Available before JavaScript and shared by route loading. */
-html, body { margin: 0; background: #08080b; }
-.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; box-sizing: border-box; color: #f3eff8; background: radial-gradient(ellipse at center, #241238, #08080b 68%); text-align: center; font-family: system-ui, sans-serif; }
+html, body { margin: 0; background: #15131a; }
+.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; box-sizing: border-box; color: #f3eef4; background: radial-gradient(ellipse at center, #302637, #15131a 68%); text-align: center; font-family: Manrope, system-ui, sans-serif; }
 .shush-loading img { width: 10rem; height: auto; }
-.shush-loading p { margin: 0; color: #c6b7d8; font-size: .875rem; letter-spacing: .035em; }
-.shush-loading strong { font-size: clamp(1.5rem, 5vw, 2.5rem); letter-spacing: -.05em; }
-.loading-line { display: block; width: 10rem; height: 2px; background: #49315e; overflow: hidden; }
-.loading-line::after { content: ''; display: block; width: 45%; height: 100%; background: #c6a9ff; animation: loading-scan 1.4s ease-in-out infinite alternate; }
-.shush-loading a { color: #c6b7d8; font-size: .75rem; padding: .75rem; }
+.shush-loading p { margin: 0; color: #b9b0c3; font-size: .875rem; letter-spacing: .035em; }
+.shush-loading strong { font-size: clamp(1.5rem, 5vw, 2.5rem); letter-spacing: -.035em; }
+.loading-line { display: block; width: 10rem; height: 3px; border-radius: 1rem; background: #49315e; overflow: hidden; }
+.loading-line::after { content: ''; display: block; width: 45%; height: 100%; background: #c4afe9; animation: loading-scan 1.4s ease-in-out infinite alternate; }
+.shush-loading a { color: #b9b0c3; font-size: .75rem; padding: .75rem; }
 @keyframes loading-scan { from { transform: translateX(-100%); } to { transform: translateX(220%); } }
 @media (prefers-reduced-motion: reduce) { .loading-line::after { animation: none; width: 100%; } }
