@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Reviewed Linux Chromium baselines: campaign redesign, CI #158 onward.
+// Reviewed Linux Chromium baselines: warm editorial design, CI #168 captures.
 // Changes require deliberate review of the actual screenshots.
 const regions = [
   ['home-hero', '/', '.opening'],
