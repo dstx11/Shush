@@ -15,6 +15,7 @@ import './styles/gallery.css';
 import './styles/about.css';
 import './styles/footer.css';
 import './styles/experience.css';
+import './styles/next.css';
 
 const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
 

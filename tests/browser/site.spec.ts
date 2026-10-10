@@ -88,14 +88,15 @@ test('roster: seven confirmed accounts, selection, sharing and Unicode', async (
     const url = new URL((await link.getAttribute('href'))!);
     expect(url.origin).toBe('https://tracker.gg');
     expect(decodeURIComponent(url.pathname.split('/')[4])).toBe(riotId);
-    expect(url.searchParams.get('playlist')).toBe(id === 'dstx' ? 'competitive' : 'premier');
-    expect(url.searchParams.get('season')).toBe(id === 'dstx' ? '8102cd81-43a0-d0d7-bd59-47b8fe9bed1b' : null);
+    expect(url.searchParams.get('playlist')).toBe('competitive');
+    expect(url.pathname.endsWith('/matches')).toBe(true);
+    expect(url.searchParams.get('season')).toBeNull();
     await expect(link).toHaveAttribute('target', '_blank');
     await expect(link).toHaveAttribute('rel', /noopener/);
   }
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('dstx');
-  await expect(page.getByText('Ligação à temporada selecionada no perfil, não à temporada atual.')).toBeVisible();
+  await expect(page.getByText('Histórico Competitive no Tracker.gg.')).toBeVisible();
   await page.getByRole('button', { name: 'Jogador anterior' }).press('Enter');
   await expect(page.locator('#selected-player-name')).toHaveText('Levi');
   await page.reload();

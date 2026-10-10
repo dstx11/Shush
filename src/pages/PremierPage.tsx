@@ -6,7 +6,8 @@ import { activePremierSeason as season, type MatchResult, type PremierWeek } fro
 import { downloadText } from '../lib/browser-transfer';
 import { buildPremierCalendar } from '../lib/premier-calendar';
 import { usePremierClock } from '../lib/use-premier-clock';
-import { calculatePremierScore, calculatePublicMatchDayState, formatDate, formatResultLine } from '../lib/premier';
+import { calculatePublicMatchDayState, formatDate, formatResultLine } from '../lib/premier';
+import { RecentMatches } from '../components/competition/RecentMatches';
 
 const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8';
 const filters = [{ id: 'all', label: 'Todas' }, { id: 'results', label: 'Com resultado' }, { id: 'windows', label: 'Janelas publicadas' }] as const;
@@ -27,10 +28,8 @@ function ResultRow({ result }: { result: MatchResult }) {
 export function PremierPage() {
   const now = usePremierClock();
   const state = calculatePublicMatchDayState(season, now);
-  const score = calculatePremierScore(season);
   const [filter, setFilter] = useState<Filter>('all');
   const [feedback, setFeedback] = useState('');
-  const completed = season.results.filter((result) => result.outcome === 'win' || result.outcome === 'loss');
   const visibleWeeks = season.weeks.filter((week) => filter === 'all' || (filter === 'results' ? weekResults(week).length > 0 : week.selectedDays.length > 0));
   const exportCalendar = (weekId?: string) => {
     try {
@@ -41,11 +40,11 @@ export function PremierPage() {
   return (
     <div className="match-page">
       <section className="shell match-opening" aria-labelledby="premier-title">
-        <div className="match-heading"><div><span className="section-kicker">Valorant / Premier / Junho — Julho 2026</span><h1 id="premier-title">Match<br /><span>Center.</span></h1><p className="body-copy">{season.name}. O percurso publicado pela equipa, round a round.</p><div className="action-row"><a href="#calendar" className="editorial-link">Jornadas <span aria-hidden="true">↓</span></a><a href="#results" className="editorial-link">Resultados <span aria-hidden="true">↓</span></a><Button href={trackerTeamUrl} target="_blank" rel="noopener noreferrer" variant="secondary">Tracker da equipa</Button></div></div>
-          <div className="match-score"><span className="mono">Pontuação publicada</span><strong>{score}<small> / {season.qualificationPoints}</small></strong><meter min={0} max={season.qualificationPoints} value={Math.min(score, season.qualificationPoints)} aria-label="Pontuação publicada face ao limiar de qualificação" /><p>O limiar é de {season.qualificationPoints} pontos.<br />A pontuação publicada pode estar incompleta.</p></div>
+        <div className="match-heading"><div><span className="section-kicker">Valorant / Premier / Junho — Julho 2026</span><h1 id="premier-title">Match<br /><span>Center.</span></h1><p className="body-copy">{season.name}. Últimos encontros verificados e arquivo de jornadas da equipa.</p><div className="action-row"><a href="#calendar" className="editorial-link">Jornadas <span aria-hidden="true">↓</span></a><a href="#results" className="editorial-link">Resultados <span aria-hidden="true">↓</span></a><Button href={trackerTeamUrl} target="_blank" rel="noopener noreferrer" variant="secondary">Tracker da equipa</Button></div></div>
+          <div className="match-score match-source-note"><span className="mono">SHUSH / REGISTO COMPETITIVO</span><strong>Premier.</strong><p>Últimas partidas verificadas no Tracker.gg, com data e adversário. Os resultados da antiga temporada interna continuam disponíveis no arquivo abaixo.</p></div>
         </div>
         <div className="season-state"><span className="state-label">{state.title}</span><p>{state.detail}</p></div>
-        <dl className="match-totals"><div><dt>Resultados publicados</dt><dd>{completed.length}</dd></div><div><dt>Vitórias</dt><dd>{completed.filter((result) => result.outcome === 'win').length}<span>W</span></dd></div><div><dt>Derrotas</dt><dd>{completed.filter((result) => result.outcome === 'loss').length}<span>L</span></dd></div><div><dt>Fase registada</dt><dd className="period-value">Jun — Jul <span>2026</span></dd></div></dl>
+        <RecentMatches />
       </section>
       <div className="shell match-body">
         <section id="calendar" className="match-calendar" aria-labelledby="calendar-title">

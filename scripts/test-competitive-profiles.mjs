@@ -34,9 +34,9 @@ try {
     assert.equal(decodeURIComponent(new URL(profile.trackerUrl).pathname.split('/')[4]), riotId);
   }
   assert.equal(getCompetitiveProfile('unknown-player'), undefined);
-  assert.equal(getCompetitiveProfile('dstx').seasonId, '8102cd81-43a0-d0d7-bd59-47b8fe9bed1b');
-  assert.equal(getCompetitiveProfile('dstx').playlist, 'competitive');
-  assert.ok(competitiveProfiles.filter((profile) => profile.playerId !== 'dstx').every((profile) => profile.playlist === 'premier' && !profile.seasonId));
+  assert.ok(competitiveProfiles.every((profile) => profile.playlist === 'competitive' && !profile.seasonId));
+  assert.ok(competitiveProfiles.every((profile) => new URL(profile.trackerUrl).pathname.endsWith('/matches')));
+  assert.ok(competitiveProfiles.every((profile) => new URL(profile.trackerUrl).searchParams.get('playlist') === 'competitive'));
 
   const valid = getCompetitiveProfile('catty');
   const invalid = [

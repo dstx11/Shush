@@ -1,44 +1,38 @@
-import { useState } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
-import { JerseyLightbox } from '../ui/JerseyLightbox';
 import { players } from '../../data/players';
 
-const views = {
-  front: { label: 'Frente', src: '/assets/jersey/frontjersey.webp', alt: 'Jersey SHUSH vista de frente' },
-  back: { label: 'Verso', src: '/assets/jersey/backjersey.webp', alt: 'Jersey SHUSH vista de costas' },
-} as const;
-
 export function HeroShowcase() {
-  const [view, setView] = useState<keyof typeof views>('front');
-  const [expanded, setExpanded] = useState(false);
+  const featured = players.filter((player) => player.avatar).slice(0, 3);
   return (
-    <section id="top" className="opening" aria-labelledby="hero-title">
+    <section id="top" className="opening opening-next" aria-labelledby="hero-title">
       <div className="shell opening-grid">
-        <div className="opening-label"><span className="section-kicker">SHUSH / Valorant + Creators</span><span className="mono">Dentro e fora do servidor</span></div>
+        <div className="opening-label"><span className="section-kicker">SHUSH / VALORANT + CREATORS</span><span className="mono">O coletivo por trás dos rounds.</span></div>
         <div className="opening-copy">
-          <h1 id="hero-title" className="hero-copy-enter"><span>Sem barulho.</span> <span className="opening-accent">Só rounds.</span></h1>
-          <p>Valorant. Creators. Uma camisola.<br />Sete jogadores com a mesma assinatura.</p>
+          <p className="opening-eyebrow">AQUI JOGA-SE EM EQUIPA.</p>
+          <h1 id="hero-title" className="hero-copy-enter"><span>Sem barulho.</span><span className="opening-accent">Só rounds.</span></h1>
+          <p>Uma equipa de VALORANT, pessoas reais e uma identidade que não fica no servidor.</p>
           <div className="action-row">
-            <Button href="/esports/valorant/roster">Conhecer o roster</Button>
-            <Button href="/esports/valorant/premier" variant="secondary">Match Center</Button>
+            <Button href="/esports/valorant/roster">Conhecer os jogadores</Button>
+            <Button href="/esports/valorant/premier" variant="secondary">Últimas partidas</Button>
           </div>
-          <AppLink className="opening-team" href="/esports/valorant/roster" aria-label="Conhecer os sete jogadores da SHUSH">
+          <AppLink className="opening-team" href="/esports/valorant/roster">
             <span className="opening-faces" aria-hidden="true">{players.filter((player) => player.avatar).slice(0, 4).map((player) => <img key={player.id} src={player.avatar} alt="" width="768" height="768" decoding="async" />)}</span>
-            <span><strong>7 jogadores. Uma equipa.</strong><small>Conhece quem entra no lobby ↗</small></span>
+            <span><strong>7 jogadores. Uma equipa.</strong><small>Descobre quem está deste lado do ecrã ↗</small></span>
           </AppLink>
         </div>
-        <div className="opening-product hero-product-enter">
-          <div className="opening-product-label"><span className="product-edition">Drop 01</span><span className="mono">A camisola da equipa</span></div>
-          <div className="opening-jersey"><button type="button" className="jersey-zoom-surface" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><img key={view} className="product-swap" src={views[view].src} alt={views[view].alt} width="1254" height="1254" fetchPriority="high" decoding="async" /><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span>↗</span></span></button></div>
-          <div className="opening-controls">
-            <div className="view-control" role="group" aria-label="Vista da jersey">{(Object.keys(views) as (keyof typeof views)[]).map((key) => <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)}>{views[key].label}</button>)}</div>
-            <AppLink className="editorial-link" href="/products/jersey">Personalizar <span aria-hidden="true">↗</span></AppLink>
+        <div className="opening-squad" aria-label="Destaque de jogadores da SHUSH">
+          <div className="opening-squad-top"><span className="section-kicker">PLAYER SELECT / SHUSH</span><span className="mono">01 — 07</span></div>
+          <div className="opening-squad-art">
+            {featured.map((player, index) => <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`} className={`opening-squad-player is-${index}`} aria-label={`Conhecer ${player.displayName}`}>
+              <img src={player.avatar} alt="" width="768" height="768" decoding="async" fetchPriority={index === 1 ? 'high' : 'auto'} />
+              <span className="opening-squad-number">{player.number}</span><strong>{player.displayName}</strong>
+            </AppLink>)}
           </div>
+          <div className="opening-squad-bottom"><span className="mono">PESSOAS PRIMEIRO. JOGO SEMPRE.</span><AppLink className="editorial-link" href="/esports/valorant/roster">Explorar roster ↗</AppLink></div>
         </div>
-        <div className="opening-foot"><span className="mono">Sem barulho. Dentro e fora do servidor.</span><a className="editorial-link" href="#home-roster-title">Explorar a SHUSH <span aria-hidden="true">↓</span></a></div>
+        <div className="opening-foot"><span className="mono">SHUSH / Uma identidade, dentro e fora do jogo.</span><a className="editorial-link" href="#home-roster-title">Explorar <span aria-hidden="true">↓</span></a></div>
       </div>
-      {expanded ? <JerseyLightbox view={view} onViewChange={setView} onClose={() => setExpanded(false)}><img src={views[view].src} alt={views[view].alt} width="1254" height="1254" decoding="async" /></JerseyLightbox> : null}
     </section>
   );
 }
