@@ -19,3 +19,14 @@ No automated statistics integration: Tracker staff confirmed on 2026-01-25 that 
 Data block: TypeScript and profile tests passed locally. The installed pnpm runner tries to replace the preinstalled dependency tree before scripts; use `pnpm_config_verify_deps_before_run=false` locally to run the existing dependencies without changing them. CI retains the repository's pinned pnpm installation.
 
 Visual review, browser matrix and branch deployment are pending until the implementation is complete. Production and master remain unchanged.
+
+## V4 implementation and first visual review
+
+- `0ce9632`: uniform Competitive URLs, strict mappings and sourced manual match snapshot.
+- `6e46cd4`: Character Select 3.0, large portrait, individual accent, mobile portrait/selector/details order, ArrowLeft/ArrowRight/Home/End controls, retained query/share/copy behavior. Consolidated duplicate roster styles into players.css.
+- `b648a51`: player-led Home, sourced match cards, separate collapsible internal calendar, About chapters and real people, creator editorial features, softened Drop controls. Removed retired Home jersey/score styling. Home now preloads the central player, while Drop preloads the jersey.
+- Local `pnpm run validate` passed with the runner setting described above. No dependencies were added. After removing the stale calendar status from the header, total production JS is 98.66 KiB gzip and CSS 13.87 KiB, within the existing budgets.
+- CI run 172: Windows/Linux validation passed; browser suite had 261 passes, 21 intentional viewport-specific skips and 6 expected visual-baseline differences. No functional or automated accessibility failures. Chromium widths 320, 390, 768, 1366, 1920, short landscape, 200%-equivalent reflow and mobile WebKit included.
+- Inspected actual CI screenshots for Home, roster, Premier, About, Creators and Drop, including the narrowest viewport. Home mobile and About desktop/mobile references approved from run 172.
+- Roster reference capture needed repair: iterating lazy portraits scrolled the selector away from the selected player, and a tall element capture composited the fixed header over the portrait. The revised test restores the selected card and captures the full page, preserving actual header placement. Its new captures must be inspected before acceptance.
+- Local browser execution is unavailable because the installed Playwright browser binary is absent. CI supplies the browsers. Direct cloud-browser preview inspection was denied by automatic approval review because the account usage limit was reached; no alternative browser control was attempted. CI screenshots and native Cloudflare deployment checks remain the evidence sources.

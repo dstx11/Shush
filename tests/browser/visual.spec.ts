@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Reviewed Linux Chromium baselines: warm editorial design, CI #168 captures.
+// Linux Chromium baselines are reviewed from CI captures before replacement.
 // Changes require deliberate review of the actual screenshots.
 const regions = [
   ['home-hero', '/', '.opening'],
@@ -23,7 +23,14 @@ for (const [name, path, selector] of regions) {
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
     }
-    if (name === 'home-hero') {
+    if (name === 'player-profile') {
+      // Loading every lazy portrait scrolls the strip. Restore the actual selected player.
+      await page.locator('.player-card-select[aria-pressed="true"]').scrollIntoViewIfNeeded();
+      await page.evaluate(() => window.scrollTo(0, 0));
+      // A tall region capture can composite the fixed header over the portrait.
+      // A full-page capture preserves the real header and content positions.
+      await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, animations: 'disabled', maxDiffPixelRatio: .001 });
+    } else if (name === 'home-hero') {
       // A tall element capture can paint off-viewport fixed UI into the hero.
       // Compare the actual visitor viewport, including the header, instead.
       await page.evaluate(() => window.scrollTo(0, 0));
