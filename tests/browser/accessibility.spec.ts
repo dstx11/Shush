@@ -8,7 +8,7 @@ for (const path of routes) {
     await page.goto(path);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
-    if (path.endsWith('/premier')) await page.locator('.match-week').first().locator('summary').click();
+    if (path.endsWith('/premier')) { await page.locator('.legacy-archive > summary').click(); await page.locator('.match-week').first().locator('summary').click(); }
     if (path.endsWith('/roster')) await page.getByRole('group', { name: 'Selecionar jogador' }).getByRole('button').nth(1).click();
     if (path.endsWith('/jersey')) await page.getByRole('button', { name: /Verso/ }).click();
     const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();

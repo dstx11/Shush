@@ -125,7 +125,7 @@ export function DropSection() {
   return (
     <section id="products" className="drop-page" aria-labelledby="drop-title">
       <div className="shell">
-        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Preto. Roxo. O teu nick.<br />Uma camisola com a identidade da SHUSH e a tua personalização.</p></div>
+        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Preto. Roxo. O teu nick.<br />Prepara a tua personalização e guarda o resumo para um pedido manual.</p></div>
         <div className="drop-layout">
           <div id="product-preview" className="audit-drop-gallery">
             <div className="drop-gallery-label"><span className="mono">SHS / Drop 01</span><span className="mono">{views[view].label}</span></div>

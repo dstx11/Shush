@@ -9,6 +9,7 @@ type PageTransitionProps = {
 export function PageTransition({ children, initialNavigation }: PageTransitionProps) {
   const { pathname, hash } = useLocation();
   const firstNavigation = useRef(initialNavigation);
+  const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
 
   // This effect runs after Suspense commits the loaded page, including on a
@@ -41,5 +42,20 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     return () => window.cancelAnimationFrame(frame);
   }, [pathname, hash]);
 
-  return <div key={pathname} className="route-frame route-enter">{children}</div>;
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (media.matches || !('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-arrive');
+        observer.unobserve(entry.target);
+      }
+    }, { threshold: .12 });
+    frameRef.current?.querySelectorAll('.section-heading, .home-player, .home-channel, .home-story, .verified-match, .creator-feature, .about-chapters article, .about-people a, .home-drop-inline').forEach(element => observer.observe(element));
+    const stop = () => { if (media.matches) observer.disconnect(); };
+    media.addEventListener('change', stop);
+    return () => { observer.disconnect(); media.removeEventListener('change', stop); };
+  }, [pathname]);
+
+  return <div ref={frameRef} key={pathname} className="route-frame route-enter">{children}</div>;
 }

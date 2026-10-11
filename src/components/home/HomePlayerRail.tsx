@@ -54,7 +54,6 @@ export function HomePlayerRail() {
       </AppLink>)}
     </div>
     <div className="home-roster-footer">
-      <p className="rail-hint mono">Escolhe um jogador para abrir o perfil e o Tracker.gg.</p>
       {range.previous || range.next ? <div className="roster-rail-controls" role="group" aria-label="Navegar pelos jogadores">
         <span className="mono" aria-label={`Jogadores visíveis: ${range.first} a ${range.last} de ${players.length}`}>{range.first}–{range.last} / {players.length}</span>
         <button type="button" aria-label="Ver jogadores anteriores" aria-controls="home-player-rail" disabled={!range.previous} onClick={() => move(-1)}>←</button>

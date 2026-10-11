@@ -5,10 +5,10 @@ import { players } from '../data/players';
 import { activePremierSeason as season, type MatchResult, type PremierWeek } from '../data/season';
 import { downloadText } from '../lib/browser-transfer';
 import { buildPremierCalendar } from '../lib/premier-calendar';
-import { usePremierClock } from '../lib/use-premier-clock';
-import { calculatePremierScore, calculatePublicMatchDayState, formatDate, formatResultLine } from '../lib/premier';
+import { VerifiedMatches } from '../components/matches/VerifiedMatches';
+import { formatDate, formatResultLine } from '../lib/premier';
 
-const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8';
+const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8/matches';
 const filters = [{ id: 'all', label: 'Todas' }, { id: 'results', label: 'Com resultado' }, { id: 'windows', label: 'Janelas publicadas' }] as const;
 type Filter = typeof filters[number]['id'];
 
@@ -25,12 +25,8 @@ function ResultRow({ result }: { result: MatchResult }) {
 }
 
 export function PremierPage() {
-  const now = usePremierClock();
-  const state = calculatePublicMatchDayState(season, now);
-  const score = calculatePremierScore(season);
   const [filter, setFilter] = useState<Filter>('all');
   const [feedback, setFeedback] = useState('');
-  const completed = season.results.filter((result) => result.outcome === 'win' || result.outcome === 'loss');
   const visibleWeeks = season.weeks.filter((week) => filter === 'all' || (filter === 'results' ? weekResults(week).length > 0 : week.selectedDays.length > 0));
   const exportCalendar = (weekId?: string) => {
     try {
@@ -41,13 +37,11 @@ export function PremierPage() {
   return (
     <div className="match-page">
       <section className="shell match-opening" aria-labelledby="premier-title">
-        <div className="match-heading"><div><span className="section-kicker">Valorant / Premier / Junho — Julho 2026</span><h1 id="premier-title">Match<br /><span>Center.</span></h1><p className="body-copy">{season.name}. O percurso publicado pela equipa, round a round.</p><div className="action-row"><a href="#calendar" className="editorial-link">Jornadas <span aria-hidden="true">↓</span></a><a href="#results" className="editorial-link">Resultados <span aria-hidden="true">↓</span></a><Button href={trackerTeamUrl} target="_blank" rel="noopener noreferrer" variant="secondary">Tracker da equipa</Button></div></div>
-          <div className="match-score"><span className="mono">Pontuação publicada</span><strong>{score}<small> / {season.qualificationPoints}</small></strong><meter min={0} max={season.qualificationPoints} value={Math.min(score, season.qualificationPoints)} aria-label="Pontuação publicada face ao limiar de qualificação" /><p>O limiar é de {season.qualificationPoints} pontos.<br />A pontuação publicada pode estar incompleta.</p></div>
-        </div>
-        <div className="season-state"><span className="state-label">{state.title}</span><p>{state.detail}</p></div>
-        <dl className="match-totals"><div><dt>Resultados publicados</dt><dd>{completed.length}</dd></div><div><dt>Vitórias</dt><dd>{completed.filter((result) => result.outcome === 'win').length}<span>W</span></dd></div><div><dt>Derrotas</dt><dd>{completed.filter((result) => result.outcome === 'loss').length}<span>L</span></dd></div><div><dt>Fase registada</dt><dd className="period-value">Jun — Jul <span>2026</span></dd></div></dl>
+        <div className="match-heading"><div><span className="section-kicker">SHUSH / VALORANT PREMIER</span><h1 id="premier-title">Match Center.</h1><div className="action-row"><a href="#verified-results" className="editorial-link">Ver partidas ↓</a><Button href={trackerTeamUrl} target="_blank" rel="noopener noreferrer" variant="secondary">Tracker da equipa</Button></div></div></div>
+        <section id="verified-results" aria-labelledby="verified-title"><div className="section-index"><h2 id="verified-title">Últimas partidas</h2><span className="mono">Verificação manual · 10 out. 2026</span></div><VerifiedMatches /><p className="match-provenance">Registo manual das partidas disponíveis na fonte na data indicada. Não é uma transmissão de dados em tempo real.</p></section>
       </section>
-      <div className="shell match-body">
+      <details className="shell legacy-archive"><summary>Arquivo interno <span>Jun — Jul 2026</span><span aria-hidden="true">+</span></summary><p className="body-copy">Calendário e registos anteriores da equipa. Não foi confirmada a correspondência com as partidas do Tracker.gg apresentadas acima.</p><AppLink className="editorial-link" href="/?matchday=week-2-day-1#top">Rever Matchday do arquivo · Lotus ↗</AppLink>
+      <div className="match-body">
         <section id="calendar" className="match-calendar" aria-labelledby="calendar-title">
           <div className="section-index"><span className="section-kicker">01 / Jornadas</span><span className="mono">Horários em Lisboa · Europe/Lisbon</span></div>
           <div className="calendar-heading"><h2 id="calendar-title">Fase publicada.</h2><button type="button" className="utility-button" onClick={() => exportCalendar()}>Descarregar calendário (.ics) <span aria-hidden="true">↓</span></button></div>
@@ -69,6 +63,7 @@ export function PremierPage() {
         </section>
         <section id="results" className="match-results" aria-labelledby="results-title"><div className="section-index"><span className="section-kicker">02 / Resultados</span><span className="mono">Dados publicados</span></div><h2 id="results-title">Rounds registados.</h2><div className="result-list">{season.results.length ? season.results.map((result) => <ResultRow key={result.id} result={result} />) : <p className="body-copy">Ainda não existem resultados publicados.</p>}</div><div className="playoff-record"><span className="mono">Play-offs / <time dateTime={season.playoffsDate}>{formatDate(season.playoffsDate)}</time></span><h3>Desfecho por confirmar.</h3>{season.playoffResults.length ? season.playoffResults.map((result) => <ResultRow key={result.id} result={result} />) : <p>Não existe um resultado de play-offs publicado. O calendário encerrado não confirma qualificação, eliminação ou classificação final.</p>}</div></section>
       </div>
+      </details>
     </div>
   );
 }

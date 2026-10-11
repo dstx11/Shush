@@ -51,7 +51,7 @@ expect(index, '<meta name="robots" content="index,follow"', 'index.html robots')
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');
 expect(index, 'property="og:image:alt" content="SHUSH — Sem barulho. Só rounds."', 'root OG image alt');
 expect(index, 'rel="canonical" href="https://shush.pt"', 'root canonical URL');
-expect(index, 'rel="preload" as="image" href="/assets/jersey/frontjersey.webp"', 'hero image preload');
+expect(index, 'rel="preload" as="image" href="/assets/avatars/delcio.webp"', 'hero portrait preload');
 
 expect(notFound, '<meta name="robots" content="noindex,nofollow"', '404 noindex');
 expect(notFound, '<title>404 — SHUSH</title>', '404 title');

@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 
-test('Home: jersey gallery zooms, changes views and restores keyboard focus', async ({ page }, testInfo) => {
-  await page.goto('/');
+test('Drop: jersey gallery zooms, changes views and restores keyboard focus', async ({ page }, testInfo) => {
+  await page.goto('/products/jersey');
   const trigger = page.getByRole('button', { name: 'Ampliar camisola', exact: true });
   await trigger.click();
   const gallery = page.getByRole('dialog', { name: 'A camisola, ao detalhe.' });

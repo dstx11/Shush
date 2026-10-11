@@ -6,7 +6,7 @@ export function ContentPage() {
   return (
     <section id="content-creators" className="creator-page" aria-labelledby="content-title">
       <div className="shell">
-        <div className="page-heading creator-heading"><div><span className="section-kicker">SHUSH / Creators</span><h1 id="content-title">Fora do<br /><span>servidor.</span></h1></div><p>More na Twitch. Th0maz7 no YouTube.<br />Do roster para o teu próximo canal.</p></div>
+        <div className="page-heading creator-heading"><div><span className="section-kicker">SHUSH / Creators</span><h1 id="content-title">Fora do<br /><span>servidor.</span></h1></div></div>
         <div className="creator-features">
           {creators.map((creator, index) => {
             const platform = creator.creatorType === 'twitch' ? 'Twitch' : 'YouTube';
@@ -19,7 +19,6 @@ export function ContentPage() {
               <div className="creator-feature-copy">
                 <span className="platform-label"><span aria-hidden="true">{creator.creatorType === 'twitch' ? '◧' : '▷'}</span> Canal {platform}</span>
                 <h2 id={`creator-${creator.id}`}>{creator.displayName}</h2>
-                <p className="creator-quote">“{creator.quote}”</p>
                 <div className="creator-player-context"><span className="mono">Também no roster</span><p>{creator.roles.join(' / ')}</p></div>
                 <Button className="creator-channel" href={creator.creatorUrl!} target="_blank" rel="noopener noreferrer">Abrir {platform}</Button>
                 <AppLink className="editorial-link creator-roster" href={`/esports/valorant/roster?player=${creator.id}`}>Conhecer no roster <span aria-hidden="true">↗</span></AppLink>
@@ -27,7 +26,7 @@ export function ContentPage() {
             </article>;
           })}
         </div>
-        <div className="creator-closing"><span className="section-kicker">Dentro + fora</span><p>A mesma camisola.<br />Outro ponto de vista.</p><AppLink className="editorial-link" href="/esports/valorant/roster">Conhecer a equipa <span aria-hidden="true">→</span></AppLink></div>
+
       </div>
     </section>
   );
