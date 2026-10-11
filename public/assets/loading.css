@@ -1,4 +1,4 @@
-/* First paint and lazy routes use the same emblem. No timer delays readiness. */
+/* Static/lazy fallbacks use the same emblem without delay. The optional initial intro is separate. */
 html, body { margin: 0; background: #15131a; }
 .shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; box-sizing: border-box; color: #f3eef4; background: #15131a; text-align: center; font-family: Manrope, system-ui, sans-serif; }
 .loading-emblem { position: relative; display: grid; place-items: center; width: clamp(12rem, 45vw, 18rem); aspect-ratio: 1; isolation: isolate; }

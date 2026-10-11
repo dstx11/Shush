@@ -1,18 +1,18 @@
 /* V5: discovery, competition and channels each have their own composition. */
 .home-discover { padding-block: 4rem 6rem; }
 .home-discover h2 { font: 600 1.2rem var(--font-heading); letter-spacing: -.03em; }
-.discovery-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1rem; }
-.discovery-grid > a { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: start; gap: 1.5rem; padding: 2rem; min-width: 0; min-height: 19rem; border: 1px solid var(--line); border-radius: var(--radius-md); text-decoration: none; color: var(--text); }
+.discovery-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1rem 2rem; }
+.discovery-grid > a { position: relative; isolation: isolate; overflow: hidden; display: flex; flex-direction: column; align-items: start; gap: 1.5rem; padding: 1.5rem 0; min-width: 0; min-height: 15rem; border-top: 1px solid var(--line); border-radius: 0; text-decoration: none; color: var(--text); }
 .discovery-grid strong { font: 600 clamp(1.6rem,2.5vw,2.8rem)/1.2 var(--font-heading); letter-spacing: -.04em; }
 .discovery-grid > a > span:last-child { margin-top: auto; font-size: .85rem; color: var(--signal); }
-.discovery-roster { grid-row: span 2; background: #26202e; }
+.discovery-roster { grid-row: span 2; padding-right: 2rem !important; }
 .discovery-mark { font: 800 clamp(6rem,12vw,12rem)/1 var(--font-heading); color: transparent; -webkit-text-stroke: 1px #75618a; letter-spacing: -.09em; }
-.discovery-premier { background: #1e1c23; }
+.discovery-premier { background: transparent; }
 .round-lines { display: flex; gap: .6rem; height: 2.5rem; }
 .round-lines i { width: .65rem; height: 100%; background: #635171; transform: skew(-18deg); }
 .round-lines i:nth-child(2n) { height: 60%; background: var(--signal); }
 .play-mark { color: var(--signal); font-size: 3rem; }
-.discovery-drop { grid-column: 2 / 4; min-height: 14rem !important; background: #241d2c; }
+.discovery-drop { grid-column: 2 / 4; min-height: 10rem !important; background: transparent; }
 .discovery-company { grid-column: 1 / -1; flex-direction: row !important; align-items: center !important; min-height: 7rem !important; }
 .discovery-company > span:last-child { margin: 0 0 0 auto !important; }
 .team-cover-player img { translate: var(--cover-x, 0) var(--cover-y, 0); scale: 1.04; }
@@ -97,7 +97,7 @@
 @media (max-width: 767px) {
  .home-discover { padding-block: 2.5rem 4rem; }
  .discovery-grid { gap: .75rem; }
- .discovery-grid > a { padding: 1.25rem; min-height: 16rem; }
+ .discovery-grid > a { padding: 1.25rem 0; min-height: 14rem; }
  .discovery-grid strong { font-size: clamp(1.2rem,5vw,2rem); }
  .discovery-grid .mono { font-size: .65rem; }
  .discovery-company { flex-direction: column !important; align-items: start !important; }
@@ -114,3 +114,12 @@
  .portrait-depart { inset-block: 1rem; }
 }
 @media (prefers-reduced-motion: reduce) { .portrait-depart { display: none; } .team-cover-player img { translate: none; } }
+/* Give three portraits actual room before the desktop composition becomes narrow. */
+@media (min-width: 768px) and (max-width: 1050px) { .team-opening .opening-grid { grid-template-columns: 1fr; } .team-cover { width: min(100%, 44rem); margin-inline: auto; } }
+@media (max-width: 767px) { .team-cover-player { height: clamp(10.5rem,44vw,15rem); } .team-cover-player.cover-1 { height: clamp(13rem,58vw,19rem); } }
+
+.character-controls { grid-area: controls; }
+.character-spotlight { grid-template-areas: 'identity portrait info' 'selector selector selector' 'controls controls controls'; }
+.character-jersey { display: none; }
+@media (max-width: 1050px) { .character-spotlight { grid-template-areas: 'identity identity' 'portrait info' 'selector selector' 'controls controls'; } .character-jersey { display: block; color: var(--player-accent); grid-column: 1 / -1; } }
+@media (max-width: 767px) { .character-spotlight { grid-template-areas: 'identity' 'portrait' 'controls' 'selector' 'info'; } .character-jersey { margin-top: .5rem; } .character-controls { padding-top: .5rem; } }

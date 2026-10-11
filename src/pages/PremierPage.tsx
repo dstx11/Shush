@@ -5,10 +5,12 @@ import { players } from '../data/players';
 import { activePremierSeason as season, type MatchResult, type PremierWeek } from '../data/season';
 import { downloadText } from '../lib/browser-transfer';
 import { buildPremierCalendar } from '../lib/premier-calendar';
+import { matchSource, verifiedMatches } from '../data/verified-matches';
 import { VerifiedMatches } from '../components/matches/VerifiedMatches';
 import { formatDate, formatResultLine } from '../lib/premier';
 
-const trackerTeamUrl = 'https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8/matches';
+const trackerTeamUrl = matchSource;
+const lastVerification = verifiedMatches.map(match => match.verifiedAt).sort().reverse()[0];
 const filters = [{ id: 'all', label: 'Todas' }, { id: 'results', label: 'Com resultado' }, { id: 'windows', label: 'Janelas publicadas' }] as const;
 type Filter = typeof filters[number]['id'];
 
@@ -38,7 +40,7 @@ export function PremierPage() {
     <div className="match-page">
       <section className="shell match-opening" aria-labelledby="premier-title">
         <div className="match-heading"><div><span className="section-kicker">SHUSH / VALORANT PREMIER</span><h1 id="premier-title">Match Center.</h1><div className="action-row"><a href="#verified-results" className="editorial-link">Ver partidas ↓</a><Button href={trackerTeamUrl} target="_blank" rel="noopener noreferrer" variant="secondary">Tracker da equipa</Button></div></div></div>
-        <p className="matchday-empty">Próxima partida: ainda sem data confirmada.</p><section id="verified-results" aria-labelledby="verified-title"><div className="section-index"><h2 id="verified-title">Últimas partidas</h2><span className="mono">Verificação manual · 10 out. 2026</span></div><VerifiedMatches /><p className="match-provenance">Registo manual das partidas disponíveis na fonte na data indicada. Não é uma transmissão de dados em tempo real.</p></section>
+        <p className="matchday-empty">Próxima partida: ainda sem data confirmada.</p><section id="verified-results" aria-labelledby="verified-title"><div className="section-index"><h2 id="verified-title">Últimas partidas</h2><span className="mono">Verificação manual · {lastVerification ? formatDate(lastVerification) : 'sem registos'}</span></div><VerifiedMatches /><p className="match-provenance">Registo manual das partidas disponíveis na fonte na data indicada. Não é uma transmissão de dados em tempo real.</p></section>
       </section>
       <details className="shell legacy-archive"><summary>Arquivo interno <span>Jun — Jul 2026</span><span aria-hidden="true">+</span></summary><p className="body-copy">Calendário e registos anteriores da equipa. Não foi confirmada a correspondência com as partidas do Tracker.gg apresentadas acima.</p>
       <div className="match-body">

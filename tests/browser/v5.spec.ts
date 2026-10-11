@@ -68,10 +68,18 @@ test('V5 posters: exact PNG preview, both formats and focus recovery', async ({ 
 
 test('V5 poster resource failure offers retry without closing the page', async ({ page }) => {
   await page.goto('/esports/valorant/premier'); await expect(page.locator('.verified-match')).toHaveCount(5);
-  await page.route('**/assets/brand/shush-logo.webp', route => route.abort());
+  // WebKit may reuse an already-decoded logo without issuing a request.
+  // Inject one decode failure at the resource boundary, independent of cache.
+  await page.evaluate(() => {
+    const decode = HTMLImageElement.prototype.decode;
+    HTMLImageElement.prototype.decode = function () {
+      HTMLImageElement.prototype.decode = decode;
+      return Promise.reject(new DOMException('Invalid image', 'EncodingError'));
+    };
+  });
   await page.locator('.match-detail summary').first().click(); await page.getByRole('button', { name: 'Criar cartaz' }).first().click();
   const dialog = page.getByRole('dialog'); await expect(dialog.getByRole('button', { name: 'Tentar novamente' })).toBeVisible();
-  await page.unroute('**/assets/brand/shush-logo.webp'); await dialog.getByRole('button', { name: 'Tentar novamente' }).click();
+  await dialog.getByRole('button', { name: 'Tentar novamente' }).click();
   await expect(dialog.getByRole('button', { name: 'Descarregar PNG' })).toBeEnabled();
 });
 

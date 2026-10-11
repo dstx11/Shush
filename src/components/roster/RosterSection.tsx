@@ -62,6 +62,7 @@ export function RosterSection() {
               <span className="section-kicker">{rosterIndex(selectedPlayer.id)} / {selectedPlayer.roles[0]}</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
               <p>{selectedPlayer.quote}</p>
+              <span className="character-jersey mono">Camisola #{selectedPlayer.number} · {selectedPlayer.size}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
             <div key={`media-${selectedPlayer.id}`} className="character-media"
@@ -152,8 +153,6 @@ export function RosterSection() {
               ) : null}
 
             </div>
-          </article>
-
           <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Seleciona um retrato <span aria-hidden="true">· ← →</span></span>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
               <span aria-hidden="true">←</span>
@@ -162,6 +161,9 @@ export function RosterSection() {
               <span aria-hidden="true">→</span>
             </button>
           </div>
+          </article>
+
+
         </div>
         </div>
       </div>
