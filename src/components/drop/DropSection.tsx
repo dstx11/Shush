@@ -125,11 +125,11 @@ export function DropSection() {
   return (
     <section id="products" className="drop-page" aria-labelledby="drop-title">
       <div className="shell">
-        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Preto. Roxo. O teu nick.<br />Prepara a tua personalização e guarda o resumo para um pedido manual.</p></div>
+        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Personaliza a camisola.<br />Guarda a tua versão para um pedido manual.</p></div>
         <div className="drop-layout">
           <div id="product-preview" className="audit-drop-gallery">
             <div className="drop-gallery-label"><span className="mono">SHS / Drop 01</span><span className="mono">{views[view].label}</span></div>
-            <button type="button" className="jersey-zoom-surface drop-gallery-image-button" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><JerseyPreview config={config} view={view} /><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span>↗</span></span></button>
+            <button type="button" className="jersey-zoom-surface drop-gallery-image-button" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><div key={view} className="jersey-view-arrival"><JerseyPreview config={config} view={view} /></div><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span>↗</span></span></button>
             <div className="view-control drop-view-control" role="group" aria-label="Vista da jersey">{(Object.keys(views) as View[]).map((key) => <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)}><span aria-hidden="true">{key === 'front' ? '01' : '02'}</span> {views[key].label}</button>)}</div>
             <p className="drop-preview-note">Pré-visualização indicativa. A posição, a frase e a impressão são confirmadas no pedido manual.</p>
           </div>

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { BrandIntro } from './components/ui/BrandIntro';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { PageTransition } from './components/ui/PageTransition';
@@ -30,6 +31,7 @@ export default function App() {
   return (
     <div className={`min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
+      <BrandIntro />
       <Header />
       <main id="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>

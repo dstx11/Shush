@@ -12,6 +12,7 @@ const regions = [
 for (const [name, path, selector] of regions) {
   test(`visual region: ${name}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: Date.UTC(2026, 9, 8, 12) });
+    await page.addInitScript(() => localStorage.setItem('shush:home:rotation:v1', '3'));
     await page.goto(path);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);

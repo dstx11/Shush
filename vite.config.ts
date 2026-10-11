@@ -74,7 +74,7 @@ function staticRouteMetadata(): Plugin {
         html = setMeta(html, 'name', 'twitter:image', image);
         html = setMeta(html, 'name', 'twitter:image:alt', metadata.title);
 
-        // The Home preloads its central player. Other routes preload only their own hero.
+        // Home selects portraits at runtime. Static routes preload their default hero.
         html = html.replace(/\s*<link rel="preload" as="image"[^>]*\/>/, '');
         const hero = route === '/products/jersey' ? '/assets/jersey/frontjersey.webp'
           : route === '/esports/valorant/roster' ? '/assets/avatars/delcio.webp' : null;

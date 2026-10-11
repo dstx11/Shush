@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
-import { players } from '../../data/players';
+import { players, rosterIndex, playerDropUrl, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { AppLink } from '../ui/AppLink';
 
@@ -19,6 +19,12 @@ export function RosterSection() {
   const selectedIndex = Math.max(0, players.findIndex((player) => player.id === params.get('player')));
   const selectedPlayer = players[selectedIndex] ?? players[0];
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
+  const previous = useRef(selectedPlayer);
+  const [leaving, setLeaving] = useState<Player | null>(null);
+  useEffect(() => {
+    if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) setLeaving(previous.current);
+    previous.current = selectedPlayer;
+  }, [selectedPlayer]);
   const stripRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -53,7 +59,7 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" className="character-spotlight" aria-labelledby="selected-player-name">
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
-              <span className="section-kicker">{selectedPlayer.roles[0]}</span>
+              <span className="section-kicker">{rosterIndex(selectedPlayer.id)} / {selectedPlayer.roles[0]}</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
               <p>{selectedPlayer.quote}</p>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
@@ -71,11 +77,12 @@ export function RosterSection() {
                   if (dx < 0) selectNext(); else selectPrevious();
                 }
               }}>
+              {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(null)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
               <span className="portrait-orbit" aria-hidden="true" />
-              <span className="character-index" aria-hidden="true">{selectedPlayer.number}</span>
+              <span className="character-index" aria-hidden="true">{rosterIndex(selectedPlayer.id)} / 07</span>
               <span className="player-image-label mono">{selectedPlayer.focus}</span>
               {selectedPlayer.avatar ? (
-                <img src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} draggable="false" width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
+                <img style={{ objectPosition: selectedPlayer.portraitPosition }} src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} draggable="false" width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
               ) : (
                 <div className="avatar-fallback character-fallback">
                   <span className="avatar-ring" aria-hidden="true" />
@@ -97,7 +104,7 @@ export function RosterSection() {
                   (stripRef.current?.children[target]?.querySelector('button') as HTMLButtonElement | null)?.focus({ preventScroll: true });
                 }}>
                   <span className="strip-avatar">
-                    <span className="player-card-number" aria-hidden="true">{player.number}</span>
+                    <span className="player-card-number" aria-hidden="true">{rosterIndex(player.id)}</span>
                     {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span className="strip-initials">{player.initials}</span>}
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong></span>
@@ -118,7 +125,7 @@ export function RosterSection() {
 
               {competitiveProfile ? (
                 <>
-                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div><div><dt>Estilo publicado</dt><dd>{selectedPlayer.focus}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl></details>
+                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Camisola</dt><dd>#{selectedPlayer.number} · {selectedPlayer.size}</dd></div><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div><div><dt>Estilo publicado</dt><dd>{selectedPlayer.focus}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl></details>
                 <div className="competitive-profile">
                   <dl className="competitive-identity">
                     <div>
@@ -136,7 +143,7 @@ export function RosterSection() {
                 </>
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
 
-              <AppLink className="editorial-link player-drop-link" href={`/products/jersey?drop=1&nick=${encodeURIComponent(selectedPlayer.displayName)}&number=${selectedPlayer.number}`}>Ver camisola {selectedPlayer.displayName} <span aria-hidden="true">↗</span></AppLink>
+              <AppLink className="editorial-link player-drop-link" href={playerDropUrl(selectedPlayer)}>Ver camisola {selectedPlayer.displayName} <span aria-hidden="true">↗</span></AppLink>
 
               {selectedPlayer.creatorUrl ? (
                 <AppLink href={selectedPlayer.creatorUrl} target="_blank" rel="noreferrer" className="editorial-link">

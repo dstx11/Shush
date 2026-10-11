@@ -29,7 +29,6 @@ for (const [name, path] of routes) {
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
-    if (name === 'home') await page.locator('.home-player-rail').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
     const layout = await page.evaluate(() => ({
@@ -53,15 +52,15 @@ for (const [name, path] of routes) {
 
 test('roster: seven confirmed accounts, selection, sharing and Unicode', async ({ page }) => {
   const confirmed = [
-    ['dstx', 'dstx', 'Nivox#zero'], ['more', 'More', 'moreNO#less'],
-    ['th0maz7', 'Th0maz7', 'Th0maz7#愛してる彼'], ['lyel', 'lyel', 'xyz#off'],
-    ['tz', 'tz', 'tz one more time#1757'], ['catty', 'Catty', 'catty#111'],
-    ['levi', 'Levi', 'the creator#weed'],
+    ['dstx', 'DSTX', 'Nivox#zero'], ['more', 'More', 'moreNO#less'],
+    ['th0maz7', 'Th0maz7', 'Th0maz7#愛してる彼'], ['lyel', 'Lyel', 'xyz#off'],
+    ['tz', 'TZ', 'tz one more time#1757'], ['levi', 'Levi', 'the creator#weed'],
+    ['catty', 'Catty', 'catty#111'],
   ];
   const trackerRequests: string[] = [];
   page.on('request', (request) => { if (new URL(request.url()).hostname.endsWith('tracker.gg')) trackerRequests.push(request.url()); });
   await page.goto('/esports/valorant/roster?player=invalid');
-  await expect(page.locator('#selected-player-name')).toHaveText('dstx');
+  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
   const selectors = page.getByRole('group', { name: 'Selecionar jogador' }).getByRole('button');
   await expect(selectors).toHaveCount(7);
   const cardLinks = page.getByRole('group', { name: 'Selecionar jogador' }).getByRole('link');
@@ -95,12 +94,12 @@ test('roster: seven confirmed accounts, selection, sharing and Unicode', async (
     await expect(link).toHaveAttribute('rel', /noopener/);
   }
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
-  await expect(page.locator('#selected-player-name')).toHaveText('dstx');
+  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
   await expect(page.locator('.competitive-identity')).toContainText('Competitive');
   await page.getByRole('button', { name: 'Jogador anterior' }).press('Enter');
-  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   await page.reload();
-  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   expect(trackerRequests).toEqual([]);
 });
 
@@ -196,14 +195,14 @@ test('mobile menu contains keyboard focus and player selector stays compact', as
   expect(bounds!.height).toBeLessThan(280);
   const selector = page.getByRole('group', { name: 'Selecionar jogador' });
   await selector.getByRole('button').last().click();
-  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   await page.getByRole('button', { name: 'Abrir navegação' }).click();
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', true);
-  await page.locator('#mobile-navigation').getByRole('link', { name: 'About', exact: true }).focus();
+  await page.locator('#mobile-navigation').getByRole('link', { name: 'Company', exact: true }).focus();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Fechar navegação' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
-  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'About', exact: true })).toBeFocused();
+  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Company', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', false);
 });
@@ -212,7 +211,7 @@ test('Premier: filters, real call-ups, missing states and calendar download', as
   await page.goto('/esports/valorant/premier');
   await expect(page.locator('.verified-match')).toHaveCount(5);
   await expect(page.locator('.verified-match').first()).toContainText('EnLitro');
-  await expect(page.locator('meter')).toHaveCount(0);
+  await expect(page.locator('meter')).toHaveCount(4);
   await page.locator('.legacy-archive > summary').click();
   await expect(page.locator('.match-week')).toHaveCount(7);
   const first = page.locator('.match-week').first();
@@ -227,7 +226,7 @@ test('Premier: filters, real call-ups, missing states and calendar download', as
   await expect(page.locator('.match-week')).toHaveCount(2);
   await page.getByRole('button', { name: 'Janelas publicadas', exact: true }).click();
   await expect(page.locator('.match-week')).toHaveCount(5);
-  await page.getByRole('button', { name: 'Todas', exact: true }).click();
+  await page.getByRole('group', { name: 'Filtrar jornadas' }).getByRole('button', { name: 'Todas', exact: true }).click();
   const missing = page.locator('.match-week').nth(2);
   await missing.locator('summary').click();
   await expect(missing).toContainText('Convocatória não publicada.');
@@ -251,8 +250,8 @@ test('Creators: confirmed channels and contextual player destinations', async ({
   await expect(features.nth(0).getByRole('link', { name: 'Abrir Twitch' })).toHaveAttribute('href', 'https://www.twitch.tv/kandimba13');
   await expect(features.nth(1).getByRole('heading', { level: 2 })).toHaveText('Th0maz7');
   await expect(features.nth(1).getByRole('link', { name: 'Abrir YouTube' })).toHaveAttribute('href', 'https://www.youtube.com/@Th0maaz_7');
-  for (const [index, id] of ['more', 'th0maz7'].entries()) {
-    await expect(features.nth(index).locator('.creator-roster')).toHaveAttribute('href', '/esports/valorant/roster?player=' + id);
+  for (const index of [0, 1]) {
+    await expect(features.nth(index).locator('img')).toHaveCount(0);
     await expect(features.nth(index).locator('.creator-channel')).toHaveAttribute('rel', /noopener/);
   }
 });
@@ -336,7 +335,7 @@ test('About: real brand download and partner; static and SPA 404 recovery', asyn
   await expect(page.getByRole('heading', { name: /Fora do/ })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('spa-404.png'), fullPage: true });
   await page.getByRole('link', { name: 'Conhecer o roster', exact: true }).click();
-  await expect(page.locator('#selected-player-name')).toHaveText('dstx');
+  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
   await page.goto('/404.html');
   await expect(page).toHaveTitle('404 — SHUSH');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,nofollow');

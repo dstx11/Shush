@@ -12,6 +12,16 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
 
+  useEffect(() => {
+    let active = true;
+    const images = Array.from(frameRef.current?.querySelectorAll<HTMLImageElement>('img:not([loading="lazy"])') ?? []);
+    const timeout = window.setTimeout(() => { if (active) window.dispatchEvent(new Event('shush:ready')); }, 2500);
+    Promise.allSettled(images.map(image => image.decode())).then(() => {
+      if (active) { clearTimeout(timeout); window.dispatchEvent(new Event('shush:ready')); }
+    });
+    return () => { active = false; clearTimeout(timeout); };
+  }, []);
+
   // This effect runs after Suspense commits the loaded page, including on a
   // slow first visit. Anchors and keyboard focus cannot race the route import.
   useEffect(() => {
@@ -51,7 +61,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
         observer.unobserve(entry.target);
       }
     }, { threshold: .12 });
-    frameRef.current?.querySelectorAll('.section-heading, .home-player, .home-channel, .home-story, .verified-match, .creator-feature, .about-chapters article, .about-people a, .home-drop-inline').forEach(element => observer.observe(element));
+    frameRef.current?.querySelectorAll('.section-heading, .discovery-grid > a, .verified-match, .creator-feature, .about-chapters article, .home-drop-inline').forEach(element => observer.observe(element));
     const stop = () => { if (media.matches) observer.disconnect(); };
     media.addEventListener('change', stop);
     return () => { observer.disconnect(); media.removeEventListener('change', stop); };

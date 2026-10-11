@@ -1,38 +1,36 @@
 import { test, expect } from '@playwright/test';
 
-test('Home: roster controls reach the last player and return to the start', async ({ page }) => {
+test('Home: balanced refreshes, three unique profiles and stable SPA return', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  const controls = page.getByRole('group', { name: 'Navegar pelos jogadores' });
-  if ((page.viewportSize()?.width ?? 0) > 1000) {
-    await expect(controls).toHaveCount(0);
-    return;
+  await page.evaluate(() => localStorage.setItem('shush:home:rotation:v1', '0'));
+  const counts: Record<string, number> = {};
+  const centres = new Set<string>();
+  let previous: string[] = [];
+  for (let visit = 0; visit < 7; visit++) {
+    await page.reload();
+    const covers = page.locator('.team-cover-player');
+    await expect(covers).toHaveCount(3);
+    const ids = await covers.evaluateAll(items => items.map(item => item.getAttribute('data-player')!));
+    expect(new Set(ids).size).toBe(3);
+    expect([...ids].sort()).not.toEqual([...previous].sort());
+    ids.forEach(id => { counts[id] = (counts[id] ?? 0) + 1; }); centres.add(ids[1]); previous = ids;
+    for (const [index, id] of ids.entries()) await expect(covers.nth(index)).toHaveAttribute('href', `/esports/valorant/roster?player=${id}`);
   }
-  const previous = controls.getByRole('button', { name: 'Ver jogadores anteriores' });
-  const next = controls.getByRole('button', { name: 'Ver mais jogadores' });
-  const rail = page.locator('#home-player-rail');
-  await expect(previous).toBeDisabled();
-  await next.click();
-  await expect.poll(() => rail.evaluate((element) => element.scrollLeft)).toBeGreaterThan(100);
-  await expect(previous).toBeEnabled();
-  await previous.press('Enter');
-  await expect.poll(() => rail.evaluate((element) => element.scrollLeft)).toBeLessThan(3);
-  await expect(previous).toBeDisabled();
-  const range = controls.locator('[aria-label^="Jogadores visíveis:"]');
-  for (let step = 0; step < 7 && await next.isEnabled(); step += 1) {
-    const before = await range.getAttribute('aria-label');
-    await next.click();
-    // Wait for the scroll measurement to update both the range and end control.
-    await expect.poll(async () => await next.isDisabled() || await range.getAttribute('aria-label') !== before).toBe(true);
-  }
-  await expect(next).toBeDisabled();
-  const visible = await rail.evaluate((element) => {
-    const bounds = element.getBoundingClientRect();
-    const last = element.lastElementChild!.getBoundingClientRect();
-    return last.left >= bounds.left && last.right <= bounds.right + 1;
-  });
-  expect(visible).toBe(true);
-  await rail.getByRole('link', { name: 'Conhecer Levi', exact: true }).click();
-  await expect(page).toHaveURL(/player=levi$/);
-  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  expect(Object.values(counts)).toEqual(Array(7).fill(3)); expect(centres.size).toBe(7);
+  await page.locator('.team-cover-player').first().click();
+  await expect(page).toHaveURL(new RegExp(`player=${previous[0]}`));
+  await page.goBack();
+  await expect(page.locator('.team-cover-player')).toHaveCount(3);
+  expect(await page.locator('.team-cover-player').evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(previous);
+});
+
+test('Home: unavailable storage still renders three stable players', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(window, 'localStorage', { get() { throw new Error('Unavailable'); } }));
+  await page.goto('/');
+  const players = page.locator('.team-cover-player');
+  await expect(players).toHaveCount(3);
+  const before = await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')));
+  await page.locator('.discovery-company').click(); await page.goBack();
+  await expect(players).toHaveCount(3);
+  expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);
 });
