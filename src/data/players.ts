@@ -3,6 +3,8 @@ export type Player = {
   displayName: string;
   initials: string;
   number: string;
+  size: 'M' | 'XXL';
+  portraitPosition: string;
   roles: string[];
   status?: string;
   avatar?: string;
@@ -19,9 +21,11 @@ export type Player = {
 export const players: Player[] = [
   {
     id: 'dstx',
-    displayName: 'dstx',
+    displayName: 'DSTX',
     initials: 'DX',
-    number: '01',
+    number: '11',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Duelista', 'Controlador'],
     quote: 'Entrada direta, controlo quando o round pede.',
     focus: 'Pressão',
@@ -32,7 +36,9 @@ export const players: Player[] = [
     displayName: 'More',
     initials: 'MR',
     avatar: '/assets/avatars/more.webp',
-    number: '02',
+    number: '13',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Sentinela', 'Iniciador'],
     isCreator: true,
     creatorType: 'twitch',
@@ -44,7 +50,9 @@ export const players: Player[] = [
     id: 'th0maz7',
     displayName: 'Th0maz7',
     initials: 'T7',
-    number: '03',
+    number: '07',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Controlador'],
     isCreator: true,
     creatorType: 'youtube',
@@ -55,9 +63,11 @@ export const players: Player[] = [
   },
   {
     id: 'lyel',
-    displayName: 'lyel',
+    displayName: 'Lyel',
     initials: 'LY',
-    number: '04',
+    number: '14',
+    size: 'XXL',
+    portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Flex'],
     quote: 'Energia solta, decisão no momento certo.',
     focus: 'Ritmo',
@@ -65,34 +75,44 @@ export const players: Player[] = [
   },
   {
     id: 'tz',
-    displayName: 'tz',
+    displayName: 'TZ',
     initials: 'TZ',
-    number: '05',
+    number: '10',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Flex'],
     quote: 'Adapta o round sem chamar atenção.',
     focus: 'Flex',
     avatar: '/assets/avatars/tz.webp',
   },
   {
-    id: 'catty',
-    displayName: 'Catty',
-    initials: 'CT',
-    number: '06',
-    roles: ['Controlador'],
-    quote: 'Fumo limpo, timing certo, equipa organizada.',
-    focus: 'Utilidade',
-    avatar: '/assets/avatars/catarina.webp',
-  },
-  {
     id: 'levi',
     displayName: 'Levi',
     initials: 'LV',
-    number: '08',
+    number: '09',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Duelista'],
     quote: 'Pressão simples, round sem ruído extra.',
     focus: 'Abertura',
     avatar: '/assets/avatars/levi.webp',
   },
+  {
+    id: 'catty',
+    displayName: 'Catty',
+    initials: 'CT',
+    number: '20',
+    size: 'M',
+    portraitPosition: '50% 25%',
+    roles: ['Controlador'],
+    quote: 'Fumo limpo, timing certo, equipa organizada.',
+    focus: 'Utilidade',
+    avatar: '/assets/avatars/catarina.webp',
+  },
+
 ];
 
 export const creators = players.filter((player) => player.isCreator && player.creatorUrl);
+
+export const rosterIndex = (id: string) => String(players.findIndex(player => player.id === id) + 1).padStart(2, '0');
+export const playerDropUrl = (player: Player) => `/products/jersey?${new URLSearchParams({ drop: '1', nick: player.displayName, number: player.number, size: player.size })}`;
