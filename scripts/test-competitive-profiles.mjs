@@ -23,7 +23,7 @@ try {
 
   assert.doesNotThrow(() => validateCompetitiveProfiles(competitiveProfiles, players));
   const confirmed = {
-    dstx: 'Nivox#zero', catty: 'catty#111', more: 'moreNO#less',
+    dstx: 'dstx#lover', catty: 'catty#111', more: 'moreNO#less',
     th0maz7: 'Th0maz7#愛してる彼', tz: 'tz one more time#1757',
     lyel: 'xyz#off', levi: 'the creator#weed',
   };
