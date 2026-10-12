@@ -73,7 +73,7 @@ test('Character Select: arrow keys, Home/End, stable focus and preserved query p
 test('Home leads with real players and sourced results, while the jersey belongs to Drop', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('.team-cover-player')).toHaveCount(3);
-  await expect(page.locator('.opening img[src*="jersey"]')).toHaveCount(0);
+  await expect(page.locator('.opening img[src*="/assets/jersey/"]')).toHaveCount(0);
   await expect(page.locator('.verified-match')).toHaveCount(0);
   await expect(page.locator('main img[src*="avatars"]')).toHaveCount(3);
 });

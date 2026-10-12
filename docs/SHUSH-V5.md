@@ -88,3 +88,8 @@ The final regression run also checks portrait stability after two simulated minu
 - The owner confirmed the left-to-right photo mapping on 2026-10-12: image(3) DSTX, image(4) Th0maz, image(5) Lyel, image(6) Levi, image(7) TZ, image(8) Catty (called Cata in the mapping), image(9) More. New 768px WebP portraits replace all seven previous assets, using new URLs to prevent stale portrait caches. The roster preload and its validation use the new DSTX file. Total portrait payload: 411,758 bytes (402 KiB). Original supplied PNGs are preserved outside the repository. Production publication was explicitly authorized after validation.
 
 Follow-up QA run 38278275157: 378 passed, 25 viewport-specific skips; one expected desktop Roster visual difference. The actual desktop Roster and mobile Roster/Company plus desktop Creators captures were inspected before replacing only the affected reference. All nine stalled-poster recovery cases passed. Final rerun is linked from PR #3.
+
+
+## Jersey portrait review — 2026-10-12
+
+Photo run 38306851698: Linux and Windows validation passed; 366 browser tests passed, 25 viewport-specific skips. Nine failures came from the same overly broad product-photo selector (`src*=jersey` also matched the new portrait filenames); the selector now targets `/assets/jersey/` specifically. The other four failures were the expected Home/Roster mobile and desktop image differences. All four actual captures were inspected, together with Roster at 320px and Home at 768px, before promoting only those four visual references. Layout, portrait framing and controls remain usable. No screenshot tolerance changed. Final CI result and production deployment are recorded in PR #3.
