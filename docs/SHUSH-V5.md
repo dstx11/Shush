@@ -81,8 +81,10 @@ The final regression run also checks portrait stability after two simulated minu
 - Lyel's confirmed jersey number is 16. Th0maz is the public name; the stable `th0maz7` key, Riot ID and real channel remain unchanged.
 - Removed generic player slogans and unsupported style labels. Roles and confirmed identity remain. Home, Creators and Company copy is shorter and more literal.
 - Fixed an unbounded wait in poster image/font loading; a stalled image now exposes retry after eight seconds. Browser regression covers stalled decode and successful retry.
-- Local validate passes: JS 97.76 KiB gzip, CSS 14.88 KiB. Field performance and an absolute absence of bugs are not claimed.
+- Local validate passes: JS 97.78 KiB gzip, CSS 14.88 KiB. Field performance and an absolute absence of bugs are not claimed.
 - The previous Lyel correction passed workflow run 38274866761.
 - No active IGL command or Callroom exists in the current source. The old `callroom.html` in commit 21b81e4 was already a redirect to About; commit 0f7c7cd removed that legacy file.
 - Tracker team overview was readable on 2026-10-12 through public web retrieval: https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8 . Individual requested profile pages were inaccessible. Team-page aggregates do not establish player personality, leadership or current Competitive form; no new individual claims were published.
 - Seven new portraits were received as `image(3).png` through `image(9).png`, with no names in file metadata. Assignments await the owner's filename-to-player mapping; existing assets are retained until replacements can be associated correctly.
+
+Follow-up QA run 38278275157: 378 passed, 25 viewport-specific skips; one expected desktop Roster visual difference. The actual desktop Roster and mobile Roster/Company plus desktop Creators captures were inspected before replacing only the affected reference. All nine stalled-poster recovery cases passed. Final rerun is linked from PR #3.
