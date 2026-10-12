@@ -15,14 +15,12 @@
 .character-spotlight::before { content: ''; position: absolute; z-index: -1; inset: 4rem 12% 12rem; border: 1px solid var(--player-wash); border-radius: 50%; transform: rotate(-18deg); pointer-events: none; }
 .character-identity { grid-area: identity; align-self: center; position: relative; min-width: 0; padding-block: 2rem; }
 .character-identity h2 { position: relative; z-index: 2; font: 800 clamp(3rem, 6vw, 6.2rem)/1.02 var(--font-heading); letter-spacing: -.075em; color: var(--player-accent); overflow-wrap: anywhere; margin: .9rem 0 1.5rem; }
-.character-identity p { position: relative; max-width: 24ch; font-size: .9rem; line-height: 1.8; color: var(--muted); }
 .character-number { display: block; margin-top: 2rem; font: 800 clamp(5rem, 12vw, 12rem)/1 var(--font-heading); letter-spacing: -.08em; color: transparent; -webkit-text-stroke: 1px var(--control-line); opacity: .55; }
 .character-media { grid-area: portrait; position: relative; min-width: 0; height: 35rem; align-self: center; isolation: isolate; touch-action: pan-y; }
 .character-media > img, .character-fallback { position: absolute; inset: 1.5rem 0; width: 100%; height: calc(100% - 3rem); object-fit: cover; object-position: center 25%; border-radius: 46% 46% 1.2rem 1.2rem; border: 1px solid var(--control-line); background: var(--player-wash); }
 .portrait-orbit { position: absolute; inset: 0 -1rem; border: 1px solid var(--player-accent); border-radius: 46% 46% 1.2rem 1.2rem; opacity: .5; transform: rotate(5deg); }
 .character-media::after { content: ''; position: absolute; inset: 60% 0 1.5rem; border-radius: 0 0 1.2rem 1.2rem; pointer-events: none; background: linear-gradient(transparent, #15131ae8); }
 .character-index { position: absolute; z-index: 2; bottom: 3rem; right: 1rem; font: 500 .8rem var(--font-mono); color: var(--player-accent); }
-.player-image-label { position: absolute; z-index: 2; bottom: 3rem; left: 1.25rem; color: var(--text); }
 .character-fallback { display: grid; place-items: center; overflow: hidden; background: var(--player-wash); }
 .character-fallback > span:last-child { font: 600 clamp(5rem, 12vw, 10rem)/1 var(--font-heading); letter-spacing: -.08em; color: var(--player-accent); }
 .avatar-ring { position: absolute; width: 160%; aspect-ratio: 1; border: 1px solid #ffffff25; border-radius: 50%; }
@@ -87,7 +85,6 @@
  .character-spotlight { grid-template-columns: 1fr; grid-template-areas: 'identity' 'portrait' 'selector' 'info'; gap: 0; }
  .character-identity { display: block; padding-bottom: .5rem; }
  .character-identity h2 { font-size: clamp(3.5rem, 16vw, 5rem); margin: .4rem 0; }
- .character-identity p { display: none; }
  .character-media { height: clamp(19rem, 100vw, 29rem); width: 86%; margin-inline: auto; }
  .character-media > img, .character-fallback { inset-block: 1rem; height: calc(100% - 2rem); }
  .character-fallback > span:last-child { font-size: 7rem; }

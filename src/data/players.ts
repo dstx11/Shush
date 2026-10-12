@@ -11,8 +11,6 @@ export type Player = {
   isCreator?: boolean;
   creatorType?: 'twitch' | 'youtube';
   creatorUrl?: string;
-  quote: string;
-  focus: string;
   agents?: string[];
   sensitivity?: string;
   equipment?: string;
@@ -27,8 +25,6 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Duelista', 'Controlador'],
-    quote: 'Entrada direta, controlo quando o round pede.',
-    focus: 'Pressão',
     avatar: '/assets/avatars/delcio.webp',
   },
   {
@@ -43,13 +39,11 @@ export const players: Player[] = [
     isCreator: true,
     creatorType: 'twitch',
     creatorUrl: 'https://www.twitch.tv/kandimba13',
-    quote: 'Leitura calma, espaço bem fechado.',
-    focus: 'Controlo',
   },
   {
     id: 'th0maz7',
-    displayName: 'Th0maz7',
-    initials: 'T7',
+    displayName: 'Th0maz',
+    initials: 'TH',
     number: '07',
     size: 'M',
     portraitPosition: '50% 25%',
@@ -57,8 +51,6 @@ export const players: Player[] = [
     isCreator: true,
     creatorType: 'youtube',
     creatorUrl: 'https://www.youtube.com/@Th0maaz_7',
-    quote: 'Utilidade certa antes do contacto.',
-    focus: 'Setup',
     avatar: '/assets/avatars/tomas.webp',
   },
   {
@@ -69,8 +61,6 @@ export const players: Player[] = [
     size: 'XXL',
     portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Flex'],
-    quote: 'Energia solta, decisão no momento certo.',
-    focus: 'Ritmo',
     avatar: '/assets/avatars/lyel.webp',
   },
   {
@@ -81,8 +71,6 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Flex'],
-    quote: 'Adapta o round sem chamar atenção.',
-    focus: 'Flex',
     avatar: '/assets/avatars/tz.webp',
   },
   {
@@ -93,8 +81,6 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Duelista'],
-    quote: 'Pressão simples, round sem ruído extra.',
-    focus: 'Abertura',
     avatar: '/assets/avatars/levi.webp',
   },
   {
@@ -105,8 +91,6 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Controlador'],
-    quote: 'Fumo limpo, timing certo, equipa organizada.',
-    focus: 'Utilidade',
     avatar: '/assets/avatars/catarina.webp',
   },
 

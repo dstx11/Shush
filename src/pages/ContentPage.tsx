@@ -3,7 +3,7 @@ import { Button } from '../components/ui/Button';
 
 export function ContentPage() {
   return <section id="content-creators" className="creator-page" aria-labelledby="content-title"><div className="shell">
-    <div className="page-heading creator-heading"><div><span className="section-kicker">SHUSH / Creators</span><h1 id="content-title">Outra forma<br /><span>de jogar.</span></h1></div></div>
+    <div className="page-heading creator-heading"><div><span className="section-kicker">SHUSH / Creators</span><h1 id="content-title">Vídeos e<br /><span>transmissões.</span></h1></div></div>
     <div className="creator-features">{creators.map((creator, index) => {
       const twitch = creator.creatorType === 'twitch';
       const platform = twitch ? 'Twitch' : 'YouTube';

@@ -17,7 +17,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'lyel');
   await page.getByText('Player DNA', { exact: false }).click();
   await expect(page.locator('.player-dna')).toContainText('Iniciador / Flex');
-  await expect(page.locator('.player-dna')).toContainText('Ritmo');
+  await expect(page.locator('.player-dna')).toContainText('#16 · XXL');
   await expect(page.locator('.character-media > img')).toHaveCSS('animation-name', 'none');
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   expect(axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);

@@ -53,7 +53,7 @@ for (const [name, path] of routes) {
 test('roster: seven confirmed accounts, selection, sharing and Unicode', async ({ page }) => {
   const confirmed = [
     ['dstx', 'DSTX', 'Nivox#zero'], ['more', 'More', 'moreNO#less'],
-    ['th0maz7', 'Th0maz7', 'Th0maz7#愛してる彼'], ['lyel', 'Lyel', 'xyz#off'],
+    ['th0maz7', 'Th0maz', 'Th0maz7#愛してる彼'], ['lyel', 'Lyel', 'xyz#off'],
     ['tz', 'TZ', 'tz one more time#1757'], ['levi', 'Levi', 'the creator#weed'],
     ['catty', 'Catty', 'catty#111'],
   ];
@@ -248,7 +248,7 @@ test('Creators: confirmed channels and contextual player destinations', async ({
   await expect(features).toHaveCount(2);
   await expect(features.nth(0).getByRole('heading', { level: 2 })).toHaveText('More');
   await expect(features.nth(0).getByRole('link', { name: 'Abrir Twitch' })).toHaveAttribute('href', 'https://www.twitch.tv/kandimba13');
-  await expect(features.nth(1).getByRole('heading', { level: 2 })).toHaveText('Th0maz7');
+  await expect(features.nth(1).getByRole('heading', { level: 2 })).toHaveText('Th0maz');
   await expect(features.nth(1).getByRole('link', { name: 'Abrir YouTube' })).toHaveAttribute('href', 'https://www.youtube.com/@Th0maaz_7');
   for (const index of [0, 1]) {
     await expect(features.nth(index).locator('img')).toHaveCount(0);

@@ -20,7 +20,7 @@ Supplied by the owner in the V5 brief. Indices derive from array order, never je
 | --- | --- | --- | --- | --- |
 | 01 | dstx | DSTX | 11 | M |
 | 02 | more | More | 13 | M |
-| 03 | th0maz7 | Th0maz7 | 07 | M |
+| 03 | th0maz7 | Th0maz | 07 | M |
 | 04 | lyel | Lyel | 16 | XXL |
 | 05 | tz | TZ | 10 | M |
 | 06 | levi | Levi | 09 | M |
@@ -75,3 +75,14 @@ Visual inspection revealed narrow tablet portraits and overly repeated discovery
 Linux and Windows validation passed. Browser QA: 367 passed, 25 viewport-specific skips; the only three failures were the intentionally pending Home mobile and Roster mobile/desktop visual references. Their actual captures were inspected on 2026-10-12, together with the revised tablet Home. Portrait framing, visible jersey details, selector controls, content hierarchy and open discovery divisions were approved before copying those three baselines. Screenshot tolerances remain unchanged.
 
 The final regression run also checks portrait stability after two simulated minutes with blocked storage and completion of an actual animated player change before enabling reduced motion. Final CI status is recorded in PR #3.
+
+## Follow-up audit — 2026-10-12
+
+- Lyel's confirmed jersey number is 16. Th0maz is the public name; the stable `th0maz7` key, Riot ID and real channel remain unchanged.
+- Removed generic player slogans and unsupported style labels. Roles and confirmed identity remain. Home, Creators and Company copy is shorter and more literal.
+- Fixed an unbounded wait in poster image/font loading; a stalled image now exposes retry after eight seconds. Browser regression covers stalled decode and successful retry.
+- Local validate passes: JS 97.76 KiB gzip, CSS 14.88 KiB. Field performance and an absolute absence of bugs are not claimed.
+- The previous Lyel correction passed workflow run 38274866761.
+- No active IGL command or Callroom exists in the current source. The old `callroom.html` in commit 21b81e4 was already a redirect to About; commit 0f7c7cd removed that legacy file.
+- Tracker team overview was readable on 2026-10-12 through public web retrieval: https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8 . Individual requested profile pages were inaccessible. Team-page aggregates do not establish player personality, leadership or current Competitive form; no new individual claims were published.
+- Seven new portraits were received as `image(3).png` through `image(9).png`, with no names in file metadata. Assignments await the owner's filename-to-player mapping; existing assets are retained until replacements can be associated correctly.

@@ -24,7 +24,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   },
   '/content': {
     title: 'Creators — SHUSH',
-    description: 'More na Twitch e Th0maz7 no YouTube. Acompanha os creators da SHUSH e conhece-os no roster.',
+    description: 'More na Twitch e Th0maz no YouTube. Acompanha os creators da SHUSH e conhece-os no roster.',
   },
   '/products/jersey': {
     title: 'Drop 01 — SHUSH',

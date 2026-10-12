@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 
-const roster = [['dstx', 'DSTX', '11', 'M'], ['more', 'More', '13', 'M'], ['th0maz7', 'Th0maz7', '07', 'M'], ['lyel', 'Lyel', '16', 'XXL'], ['tz', 'TZ', '10', 'M'], ['levi', 'Levi', '09', 'M'], ['catty', 'Catty', '20', 'M']];
+const roster = [['dstx', 'DSTX', '11', 'M'], ['more', 'More', '13', 'M'], ['th0maz7', 'Th0maz', '07', 'M'], ['lyel', 'Lyel', '16', 'XXL'], ['tz', 'TZ', '10', 'M'], ['levi', 'Levi', '09', 'M'], ['catty', 'Catty', '20', 'M']];
 test('V5 official jerseys and independent roster indices', async ({ page }) => {
   for (const [index, [id, name, number, size]] of roster.entries()) {
     await page.goto(`/esports/valorant/roster?player=${id}`);
@@ -79,6 +79,27 @@ test('V5 poster resource failure offers retry without closing the page', async (
   });
   await page.locator('.match-detail summary').first().click(); await page.getByRole('button', { name: 'Criar cartaz' }).first().click();
   const dialog = page.getByRole('dialog'); await expect(dialog.getByRole('button', { name: 'Tentar novamente' })).toBeVisible();
+  await dialog.getByRole('button', { name: 'Tentar novamente' }).click();
+  await expect(dialog.getByRole('button', { name: 'Descarregar PNG' })).toBeEnabled();
+});
+
+test('Poster loading cannot hang indefinitely when image decoding stalls', async ({ page }) => {
+  await page.goto('/esports/valorant/premier');
+  await page.clock.install();
+  await page.evaluate(() => {
+    const decode = HTMLImageElement.prototype.decode;
+    HTMLImageElement.prototype.decode = function () {
+      HTMLImageElement.prototype.decode = decode;
+      document.body.dataset.stalledPoster = 'true';
+      return new Promise<void>(() => {});
+    };
+  });
+  await page.locator('.match-detail summary').first().click();
+  await page.getByRole('button', { name: 'Criar cartaz' }).first().click();
+  await expect(page.locator('body')).toHaveAttribute('data-stalled-poster', 'true');
+  await page.clock.fastForward(8001);
+  const dialog = page.getByRole('dialog');
+  await expect(dialog.getByRole('button', { name: 'Tentar novamente' })).toBeVisible();
   await dialog.getByRole('button', { name: 'Tentar novamente' }).click();
   await expect(dialog.getByRole('button', { name: 'Descarregar PNG' })).toBeEnabled();
 });

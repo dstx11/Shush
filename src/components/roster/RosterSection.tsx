@@ -61,7 +61,7 @@ export function RosterSection() {
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
               <span className="section-kicker">{rosterIndex(selectedPlayer.id)} / {selectedPlayer.roles[0]}</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
-              <p>{selectedPlayer.quote}</p>
+
               <span className="character-jersey mono">Camisola #{selectedPlayer.number} · {selectedPlayer.size}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
@@ -81,7 +81,7 @@ export function RosterSection() {
               {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(null)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
               <span className="portrait-orbit" aria-hidden="true" />
               <span className="character-index" aria-hidden="true">{rosterIndex(selectedPlayer.id)} / 07</span>
-              <span className="player-image-label mono">{selectedPlayer.focus}</span>
+
               {selectedPlayer.avatar ? (
                 <img style={{ objectPosition: selectedPlayer.portraitPosition }} src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} draggable="false" width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
               ) : (
@@ -126,7 +126,7 @@ export function RosterSection() {
 
               {competitiveProfile ? (
                 <>
-                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Camisola</dt><dd>#{selectedPlayer.number} · {selectedPlayer.size}</dd></div><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div><div><dt>Estilo publicado</dt><dd>{selectedPlayer.focus}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl></details>
+                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Camisola</dt><dd>#{selectedPlayer.number} · {selectedPlayer.size}</dd></div><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl></details>
                 <div className="competitive-profile">
                   <dl className="competitive-identity">
                     <div>
