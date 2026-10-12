@@ -71,7 +71,7 @@ for (const [path, canonical, title] of routeFiles) {
   if (path === 'esports/valorant/roster.html') {
     expect(
       html,
-      'rel="preload" as="image" href="/assets/avatars/delcio.webp"',
+      'rel="preload" as="image" href="/assets/avatars/dstx-jersey.webp"',
       'roster portrait preload',
     );
   }

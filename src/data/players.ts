@@ -25,13 +25,13 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Duelista', 'Controlador'],
-    avatar: '/assets/avatars/delcio.webp',
+    avatar: '/assets/avatars/dstx-jersey.webp',
   },
   {
     id: 'more',
     displayName: 'More',
     initials: 'MR',
-    avatar: '/assets/avatars/more.webp',
+    avatar: '/assets/avatars/more-jersey.webp',
     number: '13',
     size: 'M',
     portraitPosition: '50% 25%',
@@ -51,7 +51,7 @@ export const players: Player[] = [
     isCreator: true,
     creatorType: 'youtube',
     creatorUrl: 'https://www.youtube.com/@Th0maaz_7',
-    avatar: '/assets/avatars/tomas.webp',
+    avatar: '/assets/avatars/th0maz-jersey.webp',
   },
   {
     id: 'lyel',
@@ -61,7 +61,7 @@ export const players: Player[] = [
     size: 'XXL',
     portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Flex'],
-    avatar: '/assets/avatars/lyel.webp',
+    avatar: '/assets/avatars/lyel-jersey.webp',
   },
   {
     id: 'tz',
@@ -71,7 +71,7 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Flex'],
-    avatar: '/assets/avatars/tz.webp',
+    avatar: '/assets/avatars/tz-jersey.webp',
   },
   {
     id: 'levi',
@@ -81,7 +81,7 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Duelista'],
-    avatar: '/assets/avatars/levi.webp',
+    avatar: '/assets/avatars/levi-jersey.webp',
   },
   {
     id: 'catty',
@@ -91,7 +91,7 @@ export const players: Player[] = [
     size: 'M',
     portraitPosition: '50% 25%',
     roles: ['Controlador'],
-    avatar: '/assets/avatars/catarina.webp',
+    avatar: '/assets/avatars/catty-jersey.webp',
   },
 
 ];
