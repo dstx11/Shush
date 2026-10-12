@@ -107,9 +107,13 @@ test('Motion: portrait arrival completes and reduced motion can be enabled at ru
   await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
   await expect(portrait).toHaveCSS('opacity', '1');
   await page.screenshot({ path: testInfo.outputPath('roster-motion-settled.png'), fullPage: true });
+  await page.getByRole('button', { name: 'Jogador seguinte' }).click();
+  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
+  await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
+  await expect(page.locator('.portrait-depart')).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(portrait).toHaveCSS('animation-name', 'none');
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
-  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
+  await expect(page.locator('#selected-player-name')).toHaveText('More');
   await expect(portrait).toHaveCSS('animation-name', 'none');
 });

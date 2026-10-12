@@ -25,11 +25,14 @@ test('Home: balanced refreshes, three unique profiles and stable SPA return', as
 });
 
 test('Home: unavailable storage still renders three stable players', async ({ page }) => {
+  await page.clock.install({ time: new Date('2026-10-11T12:00:00Z') });
   await page.addInitScript(() => Object.defineProperty(window, 'localStorage', { get() { throw new Error('Unavailable'); } }));
   await page.goto('/');
   const players = page.locator('.team-cover-player');
   await expect(players).toHaveCount(3);
   const before = await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')));
+  await page.clock.fastForward(120_000);
+  expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);
   await page.locator('.discovery-company').click(); await page.goBack();
   await expect(players).toHaveCount(3);
   expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);

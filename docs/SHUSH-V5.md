@@ -50,7 +50,7 @@ Posters use native Canvas, the local SHUSH logo, typography and actual match fac
 
 - Existing architecture and dependencies retained.
 - Removed retired Home rail/Matchday presentation, unused clock hook and associated dead CSS. Historical calendar/date logic remains tested.
-- Local `pnpm run validate`: passed; JS 98.03 KiB gzip, CSS 14.75 KiB, under existing 100/16 KiB limits.
+- Local `pnpm run validate`: passed; JS 98.09 KiB gzip, CSS 14.91 KiB, under existing 100/16 KiB limits.
 - `pnpm run check:preview`: all six routes, route metadata, headers, preview noindex, actual 404, redirect and deployed entry asset passed.
 - Local Playwright launch could not run: its required Chromium binary is absent. Browser QA runs in GitHub Actions; results and visual review are recorded below when complete.
 - Added 1024px coverage alongside 320, 390, 768, 1366, 1920, landscape, reflow and mobile WebKit.
@@ -69,3 +69,9 @@ No approved Riot production/RSO integration or new player statistics were suppli
 CI: 353 passed, 25 viewport-specific skips, 17 failures. Nine were the same overly broad accessible select label, corrected in the UI. One WebKit resource-failure test was cache-dependent; it now injects a single decode failure at the image boundary. Seven were expected visual differences, reviewed individually. Only unaffected approved regions (desktop Home, desktop/mobile Drop, mobile Company) were promoted. No thresholds relaxed.
 
 Visual inspection revealed narrow tablet portraits and overly repeated discovery panels. The hero now stacks at tablet widths; mobile portrait heights preserve more of the faces. Discovery uses open editorial divisions. Roster mobile now exposes the official jersey number/size and places arrow controls directly beneath the portrait. Both PNG formats were visually reviewed and their bytes/dimensions passed on every browser project.
+
+## QA round 179 — visual approval
+
+Linux and Windows validation passed. Browser QA: 367 passed, 25 viewport-specific skips; the only three failures were the intentionally pending Home mobile and Roster mobile/desktop visual references. Their actual captures were inspected on 2026-10-12, together with the revised tablet Home. Portrait framing, visible jersey details, selector controls, content hierarchy and open discovery divisions were approved before copying those three baselines. Screenshot tolerances remain unchanged.
+
+The final regression run also checks portrait stability after two simulated minutes with blocked storage and completion of an actual animated player change before enabling reduced motion. Final CI status is recorded in PR #3.
