@@ -41,7 +41,7 @@ try {
     assert.equal(profile.playlist, 'competitive');
   }
 
-  const official = [['dstx', '11', 'M'], ['more', '13', 'M'], ['th0maz7', '07', 'M'], ['lyel', '14', 'XXL'], ['tz', '10', 'M'], ['levi', '09', 'M'], ['catty', '20', 'M']];
+  const official = [['dstx', '11', 'M'], ['more', '13', 'M'], ['th0maz7', '07', 'M'], ['lyel', '16', 'XXL'], ['tz', '10', 'M'], ['levi', '09', 'M'], ['catty', '20', 'M']];
   assert.deepEqual(players.map(p => [p.id, p.number, p.size]), official);
   for (const [index, player] of players.entries()) {
     assert.equal(rosterIndex(player.id), String(index + 1).padStart(2, '0'));

@@ -21,7 +21,7 @@ Supplied by the owner in the V5 brief. Indices derive from array order, never je
 | 01 | dstx | DSTX | 11 | M |
 | 02 | more | More | 13 | M |
 | 03 | th0maz7 | Th0maz7 | 07 | M |
-| 04 | lyel | Lyel | 14 | XXL |
+| 04 | lyel | Lyel | 16 | XXL |
 | 05 | tz | TZ | 10 | M |
 | 06 | levi | Levi | 09 | M |
 | 07 | catty | Catty | 20 | M |

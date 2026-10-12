@@ -65,7 +65,7 @@ export const players: Player[] = [
     id: 'lyel',
     displayName: 'Lyel',
     initials: 'LY',
-    number: '14',
+    number: '16',
     size: 'XXL',
     portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Flex'],

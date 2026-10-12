@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 
-const roster = [['dstx', 'DSTX', '11', 'M'], ['more', 'More', '13', 'M'], ['th0maz7', 'Th0maz7', '07', 'M'], ['lyel', 'Lyel', '14', 'XXL'], ['tz', 'TZ', '10', 'M'], ['levi', 'Levi', '09', 'M'], ['catty', 'Catty', '20', 'M']];
+const roster = [['dstx', 'DSTX', '11', 'M'], ['more', 'More', '13', 'M'], ['th0maz7', 'Th0maz7', '07', 'M'], ['lyel', 'Lyel', '16', 'XXL'], ['tz', 'TZ', '10', 'M'], ['levi', 'Levi', '09', 'M'], ['catty', 'Catty', '20', 'M']];
 test('V5 official jerseys and independent roster indices', async ({ page }) => {
   for (const [index, [id, name, number, size]] of roster.entries()) {
     await page.goto(`/esports/valorant/roster?player=${id}`);
