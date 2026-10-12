@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
-import { activePremierSeason } from '../../data/season';
-import { calculatePublicMatchDayState } from '../../lib/premier';
-import { usePremierClock } from '../../lib/use-premier-clock';
 import { StatusBadge } from '../ui/VisualPrimitives';
 import { AppLink } from '../ui/AppLink';
 
@@ -15,8 +12,6 @@ export function Header() {
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
-  const now = usePremierClock();
-  const publicState = calculatePublicMatchDayState(activePremierSeason, now);
 
   useEffect(() => {
     setIsOpen(false);
@@ -108,9 +103,9 @@ export function Header() {
           ))}
         </div>
 
-        <AppLink href="/esports/valorant/premier" className="competition-signal" aria-label={`Premier: ${publicState.title}`}>
-          <StatusBadge pulse={publicState.kind === 'match_day_live' || publicState.kind === 'playoffs_live'}>Premier</StatusBadge>
-          <strong>{publicState.title}</strong>
+        <AppLink href="/esports/valorant/premier" className="competition-signal" aria-label="Premier: partidas verificadas">
+          <StatusBadge >Premier</StatusBadge>
+          <strong>Partidas verificadas</strong>
         </AppLink>
 
         <button

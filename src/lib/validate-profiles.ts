@@ -24,23 +24,24 @@ export function validateCompetitiveProfiles(profiles: CompetitiveProfile[], play
       if (url.protocol !== 'https:' || url.hostname !== 'tracker.gg' || url.port || url.username || url.password || url.hash) {
         errors.push(`${label}: URL must be an HTTPS Tracker.gg profile without credentials or fragment`);
       }
-      const match = url.pathname.match(/^\/valorant\/profile\/riot\/([^/]+)(?:\/(?:overview|matches))?$/);
+      const match = url.pathname.match(/^\/valorant\/profile\/riot\/([^/]+)\/matches$/);
       if (!match || decodeURIComponent(match[1]) !== profile.riotId) {
         errors.push(`${label}: URL account does not match Riot ID`);
       }
-      if (!['premier', 'competitive'].includes(profile.playlist) ||
+      if (profile.playlist !== 'competitive' ||
           url.searchParams.getAll('playlist').length !== 1 || url.searchParams.get('playlist') !== profile.playlist) {
         errors.push(`${label}: playlist mismatch`);
       }
-      if (url.searchParams.getAll('season').length > 1 ||
-          (url.searchParams.get('season') ?? undefined) !== profile.seasonId ||
-          (profile.seasonId !== undefined && !/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(profile.seasonId))) {
-        errors.push(`${label}: season mismatch`);
+      if (url.searchParams.getAll('platform').length !== 1 || url.searchParams.get('platform') !== 'pc' ||
+          Array.from(url.searchParams.keys()).some(key => !['platform', 'playlist'].includes(key))) {
+        errors.push(`${label}: only PC Competitive without a fixed season is supported`);
       }
     } catch {
       errors.push(`${label}: malformed profile URL or encoding`);
     }
   }
+
+  for (const id of playerIds) if (!seenPlayers.has(id)) errors.push(`competitive profile ${id}: missing player`);
 
   if (errors.length) throw new Error(`SHUSH competitive profile validation failed:\n- ${errors.join('\n- ')}`);
 }

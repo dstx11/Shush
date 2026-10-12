@@ -3,14 +3,14 @@ export type Player = {
   displayName: string;
   initials: string;
   number: string;
+  size: 'M' | 'XXL';
+  portraitPosition: string;
   roles: string[];
   status?: string;
   avatar?: string;
   isCreator?: boolean;
   creatorType?: 'twitch' | 'youtube';
   creatorUrl?: string;
-  quote: string;
-  focus: string;
   agents?: string[];
   sensitivity?: string;
   equipment?: string;
@@ -19,79 +19,84 @@ export type Player = {
 export const players: Player[] = [
   {
     id: 'dstx',
-    displayName: 'dstx',
+    displayName: 'DSTX',
     initials: 'DX',
-    number: '01',
+    number: '11',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Duelista', 'Controlador'],
-    quote: 'Entrada direta, controlo quando o round pede.',
-    focus: 'Pressão',
-    avatar: '/assets/avatars/delcio.webp',
+    avatar: '/assets/avatars/dstx-jersey.webp',
   },
   {
     id: 'more',
     displayName: 'More',
     initials: 'MR',
-    number: '02',
+    avatar: '/assets/avatars/more-jersey.webp',
+    number: '13',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Sentinela', 'Iniciador'],
     isCreator: true,
     creatorType: 'twitch',
     creatorUrl: 'https://www.twitch.tv/kandimba13',
-    quote: 'Leitura calma, espaço bem fechado.',
-    focus: 'Controlo',
   },
   {
     id: 'th0maz7',
-    displayName: 'Th0maz7',
-    initials: 'T7',
-    number: '03',
+    displayName: 'Th0maz',
+    initials: 'TH',
+    number: '07',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Controlador'],
     isCreator: true,
     creatorType: 'youtube',
     creatorUrl: 'https://www.youtube.com/@Th0maaz_7',
-    quote: 'Utilidade certa antes do contacto.',
-    focus: 'Setup',
-    avatar: '/assets/avatars/tomas.webp',
+    avatar: '/assets/avatars/th0maz-jersey.webp',
   },
   {
     id: 'lyel',
-    displayName: 'lyel',
+    displayName: 'Lyel',
     initials: 'LY',
-    number: '04',
+    number: '16',
+    size: 'XXL',
+    portraitPosition: '50% 25%',
     roles: ['Iniciador', 'Flex'],
-    quote: 'Energia solta, decisão no momento certo.',
-    focus: 'Ritmo',
-    avatar: '/assets/avatars/lyel.webp',
+    avatar: '/assets/avatars/lyel-jersey.webp',
   },
   {
     id: 'tz',
-    displayName: 'tz',
+    displayName: 'TZ',
     initials: 'TZ',
-    number: '05',
+    number: '10',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Flex'],
-    quote: 'Adapta o round sem chamar atenção.',
-    focus: 'Flex',
-    avatar: '/assets/avatars/tz.webp',
-  },
-  {
-    id: 'catty',
-    displayName: 'Catty',
-    initials: 'CT',
-    number: '06',
-    roles: ['Controlador'],
-    quote: 'Fumo limpo, timing certo, equipa organizada.',
-    focus: 'Utilidade',
-    avatar: '/assets/avatars/catarina.webp',
+    avatar: '/assets/avatars/tz-jersey.webp',
   },
   {
     id: 'levi',
     displayName: 'Levi',
     initials: 'LV',
-    number: '08',
+    number: '09',
+    size: 'M',
+    portraitPosition: '50% 25%',
     roles: ['Duelista'],
-    quote: 'Pressão simples, round sem ruído extra.',
-    focus: 'Abertura',
-    avatar: '/assets/avatars/levi.webp',
+    avatar: '/assets/avatars/levi-jersey.webp',
   },
+  {
+    id: 'catty',
+    displayName: 'Catty',
+    initials: 'CT',
+    number: '20',
+    size: 'M',
+    portraitPosition: '50% 25%',
+    roles: ['Controlador'],
+    avatar: '/assets/avatars/catty-jersey.webp',
+  },
+
 ];
 
 export const creators = players.filter((player) => player.isCreator && player.creatorUrl);
+
+export const rosterIndex = (id: string) => String(players.findIndex(player => player.id === id) + 1).padStart(2, '0');
+export const playerDropUrl = (player: Player) => `/products/jersey?${new URLSearchParams({ drop: '1', nick: player.displayName, number: player.number, size: player.size })}`;

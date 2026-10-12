@@ -10,7 +10,7 @@ export const navItems: NavItem[] = [
   { id: 'roster', label: 'Roster', href: '/esports/valorant/roster' },
   { id: 'creators', label: 'Creators', href: '/content' },
   { id: 'drop', label: 'Drop 01', href: '/products/jersey' },
-  { id: 'about', label: 'About', href: '/company' },
+  { id: 'about', label: 'Company', href: '/company' },
 ];
 
 export const footerLinks = [
@@ -19,5 +19,5 @@ export const footerLinks = [
   { label: 'Roster', href: '/esports/valorant/roster' },
   { label: 'Creators', href: '/content' },
   { label: 'Drop 01', href: '/products/jersey' },
-  { label: 'About', href: '/company' },
+  { label: 'Company', href: '/company' },
 ];

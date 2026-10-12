@@ -19,15 +19,11 @@
 @keyframes shush-reveal { from { opacity: .4; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes shush-route-in { from { transform: translateY(7px); } to { transform: translateY(0); } }
 @keyframes shush-panel-in { from { opacity: .4; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes shush-product-in { from { transform: translateY(12px); } to { transform: translateY(0); } }
 @keyframes shush-product-swap { from { opacity: .3; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
-@keyframes shush-character-swap { from { opacity: .45; transform: translateX(14px); } to { opacity: 1; transform: translateX(0); } }
 @keyframes shush-pulse { 0%, 100% { opacity: .76; } 50% { opacity: 1; } }
 .route-enter, .hero-copy-enter { animation: shush-route-in .28s both; }
 .mobile-panel-enter { animation: shush-panel-in .22s both; }
-.hero-product-enter { animation: shush-product-in .3s both; }
 .product-swap { animation: shush-product-swap .26s both; }
-.character-swap { animation: shush-character-swap .28s both; }
 .status-badge.is-pulse { animation: shush-pulse 2.2s ease-in-out infinite; }
 
 /* Shared contextual actions and transfer feedback. */
