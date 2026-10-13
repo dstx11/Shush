@@ -52,7 +52,7 @@ for (const [name, path] of routes) {
 
 test('roster: seven confirmed accounts, selection, sharing and Unicode', async ({ page }) => {
   const confirmed = [
-    ['dstx', 'DSTX', 'Nivox#zero'], ['more', 'More', 'moreNO#less'],
+    ['dstx', 'DSTX', 'dstx#lover'], ['more', 'More', 'moreNO#less'],
     ['th0maz7', 'Th0maz', 'Th0maz7#愛してる彼'], ['lyel', 'Lyel', 'xyz#off'],
     ['tz', 'TZ', 'tz one more time#1757'], ['levi', 'Levi', 'the creator#weed'],
     ['catty', 'Catty', 'catty#111'],

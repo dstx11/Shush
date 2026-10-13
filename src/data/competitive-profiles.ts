@@ -6,7 +6,7 @@ export type CompetitiveProfile = {
   playlist: 'competitive';
 };
 
-const accounts = [['dstx', 'Nivox#zero'], ['more', 'moreNO#less'], ['th0maz7', 'Th0maz7#愛してる彼'], ['lyel', 'xyz#off'], ['tz', 'tz one more time#1757'], ['catty', 'catty#111'], ['levi', 'the creator#weed']];
+const accounts = [['dstx', 'dstx#lover'], ['more', 'moreNO#less'], ['th0maz7', 'Th0maz7#愛してる彼'], ['lyel', 'xyz#off'], ['tz', 'tz one more time#1757'], ['catty', 'catty#111'], ['levi', 'the creator#weed']];
 export const competitiveProfiles: CompetitiveProfile[] = accounts.map(([playerId, riotId]) => ({
   playerId, riotId, playlist: 'competitive',
   trackerUrl: `https://tracker.gg/valorant/profile/riot/${encodeURIComponent(riotId)}/matches?platform=pc&playlist=competitive`,
