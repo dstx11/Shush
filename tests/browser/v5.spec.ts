@@ -110,6 +110,44 @@ test('V5 intro: bounded initial experience, reduced motion and no SPA replay', a
   await expect(page.locator('.brand-intro')).toHaveCount(0, { timeout: 7000 });
   await page.locator('.discovery-company').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.brand-intro')).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('.brand-intro')).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' }); await page.reload(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.brand-intro')).toHaveCount(0);
+});
+
+
+test('Intro can be skipped with keyboard and is remembered across reloads', async ({ page }) => {
+  const now = Date.now();
+  await page.clock.install({ time: now });
+  await page.clock.pauseAt(now + 100);
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
+  await expect(intro).toBeVisible();
+  await expect(intro).toHaveJSProperty('open', true);
+  await expect(intro.getByRole('button', { name: 'Entrar' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(intro).toHaveCount(0);
+  await page.reload();
+  await expect(intro).toHaveCount(0);
+  // Let React commit the lazy route after checking that the intro did not replay.
+  await page.clock.runFor(1000);
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.evaluate(() => sessionStorage.removeItem('shush:intro-seen'));
+  await page.reload();
+  await expect(intro).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(intro).toHaveCount(0);
+});
+
+test('Unavailable session storage never blocks entry to the site', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.addInitScript(() => Object.defineProperty(window, 'sessionStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } }));
+  await page.goto('/esports/valorant/roster?player=lyel');
+  await expect(page.locator('#selected-player-name')).toHaveText('Lyel');
+  await expect(page.locator('.brand-intro')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Jogador seguinte' }).click();
+  await expect(page.locator('#selected-player-name')).toHaveText('TZ');
 });

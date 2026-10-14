@@ -95,7 +95,7 @@ test('roster: seven confirmed accounts, selection, sharing and Unicode', async (
   }
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
-  await expect(page.locator('.competitive-identity')).toContainText('Competitive');
+  await expect(page.locator('.competitive-profile .tracker-button')).toContainText('Partidas Competitive');
   await page.getByRole('button', { name: 'Jogador anterior' }).press('Enter');
   await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   await page.reload();
