@@ -1,20 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-/** One intro per document, bounded even when a route or image fails. */
+const sessionKey = 'shush:intro-seen';
+function shouldShowIntro() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  try { return sessionStorage.getItem(sessionKey) !== '1'; } catch { return false; }
+}
+
+/** A short, skippable first-visit reveal. Native dialog prevents hidden-page clicks. */
 export function BrandIntro() {
-  const [visible, setVisible] = useState(() => !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [visible, setVisible] = useState(shouldShowIntro);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   useEffect(() => {
-    if (!visible) return;
+    const dialog = dialogRef.current;
+    if (!visible || !dialog) return;
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     let exit: ReturnType<typeof setTimeout>;
-    const close = () => setVisible(false);
-    const ready = () => { exit = setTimeout(close, Math.max(0, 1800 - performance.now())); };
+    const close = () => { dialog.close(); setVisible(false); };
+    const ready = () => { exit = setTimeout(close, Math.max(0, 700 - performance.now())); };
     const reduce = () => { if (media.matches) close(); };
+    dialog.showModal();
+    try { sessionStorage.setItem(sessionKey, '1'); } catch { close(); }
     window.addEventListener('shush:ready', ready, { once: true });
     media.addEventListener('change', reduce);
-    const limit = setTimeout(close, 6000);
-    return () => { clearTimeout(exit); clearTimeout(limit); window.removeEventListener('shush:ready', ready); media.removeEventListener('change', reduce); };
+    const limit = setTimeout(close, 1400);
+    return () => { clearTimeout(exit); clearTimeout(limit); dialog.close(); window.removeEventListener('shush:ready', ready); media.removeEventListener('change', reduce); };
   }, [visible]);
   if (!visible) return null;
-  return <div className="brand-intro" aria-hidden="true"><div className="loading-emblem"><span className="loading-orbit" /><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="" /><span className="loading-shutter" /></div><strong>SHUSH</strong><span className="intro-caption">THE NEXT ROUND</span></div>;
+  return <dialog ref={dialogRef} className="brand-intro" aria-label="Entrada SHUSH" onCancel={() => setVisible(false)}>
+    <div className="loading-emblem" aria-hidden="true"><span className="loading-orbit" /><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="" /><span className="loading-shutter" /></div>
+    <strong>SHUSH</strong>
+    <button type="button" className="intro-skip" onClick={() => { dialogRef.current?.close(); setVisible(false); }}>Entrar <span aria-hidden="true">↗</span></button>
+  </dialog>;
 }

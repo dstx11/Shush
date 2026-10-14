@@ -8,7 +8,7 @@ import { AppLink } from '../ui/AppLink';
 function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
   return (
     <AppLink href={href} target="_blank" rel="noopener noreferrer" className={`tracker-button${compact ? ' tracker-button-compact' : ''}`} aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
-      <span>{compact ? 'Tracker.gg' : 'Abrir Tracker.gg'}</span>
+      <span>{compact ? 'Tracker.gg' : 'Partidas Competitive'}</span>
       <span className="tracker-button-arrow" aria-hidden="true">↗</span>
     </AppLink>
   );
@@ -59,10 +59,10 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" className="character-spotlight" aria-labelledby="selected-player-name">
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
-              <span className="section-kicker">{rosterIndex(selectedPlayer.id)} / {selectedPlayer.roles[0]}</span>
+              <span className="section-kicker">SHUSH / VALORANT</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
 
-              <span className="character-jersey mono">Camisola #{selectedPlayer.number} · {selectedPlayer.size}</span>
+              <span className="character-jersey mono">#{selectedPlayer.number}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
             <div key={`media-${selectedPlayer.id}`} className="character-media"
@@ -79,11 +79,10 @@ export function RosterSection() {
                 }
               }}>
               {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(null)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
-              <span className="portrait-orbit" aria-hidden="true" />
               <span className="character-index" aria-hidden="true">{rosterIndex(selectedPlayer.id)} / 07</span>
 
               {selectedPlayer.avatar ? (
-                <img style={{ objectPosition: selectedPlayer.portraitPosition }} src={selectedPlayer.avatar} alt={`Avatar de ${selectedPlayer.displayName}`} draggable="false" width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
+                <img style={{ objectPosition: selectedPlayer.portraitPosition }} src={selectedPlayer.avatar} alt={`Retrato de ${selectedPlayer.displayName}`} draggable="false" width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
               ) : (
                 <div className="avatar-fallback character-fallback">
                   <span className="avatar-ring" aria-hidden="true" />
@@ -122,20 +121,17 @@ export function RosterSection() {
         </div>
 
             <div key={`copy-${selectedPlayer.id}`} className="character-copy">
-              <span className="section-kicker">Ficha do jogador</span>
+              <span className="section-kicker">Em jogo</span>
+              <dl className="player-dna"><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl>
 
               {competitiveProfile ? (
                 <>
-                <details className="player-dna"><summary>Player DNA <span aria-hidden="true">+</span></summary><dl><div><dt>Camisola</dt><dd>#{selectedPlayer.number} · {selectedPlayer.size}</dd></div><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl></details>
+
                 <div className="competitive-profile">
                   <dl className="competitive-identity">
                     <div>
                       <dt>Riot ID</dt>
                       <dd>{competitiveProfile.riotId}</dd>
-                    </div>
-                    <div>
-                      <dt>Modo</dt>
-                      <dd>Competitive</dd>
                     </div>
                   </dl>
                   <TrackerButton href={competitiveProfile.trackerUrl} playerName={selectedPlayer.displayName} />

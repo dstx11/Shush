@@ -15,16 +15,16 @@ test('Home never presents internal calendar windows as confirmed matches', async
 test('Character Select: player DNA, individual art direction and reduced motion', async ({ page }, testInfo) => {
   await page.goto('/esports/valorant/roster?player=lyel');
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'lyel');
-  await page.getByText('Player DNA', { exact: false }).click();
   await expect(page.locator('.player-dna')).toContainText('Iniciador / Flex');
-  await expect(page.locator('.player-dna')).toContainText('#16 · XXL');
+  await expect(page.locator('.character-number')).toHaveText('16');
+  await expect(page.locator('.character-copy')).not.toContainText('XXL');
   await expect(page.locator('.character-media > img')).toHaveCSS('animation-name', 'none');
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   expect(axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
   await page.locator('#selected-player').screenshot({ path: testInfo.outputPath('character-select.png') });
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'tz');
-  await expect(page.locator('.player-dna')).not.toHaveAttribute('open');
+  await expect(page.locator('.player-dna')).toBeVisible();
 });
 
 test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page, browserName }, testInfo) => {
