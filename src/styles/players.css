@@ -15,7 +15,6 @@
 .character-identity { grid-area: portrait; align-self: end; z-index: 4; position: relative; min-width: 0; padding: 2.5rem; pointer-events: none; }
 .character-identity .section-kicker { color: #e5dce9; font-size: .65rem; letter-spacing: .18em; }
 .character-identity h2 { position: relative; font: 800 clamp(4rem, 8vw, 8rem)/.95 var(--font-heading); letter-spacing: -.065em; color: #fff; overflow-wrap: anywhere; margin: .8rem 0 0; }
-.character-jersey { display: none; }
 .character-number { position: absolute; right: 2rem; bottom: 2rem; font: 800 clamp(4rem, 7vw, 7rem)/1 var(--font-heading); letter-spacing: -.08em; color: #ffffff36; }
 .character-media { grid-area: portrait; position: relative; min-width: 0; height: clamp(31rem, 43vw, 42rem); isolation: isolate; touch-action: pan-y; overflow: hidden; background: var(--player-wash); }
 .character-media > img, .character-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }

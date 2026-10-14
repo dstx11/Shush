@@ -62,7 +62,7 @@ export function RosterSection() {
               <span className="section-kicker">SHUSH / VALORANT</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
 
-              <span className="character-jersey mono">#{selectedPlayer.number}</span>
+              <span className="sr-only">Camisola #{selectedPlayer.number}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
             <div key={`media-${selectedPlayer.id}`} className="character-media"

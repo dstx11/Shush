@@ -131,8 +131,10 @@ test('Intro can be skipped with keyboard and is remembered across reloads', asyn
   await page.keyboard.press('Enter');
   await expect(intro).toHaveCount(0);
   await page.reload();
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(intro).toHaveCount(0);
+  // Let React commit the lazy route after checking that the intro did not replay.
+  await page.clock.runFor(1000);
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await page.evaluate(() => sessionStorage.removeItem('shush:intro-seen'));
   await page.reload();
   await expect(intro).toBeVisible();
