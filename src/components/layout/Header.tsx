@@ -86,7 +86,7 @@ export function Header() {
           if (isOpen && !event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
         }}>
         <AppLink href="/" className="brand-mark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
-          <img src="/assets/brand/shush-logo.webp" alt="" width="1167" height="647" className="h-8 w-auto" />
+          <img src="/assets/brand/shush-logo-small.webp" alt="" width="1167" height="647" className="h-8 w-auto" />
           <span>SHUSH</span>
         </AppLink>
 

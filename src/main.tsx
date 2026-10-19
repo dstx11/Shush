@@ -32,16 +32,19 @@ window.addEventListener('vite:preloadError', (event) => {
   window.location.reload();
 });
 
-preloadRoute(window.location.pathname);
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ErrorBoundary>
-  </React.StrictMode>,
-);
+const initialPath = window.location.pathname;
+preloadRoute(initialPath).then((initialModule) => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <ErrorBoundary>
+        <BrowserRouter>
+          <App initialPage={initialModule?.default} initialPath={initialPath} />
+        </BrowserRouter>
+      </ErrorBoundary>
+    </React.StrictMode>,
+  );
+});
 
 import "./styles/v5.css";
+
+import './styles/experience.css';

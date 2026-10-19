@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
-import { players, rosterIndex, playerDropUrl, type Player } from '../../data/players';
+import { players, playerDropUrl, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
+import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { AppLink } from '../ui/AppLink';
 
 function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
@@ -20,6 +21,7 @@ export function RosterSection() {
   const selectedPlayer = players[selectedIndex] ?? players[0];
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
   const previous = useRef(selectedPlayer);
+  const [direction, setDirection] = useState(1);
   const [leaving, setLeaving] = useState<Player | null>(null);
   useEffect(() => {
     if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) setLeaving(previous.current);
@@ -35,17 +37,34 @@ export function RosterSection() {
     strip.scrollTo({ left: Math.max(0, target), behavior: 'instant' });
   }, [selectedIndex]);
   const selectPlayer = useCallback((index: number) => {
+    setDirection(index === (selectedIndex + 1) % players.length ? 1 : -1);
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('player', players[index].id);
       return next;
     }, { replace: true, preventScrollReset: true });
-  }, [setParams]);
+  }, [setParams, selectedIndex]);
+  useEffect(() => {
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (connection?.saveData) return;
+    const preload = window.setTimeout(() => {
+      for (const offset of [-1, 1]) {
+        const player = players[(selectedIndex + offset + players.length) % players.length];
+        if (player.avatar) {
+          const image = new Image();
+          image.sizes = '(max-width: 767px) 100vw, 65vw';
+          image.srcset = `${player.avatar.replace('.webp', '-160.webp')} 160w, ${player.avatar.replace('.webp', '-384.webp')} 384w, ${player.avatar} 768w`;
+          image.src = player.avatar;
+        }
+      }
+    }, 250);
+    return () => window.clearTimeout(preload);
+  }, [selectedIndex]);
   const selectNext = () => selectPlayer((selectedIndex + 1) % players.length);
   const selectPrevious = () => selectPlayer((selectedIndex - 1 + players.length) % players.length);
 
   return (
-    <section id="roster" className="player-page" data-player={selectedPlayer.id} aria-labelledby="roster-title">
+    <section id="roster" className="player-page" data-player={selectedPlayer.id} data-direction={direction} aria-labelledby="roster-title">
       <div className="shell">
         <div className="player-heading">
           <h1 id="roster-title">Roster<span className="roster-count"> / 07</span></h1>
@@ -79,18 +98,17 @@ export function RosterSection() {
                 }
               }}>
               {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(null)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
-              <span className="character-index" aria-hidden="true">{rosterIndex(selectedPlayer.id)} / 07</span>
-
-              {selectedPlayer.avatar ? (
-                <img style={{ objectPosition: selectedPlayer.portraitPosition }} src={selectedPlayer.avatar} alt={`Retrato de ${selectedPlayer.displayName}`} draggable="false" width="768" height="768" loading="eager" fetchPriority={selectedIndex === 0 ? 'high' : 'auto'} decoding="async" />
-              ) : (
-                <div className="avatar-fallback character-fallback">
-                  <span className="avatar-ring" aria-hidden="true" />
-                  <span>{selectedPlayer.initials}</span>
-                </div>
-              )}
+              <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
             </div>
 
+          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Seleciona um retrato <span aria-hidden="true">· ← →</span></span>
+            <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
+              <span aria-hidden="true">←</span>
+            </button>
+            <button type="button" onClick={selectNext} aria-label="Jogador seguinte">
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
                     <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
             const profile = getCompetitiveProfile(player.id);
@@ -104,8 +122,8 @@ export function RosterSection() {
                   (stripRef.current?.children[target]?.querySelector('button') as HTMLButtonElement | null)?.focus({ preventScroll: true });
                 }}>
                   <span className="strip-avatar">
-                    <span className="player-card-number" aria-hidden="true">{rosterIndex(player.id)}</span>
-                    {player.avatar ? <img src={player.avatar} alt="" width="768" height="768" loading="lazy" decoding="async" /> : <span className="strip-initials">{player.initials}</span>}
+                    <span className="player-card-number" aria-hidden="true">#{player.number}</span>
+                    <PlayerPortrait player={player} decorative thumbnail sizes="(max-width: 1050px) 92px, 13vw" />
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong></span>
                 </button>
@@ -149,14 +167,7 @@ export function RosterSection() {
               ) : null}
 
             </div>
-          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Seleciona um retrato <span aria-hidden="true">· ← →</span></span>
-            <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
-              <span aria-hidden="true">←</span>
-            </button>
-            <button type="button" onClick={selectNext} aria-label="Jogador seguinte">
-              <span aria-hidden="true">→</span>
-            </button>
-          </div>
+
           </article>
 
 

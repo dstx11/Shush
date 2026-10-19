@@ -8,10 +8,10 @@ const dist = join(root, 'dist');
 
 const routeFiles = [
   ['esports/valorant/premier.html', 'https://shush.pt/esports/valorant/premier', 'Premier — SHUSH'],
-  ['esports/valorant/roster.html', 'https://shush.pt/esports/valorant/roster', 'Roster — SHUSH'],
+  ['esports/valorant/roster.html', 'https://shush.pt/esports/valorant/roster', 'Jogadores de VALORANT — SHUSH'],
   ['content.html', 'https://shush.pt/content', 'Creators — SHUSH'],
   ['products/jersey.html', 'https://shush.pt/products/jersey', 'Drop 01 — SHUSH'],
-  ['company.html', 'https://shush.pt/company', 'About — SHUSH'],
+  ['company.html', 'https://shush.pt/company', 'Sobre a SHUSH'],
 ];
 
 const requiredFiles = [
@@ -46,6 +46,8 @@ const headers = await readText('_headers');
 const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 
+expect(index, '<h1', 'prerendered Home heading');
+expect(index, 'Quem está no lobby.', 'prerendered Home content');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');
@@ -60,6 +62,8 @@ expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
+  expect(html, '<h1', `${path} prerendered heading`);
+  expectAbsent(html, 'shush-loading', `${path} unfinished loading shell`);
   expect(html, `<title>${title}</title>`, `${path} title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
@@ -67,14 +71,6 @@ for (const [path, canonical, title] of routeFiles) {
   expect(html, `name="twitter:title" content="${title}"`, `${path} Twitter title`);
   expect(html, `name="twitter:image:alt" content="${title}"`, `${path} Twitter image alt`);
   expect(html, '<meta name="robots" content="index,follow"', `${path} robots`);
-
-  if (path === 'esports/valorant/roster.html') {
-    expect(
-      html,
-      'rel="preload" as="image" href="/assets/avatars/dstx-jersey.webp"',
-      'roster portrait preload',
-    );
-  }
 
   // Verify the emitted document's actual entry points, not only public source references.
   for (const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)) {

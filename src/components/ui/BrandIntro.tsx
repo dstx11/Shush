@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const sessionKey = 'shush:intro-seen';
 function shouldShowIntro() {
+  if (typeof window === 'undefined') return false;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   try { return sessionStorage.getItem(sessionKey) !== '1'; } catch { return false; }
 }
@@ -27,7 +28,7 @@ export function BrandIntro() {
   }, [visible]);
   if (!visible) return null;
   return <dialog ref={dialogRef} className="brand-intro" aria-label="Entrada SHUSH" onCancel={() => setVisible(false)}>
-    <div className="loading-emblem" aria-hidden="true"><span className="loading-orbit" /><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="" /><span className="loading-shutter" /></div>
+    <div className="loading-emblem" aria-hidden="true"><span className="loading-orbit" /><img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="" /><span className="loading-shutter" /></div>
     <strong>SHUSH</strong>
     <button type="button" className="intro-skip" onClick={() => { dialogRef.current?.close(); setVisible(false); }}>Entrar <span aria-hidden="true">↗</span></button>
   </dialog>;

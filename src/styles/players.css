@@ -17,12 +17,8 @@
 .character-identity h2 { position: relative; font: 800 clamp(4rem, 8vw, 8rem)/.95 var(--font-heading); letter-spacing: -.065em; color: #fff; overflow-wrap: anywhere; margin: .8rem 0 0; }
 .character-number { position: absolute; right: 2rem; bottom: 2rem; font: 800 clamp(4rem, 7vw, 7rem)/1 var(--font-heading); letter-spacing: -.08em; color: #ffffff36; }
 .character-media { grid-area: portrait; position: relative; min-width: 0; height: clamp(31rem, 43vw, 42rem); isolation: isolate; touch-action: pan-y; overflow: hidden; background: var(--player-wash); }
-.character-media > img, .character-fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.character-media > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 .character-media::after { content: ''; position: absolute; z-index: 3; inset: 0; pointer-events: none; background: linear-gradient(180deg, #15131a15 45%, #15131ae8 100%); }
-.character-index { position: absolute; z-index: 4; top: 1.5rem; left: 1.5rem; font: 500 .7rem var(--font-mono); color: #fff; background: #15131acc; border: 1px solid #ffffff30; padding: .5rem .7rem; border-radius: 2rem; }
-.character-fallback { display: grid; place-items: center; overflow: hidden; }
-.character-fallback > span:last-child { font: 600 8rem/1 var(--font-heading); color: var(--player-accent); }
-.avatar-ring { position: absolute; width: 160%; aspect-ratio: 1; border: 1px solid #ffffff25; border-radius: 50%; }
 .portrait-depart { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
 .portrait-depart img { width: 100%; height: 100%; object-fit: cover; }
 .character-copy { grid-area: info; min-width: 0; align-self: center; padding: clamp(1.5rem, 3vw, 3rem); }
@@ -52,7 +48,6 @@
 .strip-avatar { position: relative; display: block; aspect-ratio: 1.45; overflow: hidden; border-radius: .5rem; background: var(--surface-2); }
 .strip-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 23%; opacity: .65; }
 .player-select-card.is-active img, .player-card-select:hover img { opacity: 1; }
-.strip-initials { display: grid; height: 100%; place-items: center; font: 600 2rem var(--font-heading); color: var(--muted); }
 .player-card-number { position: absolute; z-index: 1; bottom: .3rem; left: .4rem; color: white; font: .65rem var(--font-mono); text-shadow: 0 1px 4px #000; }
 .player-card-name { display: block; padding: .65rem .25rem .1rem; }
 .player-card-name strong { font-size: .85rem; }
@@ -82,7 +77,6 @@
  .character-identity { padding: 1.5rem 1.25rem; }
  .character-identity h2 { font-size: clamp(3.6rem, 17vw, 6rem); }
  .character-number { right: 1.25rem; bottom: 6.5rem; font-size: 3.5rem; }
- .character-index { top: 1rem; left: 1rem; }
  .character-strip { padding: .5rem 1rem 1rem; gap: .6rem; }
  .character-controls { padding: .75rem 1rem; }
  .character-copy { padding: 1.5rem; border-top: 1px solid var(--line); }
@@ -91,15 +85,27 @@
  .selection-help { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
- .character-media > img, .character-fallback { animation: portrait-arrive .5s cubic-bezier(.16,1,.3,1) both; }
+ .character-media > img, .character-media > .portrait-placeholder { animation: portrait-arrive .5s cubic-bezier(.16,1,.3,1) both; }
  .portrait-depart { animation: portrait-depart .2s ease-out both; }
  .character-identity { animation: name-arrive .45s cubic-bezier(.16,1,.3,1) both; }
  .character-copy { animation: profile-arrive .4s ease-out both; }
  .strip-avatar img { transition: transform .3s, opacity .2s; }
  .player-card-select:hover img { transform: scale(1.06); }
- @keyframes portrait-arrive { from { opacity: .35; transform: scale(1.04) translateX(12px); } to { opacity: 1; transform: none; } }
- @keyframes portrait-depart { to { opacity: 0; transform: translateX(-12px); } }
+ @keyframes portrait-arrive { from { opacity: .35; transform: scale(1.04) translateX(var(--arrival-x, 18px)); } to { opacity: 1; transform: none; } }
+ @keyframes portrait-depart { to { opacity: 0; transform: translateX(var(--departure-x, -18px)); } }
  @keyframes name-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
  @keyframes profile-arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 }
 @media (prefers-reduced-motion: reduce) { .portrait-depart { display: none; } }
+
+.player-page[data-direction='-1'] { --arrival-x: -18px; --departure-x: 18px; }
+.character-media > .portrait-placeholder { position: absolute; inset: 0; }
+.character-copy { position: relative; }
+.character-copy::before { content: ''; display: block; width: 3rem; height: 3px; background: var(--player-accent); margin-bottom: 2rem; }
+.character-controls { background: color-mix(in srgb, var(--player-wash) 28%, var(--surface)); }
+@media (prefers-reduced-motion: no-preference) {
+ .character-controls, .character-media { transition: background-color .35s ease; }
+ .player-select-card { transition: border-color .25s ease; }
+ .character-controls button { transition: transform .2s, background-color .2s; }
+ .character-controls button:active { transform: scale(.92); }
+}

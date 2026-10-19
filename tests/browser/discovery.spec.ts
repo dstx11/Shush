@@ -33,7 +33,7 @@ test('Home: unavailable storage still renders three stable players', async ({ pa
   const before = await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')));
   await page.clock.fastForward(120_000);
   expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);
-  await page.locator('.discovery-company').click(); await page.goBack();
+  await page.locator('.home-closing a[href="/company"]').click(); await page.goBack();
   await expect(players).toHaveCount(3);
   expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);
 });

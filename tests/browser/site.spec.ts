@@ -28,6 +28,7 @@ for (const [name, path] of routes) {
       await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
+    if (name === 'home') await page.locator('.home-lineup').evaluate((element) => { element.scrollLeft = 0; });
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
@@ -122,7 +123,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
 
-test('slow initial Home does not steal focus after the menu closes', async ({ page }) => {
+test('slow initial Home enables the menu and preserves focus after closing', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Mobile menu only');
   let release!: () => void;
   const ready = new Promise<void>((resolve) => { release = resolve; });
@@ -131,12 +132,15 @@ test('slow initial Home does not steal focus after the menu closes', async ({ pa
     await route.continue();
   });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('.navigation-toggle')).toBeDisabled();
+  release();
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
   const open = page.getByRole('button', { name: 'Abrir navegação' });
   await open.click();
   await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Home', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(open).toBeFocused();
-  release();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   await expect(open).toBeFocused();
@@ -191,6 +195,8 @@ test('player actions: exact Unicode clipboard, share URL and manual recovery', a
 test('mobile menu contains keyboard focus and player selector stays compact', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Mobile layout only');
   await page.goto('/esports/valorant/roster?player=levi');
+  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await expect(page.locator('.character-strip')).toBeVisible();
   const bounds = await page.locator('.character-strip').boundingBox();
   expect(bounds!.height).toBeLessThan(280);
   const selector = page.getByRole('group', { name: 'Selecionar jogador' });
@@ -198,11 +204,11 @@ test('mobile menu contains keyboard focus and player selector stays compact', as
   await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   await page.getByRole('button', { name: 'Abrir navegação' }).click();
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', true);
-  await page.locator('#mobile-navigation').getByRole('link', { name: 'Company', exact: true }).focus();
+  await page.locator('#mobile-navigation').getByRole('link', { name: 'Sobre', exact: true }).focus();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Fechar navegação' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
-  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Company', exact: true })).toBeFocused();
+  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Sobre', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', false);
 });
@@ -251,7 +257,9 @@ test('Creators: confirmed channels and contextual player destinations', async ({
   await expect(features.nth(1).getByRole('heading', { level: 2 })).toHaveText('Th0maz');
   await expect(features.nth(1).getByRole('link', { name: 'Abrir YouTube' })).toHaveAttribute('href', 'https://www.youtube.com/@Th0maaz_7');
   for (const index of [0, 1]) {
-    await expect(features.nth(index).locator('img')).toHaveCount(0);
+    await expect(features.nth(index).locator('img')).toHaveCount(1);
+    await expect(features.nth(index).locator('img')).toHaveAttribute('src', index === 0 ? '/assets/avatars/more-jersey.webp' : '/assets/avatars/th0maz-jersey.webp');
+    await expect(features.nth(index).getByRole('link', { name: 'Conhecer o jogador' })).toHaveAttribute('href', `/esports/valorant/roster?player=${index === 0 ? 'more' : 'th0maz7'}`);
     await expect(features.nth(index).locator('.creator-channel')).toHaveAttribute('rel', /noopener/);
   }
 });

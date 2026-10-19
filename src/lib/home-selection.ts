@@ -9,6 +9,7 @@ export function selectHomePlayers(cursor: number) {
 }
 let visit: ReturnType<typeof selectHomePlayers> | undefined;
 export function getHomePlayers() {
+  if (typeof window === 'undefined') return players.slice(0, 3);
   if (!visit) {
     let cursor = Math.floor(Math.random() * players.length);
     try {

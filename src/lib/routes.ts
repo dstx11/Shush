@@ -63,7 +63,7 @@ const routeLoaders = new Map<string, () => Promise<PageModule>>([
 export function preloadRoute(href: string) {
   const pathname = href.split(/[?#]/, 1)[0] || '/';
   const loader = routeLoaders.get(pathname) ?? loadNotFoundPage;
-  void loader().catch(() => {
+  return loader().catch(() => {
     // Prefetch is optional; a failed hover must not create an unhandled error.
     // The loader remains retryable when the visitor actually opens the route.
   });

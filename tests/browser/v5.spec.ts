@@ -5,9 +5,9 @@ const roster = [['dstx', 'DSTX', '11', 'M'], ['more', 'More', '13', 'M'], ['th0m
 test('V5 official jerseys and independent roster indices', async ({ page }) => {
   for (const [index, [id, name, number, size]] of roster.entries()) {
     await page.goto(`/esports/valorant/roster?player=${id}`);
-    await expect(page.locator('.character-index')).toHaveText(`${String(index + 1).padStart(2, '0')} / 07`);
+    await expect(page.locator('.character-controls > .mono')).toHaveText(`${String(index + 1).padStart(2, '0')} / 07`);
     await expect(page.locator('.character-number')).toHaveText(number);
-    await expect(page.locator('.player-card-number')).toHaveText(['01', '02', '03', '04', '05', '06', '07']);
+    await expect(page.locator('.player-card-number')).toHaveText(['#11', '#13', '#07', '#16', '#10', '#09', '#20']);
     await page.getByRole('link', { name: `Ver camisola ${name}` }).click();
     await expect(page.getByLabel('Nick', { exact: true })).toHaveValue(name);
     await expect(page.getByLabel('Número', { exact: true })).toHaveValue(number);
@@ -17,14 +17,16 @@ test('V5 official jerseys and independent roster indices', async ({ page }) => {
   }
 });
 
-test('V5 portrait ownership and short Home', async ({ page }) => {
-  for (const path of ['/company', '/content', '/esports/valorant/premier', '/products/jersey']) {
-    await page.goto(path); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.locator('img[src*="/avatars/"]')).toHaveCount(0);
-  }
-  await page.goto('/'); await expect(page.locator('main img[src*="/avatars/"]')).toHaveCount(3);
-  await expect(page.locator('.verified-match, .home-player-rail, .home-channel')).toHaveCount(0);
-  await expect(page.locator('.discovery-grid > a')).toHaveCount(5);
+test('Home and Creators show real people and dated records', async ({ page }) => {
+  await page.goto('/content');
+  await expect(page.locator('.creator-art img')).toHaveCount(2);
+  for (const link of await page.locator('.creator-channel').all()) await expect(link).toHaveAttribute('target', '_blank');
+  await page.goto('/');
+  await expect(page.locator('.team-cover-player')).toHaveCount(3);
+  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.home-score')).toHaveCount(3);
+  await expect(page.locator('.home-records-heading')).toContainText('abril–junho 2026');
+  await expect(page.locator('.home-creator-links > a')).toHaveCount(2);
 });
 
 test('V5 Match Explorer filters and verified map aggregates', async ({ page }) => {
@@ -108,7 +110,7 @@ test('V5 intro: bounded initial experience, reduced motion and no SPA replay', a
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.locator('.brand-intro')).toHaveCount(0, { timeout: 7000 });
-  await page.locator('.discovery-company').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.locator('.home-closing a[href="/company"]').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.brand-intro')).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

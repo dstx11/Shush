@@ -27,31 +27,45 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.player-dna')).toBeVisible();
 });
 
-test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page, browserName }, testInfo) => {
+test('Initial content stays visible while the JavaScript loads', async ({ page }) => {
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
-  let releaseEntry!: () => void;
-  const entryReady = new Promise<void>(resolve => { releaseEntry = resolve; });
-  await page.route('**/assets/index-*.js', async route => { await entryReady; await route.continue(); });
-  await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
+  await page.route('**/assets/index-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/', { waitUntil: 'commit' });
-  await expect(page.getByRole('link', { name: 'Recarregar página' })).toBeVisible();
-  await expect(page.locator('.loading-emblem')).toBeVisible();
-  releaseEntry();
-  await expect(page.getByRole('link', { name: 'Recarregar página' })).toHaveCount(0);
-  await expect(page.locator('.shush-loading')).toBeVisible();
-  await expect(page.getByText('O silêncio antes do round.')).toBeVisible();
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'loading-turn');
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'none');
-  // WebKit waits for document load before capture; the intentionally held module prevents it.
-  // Keep the loading assertions above and release/removal assertions below on every engine.
-  if (browserName !== 'webkit') await page.screenshot({ path: testInfo.outputPath('loading.png') });
-  release();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.shush-loading')).toHaveCount(0);
+  await page.evaluate(() => {
+    (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen = false;
+    const observer = new MutationObserver(() => {
+      if (document.querySelector('.shush-loading')) (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen = true;
+    });
+    observer.observe(document.getElementById('root')!, { childList: true, subtree: true });
+  });
+  release();
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  expect(await page.evaluate(() => (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen)).toBe(false);
+});
+
+test('Slow navigation keeps the current page usable until the next route is ready', async ({ page }) => {
+  let release!: () => void;
+  const ready = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
+  await page.goto('/company');
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Antes da SHUSH');
+  await page.locator('header .brand-mark').click();
+  // React Router uses a transition: retain the current content while the next
+  // chunk is pending instead of replacing it with a full-page spinner.
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Antes da SHUSH');
+  await expect(page.locator('.shush-loading')).toHaveCount(0);
+  await expect(page.locator('footer a').first()).toBeAttached();
+  release();
+  await expect(page.locator('.team-cover-player')).toHaveCount(3);
   await expect(page.locator('.shush-loading')).toHaveCount(0);
 });
+
 
 
 test('Character Select: arrow keys, Home/End, stable focus and preserved query parameters', async ({ page }) => {
@@ -75,7 +89,7 @@ test('Home leads with real players and sourced results, while the jersey belongs
   await expect(page.locator('.team-cover-player')).toHaveCount(3);
   await expect(page.locator('.opening img[src*="/assets/jersey/"]')).toHaveCount(0);
   await expect(page.locator('.verified-match')).toHaveCount(0);
-  await expect(page.locator('main img[src*="avatars"]')).toHaveCount(3);
+  await expect(page.locator('.team-cover img')).toHaveCount(3);
 });
 
 test('Character Select: swipe intent, cancellation and player jersey link', async ({ page }) => {
