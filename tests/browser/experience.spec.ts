@@ -35,8 +35,17 @@ test('Initial content stays visible while the JavaScript loads', async ({ page }
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.home-lineup > a')).toHaveCount(7);
   await expect(page.locator('.shush-loading')).toHaveCount(0);
+  await page.evaluate(() => {
+    (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen = false;
+    const observer = new MutationObserver(() => {
+      if (document.querySelector('.shush-loading')) (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen = true;
+    });
+    observer.observe(document.getElementById('root')!, { childList: true, subtree: true });
+  });
   release();
   await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  expect(await page.evaluate(() => (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen)).toBe(false);
 });
 
 test('Slow navigation keeps the current page usable until the next route is ready', async ({ page }) => {
