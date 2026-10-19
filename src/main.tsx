@@ -32,8 +32,7 @@ window.addEventListener('vite:preloadError', (event) => {
   window.location.reload();
 });
 
-preloadRoute(window.location.pathname);
-
+preloadRoute(window.location.pathname).then(() => {
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
@@ -43,6 +42,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </ErrorBoundary>
   </React.StrictMode>,
 );
+});
 
 import "./styles/v5.css";
 

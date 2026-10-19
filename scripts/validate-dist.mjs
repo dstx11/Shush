@@ -46,6 +46,8 @@ const headers = await readText('_headers');
 const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 
+expect(index, '<h1', 'prerendered Home heading');
+expect(index, 'Quem está no lobby.', 'prerendered Home content');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');
@@ -60,6 +62,8 @@ expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
+  expect(html, '<h1', `${path} prerendered heading`);
+  expectAbsent(html, 'shush-loading', `${path} unfinished loading shell`);
   expect(html, `<title>${title}</title>`, `${path} title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);

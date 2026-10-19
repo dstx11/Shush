@@ -75,7 +75,7 @@ test('Home leads with real players and sourced results, while the jersey belongs
   await expect(page.locator('.team-cover-player')).toHaveCount(3);
   await expect(page.locator('.opening img[src*="/assets/jersey/"]')).toHaveCount(0);
   await expect(page.locator('.verified-match')).toHaveCount(0);
-  await expect(page.locator('main img[src*="avatars"]')).toHaveCount(3);
+  await expect(page.locator('.team-cover img')).toHaveCount(3);
 });
 
 test('Character Select: swipe intent, cancellation and player jersey link', async ({ page }) => {

@@ -22,7 +22,7 @@ export default defineConfig({
     { name: 'tablet-1024', use: { browserName: 'chromium', viewport: { width: 1024, height: 900 } } },
     { name: 'desktop-1366', use: { browserName: 'chromium', viewport: { width: 1366, height: 900 } } },
     { name: 'wide-1920', use: { browserName: 'chromium', viewport: { width: 1920, height: 1080 } } },
-    { name: 'desktop-zoom-200', use: { browserName: 'chromium', viewport: { width: 683, height: 450 }, deviceScaleFactor: 2 } },
+    { name: 'compact-hidpi', use: { browserName: 'chromium', viewport: { width: 683, height: 450 }, deviceScaleFactor: 2 } },
     { name: 'landscape-844', use: { browserName: 'chromium', viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true } },
     { name: 'mobile-webkit', use: { browserName: 'webkit', viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
   ].map((project) => ({ ...project, testIgnore: ['desktop-1366', 'mobile-390'].includes(project.name) ? [] : ['**/visual.spec.ts'] })),

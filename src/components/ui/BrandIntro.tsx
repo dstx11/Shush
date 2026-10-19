@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const sessionKey = 'shush:intro-seen';
 function shouldShowIntro() {
+  if (typeof window === 'undefined') return false;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   try { return sessionStorage.getItem(sessionKey) !== '1'; } catch { return false; }
 }

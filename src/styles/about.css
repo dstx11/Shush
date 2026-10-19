@@ -9,10 +9,6 @@
 .about-brand-panel > p { margin-block: 1.5rem; color: var(--muted); font-size: .94rem; line-height: 1.9; }
 .about-counts { display: flex; gap: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .8rem var(--font-mono); }
 .about-counts strong { font: 600 2rem var(--font-heading); color: var(--paper); padding-right: .5rem; }
-.about-manifesto { display: grid; grid-template-columns: .35fr 1fr; gap: 3rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); margin-top: 3rem; padding: 2rem; }
-.about-manifesto h2 { font: 600 var(--section-size)/1.16 var(--font-heading); letter-spacing: -.035em; }
-.about-manifesto h2 span { color: var(--signal); }
-.about-manifesto p { max-width: 37rem; color: var(--muted); font-size: .9rem; line-height: 1.9; margin-top: 1.5rem; }
 .about-paths { display: grid; margin-top: 2rem; }
 .about-paths a { display: grid; grid-template-columns: .4fr 1fr .5fr 2rem; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding-block: 1.5rem; color: var(--paper); text-decoration: none; }
 .about-paths strong { font: 600 clamp(1.7rem, 3.2vw, 3.2rem)/1.1 var(--font-heading); letter-spacing: -.035em; }
@@ -42,8 +38,6 @@
   .about-opening h1 { font-size: var(--title-size); }
   .about-brand-panel { border: 0; padding: 1.25rem; }
   .about-brand-image { max-width: 28rem; }
-  .about-manifesto { grid-template-columns: 1fr; gap: 1.2rem; margin-top: 2.5rem; padding: 1.5rem; }
-  .about-manifesto h2 { font-size: var(--section-size); }
   .about-paths a { grid-template-columns: 1fr 2rem; gap: .8rem; }
   .about-paths .mono, .about-paths strong, .about-paths a > span:nth-child(3) { grid-column: 1; }
   .about-paths a > span:last-child { grid-column: 2; grid-row: 1 / 4; }

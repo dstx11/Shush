@@ -7,6 +7,7 @@ import { setTimeout } from 'node:timers/promises';
 const branch = process.env.SHUSH_PREVIEW_BRANCH;
 const base = process.argv[2] ?? (branch ? `https://${branch.toLowerCase().replace(/[^a-z0-9]/g, '-')}.shush-4n1.pages.dev` : undefined);
 if (!base || new URL(base).protocol !== 'https:') throw new Error('Pass an HTTPS preview URL or SHUSH_PREVIEW_BRANCH.');
+const production = new URL(base).hostname === 'shush.pt';
 const routes = ['/', '/esports/valorant/premier', '/esports/valorant/roster', '/content', '/products/jersey', '/company'];
 const localIndex = await readFile(new URL('../dist/index.html', import.meta.url), 'utf8');
 const entry = localIndex.match(/<script[^>]+src="([^"]+)"/)?.[1];
@@ -47,13 +48,14 @@ for (const path of routes) {
   const response = await get(path);
   assert.equal(response.status, 200, path);
   checkSecurity(response);
-  assert.match(response.headers.get('x-robots-tag') ?? '', /noindex/);
+  if (production) assert.doesNotMatch(response.headers.get('x-robots-tag') ?? '', /noindex/);
+  else assert.match(response.headers.get('x-robots-tag') ?? '', /noindex/);
   const html = await response.text();
   for (const pattern of [/<title>.*?<\/title>/, /<link rel="canonical"[^>]+>/, /<meta property="og:title"[^>]+>/, /<meta property="og:image"[^>]+>/, /<meta name="twitter:title"[^>]+>/]) {
     const expected = local.match(pattern)?.[0];
     assert.ok(expected && html.includes(expected), `${path}: static metadata differs from this build`);
   }
-  console.log(`PASS ${path}: 200, route metadata, security and preview noindex`);
+  console.log(`PASS ${path}: 200, route metadata, security and correct indexing policy`);
 }
 
 const missing = await get('/shush-audit-unknown-route');

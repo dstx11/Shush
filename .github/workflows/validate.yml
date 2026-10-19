@@ -117,3 +117,22 @@ jobs:
             test-results/
             playwright-report/
           retention-days: 14
+
+  production:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: [validate, browser]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: '.node-version'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - name: Check current build on the official domain
+        run: pnpm run check:preview https://shush.pt

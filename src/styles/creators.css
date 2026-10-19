@@ -4,8 +4,6 @@
 
 .creator-features { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .creator-feature { display: grid; grid-template-columns: 1fr 1fr; position: relative; min-width: 0; border-radius: var(--radius-lg); background: var(--surface); color: var(--text); border: 1px solid var(--line); overflow: hidden; }
-.creator-feature-meta { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: .75rem; padding: 1rem 1.25rem; background: var(--surface-2); }
-.creator-feature-meta .mono { color: #e2cfef; font-size: .7rem; }
 .creator-art { position: relative; height: 100%; min-height: 29rem; aspect-ratio: 1; background: var(--surface-2); overflow: hidden; }
 .creator-art img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transition: transform .3s; }
 @media (prefers-reduced-motion: no-preference) { .creator-feature:is(:hover,:focus-within) .creator-art img { transform: scale(1.035); } }
@@ -15,7 +13,6 @@
 .creator-feature-copy h2 { font: 600 var(--section-size)/1.15 var(--font-heading); letter-spacing: -.035em; overflow-wrap: anywhere; }
 .creator-feature-copy .site-button { width: 100%; }
 .creator-feature.is-youtube { background: var(--surface); }
-.creator-feature.is-youtube .creator-feature-meta { background: var(--surface-2); }
 .creator-feature.is-youtube .site-button { background: #ddbac7; border-color: #ddbac7; }
 .creator-feature.is-youtube .site-button:hover { background: #eed3dc; }
 .creator-feature.is-youtube .platform-label { color: #ddbac7; }
@@ -24,7 +21,6 @@
  .creator-features, .creator-feature { grid-template-columns: 1fr; }
  .creator-heading h1 { font-size: var(--title-size); }
  .creator-art { height: 20rem; min-height: 0; }
- .creator-feature-meta { flex-wrap: wrap; gap: .5rem; }
  .creator-feature-copy { padding: 1.5rem; }
  .creator-feature-copy h2 { font-size: var(--section-size); }
  }

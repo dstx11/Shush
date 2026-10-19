@@ -28,6 +28,7 @@ for (const [name, path] of routes) {
       await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
+    if (name === 'home') await page.locator('.home-lineup').evaluate((element) => { element.scrollLeft = 0; });
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
@@ -251,7 +252,9 @@ test('Creators: confirmed channels and contextual player destinations', async ({
   await expect(features.nth(1).getByRole('heading', { level: 2 })).toHaveText('Th0maz');
   await expect(features.nth(1).getByRole('link', { name: 'Abrir YouTube' })).toHaveAttribute('href', 'https://www.youtube.com/@Th0maaz_7');
   for (const index of [0, 1]) {
-    await expect(features.nth(index).locator('img')).toHaveCount(0);
+    await expect(features.nth(index).locator('img')).toHaveCount(1);
+    await expect(features.nth(index).locator('img')).toHaveAttribute('src', index === 0 ? '/assets/avatars/more-jersey.webp' : '/assets/avatars/th0maz-jersey.webp');
+    await expect(features.nth(index).getByRole('link', { name: 'Conhecer o jogador' })).toHaveAttribute('href', `/esports/valorant/roster?player=${index === 0 ? 'more' : 'th0maz7'}`);
     await expect(features.nth(index).locator('.creator-channel')).toHaveAttribute('rel', /noopener/);
   }
 });

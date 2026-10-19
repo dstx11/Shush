@@ -32,7 +32,6 @@
 /* Brand and product retain useful content, with quieter framing. */
 .about-brand-panel { position: relative; }
 .about-brand-panel::before { content: ''; display: block; position: absolute; inset: 1rem; border: 1px solid #ffffff09; border-radius: 50%; pointer-events: none; }
-.about-manifesto { margin-top: 2rem; }
 .drop-gallery-label { border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
 .drop-view-control { justify-content: center; }
 .drop-view-control button { min-width: 7rem; }

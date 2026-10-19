@@ -25,6 +25,12 @@ for (const file of sourceFiles) {
   }
 }
 
+// Responsive URLs are generated from the original avatar path in PlayerPortrait.
+for (const [asset, files] of [...references]) {
+  if (/\/avatars\/[^/]+-jersey\.webp$/.test(asset)) {
+    for (const width of [160, 384]) references.set(asset.replace('.webp', `-${width}.webp`), files);
+  }
+}
 const failures = [];
 
 for (const [asset, files] of references) {

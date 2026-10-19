@@ -50,7 +50,12 @@ export function RosterSection() {
     const preload = window.setTimeout(() => {
       for (const offset of [-1, 1]) {
         const player = players[(selectedIndex + offset + players.length) % players.length];
-        if (player.avatar) { const image = new Image(); image.src = player.avatar; }
+        if (player.avatar) {
+          const image = new Image();
+          image.sizes = '(max-width: 767px) 100vw, 65vw';
+          image.srcset = `${player.avatar.replace('.webp', '-160.webp')} 160w, ${player.avatar.replace('.webp', '-384.webp')} 384w, ${player.avatar} 768w`;
+          image.src = player.avatar;
+        }
       }
     }, 250);
     return () => window.clearTimeout(preload);

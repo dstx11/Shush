@@ -82,7 +82,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
         observer.unobserve(entry.target);
       }
     }, { threshold: .12 });
-    frameRef.current?.querySelectorAll('.section-heading, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article, .home-drop-inline').forEach(element => observer.observe(element));
+    frameRef.current?.querySelectorAll('.section-heading, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article').forEach(element => observer.observe(element));
     const stop = () => { if (media.matches) observer.disconnect(); };
     media.addEventListener('change', stop);
     return () => { observer.disconnect(); media.removeEventListener('change', stop); };
