@@ -27,29 +27,33 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.player-dna')).toBeVisible();
 });
 
-test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page, browserName }, testInfo) => {
+test('Initial content stays visible while the JavaScript loads', async ({ page }) => {
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
-  let releaseEntry!: () => void;
-  const entryReady = new Promise<void>(resolve => { releaseEntry = resolve; });
-  await page.route('**/assets/index-*.js', async route => { await entryReady; await route.continue(); });
-  await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
+  await page.route('**/assets/index-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/', { waitUntil: 'commit' });
-  await expect(page.getByRole('link', { name: 'Recarregar página' })).toBeVisible();
-  await expect(page.locator('.loading-emblem')).toBeVisible();
-  releaseEntry();
-  await expect(page.getByRole('link', { name: 'Recarregar página' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.shush-loading')).toHaveCount(0);
+  release();
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+});
+
+test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page }) => {
+  let release!: () => void;
+  const ready = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
+  await page.goto('/company');
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await page.locator('header .brand-mark').click();
   await expect(page.locator('.shush-loading')).toBeVisible();
   await expect(page.getByText('O silêncio antes do round.')).toBeVisible();
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'loading-turn');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'none');
-  // WebKit waits for document load before capture; the intentionally held module prevents it.
-  // Keep the loading assertions above and release/removal assertions below on every engine.
-  if (browserName !== 'webkit') await page.screenshot({ path: testInfo.outputPath('loading.png') });
   release();
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('.team-cover-player')).toHaveCount(3);
   await expect(page.locator('.shush-loading')).toHaveCount(0);
 });
 

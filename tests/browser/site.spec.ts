@@ -123,7 +123,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
 
-test('slow initial Home does not steal focus after the menu closes', async ({ page }) => {
+test('slow initial Home enables the menu and preserves focus after closing', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Mobile menu only');
   let release!: () => void;
   const ready = new Promise<void>((resolve) => { release = resolve; });
@@ -132,12 +132,15 @@ test('slow initial Home does not steal focus after the menu closes', async ({ pa
     await route.continue();
   });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('.navigation-toggle')).toBeDisabled();
+  release();
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
   const open = page.getByRole('button', { name: 'Abrir navegação' });
   await open.click();
   await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Home', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(open).toBeFocused();
-  release();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   await expect(open).toBeFocused();
@@ -192,6 +195,8 @@ test('player actions: exact Unicode clipboard, share URL and manual recovery', a
 test('mobile menu contains keyboard focus and player selector stays compact', async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) >= 768, 'Mobile layout only');
   await page.goto('/esports/valorant/roster?player=levi');
+  await expect(page.locator('#selected-player-name')).toHaveText('Levi');
+  await expect(page.locator('.character-strip')).toBeVisible();
   const bounds = await page.locator('.character-strip').boundingBox();
   expect(bounds!.height).toBeLessThan(280);
   const selector = page.getByRole('group', { name: 'Selecionar jogador' });
