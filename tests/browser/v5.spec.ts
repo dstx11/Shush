@@ -134,11 +134,19 @@ test('Intro can be skipped with keyboard and is remembered across reloads', asyn
   await expect(intro).toHaveCount(0);
   await page.reload();
   await expect(intro).toHaveCount(0);
-  // Let React commit the lazy route after checking that the intro did not replay.
-  await page.clock.runFor(1000);
+  await expect(page.locator('.navigation-toggle')).toBeEnabled();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await page.evaluate(() => sessionStorage.removeItem('shush:intro-seen'));
-  await page.reload();
+});
+
+test('Intro supports Escape on a fresh visit', async ({ page }) => {
+  // A fresh document/clock keeps performance.now below the bounded intro
+  // duration. Advancing a reused fake clock across reloads can auto-dismiss it.
+  const now = Date.now();
+  await page.clock.install({ time: now });
+  await page.clock.pauseAt(now + 100);
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
   await expect(intro).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(intro).toHaveCount(0);
