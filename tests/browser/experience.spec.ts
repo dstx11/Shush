@@ -39,23 +39,23 @@ test('Initial content stays visible while the JavaScript loads', async ({ page }
   await expect(page.locator('.navigation-toggle')).toBeEnabled();
 });
 
-test('Loading: branded route fallback is removed as soon as the route is ready', async ({ page }) => {
+test('Slow navigation keeps the current page usable until the next route is ready', async ({ page }) => {
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/company');
   await expect(page.locator('.navigation-toggle')).toBeEnabled();
   await page.locator('header .brand-mark').click();
-  await expect(page.locator('.shush-loading')).toBeVisible();
-  await expect(page.getByText('O silêncio antes do round.')).toBeVisible();
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'loading-turn');
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(page.locator('.loading-orbit')).toHaveCSS('animation-name', 'none');
+  // React Router uses a transition: retain the current content while the next
+  // chunk is pending instead of replacing it with a full-page spinner.
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Antes da SHUSH');
+  await expect(page.locator('.shush-loading')).toHaveCount(0);
+  await expect(page.locator('footer a').first()).toBeAttached();
   release();
   await expect(page.locator('.team-cover-player')).toHaveCount(3);
   await expect(page.locator('.shush-loading')).toHaveCount(0);
 });
+
 
 
 test('Character Select: arrow keys, Home/End, stable focus and preserved query parameters', async ({ page }) => {
