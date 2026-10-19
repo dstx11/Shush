@@ -8,7 +8,7 @@ export const siteUrl = 'https://shush.pt';
 
 export const defaultMetadata: RouteMetadata = {
   title: 'SHUSH — Sem barulho. Só rounds.',
-  description: 'SHUSH reúne Valorant Premier, roster, creators e o Drop 01 numa identidade própria.',
+  description: 'Conhece os jogadores de VALORANT da SHUSH, acompanha os resultados Premier e encontra More na Twitch e Th0maz no YouTube.',
   image: '/og-shush.png',
 };
 
@@ -19,7 +19,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
     description: 'Partidas Premier da SHUSH com adversários, mapas e resultados verificados. Fontes e data de verificação em cada registo.',
   },
   '/esports/valorant/roster': {
-    title: 'Roster — SHUSH',
+    title: 'Jogadores de VALORANT — SHUSH',
     description: 'Conhece os jogadores de Valorant da SHUSH, as suas funções, Riot IDs e perfis competitivos no Tracker.gg.',
   },
   '/content': {
@@ -32,7 +32,7 @@ export const routeMetadata: Record<string, RouteMetadata> = {
     image: '/assets/jersey/frontjersey.webp',
   },
   '/company': {
-    title: 'About — SHUSH',
+    title: 'Sobre a SHUSH',
     description: 'A história da SHUSH: um grupo de amigos, a vontade de competir e uma identidade construída em conjunto.',
   },
 };

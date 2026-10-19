@@ -46,8 +46,8 @@ export default function App() {
 
                 <Route path="/esports" element={<Navigate to="/esports/valorant/premier" replace />} />
                 <Route path="/esports/valorant" element={<Navigate to="/esports/valorant/premier" replace />} />
-                <Route path="/esports/valorant/results" element={<Navigate to="/esports/valorant/premier#results" replace />} />
-                <Route path="/esports/valorant/tournaments" element={<Navigate to="/esports/valorant/premier#results" replace />} />
+                <Route path="/esports/valorant/results" element={<Navigate to="/esports/valorant/premier#verified-results" replace />} />
+                <Route path="/esports/valorant/tournaments" element={<Navigate to="/esports/valorant/premier#verified-results" replace />} />
                 <Route path="/content/more" element={<Navigate to="/content" replace />} />
                 <Route path="/content/th0maz7" element={<Navigate to="/content" replace />} />
                 <Route path="/products" element={<Navigate to="/products/jersey" replace />} />
@@ -68,7 +68,7 @@ export default function App() {
 function RouteFallback() {
   return (
     <div className="shush-loading" role="status" aria-live="polite">
-      <div className="loading-emblem"><span className="loading-orbit" aria-hidden="true" /><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="SHUSH" /><span className="loading-shutter" aria-hidden="true" /></div>
+      <div className="loading-emblem"><span className="loading-orbit" aria-hidden="true" /><img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="SHUSH" /><span className="loading-shutter" aria-hidden="true" /></div>
       <strong>O silêncio antes do round.</strong>
       <span className="loading-line" aria-hidden="true" />
       <p>A carregar SHUSH<span aria-hidden="true">…</span></p>

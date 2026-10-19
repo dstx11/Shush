@@ -8,10 +8,10 @@ const dist = join(root, 'dist');
 
 const routeFiles = [
   ['esports/valorant/premier.html', 'https://shush.pt/esports/valorant/premier', 'Premier — SHUSH'],
-  ['esports/valorant/roster.html', 'https://shush.pt/esports/valorant/roster', 'Roster — SHUSH'],
+  ['esports/valorant/roster.html', 'https://shush.pt/esports/valorant/roster', 'Jogadores de VALORANT — SHUSH'],
   ['content.html', 'https://shush.pt/content', 'Creators — SHUSH'],
   ['products/jersey.html', 'https://shush.pt/products/jersey', 'Drop 01 — SHUSH'],
-  ['company.html', 'https://shush.pt/company', 'About — SHUSH'],
+  ['company.html', 'https://shush.pt/company', 'Sobre a SHUSH'],
 ];
 
 const requiredFiles = [
@@ -67,14 +67,6 @@ for (const [path, canonical, title] of routeFiles) {
   expect(html, `name="twitter:title" content="${title}"`, `${path} Twitter title`);
   expect(html, `name="twitter:image:alt" content="${title}"`, `${path} Twitter image alt`);
   expect(html, '<meta name="robots" content="index,follow"', `${path} robots`);
-
-  if (path === 'esports/valorant/roster.html') {
-    expect(
-      html,
-      'rel="preload" as="image" href="/assets/avatars/dstx-jersey.webp"',
-      'roster portrait preload',
-    );
-  }
 
   // Verify the emitted document's actual entry points, not only public source references.
   for (const match of html.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)"/g)) {

@@ -91,15 +91,27 @@
  .selection-help { display: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
- .character-media > img, .character-fallback { animation: portrait-arrive .5s cubic-bezier(.16,1,.3,1) both; }
+ .character-media > img, .character-media > .portrait-placeholder { animation: portrait-arrive .5s cubic-bezier(.16,1,.3,1) both; }
  .portrait-depart { animation: portrait-depart .2s ease-out both; }
  .character-identity { animation: name-arrive .45s cubic-bezier(.16,1,.3,1) both; }
  .character-copy { animation: profile-arrive .4s ease-out both; }
  .strip-avatar img { transition: transform .3s, opacity .2s; }
  .player-card-select:hover img { transform: scale(1.06); }
- @keyframes portrait-arrive { from { opacity: .35; transform: scale(1.04) translateX(12px); } to { opacity: 1; transform: none; } }
- @keyframes portrait-depart { to { opacity: 0; transform: translateX(-12px); } }
+ @keyframes portrait-arrive { from { opacity: .35; transform: scale(1.04) translateX(var(--arrival-x, 18px)); } to { opacity: 1; transform: none; } }
+ @keyframes portrait-depart { to { opacity: 0; transform: translateX(var(--departure-x, -18px)); } }
  @keyframes name-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
  @keyframes profile-arrive { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 }
 @media (prefers-reduced-motion: reduce) { .portrait-depart { display: none; } }
+
+.player-page[data-direction='-1'] { --arrival-x: -18px; --departure-x: 18px; }
+.character-media > .portrait-placeholder { position: absolute; inset: 0; }
+.character-copy { position: relative; }
+.character-copy::before { content: ''; display: block; width: 3rem; height: 3px; background: var(--player-accent); margin-bottom: 2rem; }
+.character-controls { background: color-mix(in srgb, var(--player-wash) 28%, var(--surface)); }
+@media (prefers-reduced-motion: no-preference) {
+ .character-controls, .character-media { transition: background-color .35s ease; }
+ .player-select-card { transition: border-color .25s ease; }
+ .character-controls button { transition: transform .2s, background-color .2s; }
+ .character-controls button:active { transform: scale(.92); }
+}

@@ -76,8 +76,7 @@ function staticRouteMetadata(): Plugin {
 
         // Home selects portraits at runtime. Static routes preload their default hero.
         html = html.replace(/\s*<link rel="preload" as="image"[^>]*\/>/, '');
-        const hero = route === '/products/jersey' ? '/assets/jersey/frontjersey.webp'
-          : route === '/esports/valorant/roster' ? '/assets/avatars/dstx-jersey.webp' : null;
+        const hero = route === '/products/jersey' ? '/assets/jersey/frontjersey.webp' : null;
         if (hero) html = html.replace('</head>', `    <link rel="preload" as="image" href="${hero}" type="image/webp" fetchpriority="high" />\n  </head>`);
 
         this.emitFile({

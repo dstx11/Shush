@@ -1,5 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigationType } from 'react-router-dom';
+
+const scrollPositions = new Map<string, number>();
 
 type PageTransitionProps = {
   children: ReactNode;
@@ -7,7 +9,9 @@ type PageTransitionProps = {
 };
 
 export function PageTransition({ children, initialNavigation }: PageTransitionProps) {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, key } = useLocation();
+  const navigationType = useNavigationType();
+  const previousPath = useRef<string | null>(null);
   const firstNavigation = useRef(initialNavigation);
   const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
@@ -22,10 +26,27 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     return () => { active = false; clearTimeout(timeout); };
   }, []);
 
+  useEffect(() => {
+    const remember = () => { scrollPositions.set(key, window.scrollY); };
+    window.addEventListener('scroll', remember, { passive: true });
+    return () => window.removeEventListener('scroll', remember);
+  }, [key]);
+
   // This effect runs after Suspense commits the loaded page, including on a
   // slow first visit. Anchors and keyboard focus cannot race the route import.
   useEffect(() => {
+    const path = pathname + hash;
+    const samePage = previousPath.current === path;
+    // Query changes (player, jersey) preserve both focus and position.
+    if (samePage) return;
     const frame = window.requestAnimationFrame(() => {
+      previousPath.current = path;
+      const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
+      if (restored !== undefined) {
+        window.scrollTo({ top: restored, left: 0, behavior: 'instant' });
+        document.getElementById('main-content')?.focus({ preventScroll: true });
+        return;
+      }
       const isInitialCommit = firstNavigation.current && !hasCommitted.current;
       hasCommitted.current = true;
       // A slow initial route must not steal focus from a visitor who has
@@ -50,7 +71,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [pathname, hash]);
+  }, [pathname, hash, key, navigationType]);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -61,7 +82,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
         observer.unobserve(entry.target);
       }
     }, { threshold: .12 });
-    frameRef.current?.querySelectorAll('.section-heading, .discovery-grid > a, .verified-match, .creator-feature, .about-chapters article, .home-drop-inline').forEach(element => observer.observe(element));
+    frameRef.current?.querySelectorAll('.section-heading, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article, .home-drop-inline').forEach(element => observer.observe(element));
     const stop = () => { if (media.matches) observer.disconnect(); };
     media.addEventListener('change', stop);
     return () => { observer.disconnect(); media.removeEventListener('change', stop); };

@@ -45,3 +45,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 );
 
 import "./styles/v5.css";
+
+import './styles/experience.css';

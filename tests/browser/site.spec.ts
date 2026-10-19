@@ -198,11 +198,11 @@ test('mobile menu contains keyboard focus and player selector stays compact', as
   await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   await page.getByRole('button', { name: 'Abrir navegação' }).click();
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', true);
-  await page.locator('#mobile-navigation').getByRole('link', { name: 'Company', exact: true }).focus();
+  await page.locator('#mobile-navigation').getByRole('link', { name: 'Sobre', exact: true }).focus();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Fechar navegação' })).toBeFocused();
   await page.keyboard.press('Shift+Tab');
-  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Company', exact: true })).toBeFocused();
+  await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Sobre', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(page.locator('#main-content')).toHaveJSProperty('inert', false);
 });
