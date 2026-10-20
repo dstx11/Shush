@@ -39,3 +39,22 @@ test('Public pages include their content when JavaScript is unavailable', async 
     await expect(page.getByRole('button', { name: 'Copiar resumo' })).toBeDisabled();
   } finally { await context.close(); }
 });
+
+
+test('A delayed navigation frame does not interrupt jersey editing', async ({ page }) => {
+  await page.goto('/esports/valorant/roster?player=dstx');
+  await expect(page.locator('#main-content')).toBeFocused();
+  const now = Date.now();
+  await page.clock.install({ time: now });
+  await page.clock.pauseAt(now + 100);
+  const jersey = page.getByRole('link', { name: 'Ver camisola DSTX' });
+  await jersey.focus();
+  await jersey.press('Enter');
+  const nick = page.getByLabel('Nick', { exact: true });
+  await expect(nick).toHaveValue('DSTX');
+  await nick.fill('EDITADO');
+  await page.clock.runFor(100);
+  await expect(nick).toBeFocused();
+  await expect(nick).toHaveValue('EDITADO');
+  await expect(page.getByLabel('Pré-visualização: EDITADO 11')).toBeVisible();
+});

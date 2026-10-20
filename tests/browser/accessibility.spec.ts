@@ -28,6 +28,9 @@ test('a failed lazy route recovers once and exposes usable recovery controls', a
   // React Router's initial replaceState also emits framenavigated. Count only
   // document requests so the assertion detects reloads, not same-document history.
   page.on('request', (request) => { if (request.isNavigationRequest() && request.frame() === page.mainFrame()) navigations += 1; });
+  // Isolate chunk recovery from the external font stylesheet: the production
+  // trace showed its second response taking 6.6s, beyond this assertion budget.
+  await page.route('https://fonts.googleapis.com/**', route => route.fulfill({ contentType: 'text/css', body: '' }));
   await page.route('**/assets/ContentPage-*.js', (route) => route.abort());
   await page.goto('/content', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { name: 'Não foi possível carregar esta página.' })).toBeVisible();

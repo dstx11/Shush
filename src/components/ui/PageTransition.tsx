@@ -41,6 +41,11 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     if (samePage) return;
     const frame = window.requestAnimationFrame(() => {
       previousPath.current = path;
+      // A visitor can start editing before this deferred navigation frame.
+      // Preserve that interaction rather than moving focus away mid-keystroke.
+      const focused = document.activeElement;
+      if (focused && frameRef.current?.contains(focused) &&
+          focused.matches('input, textarea, select, button, [contenteditable="true"]')) return;
       const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
       if (restored !== undefined) {
         window.scrollTo({ top: restored, left: 0, behavior: 'instant' });
