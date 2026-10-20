@@ -3,9 +3,11 @@ import { readFile } from 'node:fs/promises';
 import { setTimeout } from 'node:timers/promises';
 
 // Cloudflare documents lowercase branch aliases with non-alphanumerics
-// replaced by hyphens. A URL argument also supports immutable deploy audits.
+// replaced by hyphens. The deployed alias for this project is capped at 28
+// characters (confirmed by the Cloudflare Pages check on PR #7).
+// A URL argument also supports immutable deploy audits.
 const branch = process.env.SHUSH_PREVIEW_BRANCH;
-const base = process.argv[2] ?? (branch ? `https://${branch.toLowerCase().replace(/[^a-z0-9]/g, '-')}.shush-4n1.pages.dev` : undefined);
+const base = process.argv[2] ?? (branch ? `https://${branch.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 28)}.shush-4n1.pages.dev` : undefined);
 if (!base || new URL(base).protocol !== 'https:') throw new Error('Pass an HTTPS preview URL or SHUSH_PREVIEW_BRANCH.');
 const production = new URL(base).hostname === 'shush.pt';
 const routes = ['/', '/esports/valorant/premier', '/esports/valorant/roster', '/content', '/products/jersey', '/company'];
