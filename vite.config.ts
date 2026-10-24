@@ -49,9 +49,9 @@ function staticRouteMetadata(): Plugin {
           : new TextDecoder().decode(indexAsset.source);
 
       for (const [route, metadata] of Object.entries(routeMetadata)) {
-        if (route === '/') continue;
+        // Generate Home from the same metadata as all other pages.
 
-        const canonical = `${siteUrl}${route}`;
+        const canonical = `${siteUrl}${route === '/' ? '' : route}`;
         const imagePath = metadata.image ?? defaultMetadata.image ?? '/og-shush.png';
         const image = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
 
@@ -63,7 +63,7 @@ function staticRouteMetadata(): Plugin {
           );
 
         html = setMeta(html, 'name', 'description', metadata.description);
-        html = setMeta(html, 'name', 'robots', 'index,follow');
+        html = setMeta(html, 'name', 'robots', 'index,follow,max-image-preview:large');
         html = setMeta(html, 'property', 'og:title', metadata.title);
         html = setMeta(html, 'property', 'og:description', metadata.description);
         html = setMeta(html, 'property', 'og:url', canonical);
@@ -79,11 +79,8 @@ function staticRouteMetadata(): Plugin {
         const hero = route === '/products/jersey' ? '/assets/jersey/frontjersey.webp' : null;
         if (hero) html = html.replace('</head>', `    <link rel="preload" as="image" href="${hero}" type="image/webp" fetchpriority="high" />\n  </head>`);
 
-        this.emitFile({
-          type: 'asset',
-          fileName: `${route.slice(1)}.html`,
-          source: html,
-        });
+        if (route === '/') indexAsset.source = html;
+        else this.emitFile({ type: 'asset', fileName: `${route.slice(1)}.html`, source: html });
       }
     },
   };
