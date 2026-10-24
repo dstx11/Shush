@@ -75,6 +75,29 @@ for (const path of ['/robots.txt', '/sitemap.xml']) {
   const response = await get(path);
   assert.equal(response.status, 200, path);
   const expected = await readFile(new URL(`../dist${path}`, import.meta.url), 'utf8');
-  assert.equal((await response.text()).trim(), expected.trim(), `${path}: deployed crawling policy differs`);
+  const actual = await response.text();
+  if (path === '/robots.txt') {
+    // Cloudflare may prepend its managed AI crawler policy on custom domains.
+    // Verify our source remains intact AND that search crawlers remain allowed.
+    const source = actual.replace(/# BEGIN Cloudflare Managed content[\s\S]*?# END Cloudflare Managed Content/gi, '');
+    const directives = (text) => text.split(/\r?\n/).map(line => line.replace(/#.*/, '').trim()).filter(Boolean).join('\n');
+    assert.equal(directives(source), directives(expected), 'source robots policy differs');
+    let agents = [];
+    let hasRules = false;
+    for (const line of directives(actual).split('\n')) {
+      const colon = line.indexOf(':');
+      const key = line.slice(0, colon).trim().toLowerCase();
+      const value = line.slice(colon + 1).trim().toLowerCase();
+      if (key === 'user-agent') {
+        if (hasRules) agents = [];
+        agents.push(value);
+        hasRules = false;
+      } else {
+        hasRules = true;
+        if (key === 'disallow' && value && agents.some(agent => ['*', 'googlebot', 'bingbot'].includes(agent)))
+          assert.fail(`Search crawling restricted by robots.txt: ${agents.join(', ')} ${value}`);
+      }
+    }
+  } else assert.equal(actual.trim(), expected.trim(), `${path}: deployed sitemap differs`);
 }
 console.log('PASS robots.txt and generated sitemap.');

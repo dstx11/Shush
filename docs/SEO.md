@@ -22,3 +22,9 @@ No Search Console or Bing Webmaster account access is available in this session.
 Structured data helps interpretation, not a guarantee of rankings, rich results, Discover inclusion or autocomplete suggestions. External search tools could not retrieve shush.pt during this session; deploy verification uses direct HTTP and the existing Cloudflare/GitHub checks instead.
 
 References: Google Search Central SEO Starter Guide, Organization structured data, Site Names, Build and Submit a Sitemap, Robots Meta Tags specifications.
+
+## Deployment findings
+
+The official domain serves the new metadata and schemas. Cloudflare prepends its managed crawler policy to robots.txt on custom domains; the HTTP check validates the original rules and separately rejects restrictions on Googlebot, Bingbot and wildcard search crawling. Training-crawler restrictions are preserved.
+
+www.shush.pt currently returns 200 with canonical links to shush.pt. Configure a Cloudflare zone redirect from www to the apex, preserving paths and query strings, when zone access is available. Domain-level sources are not supported in Pages _redirects.
