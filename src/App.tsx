@@ -1,3 +1,4 @@
+import { pageSchema } from './data/seo';
 import { lazy, Suspense, useEffect, useRef, type ComponentType } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { BrandIntro } from './components/ui/BrandIntro';
@@ -122,8 +123,15 @@ function useRouteMetadata(pathname: string) {
     setMeta('meta[name="twitter:description"]', metadata.description);
     setMeta('meta[name="twitter:image"]', absoluteImage);
     setMeta('meta[name="twitter:image:alt"]', metadata.title);
-    setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow' : 'noindex,nofollow');
+    setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow,max-image-preview:large' : 'noindex,nofollow');
     setCanonical(canonicalUrl);
+    const schema = document.getElementById('shush-schema');
+    if (schema) {
+      const data = JSON.parse(schema.textContent || '{}');
+      data['@graph'] = [...data['@graph'].filter((item: Record<string, unknown>) =>
+        item['@type'] === 'SportsTeam' || item['@type'] === 'WebSite'), ...pageSchema(pathname)];
+      schema.textContent = JSON.stringify(data);
+    }
   }, [pathname]);
 }
 

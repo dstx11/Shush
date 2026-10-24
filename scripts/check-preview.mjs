@@ -53,7 +53,7 @@ for (const path of routes) {
   if (production) assert.doesNotMatch(response.headers.get('x-robots-tag') ?? '', /noindex/);
   else assert.match(response.headers.get('x-robots-tag') ?? '', /noindex/);
   const html = await response.text();
-  for (const pattern of [/<title>.*?<\/title>/, /<link rel="canonical"[^>]+>/, /<meta property="og:title"[^>]+>/, /<meta property="og:image"[^>]+>/, /<meta name="twitter:title"[^>]+>/]) {
+  for (const pattern of [/<title>.*?<\/title>/, /<meta name="description"[^>]+>/, /<meta name="robots"[^>]+>/, /<script id="shush-schema" type="application\/ld\+json">.*?<\/script>/, /<link rel="canonical"[^>]+>/, /<meta property="og:title"[^>]+>/, /<meta property="og:image"[^>]+>/, /<meta name="twitter:title"[^>]+>/]) {
     const expected = local.match(pattern)?.[0];
     assert.ok(expected && html.includes(expected), `${path}: static metadata differs from this build`);
   }
@@ -70,3 +70,11 @@ assert.equal(new URL(redirect.headers.get('location'), base).pathname, '/product
 const asset = await get(entry);
 assert.equal(asset.status, 200, 'current production entry asset must be available');
 console.log('PASS real 404, canonical redirect and current entry asset.');
+
+for (const path of ['/robots.txt', '/sitemap.xml']) {
+  const response = await get(path);
+  assert.equal(response.status, 200, path);
+  const expected = await readFile(new URL(`../dist${path}`, import.meta.url), 'utf8');
+  assert.equal((await response.text()).trim(), expected.trim(), `${path}: deployed crawling policy differs`);
+}
+console.log('PASS robots.txt and generated sitemap.');
