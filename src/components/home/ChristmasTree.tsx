@@ -166,7 +166,7 @@ export function ChristmasTree() {
     const palette = themes[theme];
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     let motionReduced = media.matches;
-    let visible = true;
+    let visible = false;
     let width = 0;
     let height = 0;
     let frameId = 0;
@@ -407,8 +407,9 @@ export function ChristmasTree() {
       draw(time);
     };
     const animate = (now: number) => {
+      frameId = 0;
+      if (!canAnimate()) return;
       frameId = requestAnimationFrame(animate);
-      if (motionReduced || paused || document.hidden || !visible) { previous = now; return; }
       if (now - previous < 32) return;
       const dt = previous ? Math.min((now - previous) / 1000, .075) : 0;
       previous = now;
@@ -419,16 +420,35 @@ export function ChristmasTree() {
       draw(time);
     };
 
+    const canAnimate = () => !motionReduced && !paused && !document.hidden && visible;
+    const syncAnimation = () => {
+      cancelAnimationFrame(frameId);
+      frameId = 0;
+      previous = 0;
+      if (canAnimate()) frameId = requestAnimationFrame(animate);
+    };
+
     redraw.current = () => draw(time);
     const ro = new ResizeObserver(resize);
-    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; previous = 0; if (visible) draw(time); }, { threshold: .02 });
-    const onMotion = (event: MediaQueryListEvent) => { motionReduced = event.matches; draw(time); };
-    const onVisibility = () => { previous = 0; if (!document.hidden) draw(time); };
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting && entry.intersectionRatio >= .02;
+      if (visible) draw(time);
+      syncAnimation();
+    }, { threshold: .02 });
+    const onMotion = (event: MediaQueryListEvent) => {
+      motionReduced = event.matches;
+      draw(time);
+      syncAnimation();
+    };
+    const onVisibility = () => {
+      if (!document.hidden && visible) draw(time);
+      syncAnimation();
+    };
     ro.observe(frame); io.observe(frame);
     media.addEventListener('change', onMotion);
     document.addEventListener('visibilitychange', onVisibility);
     resize();
-    frameId = requestAnimationFrame(animate);
+    syncAnimation();
 
     return () => {
       cancelAnimationFrame(frameId);

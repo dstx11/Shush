@@ -1,3 +1,4 @@
+import '../../styles/winter-lobby.css';
 import { useState } from 'react';
 import { players } from '../../data/players';
 import { AppLink } from '../ui/AppLink';

@@ -51,6 +51,9 @@ jobs:
       - name: Drop configurations
         run: pnpm run test:drop
 
+      - name: Tree animation lifecycle
+        run: pnpm run test:tree
+
       - name: Asset integrity
         run: pnpm run check:assets
 

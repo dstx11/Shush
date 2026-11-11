@@ -8,6 +8,22 @@ try {
   const { staticPage } = await vite.ssrLoadModule('/src/prerender.tsx');
   const { routeMetadata } = await vite.ssrLoadModule('/src/data/meta.ts');
   const { pageSchema } = await vite.ssrLoadModule('/src/data/seo.ts');
+  const manifest = JSON.parse(await readFile(new URL('../dist/.vite/manifest.json', import.meta.url), 'utf8'));
+  const homeEntry = manifest['src/pages/HomePage.tsx'];
+  if (!homeEntry) throw new Error('Missing Home route in build manifest');
+  // Route CSS must also be linked in static HTML: dynamic imports only load it
+  // when JavaScript runs. Keep the public lobby styled with JS disabled.
+  const homeStyles = new Set();
+  const visited = new Set();
+  function collectStyles(key) {
+    if (visited.has(key)) return;
+    visited.add(key);
+    const entry = manifest[key];
+    if (!entry) throw new Error(`Missing manifest entry: ${key}`);
+    for (const dependency of entry.imports ?? []) collectStyles(dependency);
+    for (const css of entry.css ?? []) homeStyles.add(css);
+  }
+  collectStyles('src/pages/HomePage.tsx');
   const siteUrl = 'https://shush.pt';
   const identity = [
     { '@type': 'SportsTeam', '@id': `${siteUrl}/#organization`, name: 'SHUSH',
@@ -35,6 +51,11 @@ try {
     html = html.slice(0, start) + `<div id="root">${content}</div>\n    ` + html.slice(end);
     html = html.replace('Ativa o JavaScript para explorar a equipa, os jogos e personalizar a camisola SHUSH.', 'Podes consultar as páginas e os canais. Ativa o JavaScript para selecionar jogadores e personalizar a camisola.');
     const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...identity, ...pageSchema(route)] }).replace(/</g, '\\u003c');
+    if (route === '/') {
+      const links = [...homeStyles].filter(css => !html.includes(`href="/${css}"`))
+        .map(css => `<link rel="stylesheet" crossorigin href="/${css}" />`).join('\n');
+      html = html.replace('</head>', `${links}\n</head>`);
+    }
     html = html.replace('</head>', `<script id="shush-schema" type="application/ld+json">${json}</script>\n</head>`);
     await writeFile(path, html);
     console.log(`Prerendered ${route}`);

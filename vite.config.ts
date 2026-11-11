@@ -87,6 +87,6 @@ function staticRouteMetadata(): Plugin {
 }
 
 export default defineConfig({
-  build: { emptyOutDir: true },
+  build: { emptyOutDir: true, manifest: true },
   plugins: [react(), tailwindcss(), staticRouteMetadata()],
 });
