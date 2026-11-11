@@ -1,0 +1,172 @@
+/* SHUSH Winter Edition — an editorial seasonal skin, not a separate product. */
+:root {
+  --bg: #101619;
+  --surface: #192225;
+  --surface-2: #243135;
+  --field: #151d20;
+  --text: #f2f3ed;
+  --muted: #a7bbb9;
+  --purple: #a5dbc8;
+  --purple-text: #a5dbc8;
+  --signal: #a5dbc8;
+  --line: #344846;
+  --solid-border: #344846;
+  --control-line: #718a85;
+  --accent-hover: #c6ecda;
+  --on-accent: #10221d;
+  --paper: #f2f3ed;
+  --ink: #101619;
+  --color-shush-bg: #101619;
+  --color-shush-surface: #192225;
+  --color-shush-surface2: #243135;
+  --color-shush-border: #344846;
+  --color-shush-purple: #a5dbc8;
+  --color-shush-purpleDark: #142d28;
+  --color-shush-purpleGlow: #a5dbc8;
+  --color-shush-text: #f2f3ed;
+  --color-shush-muted: #a7bbb9;
+}
+html { background: var(--bg); }
+body { background: var(--bg); }
+::selection { background: #b3dfcd; color: #13241d; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline-color: #b9efdc; }
+.shush-header { background: #101719ed; border-bottom: 1px solid #ffffff17; backdrop-filter: blur(16px); }
+.shush-header.is-scrolled { border-color: #6e99843f; box-shadow: 0 12px 35px #0003; }
+.desktop-navigation { background: #1d2929bb; }
+.desktop-nav-link[aria-current='page'] { background: #a5dbc8; color: #15261e; }
+.site-button { border-radius: .5rem; }
+.shush-footer { background: #141d20; }
+.shush-footer .footer-signature { border-bottom: 1px solid #344846; }
+.site-header .brand-mark { position: relative; }
+.site-header .brand-mark::after { content: '✦'; color: #c8ac76; position: absolute; top: -.4rem; left: 3.55rem; font-size: .65rem; pointer-events: none; }
+.route-home { background: #101619; }
+
+/* A cinematic two-column opening with its own rendered art direction. */
+.winter-opening { position: relative; isolation: isolate; overflow: clip; padding-top: var(--page-top); background: radial-gradient(ellipse at 77% 35%, #24493b54 0, transparent 40%), radial-gradient(ellipse at 10% 17%, #2b3a375e 0, transparent 53%), #101619; }
+.winter-opening::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .19; background-image: radial-gradient(#ffffff 0.6px, transparent 0.8px); background-size: 38px 38px; mask-image: linear-gradient(to bottom, #0008, transparent 90%); }
+.winter-opening::after { content: ''; position: absolute; inset: auto 0 0; height: 1px; background: linear-gradient(90deg,transparent,#8abaaa7a,transparent); }
+.winter-hero-grid { display: grid; grid-template-columns: minmax(0, .97fr) minmax(0, 1.03fr); gap: 0 clamp(1rem,3vw,3.25rem); position: relative; }
+.winter-hero-copy { position: relative; min-width: 0; padding: clamp(2rem, 6vw, 6rem) 0 4rem; display: flex; flex-direction: column; justify-content: center; align-items: start; z-index: 2; }
+.winter-eyebrow { display: flex; align-items: center; gap: .8rem; font: 600 .67rem/1.8 var(--font-mono); letter-spacing: .15em; color: #b6d8c8; }
+.winter-live-dot { width: .45rem; height: .45rem; border-radius: 100%; background: #a6e2b6; box-shadow: 0 0 13px #a6e2b67a; flex: none; }
+.winter-eyebrow-line { width: 2rem; height: 1px; background: #b3cfc16e; }
+.winter-oversized { display: block; position: relative; font: 800 clamp(5rem, 11.8vw, 11.3rem)/.86 var(--font-heading); letter-spacing: -.11em; color: #a5dbc80e; -webkit-text-stroke: 1px #99b9aa38; margin-top: 1.9rem; white-space: nowrap; pointer-events: none; }
+.winter-hero-copy h1 { position: relative; font: 650 clamp(3.2rem, 5.3vw, 6.1rem)/1.04 var(--font-heading); letter-spacing: -.075em; margin: -1rem 0 0; text-wrap: balance; }
+.winter-hero-copy h1 em, .winter-section-heading h2 em { font-style: normal; font-weight: 600; color: #b8ddc9; }
+.winter-hero-copy > p { max-width: 32.5rem; font-size: clamp(.95rem, 1.25vw, 1.1rem); line-height: 1.9; margin: 2rem 0 0; color: #bacbc7; }
+.winter-actions { margin-top: 2rem; }
+.winter-actions .site-button { min-height: 3.35rem; }
+.winter-hero-note { display: flex; align-items: center; gap: 1rem; margin-top: 3.3rem; font: .63rem/1.6 var(--font-mono); letter-spacing: .1em; color: #829c92; }
+.winter-hero-note span:first-child { color: #d3b98c; }
+.winter-hero-bottom { grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid #a5c6b52e; padding: 1rem 0 1.25rem; }
+.winter-hero-bottom .editorial-link { color: #d5e6dd; }
+
+/* Interactive, deterministic Canvas art. CSS supplies the atmospheric framing. */
+.winter-tree-stage { width: 100%; height: clamp(460px, 45vw, 660px); position: relative; align-self: center; isolation: isolate; border: 1px solid #b0d0c227; border-radius: 1.1rem; overflow: hidden; background: radial-gradient(ellipse at 50% 53%, #2446384a 0,transparent 54%), linear-gradient(150deg, #1a292a 2%, #101b20 55%, #111b1d); box-shadow: inset 0 0 85px #101b1d, 0 35px 70px #0003; }
+.winter-tree-stage::before { content: ''; position: absolute; z-index: 0; inset: 0; pointer-events: none; opacity: .25; background: repeating-linear-gradient(0deg, transparent 0 4px, #ffffff05 4px 5px); }
+.winter-tree-stage::after { content: ''; position: absolute; z-index: 1; inset: auto 0 0; height: 26%; pointer-events: none; background: linear-gradient(0deg,#101b1ded,transparent); }
+.winter-tree-canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
+.winter-stage-top { z-index: 2; position: absolute; top: 1.4rem; left: 1.4rem; right: 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: .8rem; color: #c1d8cf; font: .6rem/1.6 var(--font-mono); letter-spacing: .07em; }
+.winter-status { display: flex; align-items: center; gap: .45rem; color: #93ae9f; }
+.winter-status i { background: #9bdcb3; width: .35rem; height: .35rem; border-radius: 50%; box-shadow: 0 0 7px #8adba4; }
+.winter-stage-bottom { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; }
+.winter-palette { display: flex; gap: .25rem; padding: .25rem; background: #0c171bd9; border: 1px solid #a5c6b52e; border-radius: .6rem; }
+.winter-palette button, .winter-motion-toggle { min-height: 2.4rem; padding: .45rem .8rem; color: #b5c9bf; font: 600 .69rem/1.3 var(--font-ui); border: 1px solid transparent; border-radius: .35rem; background: transparent; }
+.winter-palette button:is(:hover,:focus-visible) { color: #fff; }
+.winter-palette button[aria-pressed='true'] { color: #14251e; background: #bee5cb; }
+.winter-motion-toggle { background: #0c171bd9; border-color: #a5c6b52e; }
+.winter-motion-toggle:is(:hover,:focus-visible) { color: white; border-color: #a5c6b59c; }
+.winter-motion-toggle span { margin-left: .25rem; }
+.winter-stage-caption { position: absolute; right: 1.35rem; top: 50%; writing-mode: vertical-rl; font: 500 .55rem var(--font-mono); letter-spacing: .18em; color: #a9c1b67a; pointer-events: none; }
+
+/* The actual roster remains present and credible, with a new gallery hierarchy. */
+.winter-team-section { padding-block: clamp(3.5rem,7vw,6.5rem) 2rem; }
+.winter-section-heading { display: grid; grid-template-columns: 1.2fr .55fr; align-items: end; gap: 1.5rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
+.winter-section-heading h2 { font: 650 clamp(2.5rem,4.7vw,5rem)/1.09 var(--font-heading); letter-spacing: -.065em; margin-top: .7rem; }
+.winter-section-heading p { color: var(--muted); max-width: 23rem; margin-left: auto; font-size: .92rem; line-height: 1.8; }
+.winter-team-section .team-cover { max-width: 70rem; margin-inline: auto; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(.65rem, 2vw, 2rem); padding: 3.7rem 0 1.75rem; }
+.winter-team-section .team-cover-player { height: clamp(17rem,29vw,27rem); transform: none; border-radius: .75rem; border-color: #a6c9b33d; background: #1d2929; }
+.winter-team-section .team-cover-player.cover-1 { height: clamp(19rem,34vw,32rem); transform: translateY(-1.7rem); }
+.winter-team-section .team-cover-player.cover-2 { transform: translateY(.75rem); }
+.winter-team-section .team-cover-player > span { inset: 45% 0 0; background: linear-gradient(0deg,#0b1618f5 0%, transparent); }
+.winter-team-section .team-cover-player small { color: #c2e3cc; }
+.winter-team-section .team-cover-player i { color: #b7dbc8; }
+.winter-team-section .team-cover-player:is(:hover,:focus-visible) { transform: translateY(-.45rem); border-color: #bee5cb; }
+.winter-team-section .team-cover-player.cover-1:is(:hover,:focus-visible) { transform: translateY(-2.15rem); }
+.winter-team-section .team-cover-player.cover-2:is(:hover,:focus-visible) { transform: translateY(.3rem); }
+.winter-team-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+
+/* Improve home scanning, portrait legibility, interactive affordances. */
+.home-discover { padding-top: 2rem; }
+.home-discover h2 { letter-spacing: -.06em; }
+.home-lineup { gap: .8rem; }
+.home-lineup > a > div { border: 1px solid #b0d0c124; transition: border-color .2s; }
+.home-lineup > a:is(:hover,:focus-visible) > div { border-color: #a5dbc8; }
+.home-lineup strong { letter-spacing: -.03em; }
+.home-records { margin-top: 5.5rem; }
+.home-score { padding: 1.4rem 1rem; border-radius: .4rem; }
+.home-score-teams b { font-variant-numeric: tabular-nums; }
+.home-people { gap: clamp(2rem,6vw,6rem); }
+.home-closing { gap: 1rem; }
+.home-closing > a { min-height: 16rem; padding: 2rem; border: 1px solid var(--line); border-radius: .8rem; background: radial-gradient(ellipse at 85% 15%, #2c514344, transparent 55%), var(--surface); transition: border-color .2s, transform .2s; }
+.home-closing > a:is(:hover,:focus-visible) { border-color: #b4dec8; transform: translateY(-2px); }
+.home-closing > a > span:last-child { align-self: end; }
+.page-heading h1 { letter-spacing: -.055em; }
+.route-products .page-heading, .route-esports .page-heading, .route-content .page-heading, .route-company .page-heading { border-bottom: 1px solid var(--line); }
+@media (min-width: 1200px) { .winter-hero-grid { min-height: 690px; align-items: center; } }
+@media (max-width: 1000px) {
+  .winter-hero-grid { grid-template-columns: 1fr 1fr; }
+  .winter-hero-copy h1 { font-size: clamp(2.7rem,5vw,4.5rem); }
+  .winter-oversized { font-size: clamp(5rem,10vw,8rem); }
+  .winter-tree-stage { height: 520px; }
+  .winter-team-section .team-cover-player { height: 23rem; }
+  .winter-team-section .team-cover-player.cover-1 { height: 26rem; }
+}
+@media (max-width: 767px) {
+  .shush-header { backdrop-filter: none; }
+  .winter-hero-grid { grid-template-columns: minmax(0,1fr); }
+  .winter-hero-copy { padding: 2rem 0 1.8rem; }
+  .winter-eyebrow { font-size: .59rem; }
+  .winter-oversized { margin-top: 1.5rem; font-size: clamp(5.4rem, 21vw, 9rem); }
+  .winter-hero-copy h1 { font-size: clamp(3rem, 10vw, 5.1rem); margin-top: -.5rem; }
+  .winter-hero-copy > p { margin-top: 1.4rem; max-width: 34rem; font-size: .93rem; }
+  .winter-hero-note { display: none; }
+  .winter-actions { margin-top: 1.5rem; }
+  .winter-tree-stage { height: min(122vw, 540px); min-height: 365px; margin-bottom: 1.5rem; }
+  .winter-stage-top { top: .8rem; left: .85rem; right: .85rem; font-size: .53rem; }
+  .winter-stage-caption { display: none; }
+  .winter-stage-bottom { bottom: .75rem; left: .75rem; right: .75rem; }
+  .winter-palette button, .winter-motion-toggle { min-height: 2.6rem; font-size: .64rem; padding: .45rem .65rem; }
+  .winter-hero-bottom .mono { font-size: .62rem; }
+  .winter-hero-bottom .editorial-link { font-size: .72rem; }
+  .winter-team-section { padding-block: 3rem 1rem; }
+  .winter-section-heading { grid-template-columns: 1fr; gap: .5rem; }
+  .winter-section-heading h2 { font-size: clamp(2.2rem,8.5vw,3.5rem); }
+  .winter-section-heading p { margin: 0; font-size: .85rem; }
+  .winter-team-section .team-cover { gap: .5rem; padding: 2.5rem 0 1.25rem; }
+  .winter-team-section .team-cover-player { height: 12rem; }
+  .winter-team-section .team-cover-player.cover-1 { height: 14rem; transform: translateY(-.7rem); }
+  .winter-team-section .team-cover-player.cover-2 { transform: translateY(.4rem); }
+  .winter-team-section .team-cover-player:is(:hover,:focus-visible) { transform: none; }
+  .winter-team-section .team-cover-player.cover-1:is(:hover,:focus-visible) { transform: translateY(-.7rem); }
+  .winter-team-section .team-cover-player.cover-2:is(:hover,:focus-visible) { transform: translateY(.4rem); }
+  .winter-team-section .team-cover-player > span { padding: .6rem; }
+  .winter-team-footer .mono { display: none; }
+  .home-lineup { margin-inline: -.3rem; }
+  .home-lineup > a { flex-basis: 40%; }
+  .home-records { margin-top: 3rem; }
+  .home-closing { grid-template-columns: 1fr; }
+  .home-closing > a { min-height: 13rem; padding: 1.5rem; }
+}
+@media (max-width: 390px) {
+  .winter-stage-top .winter-status { font-size: 0; }
+  .winter-stage-top .winter-status i { width: .4rem; height: .4rem; }
+  .winter-tree-stage { min-height: 345px; }
+  .winter-palette button { padding-inline: .5rem; }
+  .winter-team-section .team-cover-player { height: 10rem; }
+  .winter-team-section .team-cover-player.cover-1 { height: 12rem; }
+  .winter-team-section .team-cover-player strong { font-size: .94rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .winter-team-section .team-cover-player, .home-closing > a { transition: none; }
+}
