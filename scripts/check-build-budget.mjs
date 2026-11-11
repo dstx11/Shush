@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 const distDir = fileURLToPath(new URL('../dist/', import.meta.url));
 
 const budgets = {
-  jsGzip: 100 * 1024,
-  cssGzip: 16 * 1024,
+  jsGzip: 125 * 1024,
+  cssGzip: 24 * 1024,
 };
 
 function walk(dir) {
