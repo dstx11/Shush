@@ -16,6 +16,12 @@ test('Visitors can create a personalized Christmas card, download a real PNG and
   const text = 'Feliz Natal à equipa SHUSH. Mais rounds e boas memórias!';
   await dialog.getByRole('textbox', { name: 'Mensagem' }).fill(text);
   await dialog.getByRole('textbox', { name: 'Assinatura' }).fill('DSTX & amigos');
+  if (testInfo.project.name === 'mobile-390') {
+    const closeControl = await dialog.getByRole('button', { name: 'Fechar editor de postal' }).boundingBox();
+    expect(closeControl).not.toBeNull();
+    expect(closeControl!.y).toBeGreaterThanOrEqual(0);
+    expect(closeControl!.y + closeControl!.height).toBeLessThanOrEqual(844);
+  }
   await dialog.screenshot({ path: testInfo.outputPath('christmas-card-studio.png') });
   const canvas = dialog.locator('canvas');
   await expect(canvas).toHaveJSProperty('width', 1600);
