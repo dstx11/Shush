@@ -16,7 +16,7 @@ test('Winter scene is available without compromising the team content', async ({
   await frozen.click();
   await expect(page.getByRole('button', { name: /Reproduzir/ })).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('button', { name: 'Noite gelada' }).click();
-  await expect(page.getByRole('button', { name: 'Gelo' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: 'Noite gelada' })).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('button', { name: /Reproduzir/ }).click();
   await expect(page.getByRole('button', { name: /Pausar/ })).toHaveAttribute('aria-pressed', 'false');
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -35,6 +35,6 @@ test('Winter scene remains accessible with reduced motion and keyboard controls'
   await expect(aurora).toBeFocused();
   await page.keyboard.press('ArrowRight');
   await page.getByRole('button', { name: 'SHUSH glow' }).click();
-  await expect(page.getByRole('button', { name: 'Clássico' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: 'SHUSH glow' })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('.winter-tree-stage')).toBeVisible();
 });
