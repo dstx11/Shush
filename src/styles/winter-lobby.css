@@ -2,7 +2,7 @@
 .winter-lobby, .winter-gifts { position: relative; padding-block: clamp(4.5rem, 9vw, 9rem); }
 .winter-lobby { isolation: isolate; }
 .winter-lobby::before {
-  content: ''; position: absolute; z-index: -1; left: -10%; right: -10%; top: 10%; bottom: 0;
+  content: ''; position: absolute; z-index: -1; left: 0; right: 0; top: 10%; bottom: 0;
   background: radial-gradient(ellipse at 23% 45%,#3a5c4728,transparent 48%);
   pointer-events: none;
 }
