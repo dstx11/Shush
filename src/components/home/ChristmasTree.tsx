@@ -291,7 +291,7 @@ export function ChristmasTree() {
             const t = k / 359;
             const y = .085 + t * .85;
             const angle = t * Math.PI * (strand === 0 ? 13.5 : 10.5) + strand * 2.3 + .5;
-            const pos = project((.98 - y * .9) * 1.02, y, angle - rot);
+            const pos = project((.98 - y * .9) * 1.02, y, angle);
             const isFront = pos.z > (pass === 0 ? -.2 : .08);
             if (!isFront) { started = false; continue; }
             if (started) ctx.lineTo(pos.x, pos.y); else ctx.moveTo(pos.x, pos.y);
@@ -311,7 +311,7 @@ export function ChristmasTree() {
             const t = k / 76;
             const y = .085 + t * .85;
             const angle = t * Math.PI * (strand === 0 ? 13.5 : 10.5) + strand * 2.3 + .5;
-            const pos = project((.98 - y * .9) * 1.04, y, angle - rot);
+            const pos = project((.98 - y * .9) * 1.04, y, angle);
             if (pos.z < -.15) continue;
             const col = palette.bulbs[(k * 7 + strand * 2) % palette.bulbs.length];
             const pulse = .77 + .23 * sin(clock * 2.2 + k * 2.1);
