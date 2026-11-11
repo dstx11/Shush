@@ -151,6 +151,8 @@ export function ChristmasTree() {
   const frameRef = useRef<HTMLDivElement>(null);
   const pointer = useRef({ targetX: 0, targetY: 0, x: 0, y: 0 });
   const snowfall = useRef(0);
+  const rotation = useRef({ dragging: false, lastX: 0, offset: 0 });
+  const redraw = useRef<() => void>(() => {});
   const [theme, setTheme] = useState<Theme>('christmas');
   const [paused, setPaused] = useState(false);
   const [lightsOn, setLightsOn] = useState(true);
@@ -179,7 +181,7 @@ export function ChristmasTree() {
       const base = height * .84;
       const treeHeight = Math.min(height * .69, 442 * scale);
       const treeWidth = Math.min(width * .365, 194 * scale);
-      const rot = .56 + clock * .115 + pointer.current.x * .42;
+      const rot = .56 + clock * .115 + pointer.current.x * .42 + rotation.current.offset;
       const lean = pointer.current.y * 5 * scale;
       const sin = Math.sin, cos = Math.cos;
       const project = (radius: number, y: number, angle: number): Vec => {
@@ -417,6 +419,7 @@ export function ChristmasTree() {
       draw(time);
     };
 
+    redraw.current = () => draw(time);
     const ro = new ResizeObserver(resize);
     const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; previous = 0; if (visible) draw(time); }, { threshold: .02 });
     const onMotion = (event: MediaQueryListEvent) => { motionReduced = event.matches; draw(time); };
@@ -429,6 +432,7 @@ export function ChristmasTree() {
 
     return () => {
       cancelAnimationFrame(frameId);
+      redraw.current = () => {};
       ro.disconnect(); io.disconnect();
       media.removeEventListener('change', onMotion);
       document.removeEventListener('visibilitychange', onVisibility);
@@ -455,7 +459,28 @@ export function ChristmasTree() {
         ref={canvasRef}
         className="winter-tree-canvas"
         role="img"
-        aria-label="Árvore de Natal tridimensional com ramos de pinheiro detalhados, bolas brilhantes, luzes em espiral, estrela dourada, presentes e neve sobre uma paisagem noturna."
+        aria-label="Árvore de Natal tridimensional com ramos de pinheiro, bolas brilhantes, luzes, estrela e neve. Arrasta para a rodar ou usa as setas esquerda e direita."
+        tabIndex={0}
+        onPointerDown={(event) => {
+          if (event.button !== 0) return;
+          rotation.current.dragging = true;
+          rotation.current.lastX = event.clientX;
+          event.currentTarget.setPointerCapture(event.pointerId);
+        }}
+        onPointerMove={(event) => {
+          if (!rotation.current.dragging) return;
+          rotation.current.offset += (event.clientX - rotation.current.lastX) * .007;
+          rotation.current.lastX = event.clientX;
+          redraw.current();
+        }}
+        onPointerUp={() => { rotation.current.dragging = false; }}
+        onPointerCancel={() => { rotation.current.dragging = false; }}
+        onKeyDown={(event) => {
+          if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+          event.preventDefault();
+          rotation.current.offset += event.key === 'ArrowRight' ? .23 : -.23;
+          redraw.current();
+        }}
       />
       <div className="winter-tree-title" aria-hidden="true">
         <span>WINTER WONDERLAND</span>
