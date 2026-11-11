@@ -448,3 +448,16 @@ body::after {
 .winter-tree-canvas { cursor: grab; touch-action: pan-y; }
 .winter-tree-canvas:active { cursor: grabbing; }
 .winter-tree-canvas:focus-visible { outline: 2px solid #f5d99d; outline-offset: -5px; border-radius: .7rem; }
+
+/* Keep the editor heading and escape route visible while mobile forms scroll. */
+@media (max-width: 500px) {
+  .winter-card-dialog-header {
+    position: sticky;
+    top: -1rem;
+    z-index: 5;
+    margin: -.4rem 0 0;
+    padding: .4rem 0 .75rem;
+    border-bottom: 1px solid #9b8c6659;
+    background: #101b1efa;
+  }
+}
