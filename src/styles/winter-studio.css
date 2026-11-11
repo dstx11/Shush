@@ -41,3 +41,7 @@
   .winter-card-trigger { font-size: .75rem; }
 }
 @media (prefers-reduced-motion: reduce) { .winter-card-trigger { transition: none; } }
+
+.winter-tree-canvas { cursor: grab; touch-action: pan-y; }
+.winter-tree-canvas:active { cursor: grabbing; }
+.winter-tree-canvas:focus-visible { outline: 2px solid #f5d99d; outline-offset: -5px; border-radius: .7rem; }
