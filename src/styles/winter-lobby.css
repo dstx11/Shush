@@ -1,0 +1,113 @@
+/* Silent Night experience: the team becomes part of Christmas, not a decorative afterthought. */
+.winter-lobby, .winter-gifts { position: relative; padding-block: clamp(4.5rem, 9vw, 9rem); }
+.winter-lobby { isolation: isolate; }
+.winter-lobby::before {
+  content: ''; position: absolute; z-index: -1; left: 0; right: 0; top: 10%; bottom: 0;
+  background: radial-gradient(ellipse at 23% 45%,#3a5c4728,transparent 48%);
+  pointer-events: none;
+}
+.winter-lobby-heading { display: grid; grid-template-columns: 1.2fr .7fr; gap: 2rem; align-items: end; padding: 1.5rem 0 2.75rem; border-top: 1px solid #bda77978; }
+.winter-lobby-heading h2, .winter-gifts-heading h2 { font: 650 clamp(2.8rem, 5.1vw, 5.7rem)/1.06 var(--font-heading); letter-spacing: -.075em; margin-top: .65rem; }
+.winter-lobby-heading h2 em, .winter-gifts-heading h2 em { font-style: normal; color: #efce92; }
+.winter-lobby-heading p { max-width: 31rem; justify-self: end; color: #b7c9bf; line-height: 1.85; font-size: .92rem; }
+.winter-lobby-layout { display: grid; grid-template-columns: minmax(0,1.12fr) minmax(0,.88fr); gap: clamp(1rem,2.5vw,2.5rem); }
+.winter-ornament-scene, .winter-lobby-profile { position: relative; border: 1px solid #b79b6970; border-radius: 1.25rem; overflow: hidden; min-width: 0; }
+.winter-ornament-scene {
+  min-height: clamp(490px,48vw,650px);
+  background: radial-gradient(ellipse at 50% 57%,#53745450,transparent 53%),linear-gradient(170deg,#152b2a,#0b1c20 80%);
+}
+.winter-ornament-scene::after { content: ''; position: absolute; pointer-events: none; inset: 0; background: radial-gradient(#ffffff74 .75px, transparent 1px); background-size: 40px 48px; mask-image: linear-gradient(180deg, #000 0, #0004 70%, transparent); opacity: .26; }
+.winter-ornament-scene-label, .winter-ornament-scene-foot { position: absolute; z-index: 3; left: 1.4rem; font: 600 .62rem/1.6 var(--font-mono); letter-spacing: .12em; color: #dcc494; }
+.winter-ornament-scene-label { top: 1.3rem; }
+.winter-ornament-scene-foot { bottom: 1.3rem; }
+.winter-ornament-light { position: absolute; inset: 12% 15% 11%; background: radial-gradient(ellipse at 50% 40%,#7a956356,transparent 67%); filter: blur(26px); pointer-events: none; }
+.winter-ornament-tree { position: absolute; inset: 0; pointer-events: none; }
+.winter-ornament-silhouette { position: absolute; left: 13%; top: 10%; width: 74%; height: 76%; background: linear-gradient(105deg,#143b30 4%,#2f6e54 48%,#0c3d32 100%); clip-path: polygon(50% 0%,61% 18%,56% 18%,69% 35%,64% 35%,82% 56%,73% 56%,95% 82%,5% 82%,27% 56%,18% 56%,36% 35%,31% 35%,44% 18%,39% 18%); filter: drop-shadow(0 0 26px #70a37a55); }
+.winter-ornament-silhouette::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(161deg,transparent 0 17px,#6aaf812d 18px 19px,transparent 21px 31px); clip-path: inherit; }
+.winter-ornament-star { position: absolute; top: 6.5%; left: 50%; transform: translateX(-50%); font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1; color: #f3d699; text-shadow: 0 0 25px #f9da9c9c; }
+.winter-ornament-trunk { position: absolute; bottom: 12%; left: 47%; width: 6%; height: 12%; border-radius: .35rem; background: linear-gradient(90deg,#372b26,#70503a,#372b26); }
+.winter-player-ornament { position: absolute; z-index: 2; display: grid; justify-items: center; gap: .38rem; border: 0; background: none; color: #f8ebd5; transform: translate(-50%,-50%); padding: .45rem; min-width: 5rem; min-height: 5rem; }
+.winter-ornament-ball { position: relative; display: grid; place-items: center; width: clamp(2.8rem,5.1vw,4.1rem); aspect-ratio: 1; border-radius: 50%; border: 1px solid #ffe4af91; background: radial-gradient(circle at 26% 20%,#fff6dab3 0%,#dbb870 13%,#9e353f 46%,#441f2c 90%); box-shadow: inset -8px -12px 15px #0008, 0 11px 23px #0008, 0 0 0 0 #f3d195; transition: transform .3s,box-shadow .3s; }
+.winter-player-ornament:nth-of-type(3n) .winter-ornament-ball { background: radial-gradient(circle at 28% 18%,#fff6dab3 0%,#d1d0b0 13%,#3c8d79 46%,#173b3e 95%); }
+.winter-player-ornament:nth-of-type(4n) .winter-ornament-ball { background: radial-gradient(circle at 28% 18%,#fff6dab3 0%,#ffda91 13%,#b59049 46%,#584127 95%); }
+.winter-ornament-ball > span { font: 750 clamp(.86rem,1.7vw,1.3rem)/1 var(--font-heading); text-shadow: 0 1px 4px #0006; color: #fff6e8; }
+.winter-ornament-hook { width: .8rem; height: .5rem; margin-bottom: -.7rem; border: 1px solid #e6d4a0; border-bottom: 0; border-radius: .25rem .25rem 0 0; }
+.winter-ornament-name { font: 700 .7rem/1.3 var(--font-heading); letter-spacing: .07em; padding: .23rem .4rem; background: #09231ed6; border-radius: .25rem; }
+.winter-player-ornament:is(:hover,:focus-visible) .winter-ornament-ball, .winter-player-ornament.is-active .winter-ornament-ball { transform: scale(1.14); box-shadow: inset -8px -12px 15px #0008,0 11px 23px #0008,0 0 0 4px #e6cb8b77,0 0 33px #f6ce878c; }
+.winter-player-ornament:focus-visible { outline: 2px solid #f9dea5; border-radius: .6rem; outline-offset: 0; }
+.winter-lobby-profile { background: linear-gradient(160deg,#1c302e,#0f2024 80%); display: flex; flex-direction: column; }
+.winter-lobby-profile-meta { display: flex; justify-content: space-between; gap: .75rem; flex-wrap: wrap; padding: 1.2rem 1.4rem; font: 600 .65rem/1.5 var(--font-mono); letter-spacing: .08em; color: #e5ca96; border-bottom: 1px solid #b79b694f; }
+.winter-lobby-portrait { position: relative; min-height: 0; flex: 1; height: clamp(280px,29vw,420px); overflow: hidden; isolation: isolate; }
+.winter-lobby-portrait::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 52% 26%,#7b92754b,transparent 55%); }
+.winter-lobby-portrait img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; mask-image: linear-gradient(180deg,#000 72%,transparent 100%); }
+.winter-lobby-portrait > span:not(.winter-lobby-number) { display: grid; place-items: center; height: 100%; font: 800 6rem var(--font-heading); color: #e5ca96; }
+.winter-lobby-number { position: absolute; z-index: 2; right: 1.4rem; top: .6rem; font: 800 clamp(4rem,9vw,8rem)/1 var(--font-heading); letter-spacing: -.08em; color: #e4c48d40; }
+.winter-lobby-profile-info { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: 1.5rem; align-items: end; border-top: 1px solid #b79b694f; }
+.winter-lobby-profile-info h3 { margin: .3rem 0; font: 750 clamp(2.4rem,4vw,4.2rem)/1.05 var(--font-heading); letter-spacing: -.07em; }
+.winter-lobby-profile-info p { color: #b9c9c0; font-size: .81rem; }
+.winter-lobby-profile-cta { display: flex; align-items: center; gap: 1rem; min-height: 2.8rem; padding: .6rem .8rem; border: 1px solid #d7bf8c; border-radius: .4rem; color: #f4d5a0; font-size: .76rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.winter-lobby-profile-cta:hover { background: #a58b6044; }
+
+.winter-gifts { padding-top: 2rem; }
+.winter-gifts-heading { display: grid; gap: .8rem; padding-top: 1.5rem; border-top: 1px solid #bda77978; margin-bottom: 2rem; }
+.winter-gifts-heading p { color: #b7c9bf; line-height: 1.8; }
+.winter-gifts-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(.75rem,2vw,1.5rem); }
+.winter-gift-card { display: flex; flex-direction: column; min-width: 0; padding: clamp(1rem,2.1vw,2rem); border: 1px solid #cbb78b67; border-radius: .9rem; min-height: 26rem; color: #f9f4e8; text-decoration: none; background: linear-gradient(145deg,#26443a,#142928); transition: transform .25s,border-color .25s,box-shadow .25s; }
+.winter-gift-card:is(:hover,:focus-visible) { transform: translateY(-5px); border-color: #f1d098; box-shadow: 0 24px 55px #0006; }
+.winter-gift-top { display: flex; justify-content: space-between; align-items: start; gap: .5rem; color: #e5d1a4; font: 700 .62rem/1.5 var(--font-mono); letter-spacing: .07em; }
+.winter-gift-illustration { position: relative; display: grid; place-items: center; height: 12rem; margin: 1.4rem 0; isolation: isolate; }
+.winter-gift-illustration::before { content: ''; position: absolute; z-index: -1; width: 60%; aspect-ratio: 1; border-radius: 100%; background: #d4ac6259; filter: blur(37px); }
+.winter-gift-box { position: relative; width: 7.4rem; height: 6rem; border-radius: .4rem; border: 1px solid #e5c68b84; background: linear-gradient(120deg,#943e4f,#bd5d61 70%,#7d3748); box-shadow: inset -15px -5px 25px #0005, 0 26px 30px #0005; transform: rotate(-7deg); transition: transform .4s; }
+.winter-gift-card:hover .winter-gift-box { transform: rotate(2deg) translateY(-9px); }
+.winter-gift-box::before { content: ''; position: absolute; inset: -1rem -.35rem auto; height: 1.4rem; background: linear-gradient(130deg,#ba6d70,#85313e); border: 1px solid #e5c68b84; border-radius: .4rem; }
+.winter-gift-box::after { content: ''; position: absolute; top: -1rem; bottom: 0; left: 43%; width: 15%; background: linear-gradient(90deg,#b98d53,#f7dda0,#be9456); }
+.winter-gift-box i, .winter-gift-box b { position: absolute; z-index: 2; top: -2.5rem; left: 41%; width: 1.5rem; height: 1.5rem; border: .32rem solid #f2d397; border-radius: 80% 20% 80% 20%; transform: rotate(40deg); }
+.winter-gift-box b { left: 54%; transform: rotate(90deg); }
+.winter-gift-spark { position: absolute; color: #f8e1a8; text-shadow: 0 0 18px #f6db9d; }
+.winter-gift-spark.one { top: 13%; right: 22%; font-size: 1.8rem; }
+.winter-gift-spark.two { bottom: 16%; left: 20%; font-size: 1.4rem; }
+.winter-gift-jersey { background: linear-gradient(145deg,#274b50,#12262f); }
+.winter-gift-jersey .winter-gift-box { background: linear-gradient(120deg,#436e8c,#6585a6,#324a73); }
+.winter-gift-jersey .winter-gift-box::before { background: linear-gradient(110deg,#6b9ab3,#47657e); }
+.winter-gift-creators { background: linear-gradient(145deg,#3f354f,#1b222f); }
+.winter-gift-creators .winter-gift-box { background: linear-gradient(120deg,#725384,#9870a3,#57446d); }
+.winter-gift-creators .winter-gift-box::before { background: linear-gradient(110deg,#9a7aa4,#70527d); }
+.winter-gift-card > strong { display: block; font: 700 clamp(1.5rem,2.3vw,2.15rem)/1.18 var(--font-heading); letter-spacing: -.05em; }
+.winter-gift-description { display: block; margin-top: 1rem; color: #c8d3cd; font-size: .84rem; line-height: 1.7; }
+.winter-gift-action { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: auto; padding-top: 1.7rem; color: #f5d7a0; font-size: .77rem; font-weight: 750; }
+.winter-gift-action > span { font-size: 1.3rem; }
+
+@media (max-width: 900px) {
+  .winter-lobby-layout { grid-template-columns: 1fr; }
+  .winter-ornament-scene { min-height: 600px; }
+  .winter-lobby-profile { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  .winter-lobby-profile-meta { grid-column: 1/-1; }
+  .winter-lobby-portrait { height: 320px; }
+  .winter-lobby-profile-info { align-self: end; display: grid; grid-template-columns: 1fr; }
+  .winter-gifts-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 767px) {
+  .winter-lobby { padding-block: 3rem; }
+  .winter-lobby-heading { grid-template-columns: 1fr; gap: 1rem; padding-bottom: 1.5rem; }
+  .winter-lobby-heading h2, .winter-gifts-heading h2 { font-size: clamp(2.4rem, 10vw, 4rem); }
+  .winter-lobby-heading p { max-width: 100%; justify-self: start; }
+  .winter-ornament-scene { min-height: 460px; }
+  .winter-player-ornament { min-width: 4rem; padding: .2rem; }
+  .winter-ornament-name { font-size: .61rem; }
+  .winter-ornament-ball { width: 3rem; }
+  .winter-lobby-profile { display: flex; }
+  .winter-lobby-portrait { height: 320px; flex: none; }
+  .winter-lobby-profile-info { grid-template-columns: 1fr; }
+  .winter-gifts-grid { grid-template-columns: 1fr; }
+  .winter-gift-card { min-height: 24rem; }
+}
+@media (max-width: 380px) {
+  .winter-ornament-scene { min-height: 420px; }
+  .winter-player-ornament { min-width: 3.5rem; }
+  .winter-ornament-name { font-size: .55rem; }
+  .winter-ornament-ball { width: 2.45rem; }
+  .winter-ornament-scene-label { left: .75rem; font-size: .53rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .winter-player-ornament .winter-ornament-ball,.winter-gift-card,.winter-gift-box { transition: none !important; }
+}
