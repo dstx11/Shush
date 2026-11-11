@@ -127,7 +127,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .winter-hero-grid { grid-template-columns: minmax(0,1fr); }
   .winter-hero-copy { padding: 2rem 0 1.8rem; }
   .winter-eyebrow { font-size: .59rem; }
-  .winter-oversized { margin-top: 1.5rem; font-size: clamp(5.4rem, 21vw, 9rem); }
+  .winter-oversized { margin-top: 1.5rem; font-size: clamp(3.75rem, 18vw, 8rem); }
   .winter-hero-copy h1 { font-size: clamp(3rem, 10vw, 5.1rem); margin-top: -.5rem; }
   .winter-hero-copy > p { margin-top: 1.4rem; max-width: 34rem; font-size: .93rem; }
   .winter-hero-note { display: none; }
