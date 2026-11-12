@@ -84,18 +84,38 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   }, [pathname, hash, key, navigationType]);
 
   useEffect(() => {
+    const frame = frameRef.current;
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (media.matches || !('IntersectionObserver' in window)) return;
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) if (entry.isIntersecting) {
-        entry.target.classList.add('reveal-arrive');
+    if (!frame || !('IntersectionObserver' in window) || media.matches ||
+        document.documentElement.dataset.motion === 'reduce') return;
+    const items = frame.querySelectorAll<HTMLElement>(
+      '.motion-section, .section-index, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article, .about-origin-story, .drop-layout, .signal-panel'
+    );
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('motion-visible');
         observer.unobserve(entry.target);
       }
-    }, { threshold: .12 });
-    frameRef.current?.querySelectorAll('.section-heading, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article').forEach(element => observer.observe(element));
-    const stop = () => { if (media.matches) observer.disconnect(); };
+    }, { threshold: .08, rootMargin: '0px 0px -24px 0px' });
+    items.forEach((element, index) => {
+      element.classList.add('motion-in');
+      element.style.setProperty('--motion-delay', `${Math.min(index % 4, 3) * 65}ms`);
+      observer.observe(element);
+    });
+    const stop = () => {
+      if (!media.matches && document.documentElement.dataset.motion !== 'reduce') return;
+      observer.disconnect();
+      items.forEach(element => { element.classList.remove('motion-in'); element.classList.add('motion-visible'); });
+    };
     media.addEventListener('change', stop);
-    return () => { observer.disconnect(); media.removeEventListener('change', stop); };
+    document.addEventListener('shush:reduce-motion', stop);
+    return () => {
+      observer.disconnect();
+      media.removeEventListener('change', stop);
+      document.removeEventListener('shush:reduce-motion', stop);
+      items.forEach(element => element.classList.remove('motion-in'));
+    };
   }, [pathname]);
 
   return <div ref={frameRef} key={pathname} className="route-frame route-enter">{children}</div>;

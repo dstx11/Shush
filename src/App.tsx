@@ -45,6 +45,7 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
   return (
     <div data-season={seasonId} className={`shush-root min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
+      <div className="shush-reading-progress" aria-hidden="true" />
       <BrandIntro />
       <Header />
       <main id="main-content" tabIndex={-1}>

@@ -16,13 +16,14 @@ export function AboutSection(){
    <div className="about-origin-story"><h2 id="origin-title">Eles eram LOUD.<br/><em>Nós fomos SHUSH.</em></h2>
     <p>Em 2022, a LOUD conquistou o primeiro VALORANT Champions. Estávamos desse lado do ecrã, a acompanhar tudo.</p>
     <p>Pouco depois, entre partidas e conversas, surgiu a ideia: se existia uma LOUD, porque não uma SHUSH? Era uma brincadeira, mas o nome ficou.</p>
-    <p>Houve um <strong>More</strong>, contraponto ao Less. E houve um <strong>ponto e vírgula</strong>, a nossa resposta ao aspas. Pequenos detalhes que fazem parte da nossa origem.</p>
+    <p>Até as palavras e os símbolos começaram por brincar com a ideia de ser o oposto. Eram referências nossas, feitas sem grandes planos. O que começou como uma piada acabou por ganhar uma linguagem própria.</p>
     <p>Em 2026, a LOUD voltou a conquistar o Champions. Entretanto, os nossos nicks já tinham ganho reconhecimento e a SHUSH construíra a sua própria identidade. Continuamos a gostar da piada, mas já não precisamos dela para explicar quem somos.</p>
     <p>A LOUD foi a inspiração inicial. O que veio depois é nosso.</p>
     <a className="editorial-link" href="https://loud.gg/" target="_blank" rel="noopener noreferrer">Obrigado pela inspiração, LOUD <ArrowIcon/></a>
     <small>A SHUSH é independente e não tem qualquer afiliação oficial à LOUD.</small>
    </div>
   </section>
+  <section className="about-perspective motion-section" aria-labelledby="about-perspective-title"><div className="about-perspective-art" aria-hidden="true"><span>2022</span><svg viewBox="0 0 320 210" fill="none"><path d="M0 50H320 M0 105H320 M0 160H320 M55 0V210 M160 0V210 M265 0V210"/><circle cx="160" cy="105" r="90"/><circle cx="160" cy="105" r="56"/><path d="M160 10V60 M160 150V200 M65 105H115 M205 105H255"/></svg></div><div><span className="section-kicker">NÃO É UM REBRANDING DA LOUD</span><h2 id="about-perspective-title">A referência explica o início.<br/><em>Não explica tudo o resto.</em></h2><p>Se começámos pelo contraste, continuámos pelo que tínhamos em comum: entrar no servidor, jogar e levar o mesmo nome mais longe. A SHUSH é uma equipa independente. A inspiração faz parte da história, não substitui a nossa identidade.</p><AppLink className="editorial-link" href="/esports/valorant/roster">Conhecer a equipa <ArrowIcon/></AppLink></div></section>
   <section className="about-chapters" aria-label="Capítulos da SHUSH">
    <article><span className="section-kicker">01 / O COMEÇO</span><h2>Mais uma?</h2><p>Primeiro vieram o Discord, as partidas e aquele último jogo que nunca é o último.</p></article>
    <article><span className="section-kicker">02 / O NOME</span><h2>A piada pegou.</h2><p>LOUD de um lado. SHUSH do outro. A referência virou um nome para competir juntos.</p></article>

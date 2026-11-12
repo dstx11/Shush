@@ -5,7 +5,7 @@ import { SeasonArtwork } from '../seasonal/SeasonArtwork';
 
 const INTRO_SEEN = (id: SeasonId) => 'shush:intro:' + id + ':' + lisbonDate().year;
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  || document.documentElement.dataset.motion === 'reduce';
+  || document.documentElement.dataset.motion === 'reduce' || (() => { try { return localStorage.getItem('shush:motion:v1') === 'reduce'; } catch { return false; } })();
 function shouldPlay(id: SeasonId) {
   if (typeof window === 'undefined' || reduceMotion()) return false;
   try { return sessionStorage.getItem(INTRO_SEEN(id)) !== '1'; }
