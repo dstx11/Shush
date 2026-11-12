@@ -1,3 +1,4 @@
+import { ArrowIcon } from '../ui/ArrowIcon';
 import { AppLink } from '../ui/AppLink';
 import { WinterCardStudio } from './WinterCardStudio';
 
@@ -10,7 +11,7 @@ export function WinterPostcard() {
           <h2 id="winter-postcard-title">Que nunca faltem<br /><em>bons rounds.</em><br />E boas pessoas.</h2>
           <p>Nem tudo se conta em vitórias. Há calls que viram memórias, risos que ficam depois do jogo e amigos que fazem de qualquer servidor um sítio especial. Boas festas, da SHUSH.</p>
           <WinterCardStudio />
-          <AppLink href="/company" className="winter-postcard-link">Conhece a nossa história <span aria-hidden="true">↗</span></AppLink>
+          <AppLink href="/company" className="winter-postcard-link">Conhece a nossa história <span aria-hidden="true"><ArrowIcon /></span></AppLink>
           <span className="winter-postcard-signature">WITH LOVE, SHUSH <span aria-hidden="true">✦</span></span>
         </div>
         <div className="winter-postcard-art" aria-hidden="true">

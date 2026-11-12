@@ -1,4 +1,37 @@
 /* SHUSH · Um inverno nosso. One seasonal system, shared by all public routes. */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/ibm-plex-mono-500-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/ibm-plex-mono-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/ibm-plex-mono-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url(/assets/fonts/manrope-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @font-face { font-family: "SHUSH Hearth"; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/hearth-serif.woff2') format('woff2'); }
 @font-face { font-family: "SHUSH Hearth"; font-style: italic; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/hearth-serif-italic.woff2') format('woff2'); }
 :root {
@@ -13,11 +46,12 @@
  --radius-sm: .8rem; --radius-md: 1.35rem; --radius-lg: 2rem;
 }
 html,body { background: var(--bg); }
+.arrow-icon { display: inline-block; flex: none; vertical-align: -.12em; }
 ::selection { background: #edcb94; color: #17241d; }
 :focus-visible { outline-color: #f5d699; }
 .section-kicker { color: #edcb94; letter-spacing: .09em; }
 /* Keep real identities and competitive data direct and easy to scan. */
-.character-identity h2,.character-number,.team-cover-player strong,.creator-persona h2 { font-family: var(--font-ui); }
+.character-identity h2,.character-number,.team-cover-player strong,.creator-persona h2,.audit-live-print { font-family: var(--font-ui); }
 .site-button { border-radius: 999px; background: #edcb94; border-color: #edcb94; color: #17241d; box-shadow: 0 4px 18px #d2a86412; }
 .site-button:hover { background: #f8ddb1; }
 .button-secondary { background: #182925b3; border-color: #8a9a81; color: #f6efdf; box-shadow: none; }
@@ -43,14 +77,15 @@ body::after { content: none; }
 .winter-opening::before { content: ''; position: absolute; inset: 0; opacity: .16; pointer-events: none; background-image: radial-gradient(#e5c992 .6px,transparent 1px); background-size: 47px 59px; mask-image: linear-gradient(#000,transparent 85%); }
 .winter-opening::after { content: ''; position: absolute; inset: auto 0 0; height: 1px; background: linear-gradient(90deg,transparent,#b9a67566,transparent); }
 .winter-hero-grid { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap: 0 clamp(1.2rem,4vw,4.5rem); align-items: center; }
-.winter-hero-copy { position: relative; min-width: 0; padding: 3rem 0 4rem; z-index: 2; }
+.winter-hero-copy { position: relative; min-width: 0; padding: 3rem 0 1.25rem; z-index: 2; grid-column: 1; grid-row: 1; align-self: end; }
+.winter-hero-story { grid-column: 1; grid-row: 2; align-self: start; min-width: 0; padding-bottom: 3rem; }
 .winter-eyebrow { display: flex; align-items: center; gap: .7rem; font: 500 .6rem/1.8 var(--font-ui); letter-spacing: .14em; color: #dfc496; }
 .winter-live-dot { width: .35rem; height: .35rem; background: #edcb94; border-radius: 50%; box-shadow: 0 0 10px #edcb9455; flex: none; }
 .winter-eyebrow-line { width: 1.7rem; height: 1px; background: #edcb9455; }
 .winter-oversized { display: block; font: italic 400 clamp(1rem,1.4vw,1.4rem)/1.5 var(--font-heading); color: #a3b5a5; margin: 2.5rem 0 1.25rem; }
 .winter-hero-copy h1 { font: 500 clamp(3.3rem,5.3vw,6.1rem)/1.08 var(--font-heading); letter-spacing: -.055em; margin: 0; }
 .winter-hero-copy h1 em { color: #efcd95; font-weight: 400; text-shadow: 0 4px 35px #ce9f4b12; }
-.winter-hero-copy > p { color: #bccbbf; max-width: 30rem; font-size: clamp(.9rem,1.05vw,1rem); line-height: 1.95; margin: 1.8rem 0 0; }
+.winter-hero-story > p { color: #bccbbf; max-width: 30rem; font-size: clamp(.9rem,1.05vw,1rem); line-height: 1.95; margin: 0; }
 .winter-actions { margin-top: 1.8rem; gap: .7rem; }
 .winter-actions .site-button { min-height: 3.25rem; padding-inline: 1.25rem; font-size: .76rem; }
 .winter-hero-note { display: flex; align-items: center; gap: .8rem; color: #adbbab; font: 500 .57rem/1.8 var(--font-ui); letter-spacing: .12em; margin-top: 2.7rem; }
@@ -59,7 +94,7 @@ body::after { content: none; }
 .winter-hero-bottom .mono { font-size: .62rem; letter-spacing: .06em; }
 .winter-hero-bottom .editorial-link { color: #ead4ae; font-size: .75rem; }
 /* The frame and canvas keep fixed dimensions during selection and formation. */
-.winter-tree-stage { position: relative; width: 100%; height: clamp(550px,48vw,715px); isolation: isolate; align-self: center; overflow: hidden; border: 1px solid #c2b08355; border-radius: 48% 48% 1.5rem 1.5rem / 22% 22% 1.5rem 1.5rem; background: #101c20; box-shadow: 0 28px 80px #0006,0 0 85px #b6b77412,inset 0 0 0 6px #dbd0a507; }
+.winter-tree-stage { position: relative; width: 100%; height: clamp(550px,48vw,715px); isolation: isolate; align-self: center; grid-column: 2; grid-row: 1 / span 2; overflow: hidden; border: 1px solid #c2b08355; border-radius: 48% 48% 1.5rem 1.5rem / 22% 22% 1.5rem 1.5rem; background: #101c20; box-shadow: 0 28px 80px #0006,0 0 85px #b6b77412,inset 0 0 0 6px #dbd0a507; }
 .winter-tree-stage::before { content: ''; position: absolute; z-index: 2; inset: 8px; border: 1px solid #dec9951a; border-radius: inherit; pointer-events: none; }
 .winter-tree-stage::after { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(#09161944,transparent 25%,transparent 76%,#091619b3); pointer-events: none; }
 .winter-tree-canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; cursor: grab; touch-action: pan-y; }
@@ -124,21 +159,22 @@ body::after { content: none; }
 @media (max-width: 1050px) { .winter-hero-grid { gap: 1.5rem; } .winter-actions { flex-wrap: wrap; } .winter-actions .site-button { padding-inline: 1rem; } }
 @media (max-width: 900px) {
  .winter-hero-grid { grid-template-columns: 1fr; }
- .winter-hero-copy { padding: 1.5rem 0 2.5rem; max-width: 40rem; }
- .winter-tree-stage { width: min(100%,640px); margin-inline: auto; height: 660px; }
+ .winter-hero-copy { padding: 1.5rem 0 1.5rem; max-width: 40rem; grid-row: auto; }
+ .winter-hero-story { grid-row: auto; padding: 1.5rem 0 0; }
+ .winter-tree-stage { width: min(100%,640px); margin-inline: auto; height: 660px; grid-column: 1; grid-row: auto; }
  .winter-oversized { margin-top: 1.8rem; }
  .winter-hero-copy h1 { font-size: clamp(3.2rem,7vw,5rem); }
- .winter-hero-copy h1 br:last-of-type { display: none; }
+ .winter-hero-copy h1 em br { display: none; }
  .winter-section-heading { gap: 1.25rem; }
 }
 @media (max-width: 767px) {
  .shush-header { backdrop-filter: none; }
- .winter-hero-copy { padding-top: 1.5rem; }
+ .winter-hero-copy { padding-top: .75rem; padding-bottom: .5rem; }
  .winter-eyebrow { font-size: .49rem; letter-spacing: .08em; gap: .5rem; }
  .winter-eyebrow-line { width: 1rem; }
- .winter-oversized { margin: 1.4rem 0 .9rem; font-size: 1rem; }
- .winter-hero-copy h1 { font-size: clamp(2.75rem,10.7vw,4.5rem); line-height: 1.1; }
- .winter-hero-copy > p { font-size: .86rem; margin-top: 1.3rem; }
+ .winter-oversized { display: none; }
+ .winter-hero-copy h1 { margin-top: .9rem; font-size: clamp(2.75rem,10.7vw,4.5rem); line-height: 1.1; }
+ .winter-hero-story > p { font-size: .86rem; margin-top: 0; }
  .winter-actions { margin-top: 1.4rem; gap: .5rem; }
  .winter-actions .site-button { min-height: 3rem; font-size: .68rem; padding-inline: 1rem; }
  .winter-hero-note { margin-top: 1.7rem; font-size: .5rem; }

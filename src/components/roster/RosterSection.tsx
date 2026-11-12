@@ -1,3 +1,4 @@
+import { ArrowIcon } from '../ui/ArrowIcon';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
@@ -10,7 +11,7 @@ function TrackerButton({ href, playerName, compact = false }: { href: string; pl
   return (
     <AppLink href={href} target="_blank" rel="noopener noreferrer" className={`tracker-button${compact ? ' tracker-button-compact' : ''}`} aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
       <span>{compact ? 'Tracker.gg' : 'Partidas Competitive'}</span>
-      <span className="tracker-button-arrow" aria-hidden="true">↗</span>
+      <span className="tracker-button-arrow" aria-hidden="true"><ArrowIcon /></span>
     </AppLink>
   );
 }
@@ -158,11 +159,11 @@ export function RosterSection() {
                 </>
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
 
-              <AppLink className="editorial-link player-drop-link" href={playerDropUrl(selectedPlayer)}>Ver camisola {selectedPlayer.displayName} <span aria-hidden="true">↗</span></AppLink>
+              <AppLink className="editorial-link player-drop-link" href={playerDropUrl(selectedPlayer)}>Ver camisola {selectedPlayer.displayName} <span aria-hidden="true"><ArrowIcon /></span></AppLink>
 
               {selectedPlayer.creatorUrl ? (
                 <AppLink href={selectedPlayer.creatorUrl} target="_blank" rel="noreferrer" className="editorial-link">
-                  {selectedPlayer.creatorType === 'twitch' ? 'Ver na Twitch' : 'Ver no YouTube'} <span aria-hidden="true">↗</span>
+                  {selectedPlayer.creatorType === 'twitch' ? 'Ver na Twitch' : 'Ver no YouTube'} <span aria-hidden="true"><ArrowIcon /></span>
                 </AppLink>
               ) : null}
 
@@ -198,7 +199,7 @@ function PlayerActions({ playerId, playerName, riotId }: { playerId: string; pla
     setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
   };
   return <div className="player-utilities">
-    <div className="action-row"><button type="button" className="utility-button" onClick={copy}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share}>Partilhar jogador <span aria-hidden="true">↗</span></button></div>
+    <div className="action-row"><button type="button" className="utility-button" onClick={copy}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
     <p className="action-feedback" role="status">{feedback}</p>
     {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
   </div>;

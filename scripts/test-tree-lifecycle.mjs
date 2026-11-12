@@ -42,7 +42,7 @@ function mount({ reduced = false, paused = false } = {}) {
   const tree = exports.ChristmasTree();
   cleanup = effect();
   return {
-    frames, get draws() { return draws; },
+    frames, get draws() { return draws; }, get revealed() { return canvas.dataset.revealed === 'true'; },
     visible: (value, ratio = value ? 1 : 0) => intersection([{ isIntersecting: value, intersectionRatio: ratio }]),
     reduced: value => motion({ matches: value }),
     hidden: value => { document.hidden = value; visibility(); },
@@ -58,6 +58,8 @@ active.visible(true);
 assert.equal(active.frames.size, 1);
 active.tick(40);
 assert.equal(active.frames.size, 1, 'only one loop');
+active.tick(10_000);
+assert.equal(active.revealed, true, 'a delayed frame completes the reveal by real elapsed time');
 for (const state of ['hidden', 'reduced']) {
   active[state](true);
   assert.equal(active.frames.size, 0, `${state}: cancel pending frame`);

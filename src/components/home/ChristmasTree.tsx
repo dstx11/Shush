@@ -179,6 +179,7 @@ export function ChristmasTree() {
     let reveal = motionReduced || paused ? 1 : entryProgress.current;
     entryProgress.current = reveal;
     let announced = false;
+    let disposed = false;
     let width = 0;
     let height = 0;
     let frameId = 0;
@@ -187,11 +188,12 @@ export function ChristmasTree() {
 
     const draw = (clock: number) => {
       if (!ctx || width < 1 || height < 1) return;
+      if (reveal === 1 && canvas.dataset.revealed !== 'true') canvas.dataset.revealed = 'true';
       ctx.clearRect(0, 0, width, height);
       const scale = Math.min(width / 550, height / 635);
       const center = width * .5;
       const base = height * .84;
-      const treeHeight = Math.min(height * (theme === 'ice' ? .73 : .69), (theme === 'ice' ? 465 : 442) * scale);
+      const treeHeight = Math.min(height * (theme === 'ice' ? .65 : theme === 'shush' ? .59 : .61), (theme === 'ice' ? 465 : 442) * scale);
       const treeWidth = Math.min(width * .365, (theme === 'ice' ? 157 : theme === 'shush' ? 207 : 194) * scale);
       const rot = .56 + clock * .055 + (1 - reveal) * .8 + pointer.current.x * .28 + rotation.current.offset;
       const lean = pointer.current.y * 5 * scale;
@@ -281,18 +283,24 @@ export function ChristmasTree() {
           (start.x + tip.x) / 2, (start.y + tip.y) / 2 - 7 * scale, tip.x, tip.y
         ); ctx.stroke();
 
-        // Fir fronds: each stem has real needle pairs and a soft frost edge.
-        for (let k = 1; k < 17; k++) {
+        // Batch identical needle materials into three paths per branch.
+        // Geometry and colour stay intact, without sixteen separate strokes.
+        for (let materialIndex = 0; materialIndex < 3; materialIndex++) {
+          ctx.strokeStyle = material[(shade + materialIndex) % 5];
+          ctx.lineWidth = (facing ? 1.5 : 1.05) * scale;
+          ctx.beginPath();
+          for (let k = 1; k < 17; k++) {
+            if (k % 3 !== materialIndex) continue;
           const t = k / 18;
           const mid = project(branch.length * t, branch.y - branch.drop * t + .012 * sin(t * Math.PI), angle);
           const needleLength = branch.length * (.12 + .12 * (1 - t)) * (1 - t * .24);
           const lift = .014 + .018 * (1 - t);
           const l = project(branch.length * t + needleLength * .08, branch.y - branch.drop * t + lift, angle - .24 - .44 * (1 - t));
           const r = project(branch.length * t + needleLength * .08, branch.y - branch.drop * t + lift, angle + .24 + .44 * (1 - t));
-          ctx.strokeStyle = material[(shade + k % 3) % 5];
-          ctx.lineWidth = (facing ? 1.5 : 1.05) * scale;
-          ctx.beginPath(); ctx.moveTo(mid.x, mid.y); ctx.lineTo(l.x, l.y);
-          ctx.moveTo(mid.x, mid.y); ctx.lineTo(r.x, r.y); ctx.stroke();
+            ctx.moveTo(mid.x, mid.y); ctx.lineTo(l.x, l.y);
+            ctx.moveTo(mid.x, mid.y); ctx.lineTo(r.x, r.y);
+          }
+          ctx.stroke();
         }
         if (branch.frost && facing && branch.y > .19) {
           ctx.strokeStyle = '#def5e6b8';
@@ -447,6 +455,7 @@ export function ChristmasTree() {
       if (!announced) {
         announced = true;
         canvas.dataset.ready = 'true';
+        canvas.dataset.revealed = String(reveal === 1);
         window.dispatchEvent(new Event('shush:tree-ready'));
       }
     };
@@ -455,10 +464,12 @@ export function ChristmasTree() {
       if (!canAnimate()) return;
       frameId = requestAnimationFrame(animate);
       if (now - previous < 32) return;
-      const dt = previous ? Math.min((now - previous) / 1000, .075) : 0;
+      const elapsed = previous ? Math.max(0, (now - previous) / 1000) : 0;
+      const dt = Math.min(elapsed, .075);
       previous = now;
       time += dt;
-      reveal = Math.min(1, reveal + dt / (visit.returning ? .65 : 1.65));
+      // Appearance follows real time even on a slow device; physics stays capped.
+      reveal = Math.min(1, reveal + elapsed / (visit.returning ? .65 : 1.65));
       entryProgress.current = reveal;
       pointer.current.x += (pointer.current.targetX - pointer.current.x) * .06;
       pointer.current.y += (pointer.current.targetY - pointer.current.y) * .06;
@@ -495,9 +506,11 @@ export function ChristmasTree() {
     media.addEventListener('change', onMotion);
     document.addEventListener('visibilitychange', onVisibility);
     resize();
+    document.fonts?.ready.then(() => { if (!disposed) draw(time); });
     syncAnimation();
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(frameId);
       redraw.current = () => {};
       ro.disconnect(); io.disconnect();

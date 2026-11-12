@@ -1,3 +1,4 @@
+import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
 
 type Edition = 'evergreen' | 'midnight' | 'aurora';
@@ -180,7 +181,7 @@ export function WinterCardStudio() {
   return (
     <>
       <button ref={triggerRef} type="button" className="winter-card-trigger" onClick={() => { setFeedback(''); setOpen(true); }}>
-        Criar o meu postal de Natal <span aria-hidden="true">↗</span>
+        Criar o meu postal de Natal <span aria-hidden="true"><ArrowIcon /></span>
       </button>
       <dialog
         ref={dialogRef}

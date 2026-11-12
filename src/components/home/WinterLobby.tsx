@@ -1,3 +1,4 @@
+import { ArrowIcon } from '../ui/ArrowIcon';
 import '../../styles/winter-lobby.css';
 import { useState } from 'react';
 import { players } from '../../data/players';
@@ -87,7 +88,7 @@ export function WinterLobby() {
             </div>
             <div className="winter-lobby-profile-info">
               <div><span className="section-kicker">THE PERSON BEHIND THE NICK</span><h3>{player.displayName}</h3><p>{player.roles.join(' · ')}</p></div>
-              <AppLink href={`/esports/valorant/roster?player=${player.id}`} className="winter-lobby-profile-cta" aria-label={`Conhecer ${player.displayName} no roster`}>Conhecer jogador <span aria-hidden="true">↗</span></AppLink>
+              <AppLink href={`/esports/valorant/roster?player=${player.id}`} className="winter-lobby-profile-cta" aria-label={`Conhecer ${player.displayName} no roster`}>Conhecer jogador <span aria-hidden="true"><ArrowIcon /></span></AppLink>
             </div>
           </div>
         </div>
@@ -106,7 +107,7 @@ export function WinterLobby() {
               <span className="winter-gift-illustration" aria-hidden="true"><span className="winter-gift-box"><i /><b /></span><span className="winter-gift-spark one">✦</span><span className="winter-gift-spark two">✧</span></span>
               <strong>{destination.title}</strong>
               <span className="winter-gift-description">{destination.body}</span>
-              <span className="winter-gift-action">{destination.action} <span aria-hidden="true">↗</span></span>
+              <span className="winter-gift-action">{destination.action} <span aria-hidden="true"><ArrowIcon /></span></span>
             </AppLink>
           ))}
         </div>

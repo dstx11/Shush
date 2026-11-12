@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// References reviewed from the last merged Christmas build, not regenerated
-// from the changes under test: PR #11, run 43117122247, head 7f4ed030.
-// Keep captures for human review as well as automatic pixel comparisons.
+// Cozy winter references reviewed in desktop/mobile after the intentional art
+// direction change. Keep pixel comparisons active and captures available for review.
 const regions = [
   ['home-hero', '/', '.opening'],
   ['player-profile', '/esports/valorant/roster?player=more', '#selected-player'],

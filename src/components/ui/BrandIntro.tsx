@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
 
 const sessionKey = 'shush:intro-seen';
@@ -52,7 +53,7 @@ export function BrandIntro() {
     <span className="intro-kicker">UMA NOITE. O NOSSO LOBBY.</span>
     <strong>Há luz<br /><em>no silêncio.</em></strong>
     <p>Entra. Está-se bem por aqui.</p>
-    <button type="button" className="intro-skip" onClick={() => { dialogRef.current?.close(); setVisible(false); }}>Entrar <span aria-hidden="true">↗</span></button>
+    <button type="button" className="intro-skip" onClick={() => { dialogRef.current?.close(); setVisible(false); }}>Entrar <span aria-hidden="true"><ArrowIcon /></span></button>
     <span className="intro-signature" aria-hidden="true">SHUSH · NATAL 2026</span>
   </dialog>;
 }

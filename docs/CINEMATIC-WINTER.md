@@ -20,18 +20,28 @@ A introdução é um dialog nativo, com Escape e botão Entrar. Aguarda recursos
 
 ## Tipografia e manutenção
 
-SHUSH Hearth é um subset WOFF2 de Lora, com eixo variável 400–700 e versões normal/itálica. Está alojado localmente, inclui os acentos portugueses e mantém a licença SIL OFL. O nome interno foi alterado por respeito ao Reserved Font Name. Fontes originais, licença e alterações estão identificadas em `public/assets/fonts/README.txt` e `Lora-OFL.txt`. Manrope mantém-se nos controlos, nomes e dados competitivos.
+SHUSH Hearth é um subset WOFF2 de Lora, com eixo variável 400–700 e versões normal/itálica. Está alojado localmente, inclui os acentos portugueses e mantém a licença SIL OFL. O nome interno foi alterado por respeito ao Reserved Font Name. Fontes originais, licença e alterações estão identificadas em `public/assets/fonts/README.txt` e `Lora-OFL.txt`. Manrope mantém-se nos controlos, nomes, impressão da camisola e dados competitivos. Manrope e IBM Plex Mono também passaram a WOFF2 local, com os ficheiros originais fornecidos pelo Google Fonts e respetivas licenças, eliminando o stylesheet externo. As seis faces somam 159,86 KiB; só as faces normais serifada e Manrope são pré-carregadas.
 
-`winter.css` foi consolidado num único sistema sazonal, retirando as camadas anteriores de overrides. O CSS do lobby continua separado por rota, com os links de pré-render da PR #12. Não se acrescentaram dependências de produção, WebGL ou bibliotecas de partículas. Canvas mantém DPR limitado a 2 e aproximadamente 30 fps, com cancelamento real quando pausado, invisível, fora do ecrã ou em movimento reduzido.
+`winter.css` foi consolidado num único sistema sazonal, retirando as camadas anteriores de overrides. O CSS do lobby continua separado por rota, com os links de pré-render da PR #12. Não se acrescentaram dependências de produção, WebGL ou bibliotecas de partículas. Canvas mantém DPR limitado a 2 e um limite de desenho de aproximadamente 30 fps, com cancelamento real quando pausado, invisível, fora do ecrã ou em movimento reduzido.
+
+Os traços de agulhas são agrupados em três caminhos por ramo, em vez de dezasseis strokes individuais. A formação segue tempo real, mesmo quando o relógio da física é limitado em frames lentos.
 
 As seis rotas, os sete jogadores reais, Premier, perfis, personalizador, URLs, postais PNG e conteúdo sem JavaScript mantêm-se. Os metadados/schema e cabeçalhos de segurança não foram redesenhados. Esta branch inclui as correções da PR #12, ainda não integrada na master.
 
 ## Validação e revisão
 
-A primeira validação local passou TypeScript, dados Premier/perfis/Drop, testes de ciclo e seleção de árvore, assets, links, build, pré-render/SEO/segurança e orçamentos. Medição inicial: 109,41 KiB de JavaScript e 22,57 KiB de CSS gzip, face a 108,52/23,56 KiB na PR #12. A nova fonte local é um recurso separado (normal e itálica, aproximadamente 93 KiB em conjunto), não incluído no orçamento JS/CSS. A face normal é pré-carregada; a itálica é pedida quando usada.
+A primeira validação local passou TypeScript, dados Premier/perfis/Drop, testes de ciclo e seleção de árvore, assets, links, build, pré-render/SEO/segurança e orçamentos. Medição final local: 109,72 KiB de JavaScript e 22,85 KiB de CSS gzip, face a 108,52/23,56 KiB na PR #12. Os recursos de fonte são contabilizados separadamente, não no orçamento JS/CSS. A face normal é pré-carregada; a itálica é pedida quando usada.
 
-Não há alegações de melhoria medida de LCP, INP ou CLS. O browser local desta sessão tem as limitações de execução documentadas na auditoria anterior, pelo que os testes de interface, capturas e WebKit são executados na CI.
+Não há alegações de melhoria medida de LCP, INP ou CLS. A limitação do browser local foi resolvida com o Chrome Headless Shell oficial 156.0.8078.79. Chromium pode agora executar os testes e gerar capturas localmente; WebKit continua a ser validado na CI.
 
-A mudança de direção artística altera deliberadamente as oito referências visuais antigas. As assertions permanecem ativas: as primeiras diferenças servem para inspecionar o resultado antes de aprovar referências novas. A CI guarda também as três variantes em desktop e mobile. O estado final de validação e as capturas revistas constam da PR.
+A mudança de direção artística alterou deliberadamente as oito referências visuais antigas. As diferenças foram inspecionadas antes da aprovação de novas referências; as assertions permaneceram ativas. A CI guarda também as três variantes em desktop e mobile. O estado final de validação e as capturas revistas constam da PR.
 
 Sem merge nem publicação em produção sem aprovação do proprietário.
+
+## Referências visuais revistas
+
+Foram inspecionadas as oito regiões existentes e seis capturas das três árvores em 390/1366 px, incluindo composição, acentos portugueses, contornos, impressão da camisola e ordem de foco. As referências antigas foram substituídas apenas após esta revisão da direção artística intencional. As três variantes passam também a ter assertions de pixel, totalizando 14 comparações. Não se aumentaram tolerâncias nem se mascararam regiões para fazer passar testes. As setas decorativas usam um SVG partilhado, evitando emojis e variações de fonte entre plataformas.
+
+A primeira CI (43129505744, aa02049) teve 534 testes aprovados, 60 exclusões por formato e apenas as oito diferenças esperadas face ao design anterior. O estado final, após os refinamentos e as referências revistas, é registado na descrição da PR.
+
+A validação local das regiões e das três variantes terminou com 18 testes aprovados, incluindo 14 comparações de pixels, sem alterar tolerâncias. O SVG partilhado preserva os ícones monocromáticos e a impressão da camisola mantém Manrope. A ordem mobile é título, árvore e história/ações, com a ordem de foco correspondente.

@@ -1,3 +1,4 @@
+import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
@@ -138,7 +139,7 @@ export function Header() {
                   }}
                   className="overlay-link"
                 >
-                  <span className="mono" aria-hidden="true">0{index + 1}</span><span>{item.label}</span><span aria-hidden="true">↗</span>
+                  <span className="mono" aria-hidden="true">0{index + 1}</span><span>{item.label}</span><span aria-hidden="true"><ArrowIcon /></span>
                 </AppLink>
               ))}
             </div>

@@ -21,9 +21,10 @@ for (const [variant, previous, random, title] of scenes) {
     await expect(frame.locator('.winter-palette')).toHaveCount(0);
     await frame.scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
+    await expect(frame).toHaveScreenshot(`scene-${variant}.png`, { animations: 'disabled' });
     await frame.screenshot({ path: testInfo.outputPath(`scene-${variant}.png`), animations: 'disabled' });
     const before = await frame.getAttribute('data-tree-variant');
-    await page.getByRole('link', { name: 'Conhecer os sete jogadores ↗' }).click();
+    await page.getByRole('link', { name: 'Conhecer os sete jogadores' }).click();
     await page.goBack();
     await expect(frame).toHaveAttribute('data-tree-variant', before!);
     const viewport = await page.evaluate(() => ({ width: document.documentElement.clientWidth, content: document.documentElement.scrollWidth }));
@@ -49,7 +50,10 @@ test('cinematic entrance is resource-driven, bounded and never replays during SP
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0, { timeout: 2200 });
-  await expect(page.locator('.winter-tree-canvas')).toHaveAttribute('data-ready', 'true');
+  const canvas = page.locator('.winter-tree-canvas');
+  await expect(canvas).toHaveAttribute('data-ready', 'true');
+  await canvas.scrollIntoViewIfNeeded();
+  await expect(canvas).toHaveAttribute('data-revealed', 'true', { timeout: 4000 });
   await page.locator('.home-closing a[href="/company"]').click();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
