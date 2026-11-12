@@ -51,3 +51,5 @@ A CI 43132185863 confirmou 530 testes funcionais aprovados (incluindo WebKit), 6
 A revisão final do preview encontrou o glifo de pausa ausente num browser. Os controlos de luz, pausa e reprodução passaram a SVG inline, preservando os rótulos e estados acessíveis; os oito testes locais de inverno/postais passaram após esta correção.
 
 A CI 43134940884 aprovou 534 testes e excluiu 60 casos por formato. As oito diferenças ficaram limitadas aos controlos substituídos por SVG. A revisão revelou que o reset CSS colocava o SVG numa segunda linha; os botões passaram a inline-flex com alinhamento centrado e ícones sem shrink, revistos em 390/1366 px. As referências finais são revistas no ambiente da CI antes da matriz completa final.
+
+A revisão 43197491480 confirmou que as diferenças finais ficam exclusivamente nas duas utilidades da árvore. Foram aprovadas as seis capturas de árvore e dois heróis com SVG e alinhamento corretos. As restantes seis comparações já passaram; tolerâncias e regiões permanecem intactas. A matriz completa é novamente executada no commit final, com o comando original de CI restaurado.
