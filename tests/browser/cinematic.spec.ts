@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 
+// Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
+test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+
 const scenes = [
   ['christmas', 'ice', 0, 'Bosque de âmbar'],
   ['ice', 'christmas', 0, 'Silêncio de neve'],
@@ -49,12 +52,12 @@ test('fresh document chooses another tree while unavailable storage remains usab
 test('cinematic entrance is resource-driven, bounded and never replays during SPA navigation', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0, { timeout: 2200 });
+  await expect(page.getByRole('dialog', { name: /Entrada SHUSH/ })).toHaveCount(0, { timeout: 2200 });
   const canvas = page.locator('.winter-tree-canvas');
   await expect(canvas).toHaveAttribute('data-ready', 'true');
   await canvas.scrollIntoViewIfNeeded();
   await expect(canvas).toHaveAttribute('data-revealed', 'true', { timeout: 4000 });
   await page.locator('.home-closing a[href="/company"]').click();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
+  await expect(page.getByRole('dialog', { name: /Entrada SHUSH/ })).toHaveCount(0);
 });

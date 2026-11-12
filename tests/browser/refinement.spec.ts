@@ -101,7 +101,7 @@ test('navigation reconstructs metadata even when the previous schema is malforme
   await page.goto('/');
   await page.evaluate(() => { document.getElementById('shush-schema')!.textContent = '{broken'; });
   await page.locator('.home-closing a[href="/company"]').click();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Antes da SHUSH');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
   const graph = await page.locator('#shush-schema').textContent();
   expect(JSON.parse(graph!)['@graph'].some((item: { '@type': string }) => item['@type'] === 'AboutPage')).toBe(true);
   expect(errors).toEqual([]);
