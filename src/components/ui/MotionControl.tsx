@@ -22,6 +22,7 @@ export function MotionControl(){
    const next=!manual;
    try{localStorage.setItem(STORAGE_KEY,next?'reduce':'system');}catch{/* visual setting still works */}
    setManual(next);
+   if(next)document.dispatchEvent(new Event('shush:reduce-motion'));
  };
  return <button className="shush-motion-toggle" type="button" aria-pressed={manual||system}
    aria-label={system?'Movimento reduzido pelo sistema':'Reduzir animações'}
