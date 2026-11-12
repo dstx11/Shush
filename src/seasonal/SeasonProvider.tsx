@@ -11,6 +11,7 @@ export function SeasonProvider({children}:{children:ReactNode}){
   document.addEventListener('visibilitychange',resume);
   return ()=>{window.clearInterval(timer);document.removeEventListener('visibilitychange',resume);};
  },[]);
+ useEffect(()=>{if(id==='christmas')void import('../styles/winter.css');},[id]);
  return <Context.Provider value={id}>{children}</Context.Provider>;
 }
 export function useSeason(){const id=useContext(Context);return {id,theme:themes[id]};}

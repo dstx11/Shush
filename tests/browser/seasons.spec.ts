@@ -74,3 +74,13 @@ test('A suspended tab updates its theme after midnight',async ({page})=>{
  await page.clock.fastForward(120_000);
  await expect(page.locator('.shush-root')).toHaveAttribute('data-season','newyear');
 });
+
+test('Christmas styling loads on a direct roster visit and cannot leak into New Year',async ({page})=>{
+ await page.clock.install({time:new Date('2026-12-26T23:59:00Z')});
+ await page.goto('/esports/valorant/roster');
+ await expect(page.locator('.shush-root')).toHaveAttribute('data-season','christmas');
+ await expect.poll(()=>page.locator('.shush-root').evaluate(node=>getComputedStyle(node).getPropertyValue('--font-heading'))).toContain('SHUSH Hearth');
+ await page.clock.fastForward(120_000);
+ await expect(page.locator('.shush-root')).toHaveAttribute('data-season','newyear');
+ await expect.poll(()=>page.locator('.shush-root').evaluate(node=>getComputedStyle(node).getPropertyValue('--font-heading'))).toContain('Manrope');
+});
