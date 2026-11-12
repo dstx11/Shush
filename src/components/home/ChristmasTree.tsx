@@ -571,10 +571,14 @@ export function ChristmasTree() {
         <span className="winter-scene-note">Cada visita, uma nova noite.</span>
         <div className="winter-tree-utilities">
           <button className="winter-motion-toggle" type="button" aria-pressed={!lightsOn} onClick={() => setLightsOn(value => !value)}>
-            {lightsOn ? 'Luzes on' : 'Luzes off'} <span aria-hidden="true">✦</span>
+            {lightsOn ? 'Luzes on' : 'Luzes off'}
+            <svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="m6 0 1.6 4.4L12 6 7.6 7.6 6 12 4.4 7.6 0 6l4.4-1.6Z" /></svg>
           </button>
           <button className="winter-motion-toggle" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused}>
-            {paused ? 'Reproduzir' : 'Pausar'} <span aria-hidden="true">{paused ? '▶' : 'Ⅱ'}</span>
+            {paused ? 'Reproduzir' : 'Pausar'}
+            <svg aria-hidden="true" focusable="false" width="8" height="10" viewBox="0 0 8 10" fill="currentColor">
+              {paused ? <path d="m1 0 7 5-7 5Z" /> : <path d="M0 0h2v10H0zM6 0h2v10H6z" />}
+            </svg>
           </button>
         </div>
       </div>
