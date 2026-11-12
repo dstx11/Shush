@@ -86,7 +86,7 @@ export function DropSection() {
     const id = ++operation.current;
     const url = buildDropUrl(config, window.location.origin);
     setPending(true); setManualLink(''); setFeedback('A preparar a partilha…');
-    const result = await shareUrl(url, 'A minha jersey — SHUSH Drop 01');
+    const result = await shareUrl(url, 'O meu nick, a nossa jersey — SHUSH Drop 01');
     if (mounted.current && id === operation.current) {
       setManualLink(result === 'manual' ? url : '');
       setFeedback(result === 'copied' ? 'Ligação da personalização copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');

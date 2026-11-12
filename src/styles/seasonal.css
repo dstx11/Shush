@@ -82,3 +82,33 @@
 @media (max-width:950px){.shush-hero-layout{grid-template-columns:1fr;min-height:auto}.shush-hero-copy{padding-block:3rem 1rem}.shush-hero h1{font-size:clamp(3rem,9vw,6rem);max-width:16ch}.shush-hero-visual{height:clamp(310px,55vw,540px);min-height:0;max-width:700px;width:100%;margin-inline:auto}.shush-hero-portraits{height:100%}.season-feature{grid-template-columns:1fr}}
 @media (max-width:767px){.shush-hero{min-height:0}.shush-hero-copy{padding-block:2rem 0}.shush-hero h1{font-size:clamp(2.7rem,11vw,4.6rem);letter-spacing:-.07em}.shush-hero-lead{margin:1.3rem 0;font-size:.89rem;line-height:1.75}.shush-hero-lower{margin-top:1.7rem}.shush-hero-visual{height:clamp(275px,83vw,450px);margin-bottom:1rem}.shush-hero-player-tag{padding:.7rem .4rem}.shush-hero-player-tag small{font-size:.47rem}.shush-hero-player-tag strong{font-size:clamp(.7rem,3vw,1.1rem)}.season-feature-stage{min-height:300px;padding:1.25rem}.season-duo-fields{grid-template-columns:1fr}.season-duo-fields>span{display:none}.season-feature{padding-block:3rem}}
 @media (prefers-reduced-motion:reduce){.season-art *,.shush-hero-copy>*{animation:none!important}.shush-hero-player,.season-feature-stage{transition:none!important}}
+
+/* Brand origin: the old semicolon is a historical mark, not a new logo. */
+.about-origin{display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);gap:clamp(2rem,8vw,8rem);padding-block:clamp(3rem,8vw,7rem);border-top:1px solid var(--line)}
+.about-origin-index{display:flex;align-items:start;justify-content:space-between;gap:1rem}
+.about-origin-semicolon{font:700 clamp(7rem,18vw,16rem)/.8 var(--font-heading);color:var(--signal);opacity:.32}
+.about-origin-story h2{font:800 clamp(2rem,4.8vw,5rem)/1.08 var(--font-heading);letter-spacing:-.065em;margin:0 0 2.5rem}
+.about-origin-story h2 em{font-style:normal;color:var(--signal)}
+.about-origin-story p{max-width:62ch;color:var(--text);line-height:1.85;font-size:clamp(.9rem,1.05vw,1.08rem);margin-block:0 1.25rem}
+.about-origin-story p strong{color:var(--signal)}
+.about-origin-story .editorial-link{color:var(--signal);margin-top:1rem}
+.about-origin-story small{display:block;color:var(--muted);font-size:.7rem;margin-top:1.4rem}
+@media(max-width:767px){.about-origin{grid-template-columns:1fr}.about-origin-index{align-items:center}.about-origin-semicolon{font-size:7rem}.about-origin-story h2{margin-bottom:1.5rem}}
+
+/* Intro uses the campaign's vector motif and dissolves into an already usable page. */
+.shush-season-intro{background:radial-gradient(ellipse at 50% 42%,var(--season-haze),transparent 57%),var(--bg);color:var(--text);gap:.8rem}
+.shush-season-intro::before{background-image:linear-gradient(90deg,#fff1 1px,transparent 1px),linear-gradient(#fff1 1px,transparent 1px);background-size:90px 90px;opacity:.22}
+.shush-season-intro .season-intro-symbol{position:relative;width:min(62vw,260px);height:min(62vw,260px);margin-bottom:1rem}
+.shush-season-intro .season-art{position:static;width:100%;height:100%;opacity:.8}
+.shush-season-intro>.intro-kicker{font:600 .66rem var(--font-mono);letter-spacing:.2em;color:var(--season-accent)}
+.shush-season-intro>strong{font:800 clamp(2.6rem,7.5vw,6rem)/1.05 var(--font-heading);letter-spacing:-.075em;max-width:13ch}
+.shush-season-intro>p{font:500 .88rem/1.7 var(--font-ui);color:var(--muted);margin:.3rem 0}
+.shush-season-intro>.intro-signature{font:.58rem var(--font-mono);color:var(--season-accent)}
+.shush-season-intro>.intro-skip{border-color:var(--season-accent);color:var(--text);border-radius:.7rem;min-width:7rem}
+.shush-season-intro>.intro-skip:hover{background:var(--season-accent);color:var(--on-accent)}
+@media(prefers-reduced-motion:no-preference){
+ .shush-season-intro>.intro-kicker,.shush-season-intro>strong,.shush-season-intro>p{animation:shush-hero-enter .55s cubic-bezier(.16,1,.3,1) both}
+ .shush-season-intro>strong{animation-delay:.1s}
+ .shush-season-intro .season-art-motif{animation:none;stroke-dasharray:1800;stroke-dashoffset:1800;animation:shush-intro-draw 1.15s cubic-bezier(.2,.7,.2,1) forwards}
+ @keyframes shush-intro-draw{to{stroke-dashoffset:0}}
+}
