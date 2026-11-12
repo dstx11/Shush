@@ -7,7 +7,7 @@ const readPreference=()=>{
 /** Explicit motion control is supplementary to the OS-level reduced-motion setting. */
 export function MotionControl(){
  const [manual,setManual]=useState(readPreference);
- const [system,setSystem]=useState(()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+ const [system,setSystem]=useState(()=>typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
  useEffect(()=>{
    const query=window.matchMedia('(prefers-reduced-motion: reduce)');
    const sync=()=>setSystem(query.matches);
