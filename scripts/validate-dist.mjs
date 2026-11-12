@@ -40,15 +40,20 @@ for (const path of requiredFiles) {
 }
 
 const index = await readText('index.html');
-// Lazy route styles must be available to the prerender even without JavaScript.
-const manifest = JSON.parse(await readText('.vite/manifest.json'));
-const lobbyStyles = manifest['src/pages/HomePage.tsx']?.css ?? [];
-if (!lobbyStyles.length) failures.push('Missing Home route stylesheet in manifest');
-for (const css of lobbyStyles) {
-  expect(index, `href="/${css}"`, 'Home static route stylesheet');
-  await access(join(dist, css), constants.R_OK);
-  for (const [path] of routeFiles) {
-    if ((await readText(path)).includes(`href="/${css}"`)) failures.push(`Home-only CSS linked on ${path}`);
+// The core brand stylesheet is eager; Christmas is a lazy campaign chunk.
+const manifest=JSON.parse(await readText('.vite/manifest.json'));
+const coreStyles=manifest['src/main.tsx']?.css??[];
+if(!coreStyles.length)failures.push('Missing core SHUSH stylesheet in manifest');
+for(const css of coreStyles){
+  expect(index,'href="/'+css+'"','core stylesheet link');
+  await access(join(dist,css),constants.R_OK);
+}
+const christmasStyles=manifest['src/components/seasonal/ChristmasLanding.tsx']?.css??[];
+if(!christmasStyles.length)failures.push('Missing lazy Christmas stylesheet in manifest');
+for(const css of christmasStyles){
+  await access(join(dist,css),constants.R_OK);
+  for(const [path] of routeFiles){
+    if((await readText(path)).includes('href="/'+css+'"'))failures.push('Seasonal CSS leaked onto '+path);
   }
 }
 const notFound = await readText('404.html');
@@ -58,7 +63,7 @@ const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 
 expect(index, '<h1', 'prerendered Home heading');
-expect(index, 'Quem está no lobby.', 'prerendered Home content');
+if (!['O nome é SHUSH.','O lobby ainda','Mudou o ano.','Hoje ninguém joga','Há duos','Deixámos pistas.','Só mais uma.','Há passos.'].some(value => index.includes(value))) failures.push('Missing seasonal Home content');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow,max-image-preview:large"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');

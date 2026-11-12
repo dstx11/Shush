@@ -1,57 +1,26 @@
-import { gzipSync } from 'node:zlib';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const distDir = fileURLToPath(new URL('../dist/', import.meta.url));
-
-const budgets = {
-  jsGzip: 125 * 1024,
-  cssGzip: 24 * 1024,
-};
-
-function walk(dir) {
-  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const path = join(dir, entry.name);
-    return entry.isDirectory() ? walk(path) : [path];
-  });
-}
-
-const files = walk(distDir).filter((path) => /\.(?:js|css)$/.test(path));
-
-const totals = files.reduce(
-  (acc, path) => {
-    const type = path.endsWith('.js') ? 'js' : 'css';
-    const raw = readFileSync(path);
-    acc[type].raw += statSync(path).size;
-    acc[type].gzip += gzipSync(raw).length;
-    return acc;
-  },
-  {
-    js: { raw: 0, gzip: 0 },
-    css: { raw: 0, gzip: 0 },
-  },
-);
-
-const kb = (bytes) => (bytes / 1024).toFixed(2);
-
-console.log('Build budget');
-console.log(`JS:  ${kb(totals.js.raw)} kB raw / ${kb(totals.js.gzip)} kB gzip`);
-console.log(`CSS: ${kb(totals.css.raw)} kB raw / ${kb(totals.css.gzip)} kB gzip`);
-
-const failures = [];
-
-if (totals.js.gzip > budgets.jsGzip) {
-  failures.push(`JS gzip budget exceeded: ${kb(totals.js.gzip)} kB > ${kb(budgets.jsGzip)} kB`);
-}
-
-if (totals.css.gzip > budgets.cssGzip) {
-  failures.push(`CSS gzip budget exceeded: ${kb(totals.css.gzip)} kB > ${kb(budgets.cssGzip)} kB`);
-}
-
-if (failures.length > 0) {
-  console.error(failures.join('\n'));
-  process.exit(1);
-}
-
-console.log('PASS: bundle stays within the SHUSH production budget.');
+import {gzipSync} from 'node:zlib';
+import {readFileSync,readdirSync} from 'node:fs';
+import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+const dist=fileURLToPath(new URL('../dist/',import.meta.url));
+const manifest=JSON.parse(readFileSync(join(dist,'.vite/manifest.json'),'utf8'));
+const entry=manifest['src/main.tsx'];
+const campaign=manifest['src/components/seasonal/ChristmasLanding.tsx'];
+if(!entry?.css?.length||!campaign?.css?.length)throw new Error('Missing core or seasonal CSS manifest entries');
+const walk=dir=>readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(join(dir,e.name)):[join(dir,e.name)]);
+const all=walk(dist).filter(path=>/\.(js|css)$/.test(path));
+const compressed=path=>gzipSync(readFileSync(path)).length;
+const sum=paths=>paths.reduce((total,path)=>total+compressed(path),0);
+const js=sum(all.filter(path=>path.endsWith('.js')));
+const css=sum(all.filter(path=>path.endsWith('.css')));
+const coreCss=sum(entry.css.map(path=>join(dist,path)));
+const christmasCss=sum(campaign.css.map(path=>join(dist,path)));
+const kb=n=>(n/1024).toFixed(2);
+console.log('Build budget (gzipped): all JS '+kb(js)+' kB; base CSS '+kb(coreCss)+' kB; Christmas-only CSS '+kb(christmasCss)+' kB; all CSS '+kb(css)+' kB');
+const failures=[];
+if(js>125*1024) failures.push('All JS exceeds 125 kB gzip');
+if(coreCss>20*1024)failures.push('Base stylesheet exceeds 20 kB gzip');
+if(christmasCss>10*1024)failures.push('Lazy Christmas stylesheet exceeds 10 kB gzip');
+if(css>30*1024)failures.push('Combined CSS exceeds 30 kB gzip');
+if(failures.length){console.error(failures.join('\n'));process.exit(1)}
+console.log('PASS: initial and on-demand seasonal styles meet separate budgets.');
