@@ -7,6 +7,6 @@ const ChristmasLanding=lazy(()=>import('../components/seasonal/ChristmasLanding'
 export function HomePage(){
  const {id}=useSeason();
  return id==='christmas'
-  ? <Suspense fallback={<CoreHero/>}><ChristmasLanding/></Suspense>
+  ? <Suspense fallback={<><CoreHero/><HomeHub/></>}><ChristmasLanding/></Suspense>
   : <><CoreHero/><SeasonFeature/><HomeHub/></>;
 }

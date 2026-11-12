@@ -4,7 +4,7 @@ import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const dist=fileURLToPath(new URL('../dist/',import.meta.url));
 const manifest=JSON.parse(readFileSync(join(dist,'.vite/manifest.json'),'utf8'));
-const entry=manifest['src/main.tsx'];
+const entry=manifest['index.html']??manifest['src/main.tsx'];
 const campaign=manifest['src/components/seasonal/ChristmasLanding.tsx'];
 if(!entry?.css?.length||!campaign?.css?.length)throw new Error('Missing core or seasonal CSS manifest entries');
 const walk=dir=>readdirSync(dir,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(join(dir,e.name)):[join(dir,e.name)]);

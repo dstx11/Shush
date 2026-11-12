@@ -42,7 +42,7 @@ for (const path of requiredFiles) {
 const index = await readText('index.html');
 // The core brand stylesheet is eager; Christmas is a lazy campaign chunk.
 const manifest=JSON.parse(await readText('.vite/manifest.json'));
-const coreStyles=manifest['src/main.tsx']?.css??[];
+const coreStyles=(manifest['index.html']??manifest['src/main.tsx'])?.css??[];
 if(!coreStyles.length)failures.push('Missing core SHUSH stylesheet in manifest');
 for(const css of coreStyles){
   expect(index,'href="/'+css+'"','core stylesheet link');
