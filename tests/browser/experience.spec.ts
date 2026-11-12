@@ -54,11 +54,11 @@ test('Slow navigation keeps the current page usable until the next route is read
   await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/company');
   await expect(page.locator('.navigation-toggle')).toBeEnabled();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Antes da SHUSH');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
   await page.locator('header .brand-mark').click();
   // React Router uses a transition: retain the current content while the next
   // chunk is pending instead of replacing it with a full-page spinner.
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Antes da SHUSH');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
   await expect(page.locator('.shush-loading')).toHaveCount(0);
   await expect(page.locator('footer a').first()).toBeAttached();
   release();

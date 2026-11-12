@@ -1,8 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+// Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
+test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+
 test('Winter scene is available without compromising the team content', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Sem barulho');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('O lobby ainda');
   await expect(page.locator('.winter-tree-stage canvas')).toBeVisible();
   await expect(page.locator('.team-cover-player')).toHaveCount(3);
   await expect(page.locator('.home-lineup > a')).toHaveCount(7);

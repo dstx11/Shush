@@ -44,8 +44,15 @@ for (const [name, path, selector] of regions) {
       await expect(page).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
       await page.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
     } else {
-      await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
-      await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      if (name === 'about-intro') {
+        await expect(region.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
+        await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
+        await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      } else {
+        await expect(region.locator('img:visible')).not.toHaveCount(0);
+        await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
+        await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      }
     }
   });
 }

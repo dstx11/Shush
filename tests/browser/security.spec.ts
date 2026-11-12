@@ -5,6 +5,7 @@ const policy = headers.split('\n').find(line => line.trim().startsWith('Content-
 
 test('production CSP blocks executable injections while the customizer and studio remain usable', async ({ page }, info) => {
   test.skip(!['desktop-1366', 'mobile-390', 'mobile-webkit'].includes(info.project.name), 'Representative CSP engines');
+  await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   // Enforce the exact deployment policy on a reserved HTTPS test origin.
   // All bytes still come from the local production preview; no external host is contacted.
   await page.route('https://shush.test/**', async route => {

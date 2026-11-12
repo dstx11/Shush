@@ -1,6 +1,6 @@
 /* The startup fallback, route fallback and first-visit entrance share one atmosphere. */
-html, body { margin: 0; background: #0e1919; }
-.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.4rem; padding: 2rem; box-sizing: border-box; color: #f6efdf; background: radial-gradient(ellipse at 50% 45%,#34463555,transparent 58%),#0e1919; text-align: center; font-family: Manrope,system-ui,sans-serif; }
+html, body { margin: 0; background: #15131a; }
+.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.4rem; padding: 2rem; box-sizing: border-box; color: #f6efdf; background: radial-gradient(ellipse at 50% 45%,#62477945,transparent 58%),#15131a; text-align: center; font-family: Manrope,system-ui,sans-serif; }
 .loading-emblem { position: relative; display: grid; place-items: center; width: clamp(10rem,35vw,15rem); aspect-ratio: 1; }
 .loading-emblem::before,.loading-emblem::after { content: ''; position: absolute; inset: 6%; border: 1px solid #d9bb7b33; border-radius: 50%; }
 .loading-emblem::after { inset: 20%; border-style: dashed; transform: rotate(30deg); }

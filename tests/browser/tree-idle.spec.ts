@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 
+// Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
+test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+
 test('tree stops scheduling frames when paused or motion is reduced and resumes once', async ({ page }) => {
   await page.addInitScript(() => {
     sessionStorage.setItem('shush:intro-seen', '1');

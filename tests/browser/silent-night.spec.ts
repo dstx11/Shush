@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 
+// Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
+test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+
 test('Silent Night ornaments select every real player and navigate to their profile', async ({ page }) => {
   await page.goto('/');
   const ornaments = page.locator('.winter-player-ornament');
@@ -37,15 +40,13 @@ test('Silent Night presents offer direct real routes, keyboard access and no hor
   expect(dimensions.page).toBeLessThanOrEqual(dimensions.viewport + 1);
 });
 
-test('Silent Night content renders without JavaScript', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
-  try {
-    const page = await context.newPage();
+test('Permanent SHUSH content renders without JavaScript outside December', async ({ browser, baseURL }) => {
+  const context=await browser.newContext({javaScriptEnabled:false,baseURL});
+  try{
+    const page=await context.newPage();
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: /Sete nomes/ })).toBeVisible();
-    await expect(page.locator('.winter-gift-card')).toHaveCount(3);
-    await expect(page.locator('.winter-player-ornament')).toHaveCount(7);
-  } finally {
-    await context.close();
-  }
+    await expect(page.getByRole('heading',{name:/O nome é SHUSH/})).toBeVisible();
+    await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+    await expect(page.locator('.winter-player-ornament')).toHaveCount(0);
+  }finally{await context.close();}
 });

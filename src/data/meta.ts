@@ -33,6 +33,6 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   },
   '/company': {
     title: 'Sobre a SHUSH — A equipa e a nossa história',
-    description: 'A história da SHUSH: um grupo de amigos, a vontade de competir e uma identidade construída em conjunto.',
+    description: 'A SHUSH nasceu em 2022 inspirada na LOUD: a história dos primeiros nicks, da equipa de VALORANT e de uma identidade que ganhou vida própria.',
   },
 };

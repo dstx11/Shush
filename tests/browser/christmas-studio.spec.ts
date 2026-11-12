@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test';
 
+// Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
+test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+
 test('Visitors can create a personalized Christmas card, download a real PNG and close the editor', async ({ page }, testInfo) => {
   test.skip(!['desktop-1366', 'mobile-390'].includes(testInfo.project.name), 'Representative desktop and mobile coverage');
 

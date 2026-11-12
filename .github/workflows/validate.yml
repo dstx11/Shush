@@ -46,6 +46,9 @@ jobs:
       - name: Typecheck
         run: pnpm run typecheck
 
+      - name: Seasonal scheduling
+        run: pnpm run test:seasons
+
       - name: Premier logic
         run: pnpm run test:premier
 
@@ -97,8 +100,12 @@ jobs:
           ! grep -Fq '/* /index.html 200' dist/_redirects
 
   browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
         with:
@@ -112,9 +119,9 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm run build
       - name: Responsive and interaction QA
-        run: pnpm run test:browser
+        run: pnpm exec playwright test --shard=${{ matrix.shard }}/3
       - name: Cloudflare preview HTTP smoke
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && matrix.shard == 1
         env:
           SHUSH_PREVIEW_BRANCH: ${{ github.head_ref }}
         run: pnpm run check:preview
@@ -122,7 +129,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: responsive-qa
+          name: responsive-qa-${{ matrix.shard }}
           path: |
             test-results/
             playwright-report/
