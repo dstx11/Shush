@@ -113,17 +113,21 @@ test('a postcard drawing failure preserves the page and edits and can be retried
   await page.addInitScript(() => {
     const original = HTMLCanvasElement.prototype.getContext;
     let blocked = true;
+    const state = window as unknown as { postcardFailures: number; restorePostcard: () => void };
+    state.postcardFailures = 0;
     HTMLCanvasElement.prototype.getContext = function (...args: Parameters<typeof original>) {
-      if (blocked && this.closest('.winter-card-preview')) return null;
+      if (blocked && this.closest('.winter-card-preview')) { state.postcardFailures++; return null; }
       return original.apply(this, args);
     } as typeof original;
-    (window as unknown as { restorePostcard: () => void }).restorePostcard = () => { blocked = false; };
+    state.restorePostcard = () => { blocked = false; };
   });
   await page.goto('/');
   await page.getByRole('button', { name: /Criar o meu postal/ }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog.getByRole('alert')).toContainText('Não foi possível desenhar');
   await dialog.getByRole('textbox', { name: 'Mensagem', exact: true }).fill('A nossa noite.');
+  await expect.poll(() => page.evaluate(() => (window as unknown as { postcardFailures: number }).postcardFailures)).toBeGreaterThanOrEqual(2);
+  await expect(dialog.getByRole('alert')).toBeVisible();
   await page.evaluate(() => (window as unknown as { restorePostcard: () => void }).restorePostcard());
   await dialog.getByRole('button', { name: 'Tentar novamente' }).click();
   await expect(dialog.getByRole('button', { name: 'Descarregar postal PNG' })).toBeEnabled();
