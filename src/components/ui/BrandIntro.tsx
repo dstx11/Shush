@@ -23,7 +23,11 @@ export function BrandIntro() {
   // the actual dialog has entered the browser's top layer.
   useLayoutEffect(() => {
     const boot = document.getElementById('shush-boot-stage');
-    if (!visible) { boot?.remove(); return; }
+    if (!visible) {
+      boot?.remove();
+      if (didOpen.current) document.getElementById('main-content')?.focus({ preventScroll: true });
+      return;
+    }
     const element = dialog.current;
     if (!element) return;
     if (!element.open) element.showModal();
@@ -41,10 +45,7 @@ export function BrandIntro() {
   // Resources can finish early; the sequence still gets time to breathe.
   // On slow or failed assets we exit within 4.9 s, not an endless loading screen.
   useEffect(() => {
-    if (!visible) {
-      if (didOpen.current) window.requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true }));
-      return;
-    }
+    if (!visible) return;
     let active = true;
     let ready = false;
     let minimumElapsed = false;
