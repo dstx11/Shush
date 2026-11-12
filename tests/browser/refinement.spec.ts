@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 // State transitions that were not covered by the original happy-path journeys.
 test('postcard keeps the background still, padding open and accessible field names stable', async ({ page }, info) => {
   test.skip(!['desktop-1366', 'mobile-390'].includes(info.project.name), 'Representative modal layouts');
+  await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   await page.goto('/');
   const trigger = page.getByRole('button', { name: /Criar o meu postal/ });
   await trigger.click();
@@ -31,6 +32,7 @@ test('postcard export failure recovers and a closed editor ignores late export c
     mock.finishExport = () => callbacks.shift()?.(null);
     HTMLCanvasElement.prototype.toBlob = function(callback) { callbacks.push(callback); };
   });
+  await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   await page.goto('/');
   await page.getByRole('button', { name: /Criar o meu postal/ }).click();
   const dialog = page.getByRole('dialog');
@@ -121,6 +123,7 @@ test('a postcard drawing failure preserves the page and edits and can be retried
     } as typeof original;
     state.restorePostcard = () => { blocked = false; };
   });
+  await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   await page.goto('/');
   await page.getByRole('button', { name: /Criar o meu postal/ }).click();
   const dialog = page.getByRole('dialog');
@@ -152,6 +155,7 @@ test('a failed hover prefetch never reloads the current page', async ({ page }) 
 
 test('postcards preserve complete Unicode characters and report export failures on match posters', async ({ page }, info) => {
   test.skip(!['desktop-1366', 'mobile-390'].includes(info.project.name), 'Representative export layouts');
+  await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   await page.goto('/');
   await page.getByRole('button', { name: /Criar o meu postal/ }).click();
   const studio = page.getByRole('dialog');
@@ -198,6 +202,7 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
 }
 
 test('the postcard works offline and releases its bitmap when closed', async ({ page, context }) => {
+  await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);
   await context.setOffline(true);

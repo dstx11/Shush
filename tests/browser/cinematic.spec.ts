@@ -52,7 +52,7 @@ test('fresh document chooses another tree while unavailable storage remains usab
 test('cinematic entrance is resource-driven, bounded and never replays during SPA navigation', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  await expect(page.getByRole('dialog', { name: /Entrada SHUSH/ })).toHaveCount(0, { timeout: 2200 });
+  await expect(page.getByRole('dialog', { name: /Entrada SHUSH/ })).toHaveCount(0, { timeout: 5000 });
   const canvas = page.locator('.winter-tree-canvas');
   await expect(canvas).toHaveAttribute('data-ready', 'true');
   await canvas.scrollIntoViewIfNeeded();

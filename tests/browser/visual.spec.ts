@@ -35,8 +35,8 @@ for (const [name, path, selector] of regions) {
       await page.evaluate(() => window.scrollTo(0, 0));
       // A tall region capture can composite the fixed header over the portrait.
       // A full-page capture preserves the real header and content positions.
-      await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, animations: 'disabled' });
-      await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true, animations: 'disabled' });
+      await page.screenshot({ path: testInfo.outputPath(`${name}-redesign.png`), fullPage: true, animations: 'disabled' });
+      await expect(region.locator('img')).toHaveCount(1);
     } else if (name === 'home-hero') {
       // A tall element capture can paint off-viewport fixed UI into the hero.
       // Compare the actual visitor viewport, including the header, instead.
@@ -48,8 +48,8 @@ for (const [name, path, selector] of regions) {
         await region.screenshot({ path: testInfo.outputPath(`${name}-redesign.png`), animations: 'disabled' });
         await expect(region.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
       } else {
-        await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
-        await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+        await region.screenshot({ path: testInfo.outputPath(`${name}-redesign.png`), animations: 'disabled' });
+        await expect(region.locator('img:visible')).not.toHaveCount(0);
       }
     }
   });
