@@ -112,3 +112,14 @@
  .shush-season-intro .season-art-motif{animation:none;stroke-dasharray:1800;stroke-dashoffset:1800;animation:shush-intro-draw 1.15s cubic-bezier(.2,.7,.2,1) forwards}
  @keyframes shush-intro-draw{to{stroke-dashoffset:0}}
 }
+
+/* Preserve long-lived team-cover hooks while the editorial presentation evolves. */
+.shush-hero-portraits.team-cover{width:100%;margin:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;align-items:end;padding:1.5rem 0 0}
+.shush-hero-player.team-cover-player{height:75%;transform:translateY(8%);border-radius:.85rem}
+.shush-hero-player-1.team-cover-player{height:100%;transform:translateY(-2%)}
+.shush-hero-player-2.team-cover-player{height:80%;transform:translateY(4%)}
+.shush-hero-player>.shush-hero-player-tag{inset:auto 0 0;display:grid;gap:.3rem;flex-direction:initial;padding:1.1rem .7rem .8rem}
+@media(prefers-reduced-motion:no-preference){
+ .shush-hero-player.team-cover-player:is(:hover,:focus-visible){transform:translateY(-2%)}
+}
+@media(max-width:767px){.shush-hero-portraits.team-cover{margin-top:0;padding-top:1.5rem}.shush-hero-player>.shush-hero-player-tag{padding:.7rem .4rem}}

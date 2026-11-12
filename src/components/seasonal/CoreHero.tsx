@@ -17,7 +17,7 @@ export function CoreHero(){
    <div className="shush-hero-lower"><span>{theme.closing}</span><a href="#discover" className="editorial-link">Explorar <ArrowIcon/></a></div>
   </div>
   <div className="shush-hero-visual" aria-label="Jogadores em destaque da SHUSH"><div className="shush-hero-aura" aria-hidden="true"/><SeasonArtwork id={id}/><span className="shush-visual-watermark" aria-hidden="true">SHUSH</span>
-  <div className="shush-hero-portraits">{featured.map((player,i)=><AppLink key={player.id} className={'shush-hero-player shush-hero-player-'+i} href={'/esports/valorant/roster?player='+player.id} aria-label={'Conhecer '+player.displayName}>
+  <div className="shush-hero-portraits team-cover">{featured.map((player,i)=><AppLink key={player.id} className={'team-cover-player shush-hero-player shush-hero-player-'+i} data-player={player.id} href={'/esports/valorant/roster?player='+player.id} aria-label={'Conhecer '+player.displayName}>
     {player.avatar?<img src={player.avatar} srcSet={player.avatar.replace('.webp','-384.webp')+' 384w, '+player.avatar+' 768w'} sizes="(max-width: 767px) 36vw, 18vw" width="768" height="768" alt="" decoding="async" loading={i===1?'eager':'lazy'} fetchPriority={i===1?'high':'auto'} style={{objectPosition:player.portraitPosition}}/>:null}
     <span className="shush-hero-player-tag"><small>{String(i+1).padStart(2,'0')} / SHUSH</small><strong>{player.displayName}</strong></span>
    </AppLink>)}</div><span className="shush-hero-visual-caption">SHUSH / VALORANT ROSTER</span></div>
