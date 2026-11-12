@@ -22,7 +22,8 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm run build
       - name: Update player-profile snapshots only
-        run: pnpm exec playwright test --grep 'visual region: player-profile' --project=desktop-1366 --project=mobile-390 --update-snapshots
+        run: |
+          pnpm exec playwright test --grep 'visual region: player-profile' --project=desktop-1366 --project=mobile-390 --update-snapshots
       - name: Commit deterministic references
         run: |
           git config user.name "github-actions[bot]"
