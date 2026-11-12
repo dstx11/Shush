@@ -1,12 +1,6 @@
+import { within } from './resource';
 import type { VerifiedMatch } from '../data/verified-matches';
 import { formatDate } from './premier';
-
-function within<T>(resource: Promise<T>, milliseconds: number): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const timer = window.setTimeout(() => reject(new Error('Tempo de carregamento excedido.')), milliseconds);
-    resource.then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
-  });
-}
 
 export async function drawMatchPoster(canvas: HTMLCanvasElement, match: VerifiedMatch, height: 1080 | 1350) {
   // Font load failures use the same system fallback in the preview and PNG.

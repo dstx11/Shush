@@ -1,12 +1,12 @@
-import { pageSchema } from './data/seo';
-import { lazy, Suspense, useEffect, useRef, type ComponentType } from 'react';
+import { useRouteMetadata } from './hooks/useRouteMetadata';
+import { lazy, Suspense, useRef, type ComponentType } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { BrandIntro } from './components/ui/BrandIntro';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { PageTransition } from './components/ui/PageTransition';
-import { defaultMetadata, routeMetadata, siteUrl } from './data/meta';
 import {
+  loadRouteWithRecovery,
   loadAboutPage,
   loadContentPage,
   loadDropPage,
@@ -16,13 +16,13 @@ import {
   loadRosterPage,
 } from './lib/routes';
 
-const HomePage = lazy(loadHomePage);
-const PremierPage = lazy(loadPremierPage);
-const RosterPage = lazy(loadRosterPage);
-const ContentPage = lazy(loadContentPage);
-const DropPage = lazy(loadDropPage);
-const AboutPage = lazy(loadAboutPage);
-const NotFoundPage = lazy(loadNotFoundPage);
+const HomePage = lazy(() => loadRouteWithRecovery(loadHomePage));
+const PremierPage = lazy(() => loadRouteWithRecovery(loadPremierPage));
+const RosterPage = lazy(() => loadRouteWithRecovery(loadRosterPage));
+const ContentPage = lazy(() => loadRouteWithRecovery(loadContentPage));
+const DropPage = lazy(() => loadRouteWithRecovery(loadDropPage));
+const AboutPage = lazy(() => loadRouteWithRecovery(loadAboutPage));
+const NotFoundPage = lazy(() => loadRouteWithRecovery(loadNotFoundPage));
 
 type AppProps = { initialPage?: ComponentType; initialPath?: string };
 
@@ -85,64 +85,6 @@ function RouteFallback() {
   );
 }
 
-const legacyRoutes = new Set([
-  '/esports',
-  '/esports/valorant',
-  '/esports/valorant/results',
-  '/esports/valorant/tournaments',
-  '/content/more',
-  '/content/th0maz7',
-  '/products',
-  '/products/jersey/custom',
-  '/company/partners',
-  '/company/contact',
-]);
-
-function useRouteMetadata(pathname: string) {
-  useEffect(() => {
-    const isKnownRoute = Boolean(routeMetadata[pathname]) || legacyRoutes.has(pathname);
-    const metadata = isKnownRoute
-      ? routeMetadata[pathname] ?? defaultMetadata
-      : {
-          title: '404 — SHUSH',
-          description: 'Esta página não existe no site público da SHUSH.',
-          image: defaultMetadata.image,
-        };
-    const canonicalUrl = `${siteUrl}${pathname === '/' ? '' : pathname}`;
-    const image = metadata.image ?? defaultMetadata.image ?? '/assets/jersey/frontjersey.webp';
-    const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
-
-    document.title = metadata.title;
-    setMeta('meta[name="description"]', metadata.description);
-    setMeta('meta[property="og:title"]', metadata.title);
-    setMeta('meta[property="og:description"]', metadata.description);
-    setMeta('meta[property="og:url"]', canonicalUrl);
-    setMeta('meta[property="og:image"]', absoluteImage);
-    setMeta('meta[property="og:image:alt"]', metadata.title);
-    setMeta('meta[name="twitter:title"]', metadata.title);
-    setMeta('meta[name="twitter:description"]', metadata.description);
-    setMeta('meta[name="twitter:image"]', absoluteImage);
-    setMeta('meta[name="twitter:image:alt"]', metadata.title);
-    setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow,max-image-preview:large' : 'noindex,nofollow');
-    setCanonical(canonicalUrl);
-    const schema = document.getElementById('shush-schema');
-    if (schema) {
-      const data = JSON.parse(schema.textContent || '{}');
-      data['@graph'] = [...data['@graph'].filter((item: Record<string, unknown>) =>
-        item['@type'] === 'SportsTeam' || item['@type'] === 'WebSite'), ...pageSchema(pathname)];
-      schema.textContent = JSON.stringify(data);
-    }
-  }, [pathname]);
-}
-
-function setMeta(selector: string, content: string) {
-  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
-}
-
-function setCanonical(href: string) {
-  const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-  if (link) link.href = href;
-}
 
 function routeArea(pathname: string) {
   if (pathname.startsWith('/esports')) return 'esports';

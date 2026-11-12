@@ -55,5 +55,5 @@
 }
 @media (prefers-reduced-motion: reduce) { .team-cover-player img { translate: none; } }
 /* Give three portraits actual room before the desktop composition becomes narrow. */
-@media (min-width: 768px) and (max-width: 1050px) { .team-opening .opening-grid { grid-template-columns: 1fr; } .team-cover { width: min(100%, 44rem); margin-inline: auto; } }
+@media (min-width: 768px) and (max-width: 1050px) {  .team-cover { width: min(100%, 44rem); margin-inline: auto; } }
 @media (max-width: 767px) { .team-cover-player { height: clamp(10.5rem,44vw,15rem); } .team-cover-player.cover-1 { height: clamp(13rem,58vw,19rem); } }

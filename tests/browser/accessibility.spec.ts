@@ -36,3 +36,12 @@ test('a failed lazy route recovers once and exposes usable recovery controls', a
   expect(navigations).toBe(2);
   expect(Number(await page.evaluate(() => sessionStorage.getItem('shush:preload-recovery-at')))).toBeGreaterThan(0);
 });
+
+for (const path of ['/404.html', '/shush-accessibility-unknown']) {
+  test('404 remains accessible including the primary hover state: ' + path, async ({ page }) => {
+    await page.goto(path);
+    await page.getByRole('link', { name: /Voltar à Home/ }).hover();
+    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+    expect(result.violations.map(violation => ({ id: violation.id, nodes: violation.nodes.map(node => node.target) }))).toEqual([]);
+  });
+}

@@ -28,6 +28,12 @@ export function RosterSection() {
     if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) setLeaving(previous.current);
     previous.current = selectedPlayer;
   }, [selectedPlayer]);
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const stop = () => { if (media.matches) setLeaving(null); };
+    media.addEventListener('change', stop);
+    return () => media.removeEventListener('change', stop);
+  }, []);
   const stripRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -182,24 +188,32 @@ export function RosterSection() {
 function PlayerActions({ playerId, playerName, riotId }: { playerId: string; playerName: string; riotId: string }) {
   const [feedback, setFeedback] = useState('');
   const [manual, setManual] = useState('');
+  const [pending, setPending] = useState(false);
+  const operation = useRef(0);
   const mounted = useRef(true);
-  useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
+  useEffect(() => { mounted.current = true; return () => { mounted.current = false; operation.current++; }; }, []);
   const copy = async () => {
+    const id = ++operation.current;
+    setPending(true); setManual(''); setFeedback('A copiar o Riot ID…');
     const copied = await copyText(riotId);
-    if (!mounted.current) return;
+    if (!mounted.current || id !== operation.current) return;
+    setPending(false);
     setManual(copied ? '' : riotId);
     setFeedback(copied ? 'Riot ID copiado.' : 'Não foi possível copiar. Seleciona o Riot ID abaixo.');
   };
   const share = async () => {
+    const id = ++operation.current;
+    setPending(true); setManual(''); setFeedback('A preparar a partilha…');
     const url = new URL('/esports/valorant/roster', window.location.origin);
     url.searchParams.set('player', playerId);
     const result = await shareUrl(url.href, `${playerName} — SHUSH`);
-    if (!mounted.current) return;
+    if (!mounted.current || id !== operation.current) return;
+    setPending(false);
     setManual(result === 'manual' ? url.href : '');
     setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
   };
   return <div className="player-utilities">
-    <div className="action-row"><button type="button" className="utility-button" onClick={copy}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
+    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" onClick={copy} disabled={pending}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
     <p className="action-feedback" role="status">{feedback}</p>
     {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
   </div>;

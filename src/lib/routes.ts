@@ -68,3 +68,21 @@ export function preloadRoute(href: string) {
     // The loader remains retryable when the visitor actually opens the route.
   });
 }
+
+/** Recover only requested routes: optional tools and hover prefetch never reload a page. */
+export async function loadRouteWithRecovery(loader: () => Promise<PageModule>) {
+  try { return await loader(); }
+  catch (error) {
+    if (typeof window !== 'undefined') {
+      try {
+        const key = 'shush:preload-recovery-at';
+        const now = Date.now();
+        if (now - Number(sessionStorage.getItem(key) ?? 0) >= 30_000) {
+          sessionStorage.setItem(key, String(now));
+          window.location.reload();
+        }
+      } catch { /* Without storage, leave usable error controls instead of risking a reload loop. */ }
+    }
+    throw error;
+  }
+}

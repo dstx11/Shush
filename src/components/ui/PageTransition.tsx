@@ -27,7 +27,12 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   }, []);
 
   useEffect(() => {
-    const remember = () => { scrollPositions.set(key, window.scrollY); };
+    const remember = () => {
+      // History entries can be replaced repeatedly while editing shared URLs.
+      scrollPositions.delete(key);
+      scrollPositions.set(key, window.scrollY);
+      if (scrollPositions.size > 64) scrollPositions.delete(scrollPositions.keys().next().value!);
+    };
     window.addEventListener('scroll', remember, { passive: true });
     return () => window.removeEventListener('scroll', remember);
   }, [key]);

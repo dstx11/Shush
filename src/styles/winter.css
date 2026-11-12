@@ -303,3 +303,45 @@ body::after { content: none; }
  .winter-postcard-signature { padding-top: 2rem; }
 }
 @media (max-width: 500px) { .winter-card-dialog-header { position: sticky; top: -1rem; z-index: 5; padding: .4rem 0 .75rem; border-bottom: 1px solid #9b8c6659; background: #101b1efa; } }
+
+/* Studio recovery stays legible without shifting the preview or hiding close. */
+.winter-card-recovery { display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--control-line); border-radius: .75rem; background: var(--surface); color: var(--text); font-size: .8rem; }
+.winter-card-download:disabled { transform: none; }
+.winter-card-dialog { overscroll-behavior: contain; }
+@media (max-height: 550px) { .winter-card-dialog-header { position: sticky; top: -1.5rem; z-index: 5; padding-block: .5rem; background: #101b1efa; border-bottom: 1px solid #9b8c6659; } }
+
+.winter-card-preview { position: relative; }
+.winter-card-loading { position: absolute; top: .75rem; left: .75rem; right: .75rem; z-index: 2; margin: 0; padding: .6rem .75rem; border-radius: .6rem; background: #101b1ef2; color: var(--text); font-size: .75rem; pointer-events: none; }
+
+/* Reflow follows available text space, including enlarged browser text. */
+.shell:not(.shush-navigation) { container-type: inline-size; }
+@container (max-width: 16rem) {
+ .winter-stage-bottom { flex-direction: column; align-items: stretch; }
+ .winter-scene-note { max-width: none; }
+ .winter-tree-utilities { justify-content: space-between; }
+ .winter-lobby .winter-lobby-profile-info { min-width: 0; padding: 1rem; }
+ .winter-lobby .winter-lobby-profile-cta, .tracker-button { overflow-wrap: anywhere; white-space: normal; min-width: 0; }
+ .site-button, .utility-button, .editorial-link { min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+ .page-heading, .drop-layout, .customizer-fields, .callup-list, .match-body, .week-detail, .drop-process, .footer-navigation, .footer-site-links { grid-template-columns: minmax(0,1fr); }
+ .match-calendar, .week-windows { min-width: 0; }
+ h1, h2, h3, .section-kicker { overflow-wrap: anywhere; }
+ .section-kicker { display: block; }
+ .about-counts, .home-score-teams { flex-wrap: wrap; }
+ .home-creator-links > a { gap: .5rem; }
+ .home-creator-links img, .home-creator-links .portrait-placeholder { width: 3rem; height: 3rem; }
+ .audit-drop-gallery { min-width: 0; }
+ .drop-editor { padding: 20px; }
+ .drop-view-control { flex-wrap: wrap; }
+ .drop-view-control button { flex: 1; min-width: 0; gap: .5rem; }
+ .size-options > div { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .drop-mobile-preview { grid-template-columns: 3rem minmax(0,1fr); gap: .5rem; }
+ .drop-mobile-preview > a { grid-column: 1/-1; justify-self: end; }
+ .character-copy, .creator-feature-copy { padding: 1rem; }
+ .character-controls { gap: .5rem; padding: 16px; }
+ .character-controls button { flex: none; }
+ .match-week summary { grid-template-columns: minmax(0,1fr) auto; }
+ .week-number { grid-column: 1/-1; }
+ .map-performance-row { grid-template-columns: minmax(0,1fr) auto; }
+ .map-performance-row > * { min-width: 0; }
+ .partner-content { grid-template-columns: minmax(0,1fr); }
+}

@@ -7,7 +7,7 @@ const vite = await createServer({ server: { middlewareMode: true, hmr: false }, 
 try {
   const { staticPage } = await vite.ssrLoadModule('/src/prerender.tsx');
   const { routeMetadata } = await vite.ssrLoadModule('/src/data/meta.ts');
-  const { pageSchema } = await vite.ssrLoadModule('/src/data/seo.ts');
+  const { pageSchema, identitySchema } = await vite.ssrLoadModule('/src/data/seo.ts');
   const manifest = JSON.parse(await readFile(new URL('../dist/.vite/manifest.json', import.meta.url), 'utf8'));
   const homeEntry = manifest['src/pages/HomePage.tsx'];
   if (!homeEntry) throw new Error('Missing Home route in build manifest');
@@ -25,13 +25,7 @@ try {
   }
   collectStyles('src/pages/HomePage.tsx');
   const siteUrl = 'https://shush.pt';
-  const identity = [
-    { '@type': 'SportsTeam', '@id': `${siteUrl}/#organization`, name: 'SHUSH',
-      url: siteUrl, sport: 'VALORANT', description: routeMetadata['/'].description,
-      logo: `${siteUrl}/assets/brand/shush-logo.webp` },
-    { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'SHUSH',
-      inLanguage: 'pt-PT', publisher: { '@id': `${siteUrl}/#organization` } },
-  ];
+  const identity = identitySchema();
   // Generate the sitemap from actual published routes; never invent lastmod dates.
   await writeFile(new URL('../dist/sitemap.xml', import.meta.url),
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

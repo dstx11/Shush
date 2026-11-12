@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createRequire } from 'node:module';
+const output = await mkdtemp(join(tmpdir(), 'shush-refinement-'));
+try {
+  execFileSync(process.execPath, ['node_modules/typescript/bin/tsc', '--ignoreConfig', 'src/lib/postcard-renderer.ts', 'src/lib/browser-transfer.ts', 'src/lib/drop-config.ts', 'src/lib/navigation.ts', '--module', 'commonjs', '--moduleResolution', 'bundler', '--target', 'ES2020', '--lib', 'ES2020,DOM', '--skipLibCheck', '--rootDir', 'src', '--outDir', output], { stdio: 'inherit' });
+  const require = createRequire(import.meta.url);
+  const { wrapCardText } = require(join(output, 'lib/postcard-renderer.js'));
+  const { graphemes, sanitizeText } = require(join(output, 'lib/text.js'));
+  for (const text of ['W'.repeat(95), 'Olá à equipa! Boas festas.', 'A'.repeat(30) + ' ' + 'B'.repeat(30), '👨‍👩‍👧‍👦'.repeat(12), 'a\u0301'.repeat(30)]) {
+    const measure = value => graphemes(value).length;
+    const lines = wrapCardText(text, measure, 12);
+    assert.ok(lines.every(line => measure(line) <= 12));
+    assert.equal(lines.join('').replace(/\s/gu, ''), text.replace(/\s/gu, ''));
+  }
+  assert.equal(sanitizeText('ab\u202ecd\u0000\ud800', 10), 'abcd');
+  const { safeNavigationHref } = require(join(output, 'lib/navigation.js'));
+  for (const href of ['javascript:alert(1)', 'data:text/html,test', '//elsewhere.test', '/\\evil.test', 'java\nscript:alert(1)', 'https://user:password@elsewhere.test', 'https://shush.pt\u0000']) assert.equal(safeNavigationHref(href), undefined);
+  for (const href of ['/content', '/products/jersey?nick=SHUSH', '#main-content', 'https://tracker.gg/', 'mailto:hello@example.com']) assert.equal(safeNavigationHref(href), href);
+  const { readDropDraft } = require(join(output, 'lib/drop-config.js'));
+  assert.equal(readDropDraft(JSON.stringify({ version: 1, config: { nick: 'SHUSH', number: '01', size: 'M', phrase: '' }, padding: 'x'.repeat(9000) })), null);
+  const transfer = require(join(output, 'lib/browser-transfer.js'));
+  Object.defineProperty(globalThis, 'navigator', { configurable: true, value: {} });
+  assert.equal(await transfer.copyText('text'), false);
+  let copies = 0;
+  navigator.clipboard = { writeText: async () => { copies++; } };
+  navigator.share = async () => { throw new DOMException('cancelled', 'AbortError'); };
+  assert.equal(await transfer.shareUrl('https://shush.pt', 'SHUSH'), 'cancelled');
+  assert.equal(copies, 0);
+  navigator.share = async () => { throw new Error('unavailable'); };
+  assert.equal(await transfer.shareUrl('https://shush.pt', 'SHUSH'), 'copied');
+  assert.equal(copies, 1);
+  navigator.clipboard.writeText = async () => { throw new Error('blocked'); };
+  assert.equal(await transfer.shareUrl('https://shush.pt', 'SHUSH'), 'manual');
+  let removed = 0, revoked = 0, timers = [];
+  const anchor = { href: '', download: '', click() { throw new Error('blocked'); }, remove() { removed++; } };
+  globalThis.document = { createElement: () => anchor, body: { append() {} } };
+  globalThis.window = { setTimeout(callback) { timers.push(callback); } };
+  URL.createObjectURL = () => 'blob:shush-test';
+  URL.revokeObjectURL = () => revoked++;
+  assert.throws(() => transfer.downloadBlob(new Blob(['image']), 'test.png'), /blocked/);
+  assert.equal(removed, 1); assert.equal(revoked, 1); assert.equal(timers.length, 0);
+  anchor.click = () => {};
+  transfer.downloadText('SHUSH', 'summary.txt');
+  assert.equal(removed, 2); assert.equal(revoked, 1); assert.equal(timers.length, 1);
+  timers[0](); assert.equal(revoked, 2);
+  console.log('Refinement tests passed: Unicode wrapping, safe text, share fallbacks and download resource cleanup.');
+} finally { await rm(output, { recursive: true, force: true }); }

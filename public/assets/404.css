@@ -1,0 +1,18 @@
+:root { color-scheme: dark; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; min-height: 100svh; display: grid; align-content: center; background: #0e1919; color: #f6efdf; padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left)); }
+      main { width: min(100%, 1200px); margin-inline: auto; display: grid; grid-template-columns: 1fr .8fr; gap: 3rem; align-items: center; }
+      .brand { display: inline-flex; gap: 1rem; align-items: center; min-height: 44px; color: white; font-weight: 700; text-decoration: none; margin-bottom: 3rem; letter-spacing: .12em; }
+      .brand img { width: 64px; height: auto; }
+      small { display: block; color: #edcb94; font: .75rem monospace; letter-spacing: .1em; }
+      h1 { font-family: Georgia, serif; margin: 1rem 0 0; font-size: clamp(3.2rem, 10vw, 8rem); letter-spacing: -.07em; line-height: .98; }
+      h1 span { color: #edcb94; }
+      p { max-width: 32rem; margin-block: 1.5rem; color: #b4c5bb; line-height: 1.8; }
+      nav { display: flex; flex-wrap: wrap; gap: .7rem; }
+      nav a { display: inline-flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 1rem; max-width: 100%; overflow-wrap: anywhere; border: 1px solid #edcb94; background: #edcb94; padding: .75rem 1rem; color: #17241d; border-radius: 999px; font-size: .8rem; font-weight: 700; text-decoration: none; }
+      nav a:last-child { color: #f6efdf; background: transparent; border-color: #899e8a; }
+      .brand:hover { color: #f6efdf; }
+nav a:hover { background: #f8ddb1; color: #17241d; }
+      a:focus-visible { outline: 2px solid #edcb94; outline-offset: 4px; }
+      .number { color: #78917f; font-size: clamp(5rem, 25vw, 20rem); line-height: 1; font-weight: 700; letter-spacing: -.1em; }
+      @media (max-width: 767px) { main { grid-template-columns: 1fr; gap: 2rem; } .number { font-size: 7rem; } .brand { margin-bottom: 2rem; } }

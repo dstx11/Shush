@@ -5,8 +5,6 @@
 .editorial-link:hover > span { transform: translate(2px, -2px); }
 .skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 1000; transform: translateY(-180%); background: var(--text); padding: .75rem 1rem; color: var(--bg); font-size: .8rem; font-weight: 800; }
 .skip-link:focus { transform: translateY(0); }
-.route-loading { display: grid; min-height: 70svh; place-items: center; background: var(--bg); }
-.route-loading span { color: var(--purple-text); font: .75rem var(--font-mono); letter-spacing: .2em; }
 .menu-glyph { font-size: 1.25rem; font-weight: 500; line-height: 1; }
 .button-arrow { display: inline-block; font-size: 1rem; line-height: 1; }
 .fatal-fallback { display: grid; min-height: 100svh; place-items: center; background: var(--bg); padding: 2rem; }
@@ -19,11 +17,9 @@
 @keyframes shush-reveal { from { opacity: .4; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes shush-route-in { from { transform: translateY(7px); } to { transform: translateY(0); } }
 @keyframes shush-panel-in { from { opacity: .4; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes shush-product-swap { from { opacity: .3; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
 @keyframes shush-pulse { 0%, 100% { opacity: .76; } 50% { opacity: 1; } }
-.route-enter, .hero-copy-enter { animation: shush-route-in .28s both; }
+.route-enter { animation: shush-route-in .28s both; }
 .mobile-panel-enter { animation: shush-panel-in .22s both; }
-.product-swap { animation: shush-product-swap .26s both; }
 .status-badge.is-pulse { animation: shush-pulse 2.2s ease-in-out infinite; }
 
 /* Shared contextual actions and transfer feedback. */

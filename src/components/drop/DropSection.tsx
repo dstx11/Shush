@@ -49,14 +49,20 @@ export function DropSection() {
     appliedQuery.current = query;
     const next = readDropConfig(new URLSearchParams(query));
     operation.current += 1;
+    setPending(false);
     setConfig(next.config);
     setView(next.shared ? 'back' : 'front');
     setManualLink('');
     setFeedback(next.corrected ? 'A ligação tinha valores inválidos. Foram usados valores seguros.' : next.shared ? 'Personalização carregada da ligação.' : '');
   }, [query]);
 
-  const edit = (next: DropConfig) => {
+  const invalidateTransfer = () => {
     operation.current += 1;
+    setPending(false);
+    setManualLink('');
+  };
+  const edit = (next: DropConfig) => {
+    invalidateTransfer();
     if (next.nick !== config.nick || next.number !== config.number || next.phrase !== config.phrase) setView('back');
     setConfig(next);
     setFeedback('');
@@ -70,27 +76,25 @@ export function DropSection() {
   };
   const copy = async () => {
     const id = ++operation.current;
-    setPending(true);
+    setPending(true); setManualLink(''); setFeedback('A copiar o resumo…');
     const success = await copyText(message);
-    if (mounted.current) {
-      if (id === operation.current) setFeedback(success ? 'Resumo copiado.' : 'Não foi possível copiar. Seleciona o resumo abaixo.');
-      setPending(false);
-    }
+    if (!mounted.current || id !== operation.current) return;
+    setFeedback(success ? 'Resumo copiado.' : 'Não foi possível copiar. Seleciona o resumo abaixo.');
+    setPending(false);
   };
   const share = async () => {
     const id = ++operation.current;
     const url = buildDropUrl(config, window.location.origin);
-    setPending(true);
+    setPending(true); setManualLink(''); setFeedback('A preparar a partilha…');
     const result = await shareUrl(url, 'A minha jersey — SHUSH Drop 01');
-    if (mounted.current) {
-      if (id === operation.current) {
-        setManualLink(result === 'manual' ? url : '');
-        setFeedback(result === 'copied' ? 'Ligação da personalização copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
-      }
+    if (mounted.current && id === operation.current) {
+      setManualLink(result === 'manual' ? url : '');
+      setFeedback(result === 'copied' ? 'Ligação da personalização copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
       setPending(false);
     }
   };
   const download = () => {
+    invalidateTransfer();
     try { downloadText(message + '\n', 'shush-drop01.txt'); setFeedback('Resumo preparado para descarregar.'); }
     catch { setFeedback('Não foi possível descarregar. Seleciona o resumo abaixo.'); }
   };
@@ -101,6 +105,7 @@ export function DropSection() {
     setFeedback('Personalização reposta.');
   };
   const saveDraft = () => {
+    invalidateTransfer();
     try {
       const safe = readDropConfig(new URL(buildDropUrl(config, window.location.origin)).searchParams).config;
       localStorage.setItem(dropDraftKey, JSON.stringify({ version: 1, config: safe }));
@@ -109,6 +114,7 @@ export function DropSection() {
     } catch { setFeedback('O dispositivo não permitiu guardar. Podes descarregar o resumo.'); }
   };
   const restoreDraft = () => {
+    invalidateTransfer();
     try {
       const draft = readDropDraft(localStorage.getItem(dropDraftKey) ?? '');
       if (!draft) { setFeedback('O rascunho está indisponível ou é inválido. A tua versão foi mantida.'); return; }
@@ -119,6 +125,7 @@ export function DropSection() {
     } catch { setFeedback('Não foi possível recuperar o rascunho. A tua versão foi mantida.'); }
   };
   const deleteDraft = () => {
+    invalidateTransfer();
     try { localStorage.removeItem(dropDraftKey); setDraftAvailable(false); setFeedback('Rascunho removido deste dispositivo.'); }
     catch { setFeedback('O dispositivo não permitiu remover o rascunho.'); }
   };

@@ -1,4 +1,4 @@
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -183,3 +183,12 @@ function expectAbsent(content, needle, label) {
   if (content.includes(needle)) failures.push(`Unexpected ${label}`);
 }
 
+
+// These policies permit the app's dynamic style attributes, never inline scripts/stylesheets.
+for (const directive of ["script-src 'self'", "script-src-attr 'none'", "style-src-elem 'self'", "style-src-attr 'unsafe-inline'", "font-src 'self'", "object-src 'none'", "frame-src 'none'", "worker-src 'none'", 'upgrade-insecure-requests']) expect(headers, directive, `CSP ${directive}`);
+expectAbsent(headers, 'fonts.googleapis.com', 'unused external stylesheet permission');
+expectAbsent(headers, 'fonts.gstatic.com', 'unused external font permission');
+
+for (const file of await readdir(dist, { recursive: true })) {
+  if (/(^|[/\\])(\.env(?:\.[^/\\]*)?|\.git|node_modules)([/\\]|$)|\.(map|pem|key|p12|pfx)$/i.test(file)) throw new Error(`Private or debugging file in deployment: ${file}`);
+}
