@@ -24,23 +24,25 @@ for (const [name, path, selector] of regions) {
       await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
+      await image.evaluate(element => (element as HTMLImageElement).decode());
     }
-    let screenshot: Awaited<ReturnType<typeof page.screenshot>>;
     if (name === 'player-profile') {
       // Loading every lazy portrait scrolls the strip. Restore the actual selected player.
       await page.locator('.player-card-select[aria-pressed="true"]').scrollIntoViewIfNeeded();
       await page.evaluate(() => window.scrollTo(0, 0));
       // A tall region capture can composite the fixed header over the portrait.
       // A full-page capture preserves the real header and content positions.
-      screenshot = await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true, animations: 'disabled' });
+      await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, animations: 'disabled' });
+      await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true, animations: 'disabled' });
     } else if (name === 'home-hero') {
       // A tall element capture can paint off-viewport fixed UI into the hero.
       // Compare the actual visitor viewport, including the header, instead.
       await page.evaluate(() => window.scrollTo(0, 0));
-      screenshot = await page.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      await expect(page).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
+      await page.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
     } else {
-      screenshot = await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
+      await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
     }
-    expect(screenshot).toMatchSnapshot(`${name}.png`);
   });
 }
