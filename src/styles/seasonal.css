@@ -1,0 +1,84 @@
+/* The permanent SHUSH identity; colour changes are deliberate, not separate websites. */
+.shush-root {
+ --bg:#15131a;--surface:#201d28;--surface-2:#292431;--field:#19161f;--text:#f3eef4;--muted:#b9b0c3;--purple:#c4afe9;--purple-text:#c4afe9;--signal:#c4afe9;--line:#403849;--solid-border:#403849;--control-line:#7e718e;--accent-hover:#d8c9f2;--on-accent:#261c35;--paper:#f3eef4;--ink:#15131a;--season-accent:#c4afe9;--season-haze:#5b487a;--season-rgb:196,175,233;--font-heading:"Manrope",ui-sans-serif,system-ui,sans-serif;
+ background:var(--bg);color:var(--text);
+}
+.shush-root[data-season="christmas"]{--bg:#0e1919;--surface:#182b29;--surface-2:#223a34;--text:#f6efdf;--muted:#b4c5bb;--signal:#edcb94;--line:#405448;--control-line:#899e8a;--accent-hover:#f8ddb1;--on-accent:#17241d;--paper:#f6efdf;--ink:#0e1919;--season-accent:#edcb94;--season-haze:#466c5b;--season-rgb:237,203,148;}
+.shush-root[data-season="newyear"]{--season-accent:#c8d5f2;--season-haze:#596aa1;--season-rgb:200,213,242;--signal:#c8d5f2;--on-accent:#171d32;}
+.shush-root[data-season="carnival"]{--season-accent:#e9baf8;--season-haze:#7c3c99;--season-rgb:233,186,248;--signal:#e9baf8;}
+.shush-root[data-season="valentines"]{--season-accent:#f1a7c1;--season-haze:#793250;--season-rgb:241,167,193;--signal:#f1a7c1;}
+.shush-root[data-season="easter"]{--season-accent:#d1c7fe;--season-haze:#647b72;--season-rgb:209,199,254;--signal:#d1c7fe;}
+.shush-root[data-season="summer"]{--season-accent:#ffa58b;--season-haze:#9f4b7b;--season-rgb:255,165,139;--signal:#ffa58b;}
+.shush-root[data-season="halloween"]{--season-accent:#eab17d;--season-haze:#5c305f;--season-rgb:234,177,125;--signal:#eab17d;}
+.shush-root:not([data-season="christmas"]) .site-button{border-radius:.72rem;border-color:var(--signal);background:var(--signal);color:var(--on-accent);box-shadow:none}
+.shush-root:not([data-season="christmas"]) .button-secondary{background:transparent;color:var(--text);border-color:var(--control-line)}
+.shush-root:not([data-season="christmas"]) .shush-header{background:#15131aef;border-bottom-color:var(--line);backdrop-filter:blur(14px)}
+.shush-root:not([data-season="christmas"]) .desktop-navigation{background:var(--surface);border-color:var(--line)}
+.shush-root:not([data-season="christmas"]) .desktop-nav-link[aria-current="page"]{background:var(--signal);color:var(--on-accent)}
+.shush-root:not([data-season="christmas"]) .shush-header::after{display:none}
+.shush-root:not([data-season="christmas"]) .navigation-overlay{background:var(--bg)}
+.shush-hero{position:relative;isolation:isolate;overflow:clip;min-height:min(820px,100svh);background:radial-gradient(ellipse at 78% 43%,var(--season-haze),transparent 58%),linear-gradient(155deg,var(--bg),#111017 85%)}
+.shush-hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;background-image:linear-gradient(90deg,#fff1 1px,transparent 1px),linear-gradient(#fff1 1px,transparent 1px);background-size:96px 96px;mask-image:linear-gradient(90deg,transparent,#000 65%,transparent)}
+.shush-hero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;min-height:clamp(610px,78svh,850px);gap:clamp(1rem,5vw,5rem);position:relative}
+.shush-hero-copy{position:relative;z-index:2;padding-block:4.5rem 3rem}
+.shush-hero-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;color:var(--season-accent);font:600 .65rem/1.5 var(--font-mono);letter-spacing:.12em}
+.shush-hero-dot{width:.42rem;height:.42rem;border-radius:50%;background:var(--season-accent);box-shadow:0 0 14px rgba(var(--season-rgb),.5)}
+.shush-hero-index{border-left:1px solid var(--line);padding-left:.8rem;color:var(--muted)}
+.shush-hero-overline{margin:clamp(1.75rem,6vh,4.5rem) 0 .6rem;font:600 .73rem var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.shush-hero h1{font:800 clamp(3.1rem,5.6vw,6.6rem)/1.02 var(--font-heading);letter-spacing:-.075em;margin:0;max-width:12ch;text-wrap:balance}
+.shush-hero h1 span,.shush-hero h1 em{display:block;font-style:normal}
+.shush-hero h1 em{color:var(--season-accent)}
+.shush-hero-lead{max-width:43ch;color:var(--text);opacity:.84;line-height:1.85;font-size:clamp(.92rem,1.1vw,1.05rem);margin:2rem 0}
+.shush-hero-actions{gap:.7rem}
+.shush-hero-lower{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:35rem;border-top:1px solid var(--line);margin-top:clamp(2rem,6vh,4rem);padding-top:1.2rem;color:var(--muted);font:500 .7rem var(--font-mono)}
+.shush-hero-lower .editorial-link{color:var(--season-accent);font-size:.75rem}
+.shush-hero-visual{position:relative;height:min(64vw,650px);min-height:420px;display:grid;place-items:center;isolation:isolate}
+.shush-hero-aura{position:absolute;inset:10% 4%;border-radius:50%;background:radial-gradient(circle,rgba(var(--season-rgb),.23),transparent 68%);opacity:.75}
+.season-art{position:absolute;inset:0;width:100%;height:100%;color:var(--season-accent);opacity:.65;pointer-events:none}
+.season-art-grid{opacity:.09}.season-art-outline{opacity:.6}.season-art-motif{stroke-width:1.65}.season-art-dot{fill:var(--season-accent);stroke:transparent}.season-art-corner{opacity:.65}
+.season-art-number{stroke:none;fill:var(--season-accent);font:800 130px var(--font-heading);letter-spacing:-.09em}
+.shush-visual-watermark{position:absolute;top:5%;left:3%;font:800 clamp(4rem,11vw,10rem)/1 var(--font-heading);letter-spacing:-.1em;color:rgba(var(--season-rgb),.13);pointer-events:none}
+.shush-hero-portraits{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:.6rem;width:100%;height:77%;padding:1.5rem 0 0}
+.shush-hero-player{display:block;position:relative;min-width:0;height:75%;overflow:hidden;background:var(--surface);border:1px solid rgba(var(--season-rgb),.36);border-radius:.85rem;color:var(--text);text-decoration:none;box-shadow:0 20px 50px #0005;transform:translateY(8%)}
+.shush-hero-player-1{height:100%;transform:translateY(-2%);z-index:2}.shush-hero-player-2{height:80%;transform:translateY(4%)}
+.shush-hero-player img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.85)}
+.shush-hero-player-tag{position:absolute;bottom:0;left:0;right:0;display:grid;gap:.3rem;padding:1.1rem .7rem .8rem;background:linear-gradient(transparent,#101017eb)}
+.shush-hero-player-tag small{color:#d7d0e2;font:.54rem/1.5 var(--font-mono);letter-spacing:.12em}
+.shush-hero-player-tag strong{font:750 clamp(.8rem,1.5vw,1.4rem)/1.2 var(--font-heading);letter-spacing:-.035em}
+.shush-hero-visual-caption{position:absolute;bottom:3%;right:2%;color:var(--season-accent);font:600 .6rem var(--font-mono);letter-spacing:.11em}
+.shush-hero-bottom-line{position:absolute;bottom:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--season-accent),transparent);opacity:.5}
+.season-feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(2rem,6vw,6rem);padding-block:clamp(4rem,8vw,7rem);align-items:center}
+.season-feature-heading h2{font:750 clamp(2rem,4vw,4.5rem)/1.1 var(--font-heading);letter-spacing:-.06em;margin:1.3rem 0;max-width:13ch}
+.season-feature-heading p{color:var(--muted);line-height:1.8;max-width:41ch}
+.season-feature-heading .editorial-link{margin-top:1.5rem;color:var(--season-accent)}
+.season-feature-stage{min-height:360px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:2rem;border:1px solid rgba(var(--season-rgb),.3);border-radius:1.25rem;background:radial-gradient(ellipse at 65% 15%,rgba(var(--season-rgb),.22),transparent 65%),var(--surface)}
+.season-feature-oversize{font:800 clamp(7rem,18vw,15rem)/1 var(--font-heading);letter-spacing:-.1em;color:var(--season-accent);opacity:.45;align-self:center}
+.season-feature-stamp{font:.68rem var(--font-mono);letter-spacing:.12em;color:var(--season-accent)}
+.season-feature-stage p{font:600 clamp(1.2rem,2.6vw,2rem)/1.2 var(--font-heading);margin:0;letter-spacing:-.03em}
+.season-duo{display:grid;gap:1rem;height:100%;align-content:space-between}
+.season-duo-heading{display:flex;justify-content:space-between;gap:1rem;font:.62rem var(--font-mono);color:var(--season-accent)}
+.season-duo-fields{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:.5rem}
+.season-duo-fields label{font:.7rem var(--font-mono);color:var(--muted)}
+.season-duo-fields input{width:100%;min-width:0;display:block;margin-top:.6rem;border:1px solid var(--control-line);border-radius:.4rem;background:#09090e80;padding:.75rem;color:var(--text);font:700 .95rem var(--font-heading)}
+.season-duo-fields>span{color:var(--season-accent);padding-bottom:.8rem;font-size:1.5rem}
+.season-duo-output{overflow-wrap:anywhere;font-size:1rem!important;line-height:1.6!important;color:var(--season-accent)}
+.season-duo button{justify-self:start;padding:.75rem 1rem;border:1px solid var(--season-accent);color:var(--season-accent);border-radius:.6rem;background:transparent}
+.season-duo-status{font:.72rem var(--font-mono);color:var(--muted);min-height:1em}
+@media (prefers-reduced-motion:no-preference){
+ .shush-hero-copy>*{animation:shush-hero-enter .7s cubic-bezier(.16,1,.3,1) both}
+ .shush-hero-copy>*:nth-child(2){animation-delay:.08s}.shush-hero-copy>*:nth-child(3){animation-delay:.13s}.shush-hero-copy>*:nth-child(4){animation-delay:.19s}.shush-hero-copy>*:nth-child(5){animation-delay:.24s}
+ .shush-hero-player{transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .25s}
+ .shush-hero-player:is(:hover,:focus-visible){transform:translateY(-2%);border-color:var(--season-accent)}
+ .shush-hero-player img{transition:transform .6s cubic-bezier(.16,1,.3,1)}
+ .shush-hero-player:is(:hover,:focus-visible) img{transform:scale(1.055)}
+ .season-art-motif{transform-origin:50% 50%;animation:season-art-breathe 10s ease-in-out infinite alternate}
+ .season-art-outline{transform-origin:50% 50%;animation:season-art-rotate 90s linear infinite}
+ .season-feature-stage{transition:border-color .3s ease,transform .6s cubic-bezier(.16,1,.3,1)}
+ .season-feature-stage:hover{border-color:var(--season-accent);transform:translateY(-3px)}
+ @keyframes shush-hero-enter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes season-art-breathe{from{transform:scale(.975);opacity:.6}to{transform:scale(1.025);opacity:1}}
+ @keyframes season-art-rotate{to{transform:rotate(360deg)}}
+}
+@media (max-width:950px){.shush-hero-layout{grid-template-columns:1fr;min-height:auto}.shush-hero-copy{padding-block:3rem 1rem}.shush-hero h1{font-size:clamp(3rem,9vw,6rem);max-width:16ch}.shush-hero-visual{height:clamp(310px,55vw,540px);min-height:0;max-width:700px;width:100%;margin-inline:auto}.shush-hero-portraits{height:100%}.season-feature{grid-template-columns:1fr}}
+@media (max-width:767px){.shush-hero{min-height:0}.shush-hero-copy{padding-block:2rem 0}.shush-hero h1{font-size:clamp(2.7rem,11vw,4.6rem);letter-spacing:-.07em}.shush-hero-lead{margin:1.3rem 0;font-size:.89rem;line-height:1.75}.shush-hero-lower{margin-top:1.7rem}.shush-hero-visual{height:clamp(275px,83vw,450px);margin-bottom:1rem}.shush-hero-player-tag{padding:.7rem .4rem}.shush-hero-player-tag small{font-size:.47rem}.shush-hero-player-tag strong{font-size:clamp(.7rem,3vw,1.1rem)}.season-feature-stage{min-height:300px;padding:1.25rem}.season-duo-fields{grid-template-columns:1fr}.season-duo-fields>span{display:none}.season-feature{padding-block:3rem}}
+@media (prefers-reduced-motion:reduce){.season-art *,.shush-hero-copy>*{animation:none!important}.shush-hero-player,.season-feature-stage{transition:none!important}}

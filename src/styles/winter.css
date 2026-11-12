@@ -1,40 +1,12 @@
 /* SHUSH · Um inverno nosso. One seasonal system, shared by all public routes. */
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(/assets/fonts/ibm-plex-mono-500-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(/assets/fonts/ibm-plex-mono-600-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url(/assets/fonts/ibm-plex-mono-700-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Manrope';
-  font-style: normal;
-  font-weight: 500 800;
-  font-display: swap;
-  src: url(/assets/fonts/manrope-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 
-@font-face { font-family: "SHUSH Hearth"; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/hearth-serif.woff2') format('woff2'); }
-@font-face { font-family: "SHUSH Hearth"; font-style: italic; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/hearth-serif-italic.woff2') format('woff2'); }
-:root {
+
+
+
+
+
+
+.shush-root[data-season="christmas"] {
  --bg: #0e1919; --surface: #182b29; --surface-2: #223a34; --field: #112220;
  --text: #f6efdf; --muted: #b4c5bb; --purple: #eac58b; --purple-text: #f0cf97;
  --signal: #edcb94; --line: #405448; --solid-border: #405448; --control-line: #899e8a;
@@ -45,7 +17,7 @@
  --font-heading: "SHUSH Hearth",Georgia,serif; --ease-winter: cubic-bezier(.2,.7,.2,1);
  --radius-sm: .8rem; --radius-md: 1.35rem; --radius-lg: 2rem;
 }
-html,body { background: var(--bg); }
+html:has(.shush-root[data-season="christmas"]),body:has(.shush-root[data-season="christmas"]) { background: var(--bg); }
 .arrow-icon { display: inline-block; flex: none; vertical-align: -.12em; }
 ::selection { background: #edcb94; color: #17241d; }
 :focus-visible { outline-color: #f5d699; }
@@ -69,8 +41,8 @@ html,body { background: var(--bg); }
 .overlay-link[aria-current='page'],.overlay-link:hover { color: #f3d59e; }
 .navigation-toggle { border-radius: 999px; }
 /* One restrained snowfall layer; no full-screen filters or JavaScript loop. */
-body::before { content: ''; position: fixed; inset: -100vh 0 0; pointer-events: none; z-index: 5; opacity: .15; background-image: radial-gradient(1px 1px at 18px 34px,#fff1cc 98%,transparent),radial-gradient(1px 1px at 147px 113px,#d4e8dc 98%,transparent); background-size: 263px 217px; }
-body::after { content: none; }
+body:has(.shush-root[data-season="christmas"])::before { content: ''; position: fixed; inset: -100vh 0 0; pointer-events: none; z-index: 5; opacity: .15; background-image: radial-gradient(1px 1px at 18px 34px,#fff1cc 98%,transparent),radial-gradient(1px 1px at 147px 113px,#d4e8dc 98%,transparent); background-size: 263px 217px; }
+body:has(.shush-root[data-season="christmas"])::after { content: none; }
 @media (prefers-reduced-motion: no-preference) { body::before { animation: winter-snowfall 42s linear infinite; } @keyframes winter-snowfall { to { transform: translateY(100vh); } } }
 /* The hero is an intimate window into a lit winter garden. */
 .winter-opening { position: relative; isolation: isolate; overflow: clip; padding-top: var(--page-top); background: radial-gradient(ellipse at 81% 45%,#4c654333,transparent 47%),radial-gradient(ellipse at 8% 35%,#72533224,transparent 46%),linear-gradient(155deg,#12231f,#0b161a 72%); }
