@@ -1,3 +1,4 @@
+import '../../styles/signal-v3.css';
 import {AppLink} from '../ui/AppLink';
 import {ArrowIcon} from '../ui/ArrowIcon';
 import {creators, players} from '../../data/players';

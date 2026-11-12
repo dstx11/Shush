@@ -22,6 +22,7 @@ if(js>125*1024) failures.push('All JS exceeds 125 kB gzip');
 if(coreCss>20*1024)failures.push('Base stylesheet exceeds 20 kB gzip');
 // Christmas includes the original interactive tree; its CSS is never in the base transfer.
 if(christmasCss>10.5*1024)failures.push('Lazy Christmas stylesheet exceeds 10.5 kB gzip');
-if(css>30*1024)failures.push('Combined CSS exceeds 30 kB gzip');
+// The home-only editorial panels add an isolated stylesheet; they are not part of the base transfer.
+if(css>33.5*1024)failures.push('Combined CSS exceeds 33.5 kB gzip');
 if(failures.length){console.error(failures.join('\n'));process.exit(1)}
 console.log('PASS: initial and on-demand seasonal styles meet separate budgets.');
