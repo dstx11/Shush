@@ -39,7 +39,7 @@ html, body { margin: 0; background: #0e1919; }
  .intro-constellation i:nth-child(4) { animation-delay: .24s; }
  .intro-constellation i:nth-child(5) { animation-delay: .32s; }
  @keyframes loading-turn { to { transform: rotate(360deg); } }
- @keyframes intro-rise { from { opacity: 0; transform: translateY(10px); } }
+ @keyframes intro-rise { from { transform: translateY(6px); } }
  @keyframes constellation-rise { from { opacity: 0; translate: 0 25px; scale: .6; } }
 }
 @media (prefers-reduced-motion: reduce) { .brand-intro { display: none; } }
