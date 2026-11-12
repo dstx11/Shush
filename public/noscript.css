@@ -1,0 +1,2 @@
+/* JS-disabled visitors must never be blocked by the cinematic intro. */
+#shush-boot-stage { display: none !important; }

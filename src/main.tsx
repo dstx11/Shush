@@ -27,9 +27,14 @@ preloadRoute(initialPath).then((initialModule) => {
       </ErrorBoundary>
     </React.StrictMode>,
   );
+}).catch(() => {
+  // A failed module load must never leave a static prerender behind an overlay.
+  document.getElementById('shush-boot-stage')?.remove();
 });
 
 import "./styles/v5.css";
 
 import './styles/experience.css';
 import './styles/seasonal.css';
+import './styles/intro-v3.css';
+import './styles/motion-v3.css';

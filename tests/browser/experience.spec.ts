@@ -27,14 +27,17 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.player-dna')).toBeVisible();
 });
 
-test('Initial content stays visible while the JavaScript loads', async ({ page }) => {
+test('Initial splash covers prerendered content while the JavaScript loads', async ({ page }) => {
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/assets/index-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/', { waitUntil: 'commit' });
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('#shush-boot-stage')).toBeVisible();
   await expect(page.locator('.home-lineup > a')).toHaveCount(7);
-  await expect(page.locator('.shush-loading')).toHaveCount(0);
+  expect(await page.evaluate(() => {
+    const atCenter=document.elementFromPoint(innerWidth / 2, innerHeight / 2);
+    return Boolean(atCenter?.closest('#shush-boot-stage'));
+  })).toBe(true);
   await page.evaluate(() => {
     (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen = false;
     const observer = new MutationObserver(() => {
@@ -43,6 +46,7 @@ test('Initial content stays visible while the JavaScript loads', async ({ page }
     observer.observe(document.getElementById('root')!, { childList: true, subtree: true });
   });
   release();
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
   await expect(page.locator('.navigation-toggle')).toBeEnabled();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   expect(await page.evaluate(() => (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen)).toBe(false);
