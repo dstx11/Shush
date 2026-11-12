@@ -16,3 +16,4 @@ nav a:hover { background: #f8ddb1; color: #17241d; }
       a:focus-visible { outline: 2px solid #edcb94; outline-offset: 4px; }
       .number { color: #78917f; font-size: clamp(5rem, 25vw, 20rem); line-height: 1; font-weight: 700; letter-spacing: -.1em; }
       @media (max-width: 767px) { main { grid-template-columns: 1fr; gap: 2rem; } .number { font-size: 7rem; } .brand { margin-bottom: 2rem; } }
+nav a svg { flex: none; }

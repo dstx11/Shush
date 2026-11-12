@@ -107,19 +107,24 @@ test('navigation reconstructs metadata even when the previous schema is malforme
   expect(errors).toEqual([]);
 });
 
-test('the optional postcard renderer loads on demand and a failure preserves the page and edits', async ({ page }) => {
-  let requests = 0, documents = 0;
+test('a postcard drawing failure preserves the page and edits and can be retried', async ({ page }) => {
+  let documents = 0;
   page.on('request', request => { if (request.isNavigationRequest() && request.frame() === page.mainFrame()) documents++; });
-  await page.route('**/assets/postcard-renderer-*.js', route => { requests++; return route.abort(); });
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    let blocked = true;
+    HTMLCanvasElement.prototype.getContext = function (...args: Parameters<typeof original>) {
+      if (blocked && this.closest('.winter-card-preview')) return null;
+      return original.apply(this, args);
+    } as typeof original;
+    (window as unknown as { restorePostcard: () => void }).restorePostcard = () => { blocked = false; };
+  });
   await page.goto('/');
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  expect(requests).toBe(0);
   await page.getByRole('button', { name: /Criar o meu postal/ }).click();
   const dialog = page.getByRole('dialog');
   await expect(dialog.getByRole('alert')).toContainText('Não foi possível desenhar');
   await dialog.getByRole('textbox', { name: 'Mensagem', exact: true }).fill('A nossa noite.');
-  expect(documents).toBe(1);
-  await page.unroute('**/assets/postcard-renderer-*.js');
+  await page.evaluate(() => (window as unknown as { restorePostcard: () => void }).restorePostcard());
   await dialog.getByRole('button', { name: 'Tentar novamente' }).click();
   await expect(dialog.getByRole('button', { name: 'Descarregar postal PNG' })).toBeEnabled();
   await expect(dialog.getByRole('textbox', { name: 'Mensagem', exact: true })).toHaveValue('A nossa noite.');
@@ -188,19 +193,23 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
   });
 }
 
-test('an unavailable postcard renderer has a bounded wait and the page stays usable', async ({ page }, info) => {
-  test.skip(!['desktop-1366', 'mobile-390'].includes(info.project.name), 'Representative deadline coverage');
-  await page.clock.install();
-  const requests: import('@playwright/test').Route[] = [];
-  await page.route('**/assets/postcard-renderer-*.js', route => { requests.push(route); });
+test('the postcard works offline and releases its bitmap when closed', async ({ page, context }) => {
   await page.goto('/');
+  await page.evaluate(() => document.fonts.ready);
+  await context.setOffline(true);
   const trigger = page.getByRole('button', { name: /Criar o meu postal/ });
   await trigger.click();
-  await page.clock.fastForward(8100);
   const dialog = page.getByRole('dialog');
-  await expect(dialog.getByRole('alert')).toContainText('Não foi possível desenhar');
-  await expect(dialog.getByRole('button', { name: 'Descarregar postal PNG' })).toBeDisabled();
+  await dialog.getByRole('textbox', { name: 'Mensagem', exact: true }).fill('Uma noite tranquila.');
+  await expect(dialog.getByRole('button', { name: 'Descarregar postal PNG' })).toBeEnabled();
+  const download = page.waitForEvent('download');
+  await dialog.getByRole('button', { name: 'Descarregar postal PNG' }).click();
+  expect((await download).suggestedFilename()).toBe('shush-boas-festas-2026.png');
   await page.keyboard.press('Escape');
   await expect(trigger).toBeFocused();
-  await Promise.all(requests.map(route => route.abort()));
+  await expect(page.locator('.winter-card-preview canvas')).toHaveAttribute('width', '0');
+  await trigger.click();
+  await expect(dialog.getByRole('textbox', { name: 'Mensagem', exact: true })).toHaveValue('Uma noite tranquila.');
+  await expect(dialog.getByRole('button', { name: 'Descarregar postal PNG' })).toBeEnabled();
+  await expect(dialog.locator('canvas')).toHaveAttribute('width', '1600');
 });

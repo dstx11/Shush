@@ -1,4 +1,3 @@
-import { within } from './resource';
 import type { VerifiedMatch } from '../data/verified-matches';
 import { formatDate } from './premier';
 
@@ -32,4 +31,11 @@ export async function drawMatchPoster(canvas: HTMLCanvasElement, match: Verified
   text(match.map.toUpperCase(), 72, height - 114, 32);
   text(formatDate(match.date), 72, height - 65, 24, '#c4afe9', 936, true);
   text('SHUSH.PT', 790, height - 65, 24, '#c4afe9', 220, true);
+}
+
+function within<T>(resource: Promise<T>, milliseconds: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = window.setTimeout(() => reject(new Error('Tempo de carregamento excedido.')), milliseconds);
+    resource.then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
+  });
 }

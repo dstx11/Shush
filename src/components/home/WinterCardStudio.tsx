@@ -2,8 +2,7 @@ import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
 import { graphemes, sanitizeText } from '../../lib/text';
 import { editions, type Edition } from '../../data/postcard';
-import type { CardRenderer } from '../../lib/postcard-renderer';
-import { within } from '../../lib/resource';
+import { createCardRenderer } from '../../lib/postcard-renderer';
 import { downloadBlob } from '../../lib/browser-transfer';
 import { useModalDialog } from '../../hooks/useModalDialog';
 
@@ -18,8 +17,7 @@ export function WinterCardStudio() {
   const [feedback, setFeedback] = useState('');
   const [previewMessage, setPreviewMessage] = useState('Não foi possível desenhar o postal.');
   const [previewState, setPreviewState] = useState<'loading' | 'ready' | 'error'>('loading');
-  const [rendererVersion, setRendererVersion] = useState(0);
-  const renderer = useRef<CardRenderer | null>(null);
+  const [renderer] = useState(createCardRenderer);
   const [attempt, setAttempt] = useState(0);
   const [exporting, setExporting] = useState(false);
   const generation = useRef(0);
@@ -28,24 +26,15 @@ export function WinterCardStudio() {
   useModalDialog(dialogRef, open);
   useEffect(() => {
     if (!open) return;
-    let active = true;
-    setPreviewState('loading');
-    within(import('../../lib/postcard-renderer'), 8000).then(module => {
-      if (!active) return;
-      renderer.current = module.createCardRenderer();
-      setRendererVersion(value => value + 1);
-    }).catch(() => { if (active) { setPreviewMessage('Não foi possível desenhar o postal.'); setPreviewState('error'); } });
     return () => {
-      active = false;
       generation.current++;
-      renderer.current?.dispose();
-      renderer.current = null;
+      renderer.dispose();
       if (previewRef.current) { previewRef.current.width = 0; previewRef.current.height = 0; }
     };
-  }, [open, attempt]);
+  }, [open, renderer]);
 
   useEffect(() => {
-    if (!open || !previewRef.current || !renderer.current) return;
+    if (!open || !previewRef.current || !renderer) return;
     generation.current++;
     exportingRef.current = false;
     setExporting(false);
@@ -53,7 +42,7 @@ export function WinterCardStudio() {
     setPreviewState('loading');
     const frame = requestAnimationFrame(() => {
       try {
-        renderer.current?.draw(previewRef.current!, edition, greeting, signature);
+        renderer.draw(previewRef.current!, edition, greeting, signature);
         setPreviewState('ready');
       } catch (error) {
         setPreviewMessage(error instanceof Error && error.name === 'PostcardTextOverflow' ? 'A mensagem é demasiado extensa para o postal. Encurta-a para continuar.' : 'Não foi possível desenhar o postal.');
@@ -61,7 +50,7 @@ export function WinterCardStudio() {
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [open, edition, greeting, signature, rendererVersion]);
+  }, [open, edition, greeting, signature, attempt, renderer]);
 
   const invalidatePreview = () => { generation.current++; };
 
