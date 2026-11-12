@@ -1,10 +1,10 @@
 import {useEffect,useRef,useState} from 'react';
 import {useSeason} from '../../seasonal/SeasonProvider';
-import {lisbonDate} from '../../seasonal/calendar.mjs';
+import {lisbonDate,type SeasonId} from '../../seasonal/calendar.mjs';
 import {SeasonArtwork} from '../seasonal/SeasonArtwork';
 
-const key=id=>'shush:intro:'+id+':'+lisbonDate().year;
-function canShow(id){
+const key=(id:SeasonId)=>'shush:intro:'+id+':'+lisbonDate().year;
+function canShow(id:SeasonId){
  if(typeof window==='undefined'||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return false;
  try{return sessionStorage.getItem(key(id))!=='1';}catch{return false;}
 }
