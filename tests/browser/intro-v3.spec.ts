@@ -7,7 +7,7 @@ test('The first paint is a full-screen SHUSH experience before JavaScript resolv
  let unblock!:()=>void;
  const gate=new Promise<void>(r=>{unblock=r});
  await page.route('**/assets/index-*.js',async route=>{await gate;await route.continue()});
- await page.goto('/',{waitUntil:'domcontentloaded'});
+ await page.goto('/',{waitUntil:'commit'});
  await expect(page.locator('#shush-boot-stage')).toBeVisible();
  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
  expect(await page.evaluate(()=>Boolean(document.elementFromPoint(innerWidth/2,innerHeight/2)?.closest('#shush-boot-stage')))).toBe(true);
