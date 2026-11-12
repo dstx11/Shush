@@ -1,0 +1,46 @@
+name: Refresh reviewed visual baselines (one-time)
+on:
+  push:
+    branches: [feat/seasonal-brand-system]
+    paths:
+      - .github/workflows/refresh-seasonal-snapshots.yml
+
+permissions:
+  contents: write
+
+jobs:
+  snapshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: feat/seasonal-brand-system
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run build
+      - name: Regenerate snapshots using pinned Linux Chromium
+        run: pnpm exec playwright test --grep "visual region|cinematic tree:" --project=desktop-1366 --project=mobile-390 --update-snapshots
+      - name: Commit visual references
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/browser/baselines/
+          if ! git diff --cached --quiet; then
+            git commit -m "test: refresh reviewed SHUSH 2.0 screenshots"
+            git push origin HEAD:refs/heads/feat/seasonal-brand-system
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: updated-shush-reference-images
+          path: |
+            tests/browser/baselines/
+            test-results/
+          retention-days: 7
