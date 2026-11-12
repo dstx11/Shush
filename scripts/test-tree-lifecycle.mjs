@@ -22,22 +22,22 @@ function mount({ reduced = false, paused = false } = {}) {
     if (String(key).startsWith('create')) return () => gradient;
     return () => {};
   } });
-  const canvas = { getContext: () => ctx };
+  const canvas = { dataset: {}, getContext: () => ctx };
   const frame = { getBoundingClientRect: () => ({ width: 550, height: 635 }) };
   const media = { matches: reduced, addEventListener: (_, fn) => { motion = fn; }, removeEventListener: () => { motion = undefined; } };
   const document = { hidden: false, addEventListener: (_, fn) => { visibility = fn; }, removeEventListener: () => { visibility = undefined; } };
   const exports = {};
   runInNewContext(outputText, {
-    exports, Math, document, window: { matchMedia: () => media, devicePixelRatio: 1 },
+    exports, Math, document, Event: class { constructor(type) { this.type = type; } }, window: { matchMedia: () => media, devicePixelRatio: 1, dispatchEvent() {} },
     requestAnimationFrame: fn => { frames.set(++next, fn); return next; },
     cancelAnimationFrame: id => frames.delete(id),
     ResizeObserver: class { constructor(fn) { resize = fn; } observe() {} disconnect() { resize = undefined; } },
     IntersectionObserver: class { constructor(fn) { intersection = fn; } observe() {} disconnect() { intersection = undefined; } },
     require: name => name === 'react' ? {
       useRef: value => ({ current: refIndex++ === 0 ? canvas : refIndex === 2 ? frame : value }),
-      useState: value => [stateIndex++ === 1 ? paused : value, () => {}],
+      useState: value => [stateIndex++ === 1 ? paused : typeof value === 'function' ? value() : value, () => {}],
       useEffect: fn => { effect = fn; },
-    } : require(name),
+    } : name === '../../lib/tree-visit' ? { getTreeVisit: () => ({ variant: 'christmas', returning: false }) } : require(name),
   });
   const tree = exports.ChristmasTree();
   cleanup = effect();

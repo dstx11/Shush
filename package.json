@@ -18,7 +18,7 @@
     "test:browser": "playwright test",
     "check:preview": "node scripts/check-preview.mjs",
     "test:drop": "node scripts/test-drop-config.mjs",
-    "test:tree": "node scripts/test-tree-lifecycle.mjs"
+    "test:tree": "node scripts/test-tree-lifecycle.mjs && node scripts/test-tree-visit.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

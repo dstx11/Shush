@@ -1,34 +1,45 @@
-/* Static/lazy fallbacks use the same emblem without delay. The optional initial intro is separate. */
-html, body { margin: 0; background: #15131a; }
-.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.5rem; padding: 2rem; box-sizing: border-box; color: #f3eef4; background: #15131a; text-align: center; font-family: Manrope, system-ui, sans-serif; }
-.loading-emblem { position: relative; display: grid; place-items: center; width: clamp(12rem, 45vw, 18rem); aspect-ratio: 1; isolation: isolate; }
-.loading-emblem::before, .loading-emblem::after { content: ''; position: absolute; inset: 12%; border: 1px solid #493e55; border-radius: 28%; transform: rotate(45deg); }
-.loading-emblem::after { inset: 25%; border-color: #c4afe966; }
-.loading-emblem img { width: 68%; height: auto; z-index: 1; }
-.loading-orbit { position: absolute; inset: 0; border: 1px solid #302b38; border-radius: 50%; }
-.loading-orbit::before, .loading-orbit::after { content: ''; position: absolute; width: .5rem; height: .5rem; border-radius: 50%; background: #c4afe9; left: calc(50% - .25rem); top: -.25rem; }
-.loading-orbit::after { top: auto; bottom: -.25rem; }
-.loading-shutter { position: absolute; z-index: 2; inset: 0; background: #15131a; transform: scaleX(0); transform-origin: right; }
-.shush-loading p { margin: 0; color: #b9b0c3; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; }
-.shush-loading strong { max-width: 18ch; font-size: clamp(1.4rem, 5vw, 2.2rem); line-height: 1.25; letter-spacing: -.04em; }
-.loading-line { display: flex; width: 3rem; height: .5rem; gap: .25rem; }
-.loading-line::before, .loading-line::after { content: ''; flex: 1; background: #c4afe9; border-radius: 2px; }
-.shush-loading a { color: #b9b0c3; font-size: .75rem; padding: .75rem; }
+/* The startup fallback, route fallback and first-visit entrance share one atmosphere. */
+html, body { margin: 0; background: #0e1919; }
+.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.4rem; padding: 2rem; box-sizing: border-box; color: #f6efdf; background: radial-gradient(ellipse at 50% 45%,#34463555,transparent 58%),#0e1919; text-align: center; font-family: Manrope,system-ui,sans-serif; }
+.loading-emblem { position: relative; display: grid; place-items: center; width: clamp(10rem,35vw,15rem); aspect-ratio: 1; }
+.loading-emblem::before,.loading-emblem::after { content: ''; position: absolute; inset: 6%; border: 1px solid #d9bb7b33; border-radius: 50%; }
+.loading-emblem::after { inset: 20%; border-style: dashed; transform: rotate(30deg); }
+.loading-emblem img { width: 60%; height: auto; z-index: 1; }
+.loading-orbit { position: absolute; inset: 5%; border-radius: 50%; }
+.loading-orbit::after { content: ''; position: absolute; width: .4rem; height: .4rem; border-radius: 50%; background: #f1ce8e; box-shadow: 0 0 18px #e9bc75; left: 50%; top: 0; }
+.shush-loading p { margin: 0; color: #b6c4b9; font-size: .75rem; letter-spacing: .08em; }
+.shush-loading strong { max-width: 22ch; font-size: clamp(1.4rem,5vw,2.2rem); line-height: 1.25; }
+.loading-line { width: 4rem; height: 1px; background: #eac788; }
+.shush-loading a { color: #e7ce9e; padding: .75rem; font-size: .8rem; }
+.brand-intro { position: fixed; inset: 0; margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; box-sizing: border-box; border: 0; padding: 2rem; z-index: 100; display: grid; place-content: center; justify-items: center; gap: 1.2rem; overflow: hidden; background: radial-gradient(ellipse at 50% 40%,#3b49333d,transparent 50%),#0b1518; color: #f6efdf; text-align: center; transition: opacity .36s ease,transform .5s ease; }
+.brand-intro::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .2; background-image: radial-gradient(#f7e5bc 1px,transparent 1px); background-size: 87px 113px; mask-image: radial-gradient(ellipse,#000,transparent 75%); }
+.brand-intro.is-leaving { opacity: 0; transform: scale(1.025); }
+.intro-kicker,.intro-signature { font: 500 .62rem/1.7 Manrope,sans-serif; letter-spacing: .22em; color: #d9bd89; }
+.brand-intro > strong { font: 500 clamp(2.8rem,7vw,5.6rem)/1.1 "SHUSH Hearth",Georgia,serif; letter-spacing: -.045em; }
+.brand-intro em { font-weight: 400; color: #ebc88e; }
+.brand-intro > p { color: #b6c5b9; font: .85rem/1.7 Manrope,sans-serif; margin: .25rem 0 1rem; }
+.intro-signature { position: absolute; bottom: 2rem; inset-inline: 0; }
+.intro-skip { min-height: 44px; padding: .75rem 1.5rem; border: 1px solid #b9a47e; border-radius: 999px; background: transparent; color: #f6efdf; font: .8rem Manrope,sans-serif; cursor: pointer; }
+.intro-skip:hover { background: #e3bd7d; color: #14201d; }
+.intro-skip:focus-visible { outline: 2px solid #f1d197; outline-offset: 5px; }
+.intro-constellation { position: relative; width: 8rem; height: 8rem; margin-bottom: 1rem; }
+.intro-constellation i { position: absolute; border: 1px solid #eac99077; border-radius: 50%; left: 50%; transform: translateX(-50%) rotate(-15deg); height: .75rem; box-shadow: 0 0 16px #e9b75f15; }
+.intro-constellation i:nth-child(1) { bottom: 0; width: 7.5rem; }
+.intro-constellation i:nth-child(2) { bottom: 1.3rem; width: 6rem; }
+.intro-constellation i:nth-child(3) { bottom: 2.6rem; width: 4.5rem; }
+.intro-constellation i:nth-child(4) { bottom: 3.9rem; width: 3rem; }
+.intro-constellation i:nth-child(5) { bottom: 5.2rem; width: 1.4rem; }
+.intro-constellation > span { position: absolute; top: -.5rem; left: calc(50% - .5rem); color: #f6d593; text-shadow: 0 0 22px #f2c47f; }
 @media (prefers-reduced-motion: no-preference) {
- .loading-orbit { animation: loading-turn 4s linear infinite; }
- .loading-emblem::before { animation: loading-fold 2s ease-in-out infinite alternate; }
- .loading-shutter { animation: loading-unveil .7s cubic-bezier(.16,1,.3,1) both; }
- .loading-line::before { animation: loading-pulse .7s ease-in-out infinite alternate; }
- .loading-line::after { animation: loading-pulse .7s .35s ease-in-out infinite alternate; }
+ .loading-orbit { animation: loading-turn 6s linear infinite; }
+ .brand-intro > strong,.intro-kicker { animation: intro-rise .6s ease both; }
+ .intro-constellation i { animation: constellation-rise .85s cubic-bezier(.2,.7,.2,1) both; }
+ .intro-constellation i:nth-child(2) { animation-delay: .08s; }
+ .intro-constellation i:nth-child(3) { animation-delay: .16s; }
+ .intro-constellation i:nth-child(4) { animation-delay: .24s; }
+ .intro-constellation i:nth-child(5) { animation-delay: .32s; }
  @keyframes loading-turn { to { transform: rotate(360deg); } }
- @keyframes loading-fold { to { transform: rotate(135deg) scale(.85); opacity: .5; } }
- @keyframes loading-unveil { from { transform: scaleX(1); } to { transform: scaleX(0); } }
- @keyframes loading-pulse { to { opacity: .25; transform: scaleY(.4); } }
+ @keyframes intro-rise { from { opacity: 0; transform: translateY(10px); } }
+ @keyframes constellation-rise { from { opacity: 0; translate: 0 25px; scale: .6; } }
 }
-.brand-intro { position: fixed; inset: 0; margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; box-sizing: border-box; border: 0; padding: 1rem; z-index: 100; display: grid; place-content: center; justify-items: center; gap: 1.5rem; background: #15131a; color: #f3eef4; }
-.brand-intro > strong { font: 800 clamp(2rem,8vw,4rem)/1 Manrope, sans-serif; letter-spacing: .3em; padding-left: .3em; }
-.intro-skip { min-height: 44px; padding: .6rem 1.3rem; border: 1px solid #796b87; border-radius: 2rem; background: transparent; color: #f3eef4; font: .8rem Manrope, sans-serif; cursor: pointer; }
-.intro-skip:hover { background: #342b44; }
-.intro-skip:focus-visible { outline: 2px solid #c4afe9; outline-offset: 4px; }
-@media (prefers-reduced-motion: no-preference) { .brand-intro > strong { animation: intro-type .6s cubic-bezier(.16,1,.3,1) both; } .brand-intro .loading-emblem { animation: intro-emblem .6s ease both; } @keyframes intro-type { from { opacity: 0; transform: translateY(12px); letter-spacing: .6em; } to { opacity: 1; transform: none; } } @keyframes intro-emblem { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: none; } } }
 @media (prefers-reduced-motion: reduce) { .brand-intro { display: none; } }

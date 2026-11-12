@@ -10,15 +10,15 @@ export function HeroShowcase() {
       <section id="top" className="opening winter-opening" aria-labelledby="hero-title">
         <div className="shell winter-hero-grid">
           <div className="winter-hero-copy">
-            <div className="winter-eyebrow"><span className="winter-live-dot" /> NATAL SHUSH / 2026 <span className="winter-eyebrow-line" /></div>
-            <span className="winter-oversized" aria-hidden="true">SHUSH.</span>
-            <h1 id="hero-title">Sem barulho.<br /><em>Só magia<br />de Natal.</em></h1>
-            <p>Luzes acesas. O lobby cheio. Uma época para celebrar quem joga connosco, quem nos acompanha e as histórias que fazem a SHUSH ser muito mais do que um resultado.</p>
+            <div className="winter-eyebrow"><span className="winter-live-dot" /> UM LUGAR PARA FICAR / NATAL 2026 <span className="winter-eyebrow-line" /></div>
+            <span className="winter-oversized" aria-hidden="true">um inverno nosso.</span>
+            <h1 id="hero-title">Sem barulho.<br /><em>Só magia<br /> de Natal.</em></h1>
+            <p>Lá fora, o mundo não pára. Aqui, as luzes acendem-se devagar. Um pequeno refúgio para quem joga connosco, para as histórias que ficam e para mais um round em boa companhia.</p>
             <div className="action-row winter-actions">
               <Button href="/esports/valorant/roster">Conhecer a equipa</Button>
               <Button href="/products/jersey" variant="secondary">Explorar Drop 01</Button>
             </div>
-            <div className="winter-hero-note"><span>01 / 03</span><span>BOAS FESTAS. DO NOSSO LOBBY PARA O TEU.</span></div>
+            <div className="winter-hero-note"><span aria-hidden="true">✦</span><span>SEM PRESSA. ESTÁS EM CASA.</span></div>
           </div>
           <ChristmasTree />
           <div className="winter-hero-bottom"><span className="mono">UMA EQUIPA. MUITAS HISTÓRIAS.</span><a className="editorial-link" href="#discover">Descobrir a SHUSH <span aria-hidden="true">↓</span></a></div>
