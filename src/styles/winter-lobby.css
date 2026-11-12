@@ -7,11 +7,11 @@
   pointer-events: none;
 }
 .winter-lobby-heading { display: grid; grid-template-columns: 1.2fr .7fr; gap: 2rem; align-items: end; padding: 1.5rem 0 2.75rem; border-top: 1px solid #bda77978; }
-.winter-lobby-heading h2, .winter-gifts-heading h2 { font: 650 clamp(2.8rem, 5.1vw, 5.7rem)/1.06 var(--font-heading); letter-spacing: -.075em; margin-top: .65rem; }
-.winter-lobby-heading h2 em, .winter-gifts-heading h2 em { font-style: normal; color: #efce92; }
+.winter-lobby-heading h2, .winter-gifts-heading h2 { font: 500 clamp(2.6rem, 4.8vw, 5.1rem)/1.12 var(--font-heading); letter-spacing: -.04em; margin-top: .65rem; }
+.winter-lobby-heading h2 em, .winter-gifts-heading h2 em { font-style: italic; font-weight: 400; color: #efce92; }
 .winter-lobby-heading p { max-width: 31rem; justify-self: end; color: #b7c9bf; line-height: 1.85; font-size: .92rem; }
 .winter-lobby-layout { display: grid; grid-template-columns: minmax(0,1.12fr) minmax(0,.88fr); gap: clamp(1rem,2.5vw,2.5rem); }
-.winter-ornament-scene, .winter-lobby-profile { position: relative; border: 1px solid #b79b6970; border-radius: 1.25rem; overflow: hidden; min-width: 0; }
+.winter-ornament-scene, .winter-lobby-profile { position: relative; border: 1px solid #b79b6970; border-radius: 1.75rem; overflow: hidden; min-width: 0; }
 .winter-ornament-scene {
   min-height: clamp(490px,48vw,650px);
   background: radial-gradient(ellipse at 50% 57%,#53745450,transparent 53%),linear-gradient(170deg,#152b2a,#0b1c20 80%);

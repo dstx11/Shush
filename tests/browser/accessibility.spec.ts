@@ -28,9 +28,6 @@ test('a failed lazy route recovers once and exposes usable recovery controls', a
   // React Router's initial replaceState also emits framenavigated. Count only
   // document requests so the assertion detects reloads, not same-document history.
   page.on('request', (request) => { if (request.isNavigationRequest() && request.frame() === page.mainFrame()) navigations += 1; });
-  // Isolate chunk recovery from the external font stylesheet: the production
-  // trace showed its second response taking 6.6s, beyond this assertion budget.
-  await page.route('https://fonts.googleapis.com/**', route => route.fulfill({ contentType: 'text/css', body: '' }));
   await page.route('**/assets/ContentPage-*.js', (route) => route.abort());
   await page.goto('/content', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { name: 'Não foi possível carregar esta página.' })).toBeVisible();
@@ -39,3 +36,12 @@ test('a failed lazy route recovers once and exposes usable recovery controls', a
   expect(navigations).toBe(2);
   expect(Number(await page.evaluate(() => sessionStorage.getItem('shush:preload-recovery-at')))).toBeGreaterThan(0);
 });
+
+for (const path of ['/404.html', '/shush-accessibility-unknown']) {
+  test('404 remains accessible including the primary hover state: ' + path, async ({ page }) => {
+    await page.goto(path);
+    await page.getByRole('link', { name: /Voltar à Home/ }).hover();
+    const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
+    expect(result.violations.map(violation => ({ id: violation.id, nodes: violation.nodes.map(node => node.target) }))).toEqual([]);
+  });
+}

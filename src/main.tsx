@@ -15,23 +15,6 @@ import './styles/gallery.css';
 import './styles/about.css';
 import './styles/footer.css';
 
-const PRELOAD_RECOVERY_KEY = 'shush:preload-recovery-at';
-
-window.addEventListener('vite:preloadError', (event) => {
-  const now = Date.now();
-  try {
-    const lastRecovery = Number(window.sessionStorage.getItem(PRELOAD_RECOVERY_KEY) ?? 0);
-    if (now - lastRecovery < 30_000) return;
-    window.sessionStorage.setItem(PRELOAD_RECOVERY_KEY, String(now));
-  } catch {
-    // Storage can be blocked. Leave the error boundary in control instead of
-    // risking a reload loop without a persistent recovery timestamp.
-    return;
-  }
-  event.preventDefault();
-  window.location.reload();
-});
-
 const initialPath = window.location.pathname;
 preloadRoute(initialPath).then((initialModule) => {
   ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -49,4 +32,3 @@ import "./styles/v5.css";
 
 import './styles/experience.css';
 import './styles/winter.css';
-import './styles/winter-lobby.css';

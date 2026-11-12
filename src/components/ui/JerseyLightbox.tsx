@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
+import { useModalDialog } from '../../hooks/useModalDialog';
 
 type View = 'front' | 'back';
 
@@ -13,22 +14,7 @@ export function JerseyLightbox({ view, onViewChange, onClose, children }: {
   const titleId = useId();
   const [zoomed, setZoomed] = useState(false);
 
-  useEffect(() => {
-    const element = dialog.current!;
-    const returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const overflow = document.body.style.overflow;
-    const padding = document.body.style.paddingRight;
-    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
-    if (scrollbar > 0) document.body.style.paddingRight = `${parseFloat(getComputedStyle(document.body).paddingRight) + scrollbar}px`;
-    document.body.style.overflow = 'hidden';
-    element.showModal();
-    return () => {
-      element.close();
-      document.body.style.overflow = overflow;
-      document.body.style.paddingRight = padding;
-      if (returnFocus?.isConnected) returnFocus.focus({ preventScroll: true });
-    };
-  }, []);
+  useModalDialog(dialog);
 
   useEffect(() => {
     const element = stage.current;

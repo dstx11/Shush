@@ -1,13 +1,6 @@
 import type { VerifiedMatch } from '../data/verified-matches';
 import { formatDate } from './premier';
 
-function within<T>(resource: Promise<T>, milliseconds: number): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const timer = window.setTimeout(() => reject(new Error('Tempo de carregamento excedido.')), milliseconds);
-    resource.then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
-  });
-}
-
 export async function drawMatchPoster(canvas: HTMLCanvasElement, match: VerifiedMatch, height: 1080 | 1350) {
   // Font load failures use the same system fallback in the preview and PNG.
   await Promise.allSettled([within(document.fonts.load('800 160px Manrope'), 3000), within(document.fonts.load('600 32px "IBM Plex Mono"'), 3000)]);
@@ -38,4 +31,11 @@ export async function drawMatchPoster(canvas: HTMLCanvasElement, match: Verified
   text(match.map.toUpperCase(), 72, height - 114, 32);
   text(formatDate(match.date), 72, height - 65, 24, '#c4afe9', 936, true);
   text('SHUSH.PT', 790, height - 65, 24, '#c4afe9', 220, true);
+}
+
+function within<T>(resource: Promise<T>, milliseconds: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = window.setTimeout(() => reject(new Error('Tempo de carregamento excedido.')), milliseconds);
+    resource.then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
+  });
 }

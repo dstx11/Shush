@@ -15,13 +15,23 @@ export async function shareUrl(url: string, title: string): Promise<'shared' | '
   return await copyText(url) ? 'copied' : 'manual';
 }
 
-export function downloadText(content: string, filename: string, mime = 'text/plain;charset=utf-8') {
-  const url = URL.createObjectURL(new Blob([content], { type: mime }));
+export function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;
   anchor.download = filename;
-  document.body.append(anchor);
-  anchor.click();
-  anchor.remove();
-  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  let started = false;
+  try {
+    document.body.append(anchor);
+    anchor.click();
+    started = true;
+  } finally {
+    anchor.remove();
+    if (started) window.setTimeout(() => URL.revokeObjectURL(url), 3000);
+    else URL.revokeObjectURL(url);
+  }
+}
+
+export function downloadText(content: string, filename: string, mime = 'text/plain;charset=utf-8') {
+  downloadBlob(new Blob([content], { type: mime }), filename);
 }

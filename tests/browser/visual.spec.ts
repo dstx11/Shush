@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-// The seasonal visual redesign invalidates the previous colour/layout baselines.
-// Retain CI screenshots for human review; approve new reference images before
-// re-enabling pixel-diff assertions. Functional and axe checks still run.
+// Cozy winter references reviewed in desktop/mobile after the intentional art
+// direction change. Keep pixel comparisons active and captures available for review.
 const regions = [
   ['home-hero', '/', '.opening'],
   ['player-profile', '/esports/valorant/roster?player=more', '#selected-player'],
@@ -13,7 +12,11 @@ const regions = [
 for (const [name, path, selector] of regions) {
   test(`visual region: ${name}`, async ({ page }, testInfo) => {
     await page.clock.install({ time: Date.UTC(2026, 9, 8, 12) });
-    await page.addInitScript(() => localStorage.setItem('shush:home:rotation:v1', '3'));
+    await page.addInitScript(() => {
+      localStorage.setItem('shush:home:rotation:v1', '3');
+      localStorage.setItem('shush:winter:tree:v2', 'ice');
+      Math.random = () => 0;
+    });
     await page.goto(path);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
@@ -24,6 +27,7 @@ for (const [name, path, selector] of regions) {
       await image.scrollIntoViewIfNeeded();
       await expect(image).toHaveJSProperty('complete', true);
       await expect(image).not.toHaveJSProperty('naturalWidth', 0);
+      await image.evaluate(element => (element as HTMLImageElement).decode());
     }
     if (name === 'player-profile') {
       // Loading every lazy portrait scrolls the strip. Restore the actual selected player.
@@ -31,13 +35,16 @@ for (const [name, path, selector] of regions) {
       await page.evaluate(() => window.scrollTo(0, 0));
       // A tall region capture can composite the fixed header over the portrait.
       // A full-page capture preserves the real header and content positions.
+      await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, animations: 'disabled' });
       await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true, animations: 'disabled' });
     } else if (name === 'home-hero') {
       // A tall element capture can paint off-viewport fixed UI into the hero.
       // Compare the actual visitor viewport, including the header, instead.
       await page.evaluate(() => window.scrollTo(0, 0));
+      await expect(page).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
       await page.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
     } else {
+      await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
       await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
     }
   });

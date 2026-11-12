@@ -13,11 +13,13 @@
     "check:assets": "node scripts/check-assets.mjs",
     "check:links": "node scripts/check-links.mjs",
     "test:premier": "node scripts/test-premier.mjs",
-    "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run test:profiles && pnpm run test:drop && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle",
+    "validate": "pnpm run typecheck && pnpm run test:premier && pnpm run test:profiles && pnpm run test:drop && pnpm run test:tree && pnpm run test:refinement && pnpm run check:assets && pnpm run check:links && pnpm run build && pnpm run validate:dist && pnpm run check:bundle",
     "test:profiles": "node scripts/test-competitive-profiles.mjs",
     "test:browser": "playwright test",
     "check:preview": "node scripts/check-preview.mjs",
-    "test:drop": "node scripts/test-drop-config.mjs"
+    "test:drop": "node scripts/test-drop-config.mjs",
+    "test:tree": "node scripts/test-tree-lifecycle.mjs && node scripts/test-tree-visit.mjs",
+    "test:refinement": "node scripts/test-refinement.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
@@ -33,7 +35,7 @@
     "@vitejs/plugin-react": "^6.0.3",
     "tailwindcss": "^4.3.2",
     "typescript": "^6.0.3",
-    "vite": "^8.1.0"
+    "vite": "^8.1.6"
   },
   "packageManager": "pnpm@10.34.6",
   "engines": {

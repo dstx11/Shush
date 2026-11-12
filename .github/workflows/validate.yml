@@ -39,6 +39,10 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Dependency security
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm audit --audit-level=high
+
       - name: Typecheck
         run: pnpm run typecheck
 
@@ -50,6 +54,12 @@ jobs:
 
       - name: Drop configurations
         run: pnpm run test:drop
+
+      - name: Tree animation lifecycle
+        run: pnpm run test:tree
+
+      - name: Refinement regressions
+        run: pnpm run test:refinement
 
       - name: Asset integrity
         run: pnpm run check:assets

@@ -30,7 +30,7 @@
 .not-found-page h1 { font: 600 clamp(3.7rem, 8vw, 8rem)/.95 var(--font-heading); letter-spacing: -.035em; margin-top: 1rem; }
 .not-found-page h1 span { color: var(--signal); }
 .not-found-page p { color: var(--muted); font-size: .9rem; line-height: 1.8; margin-block: 1.5rem; }
-.not-found-number { font: 600 clamp(6rem, 23vw, 20rem)/1 var(--font-heading); color: #241a32; letter-spacing: -.1em; }
+.not-found-number { font: 600 clamp(6rem, 23vw, 20rem)/1 var(--font-heading); color: #78917f; letter-spacing: -.1em; }
 @media (max-width: 1050px) { .about-opening { gap: 2rem; } .about-brand-panel { padding: 1.5rem; } .partner-content { grid-template-columns: 4rem 1fr; } .partner-content .site-button { grid-column: 2; width: fit-content; } }
 @media (max-width: 767px) {
   .about-page { padding-block: var(--page-top) var(--section-space); }

@@ -1,308 +1,213 @@
-/* 01 — Seasonal foundation */
-/* SHUSH Winter Edition — an editorial seasonal skin, not a separate product. */
-:root {
-  --bg: #101619;
-  --surface: #192225;
-  --surface-2: #243135;
-  --field: #151d20;
-  --text: #f2f3ed;
-  --muted: #a7bbb9;
-  --purple: #a5dbc8;
-  --purple-text: #a5dbc8;
-  --signal: #a5dbc8;
-  --line: #344846;
-  --solid-border: #344846;
-  --control-line: #718a85;
-  --accent-hover: #c6ecda;
-  --on-accent: #10221d;
-  --paper: #f2f3ed;
-  --ink: #101619;
-  --color-shush-bg: #101619;
-  --color-shush-surface: #192225;
-  --color-shush-surface2: #243135;
-  --color-shush-border: #344846;
-  --color-shush-purple: #a5dbc8;
-  --color-shush-purpleDark: #142d28;
-  --color-shush-purpleGlow: #a5dbc8;
-  --color-shush-text: #f2f3ed;
-  --color-shush-muted: #a7bbb9;
+/* SHUSH · Um inverno nosso. One seasonal system, shared by all public routes. */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/fonts/ibm-plex-mono-500-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-html { background: var(--bg); }
-body { background: var(--bg); }
-::selection { background: #b3dfcd; color: #13241d; }
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline-color: #b9efdc; }
-.shush-header { background: #101719ed; border-bottom: 1px solid #ffffff17; backdrop-filter: blur(16px); }
-.shush-header.is-scrolled { border-color: #6e99843f; box-shadow: 0 12px 35px #0003; }
-.desktop-navigation { background: #1d2929bb; }
-.desktop-nav-link[aria-current='page'] { background: #a5dbc8; color: #15261e; }
-.site-button { border-radius: .5rem; }
-.shush-footer { background: #141d20; }
-.shush-footer .footer-signature { border-bottom: 1px solid #344846; }
-.site-header .brand-mark { position: relative; }
-.site-header .brand-mark::after { content: '✦'; color: #c8ac76; position: absolute; top: -.4rem; left: 3.55rem; font-size: .65rem; pointer-events: none; }
-.route-home { background: #101619; }
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(/assets/fonts/ibm-plex-mono-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(/assets/fonts/ibm-plex-mono-700-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url(/assets/fonts/manrope-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
-/* A cinematic two-column opening with its own rendered art direction. */
-.winter-opening { position: relative; isolation: isolate; overflow: clip; padding-top: var(--page-top); background: radial-gradient(ellipse at 77% 35%, #24493b54 0, transparent 40%), radial-gradient(ellipse at 10% 17%, #2b3a375e 0, transparent 53%), #101619; }
-.winter-opening::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .19; background-image: radial-gradient(#ffffff 0.6px, transparent 0.8px); background-size: 38px 38px; mask-image: linear-gradient(to bottom, #0008, transparent 90%); }
-.winter-opening::after { content: ''; position: absolute; inset: auto 0 0; height: 1px; background: linear-gradient(90deg,transparent,#8abaaa7a,transparent); }
-.winter-hero-grid { display: grid; grid-template-columns: minmax(0, .97fr) minmax(0, 1.03fr); gap: 0 clamp(1rem,3vw,3.25rem); position: relative; }
-.winter-hero-copy { position: relative; min-width: 0; padding: clamp(2rem, 6vw, 6rem) 0 4rem; display: flex; flex-direction: column; justify-content: center; align-items: start; z-index: 2; }
-.winter-eyebrow { display: flex; align-items: center; gap: .8rem; font: 600 .67rem/1.8 var(--font-mono); letter-spacing: .15em; color: #b6d8c8; }
-.winter-live-dot { width: .45rem; height: .45rem; border-radius: 100%; background: #a6e2b6; box-shadow: 0 0 13px #a6e2b67a; flex: none; }
-.winter-eyebrow-line { width: 2rem; height: 1px; background: #b3cfc16e; }
-.winter-oversized { display: block; position: relative; font: 800 clamp(5rem, 11.8vw, 11.3rem)/.86 var(--font-heading); letter-spacing: -.11em; color: #a5dbc80e; -webkit-text-stroke: 1px #99b9aa38; margin-top: 1.9rem; white-space: nowrap; pointer-events: none; }
-.winter-hero-copy h1 { position: relative; font: 650 clamp(3.2rem, 5.3vw, 6.1rem)/1.04 var(--font-heading); letter-spacing: -.075em; margin: -1rem 0 0; text-wrap: balance; }
-.winter-hero-copy h1 em, .winter-section-heading h2 em { font-style: normal; font-weight: 600; color: #b8ddc9; }
-.winter-hero-copy > p { max-width: 32.5rem; font-size: clamp(.95rem, 1.25vw, 1.1rem); line-height: 1.9; margin: 2rem 0 0; color: #bacbc7; }
-.winter-actions { margin-top: 2rem; }
-.winter-actions .site-button { min-height: 3.35rem; }
-.winter-hero-note { display: flex; align-items: center; gap: 1rem; margin-top: 3.3rem; font: .63rem/1.6 var(--font-mono); letter-spacing: .1em; color: #829c92; }
-.winter-hero-note span:first-child { color: #d3b98c; }
-.winter-hero-bottom { grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid #a5c6b52e; padding: 1rem 0 1.25rem; }
-.winter-hero-bottom .editorial-link { color: #d5e6dd; }
-
-/* Interactive, deterministic Canvas art. CSS supplies the atmospheric framing. */
-.winter-tree-stage { width: 100%; height: clamp(460px, 45vw, 660px); position: relative; align-self: center; isolation: isolate; border: 1px solid #b0d0c227; border-radius: 1.1rem; overflow: hidden; background: radial-gradient(ellipse at 50% 53%, #2446384a 0,transparent 54%), linear-gradient(150deg, #1a292a 2%, #101b20 55%, #111b1d); box-shadow: inset 0 0 85px #101b1d, 0 35px 70px #0003; }
-.winter-tree-stage::before { content: ''; position: absolute; z-index: 0; inset: 0; pointer-events: none; opacity: .25; background: repeating-linear-gradient(0deg, transparent 0 4px, #ffffff05 4px 5px); }
-.winter-tree-stage::after { content: ''; position: absolute; z-index: 1; inset: auto 0 0; height: 26%; pointer-events: none; background: linear-gradient(0deg,#101b1ded,transparent); }
-.winter-tree-canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
-.winter-stage-top { z-index: 2; position: absolute; top: 1.4rem; left: 1.4rem; right: 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: .8rem; color: #c1d8cf; font: .6rem/1.6 var(--font-mono); letter-spacing: .07em; }
-.winter-status { display: flex; align-items: center; gap: .45rem; color: #93ae9f; }
-.winter-status i { background: #9bdcb3; width: .35rem; height: .35rem; border-radius: 50%; box-shadow: 0 0 7px #8adba4; }
-.winter-stage-bottom { position: absolute; bottom: 1.2rem; left: 1.2rem; right: 1.2rem; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: .6rem; flex-wrap: wrap; }
-.winter-palette { display: flex; gap: .25rem; padding: .25rem; background: #0c171bd9; border: 1px solid #a5c6b52e; border-radius: .6rem; }
-.winter-palette button, .winter-motion-toggle { min-height: 2.4rem; padding: .45rem .8rem; color: #b5c9bf; font: 600 .69rem/1.3 var(--font-ui); border: 1px solid transparent; border-radius: .35rem; background: transparent; }
-.winter-palette button:is(:hover,:focus-visible) { color: #fff; }
-.winter-palette button[aria-pressed='true'] { color: #14251e; background: #bee5cb; }
-.winter-motion-toggle { background: #0c171bd9; border-color: #a5c6b52e; }
-.winter-motion-toggle:is(:hover,:focus-visible) { color: white; border-color: #a5c6b59c; }
-.winter-motion-toggle span { margin-left: .25rem; }
-.winter-stage-caption { position: absolute; right: 1.35rem; top: 50%; writing-mode: vertical-rl; font: 500 .55rem var(--font-mono); letter-spacing: .18em; color: #a9c1b67a; pointer-events: none; }
-
-/* The actual roster remains present and credible, with a new gallery hierarchy. */
-.winter-team-section { padding-block: clamp(3.5rem,7vw,6.5rem) 2rem; }
-.winter-section-heading { display: grid; grid-template-columns: 1.2fr .55fr; align-items: end; gap: 1.5rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
-.winter-section-heading h2 { font: 650 clamp(2.5rem,4.7vw,5rem)/1.09 var(--font-heading); letter-spacing: -.065em; margin-top: .7rem; }
-.winter-section-heading p { color: var(--muted); max-width: 23rem; margin-left: auto; font-size: .92rem; line-height: 1.8; }
-.winter-team-section .team-cover { max-width: 70rem; margin-inline: auto; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(.65rem, 2vw, 2rem); padding: 3.7rem 0 1.75rem; }
-.winter-team-section .team-cover-player { height: clamp(17rem,29vw,27rem); transform: none; border-radius: .75rem; border-color: #a6c9b33d; background: #1d2929; }
+@font-face { font-family: "SHUSH Hearth"; font-style: normal; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/hearth-serif.woff2') format('woff2'); }
+@font-face { font-family: "SHUSH Hearth"; font-style: italic; font-weight: 400 700; font-display: swap; src: url('/assets/fonts/hearth-serif-italic.woff2') format('woff2'); }
+:root {
+ --bg: #0e1919; --surface: #182b29; --surface-2: #223a34; --field: #112220;
+ --text: #f6efdf; --muted: #b4c5bb; --purple: #eac58b; --purple-text: #f0cf97;
+ --signal: #edcb94; --line: #405448; --solid-border: #405448; --control-line: #899e8a;
+ --accent-hover: #f8ddb1; --on-accent: #17241d; --paper: #f6efdf; --ink: #0e1919;
+ --color-shush-bg: #0e1919; --color-shush-surface: #182b29; --color-shush-surface2: #223a34;
+ --color-shush-border: #405448; --color-shush-purple: #eac58b; --color-shush-purpleDark: #293b30;
+ --color-shush-purpleGlow: #f0d5a4; --color-shush-text: #f6efdf; --color-shush-muted: #b4c5bb;
+ --font-heading: "SHUSH Hearth",Georgia,serif; --ease-winter: cubic-bezier(.2,.7,.2,1);
+ --radius-sm: .8rem; --radius-md: 1.35rem; --radius-lg: 2rem;
+}
+html,body { background: var(--bg); }
+.arrow-icon { display: inline-block; flex: none; vertical-align: -.12em; }
+::selection { background: #edcb94; color: #17241d; }
+:focus-visible { outline-color: #f5d699; }
+.section-kicker { color: #edcb94; letter-spacing: .09em; }
+/* Keep real identities and competitive data direct and easy to scan. */
+.character-identity h2,.character-number,.team-cover-player strong,.creator-persona h2,.audit-live-print { font-family: var(--font-ui); }
+.site-button { border-radius: 999px; background: #edcb94; border-color: #edcb94; color: #17241d; box-shadow: 0 4px 18px #d2a86412; }
+.site-button:hover { background: #f8ddb1; }
+.button-secondary { background: #182925b3; border-color: #8a9a81; color: #f6efdf; box-shadow: none; }
+.button-secondary:hover { background: #294034; }
+.site-button,.editorial-link,.winter-card-trigger { transition: background-color .22s,color .22s,border-color .22s,transform .35s var(--ease-winter); }
+.site-button:active,.winter-card-trigger:active { transform: translateY(1px); }
+.shush-header { background: #0e1c1ae8; border-bottom: 1px solid #d4bd7c26; backdrop-filter: blur(18px); }
+.shush-header.is-scrolled { border-color: #d4bd7c55; box-shadow: 0 8px 35px #0003; }
+.desktop-navigation { background: #122520ad; border-color: #8a9a813b; border-radius: 999px; }
+.desktop-nav-link { border-radius: 999px; }
+.desktop-nav-link[aria-current='page'] { background: #edcb94; color: #17241d; }
+.shush-header::after { content: ''; position: absolute; inset: auto 0 -5px; height: 8px; background: radial-gradient(circle at 9px 2px,#f4d491 0 1.5px,#f4d49122 4px,transparent 7px); background-size: 78px 8px; pointer-events: none; opacity: .8; }
+.navigation-overlay { background: radial-gradient(ellipse at 90% 10%,#4e58353b,transparent 60%),#10211d; }
+.overlay-link { font-weight: 500; letter-spacing: -.025em; }
+.overlay-link[aria-current='page'],.overlay-link:hover { color: #f3d59e; }
+.navigation-toggle { border-radius: 999px; }
+/* One restrained snowfall layer; no full-screen filters or JavaScript loop. */
+body::before { content: ''; position: fixed; inset: -100vh 0 0; pointer-events: none; z-index: 5; opacity: .15; background-image: radial-gradient(1px 1px at 18px 34px,#fff1cc 98%,transparent),radial-gradient(1px 1px at 147px 113px,#d4e8dc 98%,transparent); background-size: 263px 217px; }
+body::after { content: none; }
+@media (prefers-reduced-motion: no-preference) { body::before { animation: winter-snowfall 42s linear infinite; } @keyframes winter-snowfall { to { transform: translateY(100vh); } } }
+/* The hero is an intimate window into a lit winter garden. */
+.winter-opening { position: relative; isolation: isolate; overflow: clip; padding-top: var(--page-top); background: radial-gradient(ellipse at 81% 45%,#4c654333,transparent 47%),radial-gradient(ellipse at 8% 35%,#72533224,transparent 46%),linear-gradient(155deg,#12231f,#0b161a 72%); }
+.winter-opening::before { content: ''; position: absolute; inset: 0; opacity: .16; pointer-events: none; background-image: radial-gradient(#e5c992 .6px,transparent 1px); background-size: 47px 59px; mask-image: linear-gradient(#000,transparent 85%); }
+.winter-opening::after { content: ''; position: absolute; inset: auto 0 0; height: 1px; background: linear-gradient(90deg,transparent,#b9a67566,transparent); }
+.winter-hero-grid { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap: 0 clamp(1.2rem,4vw,4.5rem); align-items: center; }
+.winter-hero-copy { position: relative; min-width: 0; padding: 3rem 0 1.25rem; z-index: 2; grid-column: 1; grid-row: 1; align-self: end; }
+.winter-hero-story { grid-column: 1; grid-row: 2; align-self: start; min-width: 0; padding-bottom: 3rem; }
+.winter-eyebrow { display: flex; align-items: center; gap: .7rem; font: 500 .6rem/1.8 var(--font-ui); letter-spacing: .14em; color: #dfc496; }
+.winter-live-dot { width: .35rem; height: .35rem; background: #edcb94; border-radius: 50%; box-shadow: 0 0 10px #edcb9455; flex: none; }
+.winter-eyebrow-line { width: 1.7rem; height: 1px; background: #edcb9455; }
+.winter-oversized { display: block; font: italic 400 clamp(1rem,1.4vw,1.4rem)/1.5 var(--font-heading); color: #a3b5a5; margin: 2.5rem 0 1.25rem; }
+.winter-hero-copy h1 { font: 500 clamp(3.3rem,5.3vw,6.1rem)/1.08 var(--font-heading); letter-spacing: -.055em; margin: 0; }
+.winter-hero-copy h1 em { color: #efcd95; font-weight: 400; text-shadow: 0 4px 35px #ce9f4b12; }
+.winter-hero-story > p { color: #bccbbf; max-width: 30rem; font-size: clamp(.9rem,1.05vw,1rem); line-height: 1.95; margin: 0; }
+.winter-actions { margin-top: 1.8rem; gap: .7rem; }
+.winter-actions .site-button { min-height: 3.25rem; padding-inline: 1.25rem; font-size: .76rem; }
+.winter-hero-note { display: flex; align-items: center; gap: .8rem; color: #adbbab; font: 500 .57rem/1.8 var(--font-ui); letter-spacing: .12em; margin-top: 2.7rem; }
+.winter-hero-note span:first-child { color: #e5c08a; font-size: 1rem; }
+.winter-hero-bottom { grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.4rem 0; border-top: 1px solid #d2ba803b; margin-top: 2rem; }
+.winter-hero-bottom .mono { font-size: .62rem; letter-spacing: .06em; }
+.winter-hero-bottom .editorial-link { color: #ead4ae; font-size: .75rem; }
+/* The frame and canvas keep fixed dimensions during selection and formation. */
+.winter-tree-stage { position: relative; width: 100%; height: clamp(550px,48vw,715px); isolation: isolate; align-self: center; grid-column: 2; grid-row: 1 / span 2; overflow: hidden; border: 1px solid #c2b08355; border-radius: 48% 48% 1.5rem 1.5rem / 22% 22% 1.5rem 1.5rem; background: #101c20; box-shadow: 0 28px 80px #0006,0 0 85px #b6b77412,inset 0 0 0 6px #dbd0a507; }
+.winter-tree-stage::before { content: ''; position: absolute; z-index: 2; inset: 8px; border: 1px solid #dec9951a; border-radius: inherit; pointer-events: none; }
+.winter-tree-stage::after { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(#09161944,transparent 25%,transparent 76%,#091619b3); pointer-events: none; }
+.winter-tree-canvas { display: block; width: 100%; height: 100%; position: absolute; inset: 0; cursor: grab; touch-action: pan-y; }
+.winter-tree-canvas:active { cursor: grabbing; }
+.winter-tree-canvas:focus-visible { outline: 2px solid #f4d496; outline-offset: -10px; border-radius: inherit; }
+.winter-stage-top { position: absolute; z-index: 3; top: 1.7rem; left: 1.5rem; right: 1.5rem; display: flex; align-items: center; justify-content: center; gap: .7rem; font: 500 .5rem/1.8 var(--font-ui); letter-spacing: .1em; color: #c7c9b8; }
+.winter-status { display: flex; align-items: center; gap: .4rem; color: #e4c68f; }
+.winter-status i { width: .25rem; height: .25rem; background: #e4c68f; border-radius: 50%; }
+.winter-tree-title { position: absolute; z-index: 3; top: 4rem; left: 0; right: 0; text-align: center; pointer-events: none; display: grid; gap: .4rem; }
+.winter-tree-title > span { color: #bac4b9; font: 500 .5rem/1.6 var(--font-ui); letter-spacing: .16em; }
+.winter-tree-title strong { color: #f3d6a1; font: italic 400 clamp(1.2rem,2vw,1.9rem)/1.3 var(--font-heading); }
+.winter-stage-bottom { position: absolute; bottom: 1.2rem; left: 1.4rem; right: 1.4rem; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: .7rem; }
+.winter-scene-note { max-width: 12ch; color: #b2c0b4; font: italic .77rem/1.5 var(--font-heading); }
+.winter-tree-utilities { display: flex; gap: .35rem; }
+.winter-motion-toggle { display: inline-flex; align-items: center; justify-content: center; gap: .25rem; white-space: nowrap; min-height: 2.5rem; padding: .5rem .75rem; border: 1px solid #b1a27b66; border-radius: 999px; color: #e7dcc4; background: #0d1b1dc9; font: 500 .65rem/1.3 var(--font-ui); transition: color .2s,background .2s; }
+.winter-motion-toggle:is(:hover,:focus-visible) { background: #2c4034; color: #fff2ce; }
+.winter-motion-toggle svg { flex: none; }
+.winter-stage-caption { display: none; }
+/* A gentler rhythm connects the existing people, stories and products. */
+.winter-team-section { padding-block: clamp(4rem,8vw,8rem) 2rem; }
+.winter-section-heading { display: grid; grid-template-columns: 1.2fr .6fr; gap: 2rem; align-items: end; border-top: 1px solid #bda77955; padding-top: 2rem; }
+.winter-section-heading h2 { font: 500 clamp(2.6rem,4.5vw,4.8rem)/1.12 var(--font-heading); letter-spacing: -.045em; margin-top: .8rem; }
+.winter-section-heading h2 em { color: #e8c793; font-weight: 400; }
+.winter-section-heading p { color: var(--muted); max-width: 25rem; font-size: .88rem; line-height: 1.9; margin-left: auto; }
+.winter-team-section .team-cover { max-width: 70rem; margin-inline: auto; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(.65rem,2vw,2rem); padding: 3.7rem 0 1.75rem; }
+.winter-team-section .team-cover-player { height: clamp(17rem,29vw,27rem); transform: none; border-radius: 7rem 7rem 1rem 1rem; border-color: #b9a67b55; background: #1b2d29; box-shadow: 0 15px 40px #0003; }
 .winter-team-section .team-cover-player.cover-1 { height: clamp(19rem,34vw,32rem); transform: translateY(-1.7rem); }
 .winter-team-section .team-cover-player.cover-2 { transform: translateY(.75rem); }
-.winter-team-section .team-cover-player > span { inset: 45% 0 0; background: linear-gradient(0deg,#0b1618f5 0%, transparent); }
-.winter-team-section .team-cover-player small { color: #c2e3cc; }
-.winter-team-section .team-cover-player i { color: #b7dbc8; }
-.winter-team-section .team-cover-player:is(:hover,:focus-visible) { transform: translateY(-.45rem); border-color: #bee5cb; }
-.winter-team-section .team-cover-player.cover-1:is(:hover,:focus-visible) { transform: translateY(-2.15rem); }
-.winter-team-section .team-cover-player.cover-2:is(:hover,:focus-visible) { transform: translateY(.3rem); }
-.winter-team-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
-
-/* Improve home scanning, portrait legibility, interactive affordances. */
+.winter-team-section .team-cover-player > span { inset: 45% 0 0; background: linear-gradient(transparent,#0d1918f5); }
+.winter-team-section .team-cover-player small { color: #e3d1a9; }
+.winter-team-section .team-cover-player i { color: #edcb94; }
+.winter-team-section .team-cover-player:is(:hover,:focus-visible) { border-color: #edcb94; }
+.winter-team-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--line); padding-top: 1.3rem; }
 .home-discover { padding-top: 2rem; }
-.home-discover h2 { letter-spacing: -.06em; }
-.home-lineup { gap: .8rem; }
-.home-lineup > a > div { border: 1px solid #b0d0c124; transition: border-color .2s; }
-.home-lineup > a:is(:hover,:focus-visible) > div { border-color: #a5dbc8; }
-.home-lineup strong { letter-spacing: -.03em; }
+.home-discover h2 { letter-spacing: -.04em; font-weight: 500; }
+.home-lineup > a > div { border: 1px solid #c4b17e3b; border-radius: 1.2rem; transition: border-color .25s; }
+.home-lineup > a:is(:hover,:focus-visible) > div { border-color: #edcb94; }
 .home-records { margin-top: 5.5rem; }
-.home-score { padding: 1.4rem 1rem; border-radius: .4rem; }
+.home-score { border-radius: 1rem; padding: 1.4rem 1rem; }
 .home-score-teams b { font-variant-numeric: tabular-nums; }
-.home-people { gap: clamp(2rem,6vw,6rem); }
 .home-closing { gap: 1rem; }
-.home-closing > a { min-height: 16rem; padding: 2rem; border: 1px solid var(--line); border-radius: .8rem; background: radial-gradient(ellipse at 85% 15%, #2c514344, transparent 55%), var(--surface); transition: border-color .2s, transform .2s; }
-.home-closing > a:is(:hover,:focus-visible) { border-color: #b4dec8; transform: translateY(-2px); }
-.home-closing > a > span:last-child { align-self: end; }
-.page-heading h1 { letter-spacing: -.055em; }
-.route-products .page-heading, .route-esports .page-heading, .route-content .page-heading, .route-company .page-heading { border-bottom: 1px solid var(--line); }
-@media (min-width: 1200px) { .winter-hero-grid { min-height: 690px; align-items: center; } }
-@media (max-width: 1000px) {
-  .winter-hero-grid { grid-template-columns: 1fr 1fr; }
-  .winter-hero-copy h1 { font-size: clamp(2.7rem,5vw,4.5rem); }
-  .winter-oversized { font-size: clamp(5rem,10vw,8rem); }
-  .winter-tree-stage { height: 520px; }
-  .winter-team-section .team-cover-player { height: 23rem; }
-  .winter-team-section .team-cover-player.cover-1 { height: 26rem; }
+.home-closing > a { min-height: 16rem; padding: 2rem; border: 1px solid #a8976b66; border-radius: 1.5rem; background: radial-gradient(ellipse at 85% 10%,#6e58332e,transparent 55%),linear-gradient(145deg,#213b31,#142321); transition: border-color .25s,transform .4s var(--ease-winter); }
+.home-closing > a:is(:hover,:focus-visible) { border-color: #e8c88c; transform: translateY(-3px); }
+.home-closing a > span:last-child { color: #e8c88c; }
+.route-esports > main,.route-company > main,.route-content > main,.route-products > main { background: radial-gradient(ellipse at 85% 0,#526d4324,transparent 40%),radial-gradient(ellipse at 0 40%,#8d6a3710,transparent 45%); }
+.page-heading { position: relative; border-bottom-color: #b5a27655; }
+.page-heading h1 { font-weight: 500; letter-spacing: -.045em; }
+.page-heading h1 span { color: #edcb94; }
+.audit-drop-gallery,.creator-art,.character-spotlight,.about-opening > div { border-radius: 1.5rem; }
+.character-media { border-color: #b5a27655; }
+.shush-footer { position: relative; background: linear-gradient(#1b3028,#10201e); border-top-color: #c8ae7944; }
+.shush-footer::before { content: '✦  BOAS FESTAS, SHUSH COMMUNITY  ✦'; display: block; margin-top: -1.8rem; margin-bottom: 2.5rem; padding: .8rem 1rem; border-block: 1px solid #bda47433; background: #24392d; text-align: center; font: 500 .62rem/1.7 var(--font-ui); letter-spacing: .15em; color: #e9c995; }
+.footer-top { border-color: #c8ae7955; }
+@media (prefers-reduced-motion: no-preference) {
+ .winter-hero-copy > * { animation: winter-arrive .75s var(--ease-winter) both; }
+ .winter-hero-copy > :nth-child(3) { animation-delay: .07s; }
+ .winter-hero-copy > :nth-child(4) { animation-delay: .12s; }
+ .winter-hero-copy > :nth-child(5) { animation-delay: .17s; }
+ .route-frame.route-enter { animation: winter-arrive .45s var(--ease-winter) both; }
+ @keyframes winter-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+}
+@media (max-width: 1050px) { .winter-hero-grid { gap: 1.5rem; } .winter-actions { flex-wrap: wrap; } .winter-actions .site-button { padding-inline: 1rem; } }
+@media (max-width: 900px) {
+ .winter-hero-grid { grid-template-columns: 1fr; }
+ .winter-hero-copy { padding: 1.5rem 0 1.5rem; max-width: 40rem; grid-row: auto; }
+ .winter-hero-story { grid-row: auto; padding: 1.5rem 0 0; }
+ .winter-tree-stage { width: min(100%,640px); margin-inline: auto; height: 660px; grid-column: 1; grid-row: auto; }
+ .winter-oversized { margin-top: 1.8rem; }
+ .winter-hero-copy h1 { font-size: clamp(3.2rem,7vw,5rem); }
+ .winter-hero-copy h1 em br { display: none; }
+ .winter-section-heading { gap: 1.25rem; }
 }
 @media (max-width: 767px) {
-  .shush-header { backdrop-filter: none; }
-  .winter-hero-grid { grid-template-columns: minmax(0,1fr); }
-  .winter-hero-copy { padding: 2rem 0 1.8rem; }
-  .winter-eyebrow { font-size: .59rem; }
-  .winter-oversized { margin-top: 1.5rem; font-size: clamp(3.75rem, 18vw, 8rem); }
-  .winter-hero-copy h1 { font-size: clamp(3rem, 10vw, 5.1rem); margin-top: -.5rem; }
-  .winter-hero-copy > p { margin-top: 1.4rem; max-width: 34rem; font-size: .93rem; }
-  .winter-hero-note { display: none; }
-  .winter-actions { margin-top: 1.5rem; }
-  .winter-tree-stage { height: min(122vw, 540px); min-height: 365px; margin-bottom: 1.5rem; }
-  .winter-stage-top { top: .8rem; left: .85rem; right: .85rem; font-size: .53rem; }
-  .winter-stage-caption { display: none; }
-  .winter-stage-bottom { bottom: .75rem; left: .75rem; right: .75rem; }
-  .winter-palette button, .winter-motion-toggle { min-height: 2.6rem; font-size: .64rem; padding: .45rem .65rem; }
-  .winter-hero-bottom .mono { font-size: .62rem; }
-  .winter-hero-bottom .editorial-link { font-size: .72rem; }
-  .winter-team-section { padding-block: 3rem 1rem; }
-  .winter-section-heading { grid-template-columns: 1fr; gap: .5rem; }
-  .winter-section-heading h2 { font-size: clamp(2.2rem,8.5vw,3.5rem); }
-  .winter-section-heading p { margin: 0; font-size: .85rem; }
-  .winter-team-section .team-cover { gap: .5rem; padding: 2.5rem 0 1.25rem; }
-  .winter-team-section .team-cover-player { height: 12rem; }
-  .winter-team-section .team-cover-player.cover-1 { height: 14rem; transform: translateY(-.7rem); }
-  .winter-team-section .team-cover-player.cover-2 { transform: translateY(.4rem); }
-  .winter-team-section .team-cover-player:is(:hover,:focus-visible) { transform: none; }
-  .winter-team-section .team-cover-player.cover-1:is(:hover,:focus-visible) { transform: translateY(-.7rem); }
-  .winter-team-section .team-cover-player.cover-2:is(:hover,:focus-visible) { transform: translateY(.4rem); }
-  .winter-team-section .team-cover-player > span { padding: .6rem; }
-  .winter-team-footer .mono { display: none; }
-  .home-lineup { margin-inline: -.3rem; }
-  .home-lineup > a { flex-basis: 40%; }
-  .home-records { margin-top: 3rem; }
-  .home-closing { grid-template-columns: 1fr; }
-  .home-closing > a { min-height: 13rem; padding: 1.5rem; }
+ .shush-header { backdrop-filter: none; }
+ .winter-hero-copy { padding-top: .75rem; padding-bottom: .5rem; }
+ .winter-eyebrow { font-size: .49rem; letter-spacing: .08em; gap: .5rem; }
+ .winter-eyebrow-line { width: 1rem; }
+ .winter-oversized { display: none; }
+ .winter-hero-copy h1 { margin-top: .9rem; font-size: clamp(2.75rem,10.7vw,4.5rem); line-height: 1.1; }
+ .winter-hero-story > p { font-size: .86rem; margin-top: 0; }
+ .winter-actions { margin-top: 1.4rem; gap: .5rem; }
+ .winter-actions .site-button { min-height: 3rem; font-size: .68rem; padding-inline: 1rem; }
+ .winter-hero-note { margin-top: 1.7rem; font-size: .5rem; }
+ .winter-tree-stage { height: clamp(460px,129vw,610px); border-radius: 46% 46% 1rem 1rem / 17% 17% 1rem 1rem; }
+ .winter-stage-top { top: 1.2rem; font-size: .43rem; gap: .4rem; left: .6rem; right: .6rem; }
+ .winter-tree-title { top: 3rem; }
+ .winter-tree-title strong { font-size: 1.25rem; }
+ .winter-stage-bottom { left: 1rem; right: 1rem; bottom: 1rem; }
+ .winter-scene-note { font-size: .66rem; }
+ .winter-motion-toggle { min-height: 2.6rem; padding-inline: .65rem; font-size: .58rem; }
+ .winter-hero-bottom { margin-top: 1.5rem; align-items: start; }
+ .winter-hero-bottom .mono { max-width: 16ch; font-size: .5rem; }
+ .winter-hero-bottom .editorial-link { font-size: .65rem; }
+ .winter-team-section { padding-block: 3.5rem 1rem; }
+ .winter-section-heading { grid-template-columns: 1fr; gap: .7rem; padding-top: 1.5rem; }
+ .winter-section-heading h2 { font-size: clamp(2rem,8vw,3.5rem); }
+ .winter-section-heading p { margin: 0; font-size: .82rem; }
+ .winter-team-section .team-cover { gap: .5rem; padding-top: 2.8rem; }
+ .winter-team-section .team-cover-player { height: 12rem; border-radius: 3rem 3rem .8rem .8rem; }
+ .winter-team-section .team-cover-player.cover-1 { height: 14rem; transform: translateY(-.7rem); }
+ .winter-team-section .team-cover-player.cover-2 { transform: translateY(.4rem); }
+ .winter-team-section .team-cover-player > span { padding: .6rem; }
+ .winter-team-section .team-cover-player strong { font-size: 1rem; }
+ .winter-team-footer .mono { display: none; }
+ .home-lineup { margin-inline: -.3rem; }
+ .home-lineup > a { flex-basis: 40%; }
+ .home-records { margin-top: 3rem; }
+ .home-closing { grid-template-columns: 1fr; }
+ .home-closing > a { min-height: 13rem; padding: 1.5rem; }
+ .shush-footer::before { font-size: .5rem; letter-spacing: .08em; }
 }
-@media (max-width: 390px) {
-  .winter-stage-top .winter-status { font-size: 0; }
-  .winter-stage-top .winter-status i { width: .4rem; height: .4rem; }
-  .winter-tree-stage { min-height: 345px; }
-  .winter-palette button { padding-inline: .5rem; }
-  .winter-team-section .team-cover-player { height: 10rem; }
-  .winter-team-section .team-cover-player.cover-1 { height: 12rem; }
-  .winter-team-section .team-cover-player strong { font-size: .94rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .winter-team-section .team-cover-player, .home-closing > a { transition: none; }
-}
-
-/* 02 — Christmas art direction and global atmosphere */
-/* Christmas art direction v2 — deep evergreen, candle gold, cranberry and starlight. */
-:root {
-  --bg: #0d1417;
-  --surface: #172326;
-  --surface-2: #203136;
-  --field: #101b1f;
-  --text: #f9f5e9;
-  --muted: #b0beb9;
-  --purple: #e7ca93;
-  --purple-text: #e7ca93;
-  --signal: #e7ca93;
-  --line: #476058;
-  --solid-border: #476058;
-  --control-line: #879992;
-  --accent-hover: #f7ddb1;
-  --on-accent: #25221c;
-  --paper: #f9f5e9;
-  --ink: #0d1417;
-  --color-shush-bg: #0d1417;
-  --color-shush-surface: #172326;
-  --color-shush-surface2: #203136;
-  --color-shush-border: #476058;
-  --color-shush-purple: #e7ca93;
-  --color-shush-purpleDark: #283d36;
-  --color-shush-purpleGlow: #f3d9a4;
-  --color-shush-text: #f9f5e9;
-  --color-shush-muted: #b0beb9;
-}
-html, body { background: var(--bg); }
-::selection { background: #e7ca93; color: #1c2926; }
-:focus-visible { outline-color: #f4d99d; }
-.section-kicker { color: #e7ca93; }
-.site-button { background: #e7ca93; border-color: #e7ca93; color: #13201c; }
-.site-button:hover { background: #f9e5bc; }
-.button-secondary { color: #f4eddc; background: #152326a8; border-color: #9eafa0; }
-.button-secondary:hover { background: #223b35; }
-.editorial-link > span, .home-closing a > span:last-child { color: #e5cb99; }
-.desktop-nav-link[aria-current='page'] { background: #e7ca93; color: #14241d; }
-.desktop-navigation { background: #101c1dda; border-color: #546f5b7a; }
-.shush-header { background: #0e191be9; border-bottom-color: #9fbc9a3d; box-shadow: 0 6px 40px #0004; }
-.shush-header::before { content: ''; position: absolute; bottom: -7px; inset-inline: 0; height: 9px; pointer-events: none; background: repeating-linear-gradient(160deg,#47664c99 0 28px,#577758b7 28px 30px,#47664c99 30px 58px); clip-path: polygon(0 0,100% 0,100% 48%,96% 80%,90% 45%,84% 82%,78% 45%,72% 82%,66% 45%,60% 82%,54% 45%,48% 82%,42% 45%,36% 82%,30% 45%,24% 82%,18% 45%,12% 82%,6% 45%,0 80%); opacity: .8; }
-.shush-header::after { content: ''; position: absolute; left: 0; right: 0; bottom: -14px; height: 19px; pointer-events: none; background-image: radial-gradient(circle at 9px 4px,#f2cc75 0 2.5px,#f0cc7740 5px,transparent 8px), radial-gradient(circle at 34px 8px,#a2bf9b 0 2.5px,#a2bf9b35 5px,transparent 8px), radial-gradient(circle at 62px 6px,#ca6c74 0 2.7px,#ca6c743b 5px,transparent 8px), radial-gradient(circle at 90px 9px,#f0e9d1 0 2.4px,#f0e9d136 5px,transparent 8px); background-size: 108px 19px; }
-.site-header .brand-mark::after { color: #e9c981; text-shadow: 0 0 11px #e9c981aa; }
-.shush-header.is-scrolled { border-color: #ddc78b55; }
-.navigation-overlay { background: #101c1d; }
-.overlay-link[aria-current='page'], .overlay-link:hover { color: #f2d99d; }
-
-/* Floating atmospheric snowfall across the whole experience: decorative and unobtrusive. */
-body::before, body::after { content: ''; position: fixed; inset: -100vh 0 0; pointer-events: none; z-index: 5; opacity: .42; background-repeat: repeat; animation: winter-snowfall 27s linear infinite; }
-body::before {
-  background-image: radial-gradient(1.5px 1.5px at 15px 31px,#e7f5f5c7 98%,transparent 100%),radial-gradient(1.2px 1.2px at 89px 85px,#ffffffa8 98%,transparent 100%),radial-gradient(2px 2px at 151px 129px,#efffff88 98%,transparent 100%),radial-gradient(1px 1px at 217px 41px,#ffffffba 98%,transparent 100%);
-  background-size: 270px 190px;
-}
-body::after {
-  opacity: .25;
-  background-image: radial-gradient(1.6px 1.6px at 47px 111px,#fff 98%,transparent 100%),radial-gradient(1px 1px at 135px 21px,#d7f6f8 98%,transparent 100%),radial-gradient(1.5px 1.5px at 238px 183px,#fff 98%,transparent 100%);
-  background-size: 310px 230px;
-  animation-duration: 40s;
-  animation-delay: -9s;
-}
-@keyframes winter-snowfall { from { transform: translate3d(0,-70px,0); } to { transform: translate3d(24px,calc(100vh + 10px),0); } }
-
-/* The homepage is a winter night, not a collection of separate cards. */
-.winter-opening {
-  background:
-    radial-gradient(ellipse at 76% 35%,#38604c4c,transparent 36%),
-    radial-gradient(ellipse at 8% 64%,#5c453342,transparent 47%),
-    linear-gradient(165deg,#121d22,#0b1417 65%,#121f1c);
-}
-.winter-opening::before {
-  opacity: .28;
-  background-image: radial-gradient(#f7e7c85e .8px, transparent 1.5px), radial-gradient(#c7e9db40 .8px,transparent 1.5px);
-  background-size: 56px 64px, 97px 109px;
-}
-.winter-opening::after { height: 2px; background: linear-gradient(90deg,transparent,#e2c48d8c,#6e9e7e8a,transparent); }
-.winter-hero-grid { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 0 clamp(1rem,3.5vw,4.25rem); }
-.winter-eyebrow { color: #eed7a9; }
-.winter-live-dot { background: #c76676; box-shadow: 0 0 13px #e18a8b; }
-.winter-oversized { color: #d3aa6010; -webkit-text-stroke: 1px #ebd9ae45; font-size: clamp(5rem,10.2vw,10rem); }
-.winter-hero-copy h1 { font-size: clamp(3.3rem,5.2vw,6rem); letter-spacing: -.072em; }
-.winter-hero-copy h1 em { color: #f1cb8c; text-shadow: 0 2px 30px #d5a04d1c; }
-.winter-hero-copy > p { color: #c6d0c8; }
-.winter-hero-note { color: #c9c6ac; }
-.winter-hero-note span:first-child { color: #e9c48a; }
-.winter-hero-bottom { border-top-color: #a6be9770; }
-.winter-hero-bottom .editorial-link { color: #f2dec0; }
-.winter-tree-premium {
-  height: clamp(540px,49vw,755px);
-  border-color: #c9aa6a73;
-  border-radius: 1.4rem;
-  background: #0c1a21;
-  box-shadow: 0 30px 90px #0009,0 0 90px #a3b5871c,inset 0 0 0 1px #e2c79512;
-}
-.winter-tree-premium::before { opacity: .1; }
-.winter-tree-premium::after { height: 13%; background: linear-gradient(0deg,#0d1823d6,transparent); }
-.winter-stage-top { color: #f4e3bd; top: 1.25rem; left: 1.3rem; right: 1.3rem; }
-.winter-stage-serial { letter-spacing: .14em; color: #d2ccbb; }
-.winter-stage-top .winter-status { color: #f5d795; }
-.winter-stage-top .winter-status i { background: #f0be6f; box-shadow: 0 0 11px #f3d391; }
-.winter-tree-title { z-index: 2; position: absolute; top: 4rem; left: 1.4rem; pointer-events: none; display: grid; gap: .25rem; }
-.winter-tree-title span { font: 700 .55rem/1.5 var(--font-mono); letter-spacing: .2em; color: #e9c58d; }
-.winter-tree-title strong { font: 500 clamp(.85rem,1.2vw,1.15rem)/1.45 var(--font-heading); font-style: italic; color: #e1e6dbbc; }
-.winter-stage-bottom { bottom: 1.15rem; align-items: center; }
-.winter-palette { background: #09151bed; border-color: #d2bd854e; }
-.winter-palette button { color: #d8d1bd; }
-.winter-palette button[aria-pressed='true'] { background: #f0d19a; color: #21251d; }
-.winter-motion-toggle { background: #09151bed; color: #e7dcc7; border-color: #d2bd8555; }
-.winter-motion-toggle:is(:hover,:focus-visible) { border-color: #f0d19a; }
-.winter-tree-utilities { display: flex; gap: .35rem; }
-.winter-stage-caption { color: #ffde9c72; right: .9rem; }
-.winter-section-heading h2 em { color: #ebc888; }
-.winter-team-section .team-cover-player { border-color: #dfc9964c; box-shadow: 0 10px 35px #0005; }
-.winter-team-section .team-cover-player small { color: #f4dfad; }
-.winter-team-section .team-cover-player i { color: #e8c686; }
-.winter-team-section .team-cover-player:is(:hover,:focus-visible) { border-color: #efc77c; }
-.winter-team-section::before { content: '✳'; position: absolute; right: max(1.25rem,calc((100vw - 78rem)/2)); color: #d9bc824a; font-size: 4rem; line-height: 1; pointer-events: none; }
-.winter-team-section { position: relative; }
-.home-discover .section-index { border-top-color: #d9bd8650; }
-.home-lineup > a > div { border-color: #e8cd9947; }
-.home-lineup > a:is(:hover,:focus-visible) > div { border-color: #f4d18c; }
-.home-records { border-block-color: #e9c89350; }
-.home-score-teams b small { color: #edc888; }
-.home-score:hover { background: #203b33; }
-.home-closing > a {
-  background: radial-gradient(ellipse at 85% 0,#956b4240,transparent 55%),linear-gradient(145deg,#1e3330,#142021);
-  border-color: #b89c6f70;
-}
-.home-closing > a:is(:hover,:focus-visible) { border-color: #f1d093; }
-.home-closing a > span:last-child { color: #e9cf91; }
-
+@media (max-width: 360px) { .winter-stage-serial { display: none; } .winter-stage-bottom { gap: .4rem; left: .7rem; right: .7rem; } .winter-scene-note { max-width: 9ch; } .winter-team-section .team-cover-player { height: 10rem; } .winter-team-section .team-cover-player.cover-1 { height: 12rem; } }
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; transform: none; } }
 /* An illustrated holiday card replaces generic seasonal marketing noise. */
 .winter-postcard { padding: 1.5rem 0 clamp(5rem,9vw,9rem); }
 .winter-postcard-inner { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); min-height: 32rem; border-radius: 1.3rem; overflow: hidden; border: 1px solid #d7bb8870; background: radial-gradient(ellipse at 78% 54%,#59633b52,transparent 46%),linear-gradient(120deg,#193b36,#112321 72%); box-shadow: 0 26px 80px #0005; position: relative; }
@@ -330,75 +235,6 @@ body::after {
 .winter-postcard-ornament-c { width: 23%; aspect-ratio: 1; top: 4%; left: 68%; background: radial-gradient(circle at 30% 20%,#eff5df,#729585 50%,#355d52 90%); }
 .winter-postcard-line { position: absolute; bottom: 2.5rem; right: 2rem; color: #e6c58d; letter-spacing: .35em; font: 600 .65rem var(--font-mono); }
 .winter-postcard-shush { position: absolute; top: 60%; left: 5%; font: 800 clamp(5rem,10vw,10rem)/1 var(--font-heading); letter-spacing: -.12em; color: #ebd59b1b; pointer-events: none; }
-
-/* Christmas travels through other routes, without competing with the actual product. */
-.route-esports > main, .route-company > main, .route-content > main, .route-products > main {
-  background: radial-gradient(ellipse at 80% 5%,#47674621 0,transparent 32%),radial-gradient(ellipse at 5% 32%,#a07a4e0b 0,transparent 37%);
-}
-.page-heading { position: relative; border-bottom-color: #b5a27655 !important; }
-.page-heading::after { content: '✦   SHUSH WINTER EDITION   ✦'; display: inline-block; position: absolute; bottom: -.5rem; right: 0; padding-inline: .9rem; background: var(--bg); color: #d8c28e; font: 600 .6rem/1.6 var(--font-mono); letter-spacing: .1em; }
-.route-esports .page-heading h1 span, .route-company .page-heading h1 span, .route-content .page-heading h1 span, .route-products .page-heading h1 span { color: #efce94; }
-.route-products .drop-gallery-label { border-color: #d3b98965; }
-.route-products .audit-drop-gallery { box-shadow: 0 18px 55px #0003; }
-.route-esports .character-media, .route-content .creator-art { border-color: #b5a27655; }
-.route-esports .status-badge { color: #efca90; }
-.shush-footer { position: relative; background: linear-gradient(180deg,#182d2b,#101b1e); border-top-color: #c8ae7959; }
-.shush-footer::before { content: '✦  BOAS FESTAS, SHUSH COMMUNITY  ✦'; display: block; width: 100%; margin-top: -1.8rem; margin-bottom: 2.5rem; padding: .8rem 1rem; border-block: 1px solid #bda47444; background: repeating-linear-gradient(90deg,#273f32,#172923 180px,#283b30 360px); text-align: center; font: 700 .68rem/1.7 var(--font-mono); letter-spacing: .2em; color: #e9c995; }
-.footer-top { border-color: #e4c98a66; }
-
-@media (max-width: 1180px) {
-  .winter-hero-grid { grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); }
-  .winter-tree-premium { height: clamp(530px,52vw,690px); }
-  .winter-tree-utilities { position: absolute; bottom: 3.55rem; right: 0; }
-}
-@media (max-width: 900px) and (min-width: 768px) {
-  .winter-hero-grid { grid-template-columns: 1fr; }
-  .winter-hero-copy { padding-bottom: 2rem; }
-  .winter-tree-premium { width: min(100%,630px); margin: 0 auto 2rem; height: 650px; }
-  .winter-hero-bottom { margin-top: 0; }
-}
-@media (max-width: 767px) {
-  .winter-hero-grid { grid-template-columns: 1fr; }
-  .winter-hero-copy { padding-top: 2.8rem; }
-  .winter-oversized { font-size: clamp(3.5rem,18vw,8rem); margin-top: 1.25rem; }
-  .winter-hero-copy h1 { font-size: clamp(2.8rem,9.5vw,4.8rem); margin-top: -.3rem; }
-  .winter-tree-premium { width: 100%; height: clamp(470px,128vw,620px); min-height: 470px; border-radius: .85rem; }
-  .winter-tree-title { left: .9rem; top: 3.1rem; }
-  .winter-tree-title strong { font-size: .85rem; }
-  .winter-stage-top { top: .85rem; left: .9rem; right: .9rem; }
-  .winter-stage-serial { font-size: .55rem; letter-spacing: .04em; }
-  .winter-stage-top .winter-status { font-size: .52rem; }
-  .winter-stage-bottom { left: .55rem; right: .55rem; bottom: .7rem; justify-content: center; }
-  .winter-palette { gap: .15rem; max-width: 100%; }
-  .winter-palette button { min-height: 2.75rem; font-size: .64rem; padding-inline: .6rem; }
-  .winter-tree-utilities { position: absolute; right: .15rem; bottom: 3.4rem; }
-  .winter-motion-toggle { min-height: 2.25rem; font-size: .61rem; padding-inline: .55rem; }
-  .winter-postcard-inner { grid-template-columns: 1fr; }
-  .winter-postcard-content { padding: 2rem 1.5rem; }
-  .winter-postcard-content h2 { margin-top: 1.5rem; font-size: clamp(2.3rem,8.5vw,3.7rem); }
-  .winter-postcard-content p { font-size: .87rem; }
-  .winter-postcard-art { min-height: 17rem; }
-  .winter-postcard-ornament-a { width: 37%; top: 15%; left: 10%; }
-  .winter-postcard-ornament-b { width: 23%; top: 48%; left: 63%; }
-  .winter-postcard-ornament-c { width: 16%; top: 1%; left: 65%; }
-  .winter-postcard-star { font-size: 3.5rem; right: 35%; top: 8%; }
-  .winter-postcard-signature { padding-top: 2rem; }
-  .winter-postcard-shush { font-size: 6rem; }
-  .page-heading::after { font-size: .48rem; }
-  .shush-footer::before { font-size: .57rem; letter-spacing: .08em; }
-  body::before, body::after { opacity: .2; }
-}
-@media (max-width: 390px) {
-  .winter-tree-premium { min-height: 460px; height: 480px; }
-  .winter-palette button { padding: .5rem .35rem; font-size: .57rem; }
-  .winter-stage-serial { font-size: .5rem; }
-  .winter-stage-top .winter-status { font-size: 0; }
-  .winter-postcard-eyebrow { font-size: .56rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  body::before, body::after { animation: none; transform: none; }
-  .winter-postcard-ornament { animation: none; }
-}
 
 /* 03 — Christmas postcard studio */
 /* A tactile holiday keepsake: editable, downloadable and entirely local. */
@@ -445,19 +281,67 @@ body::after {
 }
 @media (prefers-reduced-motion: reduce) { .winter-card-trigger { transition: none; } }
 
-.winter-tree-canvas { cursor: grab; touch-action: pan-y; }
-.winter-tree-canvas:active { cursor: grabbing; }
-.winter-tree-canvas:focus-visible { outline: 2px solid #f5d99d; outline-offset: -5px; border-radius: .7rem; }
+/* The existing postcard editor keeps its layout and native dialog behaviour. */
+.winter-postcard-inner { border-radius: 2rem; border-color: #b9a67566; background: radial-gradient(ellipse at 80% 40%,#69734c33,transparent 50%),linear-gradient(135deg,#244135,#112420); }
+.winter-postcard-content h2 { font-weight: 500; letter-spacing: -.04em; line-height: 1.12; }
+.winter-postcard-content h2 em { font-weight: 400; }
+.winter-card-trigger,.winter-card-download,.winter-card-close { border-radius: 999px; }
+.winter-card-dialog { border-radius: 1.5rem; }
+.winter-card-dialog-header h2 { font-weight: 500; letter-spacing: -.035em; }
+@media (max-width: 767px) {
+ .winter-postcard-inner { grid-template-columns: 1fr; }
+ .winter-postcard-content { padding: 2rem 1.5rem; }
+ .winter-postcard-content h2 { font-size: clamp(2.1rem,8vw,3.5rem); }
+ .winter-postcard-content p { font-size: .85rem; }
+ .winter-postcard-art { min-height: 17rem; }
+ .winter-postcard-ornament-a { width: 37%; top: 15%; left: 10%; }
+ .winter-postcard-ornament-b { width: 23%; top: 48%; left: 63%; }
+ .winter-postcard-ornament-c { width: 16%; top: 1%; left: 65%; }
+ .winter-postcard-star { font-size: 3.5rem; right: 35%; top: 8%; }
+ .winter-postcard-shush { font-size: 6rem; }
+ .winter-postcard-eyebrow { font-size: .53rem; }
+ .winter-postcard-signature { padding-top: 2rem; }
+}
+@media (max-width: 500px) { .winter-card-dialog-header { position: sticky; top: -1rem; z-index: 5; padding: .4rem 0 .75rem; border-bottom: 1px solid #9b8c6659; background: #101b1efa; } }
 
-/* Keep the editor heading and escape route visible while mobile forms scroll. */
-@media (max-width: 500px) {
-  .winter-card-dialog-header {
-    position: sticky;
-    top: -1rem;
-    z-index: 5;
-    margin: -.4rem 0 0;
-    padding: .4rem 0 .75rem;
-    border-bottom: 1px solid #9b8c6659;
-    background: #101b1efa;
-  }
+/* Studio recovery stays legible without shifting the preview or hiding close. */
+.winter-card-recovery { display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--control-line); border-radius: .75rem; background: var(--surface); color: var(--text); font-size: .8rem; }
+.winter-card-download:disabled { transform: none; }
+.winter-card-dialog { overscroll-behavior: contain; }
+@media (max-height: 550px) { .winter-card-dialog-header { position: sticky; top: -1.5rem; z-index: 5; padding-block: .5rem; background: #101b1efa; border-bottom: 1px solid #9b8c6659; } }
+
+.winter-card-preview { position: relative; }
+.winter-card-loading { position: absolute; top: .75rem; left: .75rem; right: .75rem; z-index: 2; margin: 0; padding: .6rem .75rem; border-radius: .6rem; background: #101b1ef2; color: var(--text); font-size: .75rem; pointer-events: none; }
+
+/* Reflow follows available text space, including enlarged browser text. */
+.shell:not(.shush-navigation) { container-type: inline-size; }
+@container (max-width: 16rem) {
+ .winter-stage-bottom { flex-direction: column; align-items: stretch; }
+ .winter-scene-note { max-width: none; }
+ .winter-tree-utilities { justify-content: space-between; }
+ .winter-lobby .winter-lobby-profile-info { min-width: 0; padding: 1rem; }
+ .winter-lobby .winter-lobby-profile-cta, .tracker-button { overflow-wrap: anywhere; white-space: normal; min-width: 0; }
+ .site-button, .utility-button, .editorial-link { min-width: 0; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+ .page-heading, .drop-layout, .customizer-fields, .callup-list, .match-body, .week-detail, .drop-process, .footer-navigation, .footer-site-links { grid-template-columns: minmax(0,1fr); }
+ .match-calendar, .week-windows { min-width: 0; }
+ h1, h2, h3, .section-kicker { overflow-wrap: anywhere; }
+ .section-kicker { display: block; }
+ .about-counts, .home-score-teams { flex-wrap: wrap; }
+ .home-creator-links > a { gap: .5rem; }
+ .home-creator-links img, .home-creator-links .portrait-placeholder { width: 3rem; height: 3rem; }
+ .audit-drop-gallery { min-width: 0; }
+ .drop-editor { padding: 20px; }
+ .drop-view-control { flex-wrap: wrap; }
+ .drop-view-control button { flex: 1; min-width: 0; gap: .5rem; }
+ .size-options > div { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .drop-mobile-preview { grid-template-columns: 3rem minmax(0,1fr); gap: .5rem; }
+ .drop-mobile-preview > a { grid-column: 1/-1; justify-self: end; }
+ .character-copy, .creator-feature-copy { padding: 1rem; }
+ .character-controls { gap: .5rem; padding: 16px; }
+ .character-controls button { flex: none; }
+ .match-week summary { grid-template-columns: minmax(0,1fr) auto; }
+ .week-number { grid-column: 1/-1; }
+ .map-performance-row { grid-template-columns: minmax(0,1fr) auto; }
+ .map-performance-row > * { min-width: 0; }
+ .partner-content { grid-template-columns: minmax(0,1fr); }
 }

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { getTreeVisit, type TreeVariant } from '../../lib/tree-visit';
 
 /**
  * Winter scene: perspective-projected fir branches, real branch needles,
  * glossy baubles, spiral fairy lights, aurora, layered snow and wrapped gifts.
  * Deliberately self-contained: no WebGL context contention or external assets.
  */
-type Theme = 'christmas' | 'ice' | 'shush';
+type Theme = TreeVariant;
 type Vec = { x: number; y: number; z: number };
 type FirBranch = { y: number; angle: number; length: number; drop: number; shade: number; frost: boolean };
 type Bauble = { y: number; angle: number; radius: number; size: number; color: number; sway: number };
@@ -17,7 +18,7 @@ const themes: Record<Theme, {
   baubles: string[]; bulbs: string[]; ribbon: string; sky: string; haze: string;
 }> = {
   christmas: {
-    label: 'Natal clássico',
+    label: 'Bosque de âmbar',
     pine: ['#205844', '#327459', '#43876a', '#64a37f', '#8ab89a'],
     dimPine: ['#12372c', '#184534', '#23553d', '#306548', '#447657'],
     baubles: ['#bd354c', '#e9b86d', '#f1e4c7', '#b44054', '#d6a357'],
@@ -25,7 +26,7 @@ const themes: Record<Theme, {
     ribbon: '#f5c777', sky: '#0b1418', haze: 'rgba(180,118,63,.15)',
   },
   ice: {
-    label: 'Noite gelada',
+    label: 'Silêncio de neve',
     pine: ['#205a61', '#2b7381', '#4b909c', '#75b8c0', '#a7d7d8'],
     dimPine: ['#173a43', '#24505b', '#2d6470', '#427781', '#538b95'],
     baubles: ['#d9edff', '#7ab8dc', '#cfdaff', '#a3bdda', '#f2ffff'],
@@ -33,7 +34,7 @@ const themes: Record<Theme, {
     ribbon: '#c9eafa', sky: '#08151e', haze: 'rgba(94,157,222,.18)',
   },
   shush: {
-    label: 'SHUSH glow',
+    label: 'Noite de veludo',
     pine: ['#2c5963', '#416b76', '#5c8694', '#8597bd', '#a6b6ca'],
     dimPine: ['#1d344c', '#30435e', '#394f64', '#506780', '#687e99'],
     baubles: ['#d8baf6', '#b19dff', '#ffc3da', '#c7e5ff', '#e9cfac'],
@@ -47,29 +48,30 @@ function seeded(seed: number) {
   return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 4294967296; };
 }
 
-function makeScene() {
-  const random = seeded(131224);
+function makeScene(theme: Theme) {
+  const random = seeded(theme === 'christmas' ? 131224 : theme === 'ice' ? 121226 : 251226);
+  const tiers = theme === 'ice' ? 44 : theme === 'shush' ? 32 : 39;
   const branches: FirBranch[] = [];
   const baubles: Bauble[] = [];
   const flakes: Snowflake[] = [];
   const stars: Star[] = [];
 
-  for (let tier = 0; tier < 39; tier++) {
-    const y = .075 + tier * .023;
+  for (let tier = 0; tier < tiers; tier++) {
+    const y = .075 + tier * (.9 / tiers);
     const count = 12 + (tier % 3) * 2;
     for (let arm = 0; arm < count; arm++) {
       branches.push({
         y: y + (random() - .5) * .013,
         angle: arm * (Math.PI * 2 / count) + tier * 1.79 + (random() - .5) * .2,
-        length: (.94 - y * .9) * (.78 + random() * .3),
-        drop: .014 + random() * .028,
+        length: (.94 - y * .9) * (.78 + random() * .3) * (theme === 'shush' ? .86 + .17 * Math.cos(tier * .9) : theme === 'ice' ? .88 : 1),
+        drop: (theme === 'ice' ? .008 : .018) + random() * (theme === 'shush' ? .055 : .028),
         shade: Math.floor(random() * 5),
-        frost: random() > .73,
+        frost: random() > (theme === 'ice' ? .3 : .8),
       });
     }
   }
 
-  for (let index = 0; index < 112; index++) {
+  for (let index = 0; index < (theme === 'ice' ? 64 : 96); index++) {
     const y = .10 + random() * .78;
     baubles.push({
       y, angle: random() * Math.PI * 2,
@@ -88,7 +90,11 @@ function makeScene() {
   return { branches, baubles, flakes, stars };
 }
 
-const scene = makeScene();
+const scenes = new Map<Theme, ReturnType<typeof makeScene>>();
+function getScene(theme: Theme) {
+  if (!scenes.has(theme)) scenes.set(theme, makeScene(theme));
+  return scenes.get(theme)!;
+}
 
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, radius: number) {
   ctx.beginPath();
@@ -153,7 +159,9 @@ export function ChristmasTree() {
   const snowfall = useRef(0);
   const rotation = useRef({ dragging: false, lastX: 0, offset: 0 });
   const redraw = useRef<() => void>(() => {});
-  const [theme, setTheme] = useState<Theme>('christmas');
+  const entryProgress = useRef(0);
+  const [visit] = useState(getTreeVisit);
+  const theme = visit.variant;
   const [paused, setPaused] = useState(false);
   const [lightsOn, setLightsOn] = useState(true);
 
@@ -164,9 +172,14 @@ export function ChristmasTree() {
     if (!canvas || !frame || !ctx) return;
 
     const palette = themes[theme];
+    const scene = getScene(theme);
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     let motionReduced = media.matches;
-    let visible = true;
+    let visible = false;
+    let reveal = motionReduced || paused ? 1 : entryProgress.current;
+    entryProgress.current = reveal;
+    let announced = false;
+    let disposed = false;
     let width = 0;
     let height = 0;
     let frameId = 0;
@@ -175,13 +188,14 @@ export function ChristmasTree() {
 
     const draw = (clock: number) => {
       if (!ctx || width < 1 || height < 1) return;
+      if (reveal === 1 && canvas.dataset.revealed !== 'true') canvas.dataset.revealed = 'true';
       ctx.clearRect(0, 0, width, height);
       const scale = Math.min(width / 550, height / 635);
       const center = width * .5;
       const base = height * .84;
-      const treeHeight = Math.min(height * .69, 442 * scale);
-      const treeWidth = Math.min(width * .365, 194 * scale);
-      const rot = .56 + clock * .115 + pointer.current.x * .42 + rotation.current.offset;
+      const treeHeight = Math.min(height * (theme === 'ice' ? .65 : theme === 'shush' ? .59 : .61), (theme === 'ice' ? 465 : 442) * scale);
+      const treeWidth = Math.min(width * .365, (theme === 'ice' ? 157 : theme === 'shush' ? 207 : 194) * scale);
+      const rot = .56 + clock * .055 + (1 - reveal) * .8 + pointer.current.x * .28 + rotation.current.offset;
       const lean = pointer.current.y * 5 * scale;
       const sin = Math.sin, cos = Math.cos;
       const project = (radius: number, y: number, angle: number): Vec => {
@@ -194,7 +208,7 @@ export function ChristmasTree() {
       // Deep sky with a restrained aurora and scattered distant stars.
       const sky = ctx.createLinearGradient(0, 0, 0, height);
       sky.addColorStop(0, palette.sky);
-      sky.addColorStop(.66, '#17252a');
+      sky.addColorStop(.66, theme === 'christmas' ? '#172a25' : theme === 'ice' ? '#142329' : '#211f2c');
       sky.addColorStop(1, '#0b1720');
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, width, height);
@@ -227,11 +241,13 @@ export function ChristmasTree() {
       // Snow banks, ground haze and a luminous platform anchor the sculpture.
       ctx.fillStyle = '#c6e2d71b';
       ctx.beginPath(); ctx.ellipse(center, base + 20 * scale, 195 * scale, 39 * scale, 0, 0, Math.PI * 2); ctx.fill();
-      for (let ring = 3; ring >= 0; ring--) {
-        ctx.strokeStyle = ring % 2 ? '#dcbf8152' : '#b4d9cc47';
+      for (let ring = 1; ring >= 0; ring--) {
+        ctx.strokeStyle = ring % 2 ? '#dcbf8124' : '#b4d9cc24';
         ctx.lineWidth = (ring === 0 ? 2.4 : .85) * scale;
         ctx.beginPath(); ctx.ellipse(center, base + 10 * scale, (112 + ring * 29) * scale, (18 + ring * 5) * scale, 0, 0, Math.PI * 2); ctx.stroke();
       }
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, (reveal - .6) / .4);
       // Tree trunk and tapered silhouette sit behind the full volume of needles.
       ctx.fillStyle = '#563b2c';
       roundRect(ctx, center - 12 * scale, base - 42 * scale, 24 * scale, 47 * scale, 4 * scale); ctx.fill();
@@ -247,9 +263,13 @@ export function ChristmasTree() {
       ctx.bezierCurveTo(center + treeWidth * .7, base - treeHeight * .37, center + treeWidth * .12, base - treeHeight * .84, center, base - treeHeight * .99);
       ctx.fill();
 
+      ctx.restore();
+
       const prepared = scene.branches.map(branch => ({ branch, depth: sin(branch.angle + rot) * branch.length }));
       prepared.sort((a, b) => a.depth - b.depth);
       for (const { branch, depth } of prepared) {
+        if (branch.y > reveal) continue;
+        ctx.globalAlpha = reveal === 1 ? 1 : Math.min(1, (reveal - branch.y) * 12);
         const angle = branch.angle;
         const start = project(.04, branch.y, angle);
         const tip = project(branch.length, branch.y - branch.drop, angle);
@@ -263,18 +283,24 @@ export function ChristmasTree() {
           (start.x + tip.x) / 2, (start.y + tip.y) / 2 - 7 * scale, tip.x, tip.y
         ); ctx.stroke();
 
-        // Fir fronds: each stem has real needle pairs and a soft frost edge.
-        for (let k = 1; k < 17; k++) {
+        // Batch identical needle materials into three paths per branch.
+        // Geometry and colour stay intact, without sixteen separate strokes.
+        for (let materialIndex = 0; materialIndex < 3; materialIndex++) {
+          ctx.strokeStyle = material[(shade + materialIndex) % 5];
+          ctx.lineWidth = (facing ? 1.5 : 1.05) * scale;
+          ctx.beginPath();
+          for (let k = 1; k < 17; k++) {
+            if (k % 3 !== materialIndex) continue;
           const t = k / 18;
           const mid = project(branch.length * t, branch.y - branch.drop * t + .012 * sin(t * Math.PI), angle);
           const needleLength = branch.length * (.12 + .12 * (1 - t)) * (1 - t * .24);
           const lift = .014 + .018 * (1 - t);
           const l = project(branch.length * t + needleLength * .08, branch.y - branch.drop * t + lift, angle - .24 - .44 * (1 - t));
           const r = project(branch.length * t + needleLength * .08, branch.y - branch.drop * t + lift, angle + .24 + .44 * (1 - t));
-          ctx.strokeStyle = material[(shade + k % 3) % 5];
-          ctx.lineWidth = (facing ? 1.5 : 1.05) * scale;
-          ctx.beginPath(); ctx.moveTo(mid.x, mid.y); ctx.lineTo(l.x, l.y);
-          ctx.moveTo(mid.x, mid.y); ctx.lineTo(r.x, r.y); ctx.stroke();
+            ctx.moveTo(mid.x, mid.y); ctx.lineTo(l.x, l.y);
+            ctx.moveTo(mid.x, mid.y); ctx.lineTo(r.x, r.y);
+          }
+          ctx.stroke();
         }
         if (branch.frost && facing && branch.y > .19) {
           ctx.strokeStyle = '#def5e6b8';
@@ -284,6 +310,8 @@ export function ChristmasTree() {
         }
       }
 
+      ctx.globalAlpha = 1;
+
       // Two spiralling strands of fine wire with light points.
       for (let strand = 0; strand < 2; strand++) {
         for (let pass = 0; pass < 2; pass++) {
@@ -292,7 +320,8 @@ export function ChristmasTree() {
           for (let k = 0; k < 360; k++) {
             const t = k / 359;
             const y = .085 + t * .85;
-            const angle = t * Math.PI * (strand === 0 ? 13.5 : 10.5) + strand * 2.3 + .5;
+            if (y > reveal) { started = false; continue; }
+            const angle = t * Math.PI * (theme === 'ice' ? 8 : theme === 'shush' ? 17 : strand === 0 ? 13.5 : 10.5) + strand * 2.3 + .5;
             const pos = project((.98 - y * .9) * 1.02, y, angle);
             const isFront = pos.z > (pass === 0 ? -.2 : .08);
             if (!isFront) { started = false; continue; }
@@ -312,7 +341,8 @@ export function ChristmasTree() {
           for (let k = 0; k < 76; k++) {
             const t = k / 76;
             const y = .085 + t * .85;
-            const angle = t * Math.PI * (strand === 0 ? 13.5 : 10.5) + strand * 2.3 + .5;
+            const angle = t * Math.PI * (theme === 'ice' ? 8 : theme === 'shush' ? 17 : strand === 0 ? 13.5 : 10.5) + strand * 2.3 + .5;
+            if (y > reveal - .06) continue;
             const pos = project((.98 - y * .9) * 1.04, y, angle);
             if (pos.z < -.15) continue;
             const col = palette.bulbs[(k * 7 + strand * 2) % palette.bulbs.length];
@@ -334,7 +364,7 @@ export function ChristmasTree() {
         bauble, point: project(bauble.radius, bauble.y, bauble.angle),
       })).sort((a, b) => a.point.z - b.point.z);
       for (const { bauble, point } of baubles) {
-        if (point.z < -.2) continue;
+        if (point.z < -.2 || bauble.y > reveal - .04) continue;
         const radius = bauble.size * scale * (1 + point.z * .23);
         const colour = palette.baubles[bauble.color];
         ctx.strokeStyle = '#e7dfbf6b'; ctx.lineWidth = .7 * scale;
@@ -342,6 +372,8 @@ export function ChristmasTree() {
         glossyBauble(ctx, point.x, point.y, radius, colour, sin(clock * 1.5 + bauble.sway));
       }
 
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, (reveal - .88) / .12);
       const starY = base - treeHeight - 10 * scale + lean;
       if (lightsOn) {
         const radiance = ctx.createRadialGradient(center, starY, 2, center, starY, 65 * scale);
@@ -365,6 +397,8 @@ export function ChristmasTree() {
         ctx.moveTo(center, starY - 38 * scale); ctx.lineTo(center, starY + 38 * scale); ctx.stroke();
       }
 
+      ctx.restore();
+
       // A tiny custom SHUSH pedestal and carefully staged presents.
       gift(ctx, center - 111 * scale, base + 12 * scale, 44 * scale, '#ad394a', '#e9c782', -.08);
       gift(ctx, center + 105 * scale, base + 14 * scale, 56 * scale, '#306d62', '#e7d39d', .055);
@@ -379,9 +413,22 @@ export function ChristmasTree() {
       ctx.font = '700 ' + Math.round(12 * scale) + 'px Manrope, sans-serif';
       ctx.fillText('S H U S H', center, base + 34 * scale);
 
+      // The rising constellation forms the tree from the ground up.
+      if (reveal < 1) {
+        for (let i = 0; i < 280; i++) {
+          const y = Math.min(.98, Math.max(0, reveal + Math.sin(i * 2.39) * .095));
+          const angle = i * 2.399 + clock * .9;
+          const radius = (.98 - y * .9) * (1 + (1 - reveal) * .3);
+          const point = project(radius, y, angle);
+          ctx.globalAlpha = (.3 + .7 * Math.abs(Math.sin(i * 1.6))) * Math.min(1, (1 - reveal) * 9);
+          ctx.fillStyle = i % 4 ? palette.bulbs[i % palette.bulbs.length] : '#fff8de';
+          ctx.fillRect(point.x, point.y, 1.6 * scale, 1.6 * scale);
+        }
+        ctx.globalAlpha = 1;
+      }
       drawFlakes(true);
       // A few individual sparks dance close to the star.
-      if (lightsOn) {
+      if (lightsOn && reveal > .98) {
         for (let i = 0; i < 10; i++) {
           const angle = clock * (.25 + (i % 3) * .17) + i * 2.399;
           const radius = (21 + i * 7) * scale;
@@ -405,44 +452,78 @@ export function ChristmasTree() {
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw(time);
+      if (!announced) {
+        announced = true;
+        canvas.dataset.ready = 'true';
+        canvas.dataset.revealed = String(reveal === 1);
+        window.dispatchEvent(new Event('shush:tree-ready'));
+      }
     };
     const animate = (now: number) => {
+      frameId = 0;
+      if (!canAnimate()) return;
       frameId = requestAnimationFrame(animate);
-      if (motionReduced || paused || document.hidden || !visible) { previous = now; return; }
       if (now - previous < 32) return;
-      const dt = previous ? Math.min((now - previous) / 1000, .075) : 0;
+      const elapsed = previous ? Math.max(0, (now - previous) / 1000) : 0;
+      const dt = Math.min(elapsed, .075);
       previous = now;
       time += dt;
+      // Appearance follows real time even on a slow device; physics stays capped.
+      reveal = Math.min(1, reveal + elapsed / (visit.returning ? .65 : 1.65));
+      entryProgress.current = reveal;
       pointer.current.x += (pointer.current.targetX - pointer.current.x) * .06;
       pointer.current.y += (pointer.current.targetY - pointer.current.y) * .06;
       snowfall.current *= .985;
       draw(time);
     };
 
+    const canAnimate = () => !motionReduced && !paused && !document.hidden && visible;
+    const syncAnimation = () => {
+      cancelAnimationFrame(frameId);
+      frameId = 0;
+      previous = 0;
+      if (canAnimate()) frameId = requestAnimationFrame(animate);
+    };
+
     redraw.current = () => draw(time);
     const ro = new ResizeObserver(resize);
-    const io = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; previous = 0; if (visible) draw(time); }, { threshold: .02 });
-    const onMotion = (event: MediaQueryListEvent) => { motionReduced = event.matches; draw(time); };
-    const onVisibility = () => { previous = 0; if (!document.hidden) draw(time); };
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting && entry.intersectionRatio >= .02;
+      if (visible) draw(time);
+      syncAnimation();
+    }, { threshold: .02 });
+    const onMotion = (event: MediaQueryListEvent) => {
+      motionReduced = event.matches;
+      if (motionReduced) entryProgress.current = reveal = 1;
+      draw(time);
+      syncAnimation();
+    };
+    const onVisibility = () => {
+      if (!document.hidden && visible) draw(time);
+      syncAnimation();
+    };
     ro.observe(frame); io.observe(frame);
     media.addEventListener('change', onMotion);
     document.addEventListener('visibilitychange', onVisibility);
     resize();
-    frameId = requestAnimationFrame(animate);
+    document.fonts?.ready.then(() => { if (!disposed) draw(time); });
+    syncAnimation();
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(frameId);
       redraw.current = () => {};
       ro.disconnect(); io.disconnect();
       media.removeEventListener('change', onMotion);
       document.removeEventListener('visibilitychange', onVisibility);
     };
-  }, [theme, paused, lightsOn]);
+  }, [theme, paused, lightsOn, visit.returning]);
 
   return (
     <div
       ref={frameRef}
-      className="winter-tree-stage winter-tree-premium"
+      className={`winter-tree-stage winter-tree-premium scene-${theme}`}
+      data-tree-variant={theme}
       onPointerMove={(event) => {
         if (event.pointerType !== 'mouse') return;
         const bounds = event.currentTarget.getBoundingClientRect();
@@ -452,8 +533,8 @@ export function ChristmasTree() {
       onPointerLeave={() => { pointer.current.targetX = 0; pointer.current.targetY = 0; }}
     >
       <div className="winter-stage-top" aria-hidden="true">
-        <span className="winter-stage-serial">NO. 01 / NORTH POLE EDITION</span>
-        <span className="winter-status"><i /> SHUSH CHRISTMAS 2026</span>
+        <span className="winter-stage-serial">UM PEQUENO MUNDO / SHUSH</span>
+        <span className="winter-status"><i /> NATAL 2026</span>
       </div>
       <canvas
         ref={canvasRef}
@@ -483,27 +564,25 @@ export function ChristmasTree() {
         }}
       />
       <div className="winter-tree-title" aria-hidden="true">
-        <span>WINTER WONDERLAND</span>
-        <strong>Make a little magic.</strong>
+        <span>A ATMOSFERA DESTA VISITA</span>
+        <strong>{themes[theme].label}</strong>
       </div>
       <div className="winter-stage-bottom">
-        <div className="winter-palette" role="group" aria-label="Cor das luzes da árvore">
-          {(Object.keys(themes) as Theme[]).map((key) => (
-            <button key={key} type="button" aria-pressed={theme === key} onClick={() => setTheme(key)}>
-              {themes[key].label}
-            </button>
-          ))}
-        </div>
+        <span className="winter-scene-note">Cada visita, uma nova noite.</span>
         <div className="winter-tree-utilities">
           <button className="winter-motion-toggle" type="button" aria-pressed={!lightsOn} onClick={() => setLightsOn(value => !value)}>
-            {lightsOn ? 'Luzes on' : 'Luzes off'} <span aria-hidden="true">✦</span>
+            {lightsOn ? 'Luzes on' : 'Luzes off'}
+            <svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="m6 0 1.6 4.4L12 6 7.6 7.6 6 12 4.4 7.6 0 6l4.4-1.6Z" /></svg>
           </button>
           <button className="winter-motion-toggle" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused}>
-            {paused ? 'Reproduzir' : 'Pausar'} <span aria-hidden="true">{paused ? '▶' : 'Ⅱ'}</span>
+            {paused ? 'Reproduzir' : 'Pausar'}
+            <svg aria-hidden="true" focusable="false" width="8" height="10" viewBox="0 0 8 10" fill="currentColor">
+              {paused ? <path d="m1 0 7 5-7 5Z" /> : <path d="M0 0h2v10H0zM6 0h2v10H6z" />}
+            </svg>
           </button>
         </div>
       </div>
-      <span className="winter-stage-caption" aria-hidden="true">✧ A LITTLE HOLIDAY MAGIC ✧</span>
+      <span className="winter-stage-caption" aria-hidden="true">FICA MAIS UM BOCADINHO.</span>
     </div>
   );
 }

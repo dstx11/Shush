@@ -56,5 +56,6 @@ test('The Christmas tree supports keyboard rotation and does not trap navigation
   await page.keyboard.press('ArrowLeft');
   await page.keyboard.press('Tab');
   await expect(tree).not.toBeFocused();
-  await expect(page.locator('.winter-palette')).toBeVisible();
+  await expect(page.locator('.winter-palette')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Luzes on/ })).toBeFocused();
 });

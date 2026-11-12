@@ -20,3 +20,13 @@ export function pageSchema(path: string) {
     ],
   }])];
 }
+
+export function identitySchema() {
+  return [
+    { '@type': 'SportsTeam', '@id': `${siteUrl}/#organization`, name: 'SHUSH',
+      url: siteUrl, sport: 'VALORANT', description: routeMetadata['/'].description,
+      logo: `${siteUrl}/assets/brand/shush-logo.webp` },
+    { '@type': 'WebSite', '@id': `${siteUrl}/#website`, url: siteUrl, name: 'SHUSH',
+      inLanguage: 'pt-PT', publisher: { '@id': `${siteUrl}/#organization` } },
+  ];
+}
