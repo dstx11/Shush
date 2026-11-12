@@ -26,6 +26,7 @@ for(const [season,date,headline] of cases){
    await expect(page.locator('.team-cover-player')).toHaveCount(3);
    await expect(page.locator('.season-art')).toBeAttached();
   }
+  await page.screenshot({path:info.outputPath(`campaign-${season}.png`),animations:'disabled'});
   const width=await page.evaluate(()=>[document.documentElement.clientWidth,document.documentElement.scrollWidth]);
   expect(width[1]).toBeLessThanOrEqual(width[0]+1);
  });

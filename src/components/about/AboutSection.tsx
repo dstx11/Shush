@@ -17,7 +17,7 @@ export function AboutSection(){
     <p>Em 2022, a LOUD conquistou o primeiro VALORANT Champions. Estávamos desse lado do ecrã, a acompanhar tudo.</p>
     <p>Pouco depois, entre partidas e conversas, surgiu a ideia: se existia uma LOUD, porque não uma SHUSH? Era uma brincadeira, mas o nome ficou.</p>
     <p>Houve um <strong>More</strong>, contraponto ao Less. E houve um <strong>ponto e vírgula</strong>, a nossa resposta ao aspas. Pequenos detalhes que fazem parte da nossa origem.</p>
-    <p>Com o tempo, os nicks foram ganhando reconhecimento e a equipa construiu a sua própria identidade. Continuamos a gostar da piada, mas já não precisamos dela para explicar quem somos.</p>
+    <p>Em 2026, a LOUD voltou a conquistar o Champions. Entretanto, os nossos nicks já tinham ganho reconhecimento e a SHUSH construíra a sua própria identidade. Continuamos a gostar da piada, mas já não precisamos dela para explicar quem somos.</p>
     <p>A LOUD foi a inspiração inicial. O que veio depois é nosso.</p>
     <a className="editorial-link" href="https://loud.gg/" target="_blank" rel="noopener noreferrer">Obrigado pela inspiração, LOUD <ArrowIcon/></a>
     <small>A SHUSH é independente e não tem qualquer afiliação oficial à LOUD.</small>

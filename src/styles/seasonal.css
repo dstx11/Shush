@@ -165,3 +165,6 @@
 .season-dead-silence strong{font:700 clamp(1.2rem,2vw,2rem) var(--font-heading);color:#f9e5d4}
 @media(max-width:767px){.season-hidden-grid{gap:.4rem}.season-hidden-grid button{padding:1rem .35rem;min-height:200px}.season-hidden-grid strong{font-size:.65rem}.season-hidden-grid svg{height:80px}.season-counter-readout{gap:.45rem}}
 @media(prefers-reduced-motion:reduce){.season-incognito-art img,.season-incognito-mask,.season-hidden-grid svg,.season-afterhours,.season-afterhours-orb,.season-dead-silence,.season-dead-sign{transition:none!important}}
+
+/* Prevent decorative vector motion when offscreen or the tab is hidden. */
+.season-art.is-idle .season-art-motif,.season-art.is-idle .season-art-outline{animation-play-state:paused}

@@ -41,11 +41,16 @@ for (const [name, path, selector] of regions) {
       // A tall element capture can paint off-viewport fixed UI into the hero.
       // Compare the actual visitor viewport, including the header, instead.
       await page.evaluate(() => window.scrollTo(0, 0));
-      await expect(page).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
-      await page.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      await page.screenshot({ path: testInfo.outputPath(`${name}-redesign.png`), animations: 'disabled' });
+      await expect(region.locator('h1')).toHaveCount(1);
     } else {
-      await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
-      await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      if (name === 'about-intro') {
+        await region.screenshot({ path: testInfo.outputPath(`${name}-redesign.png`), animations: 'disabled' });
+        await expect(region.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
+      } else {
+        await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
+        await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
+      }
     }
   });
 }

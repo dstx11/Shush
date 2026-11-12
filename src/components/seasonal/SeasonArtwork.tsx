@@ -1,7 +1,21 @@
+import {useEffect,useRef,useState} from 'react';
 import type {SeasonId} from '../../seasonal/calendar.mjs';
 
 /** Single composited SVG per hero; geometric references to each campaign. */
 export function SeasonArtwork({id}:{id:SeasonId}){
+ const ref=useRef<SVGSVGElement>(null);
+ const [active,setActive]=useState(false);
+ useEffect(()=>{
+  if(!ref.current||typeof IntersectionObserver==='undefined')return;
+  let inView=false;
+  const media=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const update=()=>setActive(inView&&!document.hidden&&!media.matches);
+  const observer=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting&&entries[0].intersectionRatio>0.1;update();},{threshold:[0,.1]});
+  observer.observe(ref.current);
+  media.addEventListener('change',update);
+  document.addEventListener('visibilitychange',update);
+  return ()=>{observer.disconnect();media.removeEventListener('change',update);document.removeEventListener('visibilitychange',update);};
+ },[id]);
  const motif=(()=>{
   switch(id){
    case 'valentines': return <g className="season-art-motif"><circle cx="170" cy="240" r="90"/><circle cx="350" cy="240" r="90"/><path d="M170 150 C240 115 280 365 350 330 M170 330 C240 365 280 115 350 150"/><circle cx="260" cy="240" r="9" className="season-art-dot"/></g>;
@@ -13,5 +27,5 @@ export function SeasonArtwork({id}:{id:SeasonId}){
    default: return <g className="season-art-motif"><circle cx="260" cy="240" r="164"/><circle cx="260" cy="240" r="118"/><circle cx="260" cy="240" r="69"/><path d="M260 35V110 M260 371V446 M55 240H128 M392 240H465"/><circle cx="260" cy="222" r="10" className="season-art-dot"/><path d="M261 246Q291 270 262 304" strokeWidth="8" strokeLinecap="round"/></g>;
   }
  })();
- return <svg className={'season-art season-art-'+id} viewBox="0 0 520 480" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" focusable="false"><path className="season-art-grid" d="M20 80H500 M20 240H500 M20 400H500 M100 20V460 M260 20V460 M420 20V460"/><circle className="season-art-outline" cx="260" cy="240" r="205" strokeDasharray="3 11"/>{motif}<path className="season-art-corner" d="M20 65V20H65 M455 20H500V65 M20 415V460H65 M455 460H500V415"/></svg>;
+ return <svg ref={ref} className={'season-art season-art-'+id+(!active?' is-idle':'')} viewBox="0 0 520 480" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true" focusable="false"><path className="season-art-grid" d="M20 80H500 M20 240H500 M20 400H500 M100 20V460 M260 20V460 M420 20V460"/><circle className="season-art-outline" cx="260" cy="240" r="205" strokeDasharray="3 11"/>{motif}<path className="season-art-corner" d="M20 65V20H65 M455 20H500V65 M20 415V460H65 M455 460H500V415"/></svg>;
 }
