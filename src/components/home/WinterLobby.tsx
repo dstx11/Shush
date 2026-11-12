@@ -17,21 +17,21 @@ const ornamentPositions = [
 const destinations = [
   {
     id: 'premier', sequence: '01', label: 'THE COMPETITION',
-    title: 'A magia acontece no servidor.',
+    title: 'O resultado fica no servidor.',
     body: 'Partidas, mapas e resultados verificados. O nosso percurso, round após round.',
     href: '/esports/valorant/premier', action: 'Explorar Premier',
     theme: 'winter-gift-competition',
   },
   {
     id: 'drop', sequence: '02', label: 'THE JERSEY',
-    title: 'Um presente com o teu nome.',
+    title: 'O teu nick nas costas.',
     body: 'A camisola SHUSH Drop 01, com o teu nick e o teu número.',
     href: '/products/jersey', action: 'Descobrir Drop 01',
     theme: 'winter-gift-jersey',
   },
   {
     id: 'creators', sequence: '03', label: 'THE STORIES',
-    title: 'Fora do jogo, a mesma equipa.',
+    title: 'Nem tudo fica no Discord.',
     body: 'Os nossos creators e tudo o que acontece do outro lado do ecrã.',
     href: '/content', action: 'Conhecer creators',
     theme: 'winter-gift-creators',
@@ -49,7 +49,7 @@ export function WinterLobby() {
             <span className="section-kicker">SHUSH / THE SEVEN ORNAMENTS</span>
             <h2 id="winter-lobby-title">Sete nomes.<br /><em>Uma só árvore.</em></h2>
           </div>
-          <p>Não são as luzes que tornam esta árvore especial. São as pessoas. Escolhe um ornamento e descobre quem está por trás do nick.</p>
+          <p>Cada ornamento corresponde a um dos nossos jogadores. Escolhe um para conhecer o nick por trás das luzes.</p>
         </div>
         <div className="winter-lobby-layout">
           <div className="winter-ornament-scene" aria-label="Escolher um dos sete jogadores da SHUSH">

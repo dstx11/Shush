@@ -1,4 +1,5 @@
 import { useRouteMetadata } from './hooks/useRouteMetadata';
+import { SeasonProvider, useSeason } from './seasonal/SeasonProvider';
 import { lazy, Suspense, useRef, type ComponentType } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { BrandIntro } from './components/ui/BrandIntro';
@@ -26,7 +27,11 @@ const NotFoundPage = lazy(() => loadRouteWithRecovery(loadNotFoundPage));
 
 type AppProps = { initialPage?: ComponentType; initialPath?: string };
 
-export default function App({ initialPage, initialPath }: AppProps) {
+export default function App(props: AppProps) {
+  return <SeasonProvider><SeasonApp {...props}/></SeasonProvider>;
+}
+function SeasonApp({ initialPage, initialPath }: AppProps) {
+  const { id: seasonId } = useSeason();
   // The startup route has already been imported. Render it directly so the
   // first client commit does not briefly replace prerendered content with Suspense.
   const page = (path: string, fallback: ComponentType) => {
@@ -38,7 +43,7 @@ export default function App({ initialPage, initialPath }: AppProps) {
   useRouteMetadata(location.pathname);
 
   return (
-    <div className={`min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
+    <div data-season={seasonId} className={`shush-root min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <BrandIntro />
       <Header />
