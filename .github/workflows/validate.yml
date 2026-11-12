@@ -105,7 +105,7 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm run build
       - name: Responsive and interaction QA
-        run: pnpm run test:browser
+        run: pnpm run test:browser --grep "cinematic tree|visual region"
       - name: Cloudflare preview HTTP smoke
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:

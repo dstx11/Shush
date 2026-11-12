@@ -109,9 +109,9 @@ body::after { content: none; }
 .winter-stage-bottom { position: absolute; bottom: 1.2rem; left: 1.4rem; right: 1.4rem; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: .7rem; }
 .winter-scene-note { max-width: 12ch; color: #b2c0b4; font: italic .77rem/1.5 var(--font-heading); }
 .winter-tree-utilities { display: flex; gap: .35rem; }
-.winter-motion-toggle { min-height: 2.5rem; padding: .5rem .75rem; border: 1px solid #b1a27b66; border-radius: 999px; color: #e7dcc4; background: #0d1b1dc9; font: 500 .65rem/1.3 var(--font-ui); transition: color .2s,background .2s; }
+.winter-motion-toggle { display: inline-flex; align-items: center; justify-content: center; gap: .25rem; white-space: nowrap; min-height: 2.5rem; padding: .5rem .75rem; border: 1px solid #b1a27b66; border-radius: 999px; color: #e7dcc4; background: #0d1b1dc9; font: 500 .65rem/1.3 var(--font-ui); transition: color .2s,background .2s; }
 .winter-motion-toggle:is(:hover,:focus-visible) { background: #2c4034; color: #fff2ce; }
-.winter-motion-toggle span { margin-left: .25rem; }
+.winter-motion-toggle svg { flex: none; }
 .winter-stage-caption { display: none; }
 /* A gentler rhythm connects the existing people, stories and products. */
 .winter-team-section { padding-block: clamp(4rem,8vw,8rem) 2rem; }

@@ -30,7 +30,7 @@ As seis rotas, os sete jogadores reais, Premier, perfis, personalizador, URLs, p
 
 ## Validação e revisão
 
-A primeira validação local passou TypeScript, dados Premier/perfis/Drop, testes de ciclo e seleção de árvore, assets, links, build, pré-render/SEO/segurança e orçamentos. Medição final local: 109,73 KiB de JavaScript e 22,85 KiB de CSS gzip, face a 108,52/23,56 KiB na PR #12. Os recursos de fonte são contabilizados separadamente, não no orçamento JS/CSS. A face normal é pré-carregada; a itálica é pedida quando usada.
+A primeira validação local passou TypeScript, dados Premier/perfis/Drop, testes de ciclo e seleção de árvore, assets, links, build, pré-render/SEO/segurança e orçamentos. Medição final local: 109,85 KiB de JavaScript e 22,86 KiB de CSS gzip, face a 108,52/23,56 KiB na PR #12. Os recursos de fonte são contabilizados separadamente, não no orçamento JS/CSS. A face normal é pré-carregada; a itálica é pedida quando usada.
 
 Não há alegações de melhoria medida de LCP, INP ou CLS. A limitação do browser local foi resolvida com o Chrome Headless Shell oficial 156.0.8078.79. Chromium pode agora executar os testes e gerar capturas localmente; WebKit continua a ser validado na CI.
 
@@ -47,3 +47,7 @@ A primeira CI (43129505744, aa02049) teve 534 testes aprovados, 60 exclusões po
 A validação local das regiões e das três variantes terminou com 18 testes aprovados, incluindo 14 comparações de pixels, sem alterar tolerâncias. O SVG partilhado preserva os ícones monocromáticos e a impressão da camisola mantém Manrope. A ordem mobile é título, árvore e história/ações, com a ordem de foco correspondente.
 
 A CI 43132185863 confirmou 530 testes funcionais aprovados (incluindo WebKit), 60 exclusões por formato e 12 diferenças pequenas nas referências locais. Foram revistos os PNG completos e os mapas de diferenças: retratos, árvores e composição estavam completos. As referências foram uniformizadas com as capturas do Chromium da CI, mantendo as tolerâncias existentes. O texto da introdução passou a ser legível desde o primeiro frame, mesmo quando os recursos ficam prontos imediatamente.
+
+A revisão final do preview encontrou o glifo de pausa ausente num browser. Os controlos de luz, pausa e reprodução passaram a SVG inline, preservando os rótulos e estados acessíveis; os oito testes locais de inverno/postais passaram após esta correção.
+
+A CI 43134940884 aprovou 534 testes e excluiu 60 casos por formato. As oito diferenças ficaram limitadas aos controlos substituídos por SVG. A revisão revelou que o reset CSS colocava o SVG numa segunda linha; os botões passaram a inline-flex com alinhamento centrado e ícones sem shrink, revistos em 390/1366 px. As referências finais são revistas no ambiente da CI antes da matriz completa final.
