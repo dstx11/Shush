@@ -17,16 +17,6 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   const hasCommitted = useRef(false);
 
   useEffect(() => {
-    let active = true;
-    const images = Array.from(frameRef.current?.querySelectorAll<HTMLImageElement>('img:not([loading="lazy"])') ?? []);
-    const timeout = window.setTimeout(() => { if (active) window.dispatchEvent(new Event('shush:ready')); }, 2500);
-    Promise.allSettled(images.map(image => image.decode())).then(() => {
-      if (active) { clearTimeout(timeout); window.dispatchEvent(new Event('shush:ready')); }
-    });
-    return () => { active = false; clearTimeout(timeout); };
-  }, []);
-
-  useEffect(() => {
     const remember = () => {
       // History entries can be replaced repeatedly while editing shared URLs.
       scrollPositions.delete(key);
