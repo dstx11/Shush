@@ -84,11 +84,11 @@ try {
   assert.throws(() => validateCompetitiveProfiles([valid, valid], players), /duplicate player/);
   assert.throws(() => validateCompetitiveProfiles([valid, { ...valid, playerId: 'levi' }], players), /duplicate Riot account/);
   const { verifiedMatches, matchSource } = require(join(output, 'data/verified-matches.js'));
-  assert.equal(verifiedMatches.length, 5);
-  assert.equal(new Set(verifiedMatches.map(match => match.id)).size, 5);
+  assert.equal(verifiedMatches.length, 10);
+  assert.equal(new Set(verifiedMatches.map(match => match.id)).size, 10);
   for (const [index, match] of verifiedMatches.entries()) {
     assert.equal(match.source, matchSource);
-    assert.equal(match.verifiedAt, '2026-10-10');
+    assert.equal(match.verifiedAt, '2026-11-13');
     assert.ok(/^2026-\d{2}-\d{2}$/.test(match.date));
     assert.ok(match.date <= match.verifiedAt);
     assert.ok(match.opponent && match.map);
@@ -104,16 +104,23 @@ try {
     ['2026-05-10', 'Ascent', 'Prime Esports', 13, 10],
     ['2026-05-10', 'Ascent', 'RABOOZ', 13, 4],
     ['2026-04-26', 'Breeze', 'Nox Lykos', 6, 13],
+    ['2026-04-26', 'Haven', 'Storm breakers', 13, 4],
+    ['2026-04-25', 'Breeze', 'LOS NENES', 13, 5],
+    ['2026-04-25', 'Breeze', 'NoMoriNoParty', 13, 6],
+    ['2026-04-19', 'Bind', 'Demons 2', 5, 13],
+    ['2026-04-11', 'Split', 'ILPSNI', 5, 13],
   ]);
   const { filterMatches, mapPerformance } = require(join(output, 'lib/match-explorer.js'));
-  assert.equal(filterMatches(verifiedMatches, 'win', 'all').length, 2);
-  assert.equal(filterMatches(verifiedMatches, 'loss', 'all').length, 3);
+  assert.equal(filterMatches(verifiedMatches, 'win', 'all').length, 5);
+  assert.equal(filterMatches(verifiedMatches, 'loss', 'all').length, 5);
   assert.equal(filterMatches(verifiedMatches, 'loss', 'Ascent').length, 0);
   assert.deepEqual(mapPerformance(verifiedMatches), [
-    { map: 'Haven', played: 1, wins: 0, losses: 1, rate: 0 },
+    { map: 'Haven', played: 2, wins: 1, losses: 1, rate: 50 },
     { map: 'Lotus', played: 1, wins: 0, losses: 1, rate: 0 },
     { map: 'Ascent', played: 2, wins: 2, losses: 0, rate: 100 },
-    { map: 'Breeze', played: 1, wins: 0, losses: 1, rate: 0 },
+    { map: 'Breeze', played: 3, wins: 2, losses: 1, rate: 67 },
+    { map: 'Bind', played: 1, wins: 0, losses: 1, rate: 0 },
+    { map: 'Split', played: 1, wins: 0, losses: 1, rate: 0 },
   ]);
   console.log('Competitive profiles passed: seven mappings, Unicode, spaces, fragments, host, playlist and season integrity.');
 } finally {
