@@ -5,14 +5,14 @@
 .roster-intro-line p{font:.75rem/1.8 var(--font-mono);color:var(--muted);max-width:37ch}
 .character-spotlight{background:radial-gradient(ellipse at 32% 34%,color-mix(in srgb,var(--player-accent) 12%,transparent),transparent 62%),var(--surface)}
 .character-media{background:radial-gradient(ellipse at 50% 43%,var(--player-wash),#0c0d15 88%)}
-.character-signature-scene{position:absolute;inset:0;isolation:isolate;pointer-events:none;z-index:0;overflow:hidden}
-.character-backlight{position:absolute;inset:-15%;background:radial-gradient(circle at 52% 40%,color-mix(in srgb,var(--player-accent) 33%,transparent),transparent 56%);opacity:.78;translate:var(--lens-x,0px) var(--lens-y,0px)}
-.character-geometry{position:absolute;inset:-6% 4%;width:92%;height:112%;color:var(--player-accent);stroke:currentColor;stroke-width:1.4;opacity:.62;translate:var(--lens-x,0px) var(--lens-y,0px)}
+.character-signature-scene{position:absolute;inset:0;isolation:isolate;pointer-events:none;z-index:3;overflow:hidden}
+.character-backlight{position:absolute;inset:-15%;background:radial-gradient(circle at 52% 40%,color-mix(in srgb,var(--player-accent) 33%,transparent),transparent 56%);opacity:.44;translate:var(--lens-x,0px) var(--lens-y,0px)}
+.character-geometry{position:absolute;inset:-6% 4%;width:92%;height:112%;color:var(--player-accent);stroke:currentColor;stroke-width:1.4;opacity:.32;translate:var(--lens-x,0px) var(--lens-y,0px)}
 .character-geometry-mark{stroke-width:2.4;opacity:.7}.character-geometry-inner{opacity:.4}.character-geometry-cross{opacity:.4}
 .character-scene-shards i{position:absolute;width:clamp(25px,5vw,60px);height:clamp(25px,5vw,60px);border:1px solid color-mix(in srgb,var(--player-accent) 40%,transparent);rotate:45deg;opacity:.3}
 .character-scene-shards i:nth-child(1){top:16%;left:11%}.character-scene-shards i:nth-child(2){top:22%;right:12%;width:30px;height:30px}.character-scene-shards i:nth-child(3){bottom:21%;left:17%;width:18px;height:18px}.character-scene-shards i:nth-child(4){bottom:26%;right:10%;width:42px;height:42px}
 .character-scene-serial,.character-scene-foot{position:absolute;z-index:5;left:1.5rem;color:var(--player-accent);font:650 .56rem/1.5 var(--font-mono);letter-spacing:.16em}
-.character-scene-serial{top:1.5rem}.character-scene-foot{bottom:1.5rem;right:1.5rem;left:auto}
+.character-scene-serial{top:1.5rem}.character-scene-foot{top:1.5rem;right:1.5rem;left:auto;bottom:auto}
 .character-scene-grid{position:absolute;inset:0;opacity:.16;background-image:linear-gradient(90deg,currentColor 1px,transparent 1px),linear-gradient(currentColor 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse at 50% 44%,black,transparent 75%)}
 .character-scene-vignette{position:absolute;inset:0;z-index:3;background:linear-gradient(90deg,#0b0a13a8,transparent 23%,transparent 75%,#080a1570)}
 .character-media>img,.character-media>.portrait-placeholder{z-index:1;translate:var(--portrait-x,0px) var(--portrait-y,0px)}
