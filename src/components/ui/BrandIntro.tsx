@@ -64,10 +64,10 @@ export function BrandIntro() {
     };
     const maybeFinish = () => { if (ready && minimumElapsed) finish(); };
     const markReady = () => { ready = true; maybeFinish(); };
-    later(() => setPhase(1), 850);
-    later(() => setPhase(2), 1850);
-    later(() => { minimumElapsed = true; maybeFinish(); }, 2950);
-    later(finish, 4470);
+    later(() => setPhase(1), 1050);
+    later(() => setPhase(2), 2380);
+    later(() => { minimumElapsed = true; maybeFinish(); }, 3450);
+    later(finish, 5100);
     window.addEventListener('shush:ready', markReady, { once: true });
     const images = Array.from(document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')).slice(0, 7);
     Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(() => { if (active) markReady(); });
@@ -84,9 +84,9 @@ export function BrandIntro() {
 
   if (!visible) return null;
   return <dialog ref={dialog} className={'brand-intro shush-season-intro shush-intro-v3' + (leaving ? ' is-leaving' : '')}
-      aria-label="Entrada SHUSH" aria-describedby="intro-description"
+      data-phase={phase} aria-label="Entrada SHUSH" aria-describedby="intro-description"
       onCancel={event => { event.preventDefault(); setVisible(false); }}>
-    <div className="shush-intro-v3-grid" aria-hidden="true" />
+    <div className="shush-intro-v3-grid" aria-hidden="true" /><div className="shush-intro-v3-rays" aria-hidden="true"><span/><span/><span/><span/><span/></div>
     <div className="shush-intro-v3-top" aria-hidden="true"><span>SHUSH / VALORANT</span><span>{theme.chapter}</span></div>
     <div className="shush-intro-v3-stage">
       <div className="shush-intro-v3-emblem" aria-hidden="true">
@@ -96,12 +96,12 @@ export function BrandIntro() {
         <img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="" />
       </div>
       <span className="shush-intro-v3-overline">IDENTIDADE EM MOVIMENTO / 001</span>
-      <strong className="shush-intro-v3-title">SHUSH<span>.</span></strong>
+      <strong className="shush-intro-v3-title">{Array.from('SHUSH').map((letter,index)=><span key={index}>{letter}</span>)}<span className="intro-period">.</span></strong><div className="shush-intro-v3-cutline" aria-hidden="true"><span>O SILÊNCIO ANTES DO ROUND</span><span>UMA EQUIPA. UM SINAL.</span><span>SHUSH / VALORANT</span></div>
       <p id="intro-description">{theme.introSub}</p>
     </div>
     <div className="shush-intro-v3-bottom">
       <div className="shush-intro-v3-progress-head">
-        <span aria-live="off">{phase === 0 ? 'A compor a experiência' : phase === 1 ? 'A revelar a identidade' : phase === 2 ? 'A preparar o próximo round' : 'Pronto'}</span>
+        <span aria-live="off">{phase === 0 ? 'A iniciar transmissão' : phase === 1 ? 'Sinal SHUSH detetado' : phase === 2 ? 'A entrar no lobby' : 'Pronto'}</span>
         <span aria-hidden="true">{String(Math.min(phase + 1, 3)).padStart(2, '0')} / 03</span>
       </div>
       <div className={'shush-intro-v3-track phase-' + phase} aria-hidden="true"><span /></div>
