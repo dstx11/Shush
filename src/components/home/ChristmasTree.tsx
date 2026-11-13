@@ -174,7 +174,7 @@ export function ChristmasTree() {
     const palette = themes[theme];
     const scene = getScene(theme);
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let motionReduced = media.matches;
+    let motionReduced = media.matches || document.documentElement.dataset.motion === 'reduce';
     let visible = false;
     let reveal = motionReduced || paused ? 1 : entryProgress.current;
     entryProgress.current = reveal;
@@ -492,8 +492,8 @@ export function ChristmasTree() {
       if (visible) draw(time);
       syncAnimation();
     }, { threshold: .02 });
-    const onMotion = (event: MediaQueryListEvent) => {
-      motionReduced = event.matches;
+    const onMotion = () => {
+      motionReduced = media.matches || document.documentElement.dataset.motion === 'reduce';
       if (motionReduced) entryProgress.current = reveal = 1;
       draw(time);
       syncAnimation();
@@ -504,6 +504,7 @@ export function ChristmasTree() {
     };
     ro.observe(frame); io.observe(frame);
     media.addEventListener('change', onMotion);
+    window.addEventListener('shush:motion-preference', onMotion);
     document.addEventListener('visibilitychange', onVisibility);
     resize();
     document.fonts?.ready.then(() => { if (!disposed) draw(time); });
@@ -515,6 +516,7 @@ export function ChristmasTree() {
       redraw.current = () => {};
       ro.disconnect(); io.disconnect();
       media.removeEventListener('change', onMotion);
+      window.removeEventListener('shush:motion-preference', onMotion);
       document.removeEventListener('visibilitychange', onVisibility);
     };
   }, [theme, paused, lightsOn, visit.returning]);

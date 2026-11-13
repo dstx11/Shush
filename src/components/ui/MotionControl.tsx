@@ -18,6 +18,7 @@ export function MotionControl({ compact = false }: { compact?: boolean }) {
       const next = readPreference();
       document.documentElement.dataset.motion = next ? 'reduce' : 'system';
       setManual(next);
+      window.dispatchEvent(new Event(PREFERENCE_EVENT));
       if (next) document.dispatchEvent(new Event('shush:reduce-motion'));
     };
     query.addEventListener('change', syncSystem);

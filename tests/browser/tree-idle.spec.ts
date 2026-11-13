@@ -34,6 +34,16 @@ test('tree stops scheduling frames when paused or motion is reduced and resumes 
   await expect.poll(pending).toBe(0);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect.poll(pending).toBe(1);
+  // An explicit preference must also stop the canvas after it comes back onscreen.
+  const preference = page.getByRole('button', { name: 'Reduzir animações', exact: true });
+  await preference.click();
+  await canvas.scrollIntoViewIfNeeded();
+  await expect.poll(pending).toBe(0);
+  await canvas.press('ArrowRight');
+  await expect.poll(pending).toBe(0);
+  await preference.click();
+  await canvas.scrollIntoViewIfNeeded();
+  await expect.poll(pending).toBe(1);
   // Scroll to the footer so the tree's observer stops its loop.
   await page.locator('.shush-footer').scrollIntoViewIfNeeded();
   await expect.poll(pending).toBe(0);
