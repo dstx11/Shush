@@ -1,5 +1,5 @@
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
 import { players, playerDropUrl, type Player } from '../../data/players';
@@ -68,7 +68,8 @@ export function RosterSection() {
   const selectPlayer = useCallback((index: number) => {
     if (index < 0 || index >= players.length) return;
     playCue();
-    setDirection(index === (selectedIndex + 1) % players.length ? 1 : -1);
+    if(index===selectedIndex)return;
+    setDirection(index > selectedIndex || (selectedIndex===players.length-1 && index===0) ? 1 : -1);
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('player', players[index].id);
@@ -113,6 +114,13 @@ export function RosterSection() {
         </div>
 
         <div className="roster-intro-line"><strong>Sete pessoas.<br/>Escolhe quem entra.</strong><p>Um jogador de cada vez. Explora o roster com as miniaturas, as setas ou as teclas de 1 a 7.</p></div>
+        <div className="shared-lobby" aria-label="Lobby dos sete jogadores" style={{'--camera-index':selectedIndex} as CSSProperties}>
+          <div className="lobby-horizon" aria-hidden="true"/><span className="lobby-caption" aria-hidden="true">SHUSH / LOBBY · 01—07</span>
+          <div className="lobby-world">{players.map((player,index)=><button key={player.id} type="button" className="lobby-person" data-active={index===selectedIndex} style={{'--position':index,'--depth':index%2} as CSSProperties} aria-label={`Selecionar ${player.displayName} no lobby`} aria-pressed={index===selectedIndex} onClick={()=>selectPlayer(index)}>
+            <PlayerPortrait player={player} decorative thumbnail sizes="180px"/><span><small>#{player.number}</small><strong>{player.displayName}</strong></span>
+          </button>)}</div>
+          <p className="lobby-current" aria-hidden="true">{String(selectedIndex+1).padStart(2,'0')} / {selectedPlayer.displayName}</p>
+        </div>
         <div className="player-stage">
 
 
