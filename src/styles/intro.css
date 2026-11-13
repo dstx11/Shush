@@ -13,7 +13,7 @@
 .shush-intro-v3-ring-b{inset:21%;border-style:dashed;opacity:.64}
 .shush-intro-v3-overline{font:600 .63rem var(--font-mono);letter-spacing:.25em;color:var(--muted);margin-top:.55rem}
 .shush-intro-v3-title{font:800 clamp(4.5rem,13vw,11rem)/.9 var(--font-heading);letter-spacing:-.11em;color:var(--text);margin:.2rem 0 0}
-.shush-intro-v3-title span{color:var(--season-accent)}
+.shush-intro-v3-title .intro-period{color:var(--season-accent)}
 .shush-intro-v3-stage>p{font:500 clamp(.82rem,1.5vw,1.08rem)/1.7 var(--font-ui);margin:1rem 0 0;color:var(--muted);max-width:30ch}
 .shush-intro-v3-bottom{width:min(100%,800px);margin-inline:auto;display:grid;gap:.9rem}
 .shush-intro-v3-progress-head{color:var(--text)}
