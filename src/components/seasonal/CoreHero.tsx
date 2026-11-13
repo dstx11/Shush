@@ -4,10 +4,12 @@ import {ArrowIcon} from '../ui/ArrowIcon';
 import {getHomePlayers} from '../../lib/home-selection';
 import {useSeason} from '../../seasonal/SeasonProvider';
 import {SeasonArtwork} from './SeasonArtwork';
+import {useCinematicPointer} from '../../hooks/useCinematicPointer';
 
 export function CoreHero(){
  const {id,theme}=useSeason();
  const featured=getHomePlayers();
+ const camera=useCinematicPointer<HTMLDivElement>();
  return <section id="top" className="opening shush-hero" aria-labelledby="hero-title"><div className="shell shush-hero-layout">
   <div className="shush-hero-copy"><div className="shush-hero-eyebrow"><span className="shush-hero-dot" aria-hidden="true"/>{theme.label}<span className="shush-hero-index">{theme.chapter}</span></div>
    <p className="shush-hero-overline">{id==='base'?'Uma equipa. A nossa maneira.':'SHUSH / LIMITED EDITION'}</p>
@@ -16,7 +18,7 @@ export function CoreHero(){
    <div className="action-row shush-hero-actions"><Button href="/esports/valorant/roster">Conhecer o roster</Button><Button href="/company" variant="secondary">A nossa história</Button></div>
    <div className="shush-hero-lower"><span>{theme.closing}</span><a href="#discover" className="editorial-link">Explorar <ArrowIcon/></a></div>
   </div>
-  <div className="shush-hero-visual" aria-label="Jogadores em destaque da SHUSH"><div className="shush-hero-aura" aria-hidden="true"/><SeasonArtwork id={id}/><span className="shush-visual-watermark" aria-hidden="true">SHUSH</span>
+  <div className="shush-hero-visual" aria-label="Jogadores em destaque da SHUSH" ref={camera.ref} onPointerMove={camera.onPointerMove} onPointerLeave={camera.onPointerLeave}><div className="shush-hero-aura" aria-hidden="true"/><SeasonArtwork id={id}/><span className="shush-visual-watermark" aria-hidden="true">SHUSH</span><svg className="shush-hero-camera" aria-hidden="true" viewBox="0 0 600 600" fill="none" focusable="false"><path d="M24 140V24H140 M460 24H576V140 M24 460V576H140 M460 576H576V460"/><circle cx="300" cy="300" r="240" strokeDasharray="2 14"/><circle cx="300" cy="300" r="196"/><path d="M300 42V84 M300 516V558 M42 300H84 M516 300H558"/></svg>
   <div className="shush-hero-portraits team-cover">{featured.map((player,i)=><AppLink key={player.id} className={'team-cover-player shush-hero-player shush-hero-player-'+i} data-player={player.id} href={'/esports/valorant/roster?player='+player.id} aria-label={'Conhecer '+player.displayName}>
     {player.avatar?<img src={player.avatar} srcSet={player.avatar.replace('.webp','-384.webp')+' 384w, '+player.avatar+' 768w'} sizes="(max-width: 767px) 36vw, 18vw" width="768" height="768" alt="" decoding="async" loading={i===1?'eager':'lazy'} fetchPriority={i===1?'high':'auto'} style={{objectPosition:player.portraitPosition}}/>:null}
     <span className="shush-hero-player-tag"><small>{String(i+1).padStart(2,'0')} / SHUSH</small><strong>{player.displayName}</strong></span>

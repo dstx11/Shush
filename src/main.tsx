@@ -38,3 +38,4 @@ import './styles/experience.css';
 import './styles/seasonal.css';
 import './styles/intro-v3.css';
 import './styles/motion-v3.css';
+import './styles/hero-cinema.css';
