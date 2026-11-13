@@ -1,0 +1,55 @@
+/* Scroll choreography: the composition remains complete without animation or JS. */
+.cinema-transmission{position:relative;overflow:hidden;border-block:1px solid rgba(var(--season-rgb),.33);background:var(--season-accent);color:var(--on-accent);min-height:3.7rem;display:flex;align-items:center;isolation:isolate}
+.cinema-transmission::before,.cinema-transmission::after{content:"";position:absolute;inset:0 auto 0 0;width:clamp(1rem,5vw,5rem);z-index:1;background:linear-gradient(90deg,var(--season-accent),transparent);pointer-events:none}
+.cinema-transmission::after{inset:0 0 0 auto;transform:rotate(180deg)}
+.cinema-transmission-track{display:flex;width:max-content;flex-shrink:0}
+.cinema-transmission-set{display:flex;align-items:center;flex:none;gap:clamp(2rem,5vw,5rem);padding-inline:2rem;font:800 clamp(.82rem,1.3vw,1.05rem)/1.2 var(--font-heading);letter-spacing:.06em;white-space:nowrap}
+.cinema-transmission-set>span{display:flex;align-items:center;gap:clamp(2rem,5vw,5rem)}
+.cinema-transmission-set i{font:normal 1rem var(--font-ui)}
+.shush-cinema{position:relative;isolation:isolate;padding:clamp(4rem,9vw,9rem) 0 clamp(4rem,8vw,8rem);background:radial-gradient(ellipse at 13% 44%,rgba(var(--season-rgb),.055),transparent 64%),var(--bg);view-timeline-name:--cinema;view-timeline-axis:block}
+.shush-cinema-intro{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:1.5rem 3rem;padding-bottom:clamp(2rem,5vw,5rem)}
+.shush-cinema-intro .section-kicker{grid-column:1/-1}
+.shush-cinema-intro h2{font:800 clamp(2.9rem,6vw,7.2rem)/.99 var(--font-heading);letter-spacing:-.075em}
+.shush-cinema-intro h2 em{font-style:normal;color:var(--season-accent)}
+.shush-cinema-intro>p{justify-self:end;max-width:29ch;color:var(--muted);font-size:clamp(.9rem,1.25vw,1.05rem);line-height:1.8}
+.shush-cinema-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(2rem,6vw,8rem);align-items:start}
+.shush-cinema-stage{position:sticky;top:clamp(6rem,12vh,8rem);height:min(70svh,650px);min-height:430px;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 52%,rgba(var(--season-rgb),.16),transparent 62%),var(--surface);border:1px solid rgba(var(--season-rgb),.29);border-radius:1.3rem;display:grid;place-items:center}
+.shush-cinema-stage::before{content:"";position:absolute;inset:0;opacity:.2;background-image:linear-gradient(90deg,currentColor 1px,transparent 1px),linear-gradient(currentColor 1px,transparent 1px);background-size:75px 75px;mask-image:radial-gradient(ellipse at center,#000,transparent 76%)}
+.shush-cinema-horizon{position:absolute;inset:50% -20%;height:1px;background:linear-gradient(90deg,transparent,var(--season-accent),transparent);opacity:.55;transform:rotate(-17deg)}
+.shush-cinema-orbit{width:min(96%,620px);height:auto;position:absolute;color:var(--season-accent);opacity:.45;stroke-width:1.2}
+.shush-cinema-logotype{position:relative;z-index:2;display:flex;align-items:center;gap:.15em;font:800 clamp(4rem,8vw,9.2rem)/1 var(--font-heading);letter-spacing:-.1em;color:var(--text)}
+.shush-cinema-logotype strong{color:var(--season-accent);font-weight:700;transform:translateY(.12em)}
+.shush-cinema-corner{position:absolute;font:600 .57rem/1.5 var(--font-mono);letter-spacing:.11em;color:var(--season-accent)}
+.shush-cinema-corner-top{top:1.5rem;left:1.6rem}.shush-cinema-corner-bottom{bottom:1.5rem;right:1.6rem}
+.shush-cinema-measure{position:absolute;bottom:1.5rem;left:1.6rem;width:25%;height:1px;background:rgba(var(--season-rgb),.23)}
+.shush-cinema-measure>span{display:block;width:30%;height:100%;background:var(--season-accent)}
+.shush-cinema-chapters{list-style:none;padding:0;margin:0}
+.shush-cinema-chapter{min-height:clamp(380px,55svh,650px);display:flex;flex-direction:column;justify-content:center;align-items:start;padding:clamp(2rem,5vw,4rem) 0;border-top:1px solid var(--line)}
+.shush-cinema-chapter:last-child{border-bottom:1px solid var(--line)}
+.shush-cinema-chapter-index{display:flex;align-items:center;gap:1.5rem;color:var(--season-accent)}
+.shush-cinema-chapter-index b{font:800 clamp(2.7rem,4vw,4.5rem)/1 var(--font-heading)}
+.shush-cinema-chapter-index span{font:600 .66rem var(--font-mono);letter-spacing:.16em}
+.shush-cinema-chapter h3{font:750 clamp(2.1rem,3.7vw,4.5rem)/1.07 var(--font-heading);letter-spacing:-.065em;max-width:16ch;margin:1.5rem 0}
+.shush-cinema-chapter p{max-width:43ch;line-height:1.9;font-size:clamp(.9rem,1.15vw,1rem);color:var(--muted)}
+.shush-cinema-chapter .editorial-link{color:var(--season-accent);margin-top:1.5rem}
+.shush-cinema-outro{display:flex;gap:1rem 3rem;justify-content:space-between;flex-wrap:wrap;padding-block:1.5rem;border-block:1px solid var(--line);margin-top:clamp(2rem,5vw,5rem);color:var(--muted);font:600 .66rem/1.6 var(--font-mono);text-transform:uppercase;letter-spacing:.08em}
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-motion="reduce"]) .cinema-transmission[data-active="true"] .cinema-transmission-track{animation:cinema-ticker 25s linear infinite}
+ html:not([data-motion="reduce"]) .shush-cinema-orbit{animation:cinema-orbit-idle 32s linear infinite;transform-origin:center}
+ html:not([data-motion="reduce"]) .shush-cinema-logotype{animation:cinema-logo-breathe 6s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .shush-cinema-measure>span{animation:cinema-measure 4s ease-in-out infinite alternate}
+ @keyframes cinema-ticker{to{transform:translateX(-50%)}}
+ @keyframes cinema-orbit-idle{to{transform:rotate(360deg)}}
+ @keyframes cinema-logo-breathe{to{transform:translate3d(0,-7px,0)}}
+ @keyframes cinema-measure{to{transform:translateX(200%)}}
+}
+@supports ((animation-timeline:view()) and (animation-range:entry)){
+ @media(prefers-reduced-motion:no-preference){
+  html:not([data-motion="reduce"]) .shush-cinema-orbit{animation:cinema-scroll-rotate linear both;animation-timeline:--cinema;animation-range:entry 0% exit 100%}
+  html:not([data-motion="reduce"]) .shush-cinema-horizon{animation:cinema-scroll-horizon linear both;animation-timeline:--cinema;animation-range:entry 0% exit 100%}
+  @keyframes cinema-scroll-rotate{from{transform:rotate(-40deg) scale(.86)}to{transform:rotate(60deg) scale(1.12)}}
+  @keyframes cinema-scroll-horizon{from{transform:rotate(-35deg) translateY(-45px)}to{transform:rotate(12deg) translateY(45px)}}
+ }
+}
+@media(max-width:900px){.shush-cinema-intro{grid-template-columns:1fr}.shush-cinema-intro>p{justify-self:start}.shush-cinema-layout{grid-template-columns:1fr;gap:1.25rem}.shush-cinema-stage{position:relative;top:auto;min-height:0;height:clamp(300px,65vw,520px)}.shush-cinema-chapters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.shush-cinema-chapter{min-height:0;padding:1.5rem 0}.shush-cinema-chapter h3{font-size:clamp(1.3rem,3vw,2rem)}}
+@media(max-width:650px){.shush-cinema{padding-block:3.5rem}.shush-cinema-intro h2{font-size:clamp(2.3rem,10vw,4rem)}.shush-cinema-stage{height:330px}.shush-cinema-logotype{font-size:clamp(3.2rem,14vw,5.5rem)}.shush-cinema-chapters{grid-template-columns:1fr;gap:0}.shush-cinema-chapter{min-height:0;padding:2rem 0}.shush-cinema-chapter h3{font-size:clamp(2rem,7vw,3rem)}.shush-cinema-outro{font-size:.62rem}}
