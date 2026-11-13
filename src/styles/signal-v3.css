@@ -7,3 +7,43 @@
 .shush-signals-line{display:flex;align-items:center;gap:1.1rem;margin-top:2.5rem;color:var(--muted);font:500 .6rem/1.7 var(--font-mono);letter-spacing:.12em}
 .shush-signals-line i{height:1px;flex:1;background:linear-gradient(90deg,var(--line),var(--season-accent),var(--line));opacity:.65}
 @media(max-width:767px){.shush-signals-heading{grid-template-columns:1fr;gap:1.5rem}.shush-signals-line{gap:.65rem;font-size:.5rem;letter-spacing:.06em}}
+
+/* Three chapters of intentional scroll cinematography, not generic cards. */
+.shush-signal-storyboard{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:start;gap:clamp(1.5rem,5vw,5rem);margin-top:clamp(1.5rem,4vw,3rem);view-timeline-name:--shush-story;view-timeline-axis:block}
+.shush-signal-stage{position:sticky;top:clamp(6rem,13vh,9rem);min-height:420px;height:min(70svh,650px);display:grid;place-items:center;isolation:isolate;overflow:hidden;background:radial-gradient(circle at 48% 40%,rgba(var(--season-rgb),.15),transparent 68%),var(--surface);border:1px solid rgba(var(--season-rgb),.25);border-radius:1rem;color:var(--season-accent)}
+.shush-signal-stage::before{content:"";position:absolute;inset:0;opacity:.12;background-image:linear-gradient(90deg,currentColor 1px,transparent 1px),linear-gradient(currentColor 1px,transparent 1px);background-size:74px 74px;mask-image:radial-gradient(ellipse at center,#000,transparent 80%)}
+.shush-signal-orbit{position:absolute;inset:3%;height:94%;width:94%;stroke:currentColor;stroke-width:1;opacity:.4;pointer-events:none}
+.shush-signal-illumination{position:absolute;inset:18%;background:radial-gradient(circle,rgba(var(--season-rgb),.18),transparent 64%);border-radius:50%}
+.shush-signal-portraits{position:absolute;inset:9% 6%;display:flex;justify-content:center;align-items:end;opacity:.21;mask-image:linear-gradient(transparent,#000 33%,#000 70%,transparent);pointer-events:none}
+.shush-signal-portraits img{min-width:0;width:33%;height:83%;object-fit:cover;filter:grayscale(.9)}
+.shush-signal-portraits img:nth-child(2){height:100%}
+.shush-signal-stage>strong{position:relative;z-index:1;font:850 clamp(3.5rem,8vw,8.5rem)/1 var(--font-heading);letter-spacing:-.105em;color:var(--text)}
+.shush-signal-stage>strong span{color:var(--season-accent)}
+.shush-signal-system-label,.shush-signal-system-foot{position:absolute;left:1.4rem;font:600 .56rem var(--font-mono);letter-spacing:.13em;color:var(--season-accent)}
+.shush-signal-system-label{top:1.4rem}.shush-signal-system-foot{bottom:1.4rem;right:1.4rem;left:auto}
+.shush-signal-chapters{list-style:none;padding:0;margin:0;min-width:0}
+.shush-signal-chapters li{min-height:clamp(340px,52svh,590px);display:flex;align-items:start;justify-content:center;flex-direction:column;border-top:1px solid var(--line);padding:clamp(2rem,4vw,4rem) 0}
+.shush-signal-chapters li:last-child{border-bottom:1px solid var(--line)}
+.shush-signal-index{display:flex;align-items:center;gap:1rem;color:var(--season-accent)}
+.shush-signal-index b{font:800 clamp(2.6rem,4.5vw,4.8rem)/1 var(--font-heading);letter-spacing:-.08em}
+.shush-signal-index span{font:650 .62rem/1.5 var(--font-mono);letter-spacing:.1em}
+.shush-signal-chapters h3{font:800 clamp(2rem,3.4vw,4rem)/1.09 var(--font-heading);letter-spacing:-.065em;max-width:16ch;margin:1.2rem 0}
+.shush-signal-chapters p{line-height:1.85;color:var(--muted);font-size:clamp(.88rem,1.14vw,1rem);max-width:43ch}
+.shush-signal-chapters .editorial-link{color:var(--season-accent);margin-top:1.6rem}
+.shush-signal-outro{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem 2rem;border-block:1px solid var(--line);padding:1.3rem 0;color:var(--muted);font:650 .62rem/1.5 var(--font-mono);text-transform:uppercase;letter-spacing:.08em;margin-top:clamp(2rem,4vw,4rem)}
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-motion="reduce"]) .shush-signal-stage>strong{animation:shush-signal-pulse 8s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .shush-signal-illumination{animation:shush-signal-light 9s ease-in-out infinite alternate}
+ @keyframes shush-signal-pulse{to{transform:translateY(-7px)}}
+ @keyframes shush-signal-light{to{transform:scale(1.12);opacity:.6}}
+}
+@supports ((animation-timeline:view()) and (animation-range:entry)){
+ @media(prefers-reduced-motion:no-preference){
+  html:not([data-motion="reduce"]) .shush-signal-orbit{animation:shush-orbit-scene linear both;animation-timeline:--shush-story;animation-range:entry 0% exit 100%}
+  html:not([data-motion="reduce"]) .shush-signal-portraits{animation:shush-portrait-scene linear both;animation-timeline:--shush-story;animation-range:entry 0% exit 100%}
+  @keyframes shush-orbit-scene{from{transform:rotate(-45deg) scale(.9)}to{transform:rotate(55deg) scale(1.12)}}
+  @keyframes shush-portrait-scene{from{transform:translateY(25px) scale(.92);opacity:.07}to{transform:translateY(-20px) scale(1.08);opacity:.28}}
+ }
+}
+@media(max-width:900px){.shush-signal-storyboard{grid-template-columns:1fr}.shush-signal-stage{position:relative;top:auto;width:100%;height:clamp(300px,62vw,530px);min-height:0}.shush-signal-chapters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.shush-signal-chapters li{min-height:0;padding:1.5rem 0}.shush-signal-chapters h3{font-size:clamp(1.25rem,2.6vw,2rem)}}
+@media(max-width:640px){.shush-signal-stage{height:300px}.shush-signal-stage>strong{font-size:clamp(3.4rem,14vw,5.7rem)}.shush-signal-chapters{grid-template-columns:1fr;gap:0}.shush-signal-chapters li{min-height:0;padding:2rem 0}.shush-signal-chapters h3{font-size:clamp(2rem,7vw,3rem)}.shush-signal-outro{font-size:.6rem}}
