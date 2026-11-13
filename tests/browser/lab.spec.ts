@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 const representative=(name:string)=>['desktop-1366','mobile-390','mobile-webkit'].includes(name);
 test.beforeEach(async ({page},info)=>{
  test.skip(!representative(info.project.name),'LAB tested on representative desktop, mobile and WebKit');
- await page.clock.install({time:new Date('2026-11-13T12:00:00Z')});
+ await page.clock.setFixedTime(new Date('2026-11-13T12:00:00Z'));
  await page.goto('/');
 });
 async function openLab(page:import('@playwright/test').Page){
@@ -52,8 +52,9 @@ test('motion controls change an actual animation; observatory shows browser data
  const lab=page.getByRole('dialog',{name:'SHUSH LAB'});
  await lab.locator('.lab-side').getByRole('button',{name:/Motion/}).click();
  await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 850ms/);
- await lab.getByRole('slider',{name:/Duração/}).fill('1300');
- await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 1300ms/);
+ await lab.getByRole('slider',{name:/Duração/}).focus();
+ await page.keyboard.press('End');
+ await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 1800ms/);
  await lab.getByRole('button',{name:'Pausar'}).click();
  await expect(lab.locator('.lab-demo-object')).toHaveClass(/is-paused/);
  await lab.locator('.lab-side').getByRole('button',{name:/Performance/}).click();
