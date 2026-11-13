@@ -1,6 +1,6 @@
 import {useEffect,useMemo,useRef,useState,type CSSProperties} from 'react';
 import {useModalDialog} from '../../hooks/useModalDialog';
-import {useSeason,type SeasonChoice,isSeasonId} from '../../seasonal/SeasonProvider';
+import {useSeason,isSeasonId} from '../../seasonal/SeasonProvider';
 import {themes} from '../../seasonal/themes';
 import type {SeasonId} from '../../seasonal/calendar.mjs';
 import {AppLink} from '../ui/AppLink';
@@ -24,7 +24,7 @@ function SeasonStudio(){
  const {id,theme,automatic,override,preview,previewSeason,commitSeason}=useSeason();
  const selected=preview??id;
  const choices=Object.keys(themes).filter(isSeasonId);
- return <div className="lab-panel" id="lab-seasons" role="tabpanel" aria-labelledby="lab-tab-seasons">
+ return <div className="lab-panel" id="lab-seasons" aria-labelledby="lab-tab-seasons">
   <div className="lab-panel-intro"><span className="lab-eyebrow">SEASON ENGINE / 01</span><h3>O mesmo universo. Outras atmosferas.</h3><p>Pré-visualiza uma edição no website sem alterar a preferência guardada. Só a opção «Aplicar» a mantém nas próximas visitas.</p></div>
   <div className="lab-season-status"><span>Edição atual <strong>{theme.label}</strong></span><span>Calendário <strong>{themes[automatic].label}</strong></span><span>Definição <strong>{override==='auto'?'Automática':'Manual'}</strong></span></div>
   <div className="lab-season-grid" aria-label="Edições disponíveis">{choices.map(choice=>
@@ -47,7 +47,7 @@ function MotionStudio(){
  const [paused,setPaused]=useState(false);
  const style={'--demo-duration':duration+'ms','--demo-distance':distance+'px','--demo-ease':easing} as CSSProperties;
  const reduced=typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- return <div className="lab-panel" id="lab-motion" role="tabpanel" aria-labelledby="lab-tab-motion">
+ return <div className="lab-panel" id="lab-motion" aria-labelledby="lab-tab-motion">
   <div className="lab-panel-intro"><span className="lab-eyebrow">MOTION PLAYGROUND / 02</span><h3>Movimento com intenção.</h3><p>Altera uma sequência real, compara a resposta e reinicia quando quiseres. As definições só afetam este ensaio local.</p></div>
   <div className="lab-motion-layout"><div className="lab-demo" style={style} aria-label="Pré-visualização da animação">
    <span className="lab-demo-axis" aria-hidden="true"/>
@@ -70,7 +70,7 @@ function ComponentStudio(){
  const [selected,setSelected]=useState(false);
  const [label,setLabel]=useState('');
  const [status,setStatus]=useState('');
- return <div className="lab-panel" id="lab-components" role="tabpanel" aria-labelledby="lab-tab-components">
+ return <div className="lab-panel" id="lab-components" aria-labelledby="lab-tab-components">
   <div className="lab-panel-intro"><span className="lab-eyebrow">COMPONENT SYSTEM / 03</span><h3>Os estados contam.</h3><p>Experimenta estados reais de foco, seleção, validação e feedback. Estes componentes nunca alteram dados públicos.</p></div>
   <div className="lab-component-grid">
    <div className="lab-component-case"><span className="lab-eyebrow">01 / SELEÇÃO</span><button type="button" aria-pressed={selected} className="lab-choice-button" onClick={()=>setSelected(v=>!v)}>{selected?'Selecionado':'Selecionar este estado'}<span aria-hidden="true">{selected?'●':'○'}</span></button><p>O estado mantém-se até voltares a selecionar.</p></div>
@@ -108,7 +108,7 @@ function PerformanceStudio(){
   frame=requestAnimationFrame(sample);
   return ()=>{active=false;cancelAnimationFrame(frame);observer?.disconnect();};
  },[]);
- return <div className="lab-panel" id="lab-performance" role="tabpanel" aria-labelledby="lab-tab-performance">
+ return <div className="lab-panel" id="lab-performance" aria-labelledby="lab-tab-performance">
   <div className="lab-panel-intro"><span className="lab-eyebrow">PERFORMANCE OBSERVATORY / 04</span><h3>Medir antes de decidir.</h3><p>Os valores abaixo são observações locais do navegador nesta sessão. Não são métricas reais de utilizadores nem resultados de um benchmark controlado.</p></div>
   <dl className="lab-metrics">
    <div><dt>Documento / navegação</dt><dd>{metrics.navigation===null?'N/D':metrics.navigation+' ms'}</dd></div>
