@@ -32,7 +32,7 @@ function SeasonStudio(){
     aria-pressed={selected===choice} onClick={()=>previewSeason(choice)}>
      <span className="lab-season-disk" aria-hidden="true"><span/></span>
      <small>{themes[choice].chapter}</small><strong>{themes[choice].label}</strong>
-     <span>{selected===choice?'Em pré-visualização':'Explorar edição'}</span>
+     <span>{preview===choice?'Em pré-visualização':id===choice?'Edição ativa':'Explorar edição'}</span>
    </button>
   )}</div>
   <div className="lab-actions"><button className="lab-primary" type="button" onClick={()=>commitSeason(selected)}>Aplicar esta edição</button><button type="button" onClick={()=>previewSeason(null)} disabled={!preview}>Cancelar pré-visualização</button><button type="button" onClick={()=>commitSeason('auto')}>Usar calendário automático</button></div>
