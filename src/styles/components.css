@@ -1,4 +1,4 @@
-/* Competition, motion and shared finishing. */
+/* Match explorer, overlays and shared interface finishing. */
 /* Match Explorer */
 .matchday-empty { color: var(--muted); font-size: .85rem; border-left: 2px solid var(--signal); padding: .5rem 1rem; margin-bottom: 2rem; }
 .match-explorer-filters { display: flex; align-items: end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }

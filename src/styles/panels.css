@@ -1,4 +1,4 @@
-/* Route-only editorial panels; not loaded on Premier, Roster, Drop or About. */
+/* Home-only editorial panels. */
 .shush-signals{padding-block:clamp(3rem,7vw,7rem)}
 .shush-signals-heading{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:clamp(1.6rem,4vw,3rem)}
 .shush-signals-heading h2{font:800 clamp(2.5rem,5.8vw,6rem)/1.07 var(--font-heading);letter-spacing:-.07em;margin:.9rem 0 0}

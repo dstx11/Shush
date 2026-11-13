@@ -32,10 +32,10 @@ preloadRoute(initialPath).then((initialModule) => {
   document.getElementById('shush-boot-stage')?.remove();
 });
 
-import "./styles/v5.css";
+import "./styles/components.css";
 
 import './styles/experience.css';
 import './styles/seasonal.css';
-import './styles/intro-v3.css';
-import './styles/motion-v3.css';
-import './styles/hero-cinema.css';
+import './styles/intro.css';
+import './styles/motion.css';
+

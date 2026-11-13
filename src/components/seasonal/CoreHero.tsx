@@ -1,3 +1,4 @@
+import '../../styles/hero-cinema.css';
 import {AppLink} from '../ui/AppLink';
 import {Button} from '../ui/Button';
 import {ArrowIcon} from '../ui/ArrowIcon';
