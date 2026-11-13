@@ -71,3 +71,22 @@
 @media(prefers-reduced-motion:reduce){.character-signal-flare{display:none}.character-geometry *,.character-backlight,.character-scene-shards *{animation:none!important}}
 html[data-motion="reduce"] .character-signal-flare{display:none}
 html[data-motion="reduce"] .character-geometry *,html[data-motion="reduce"] .character-backlight,html[data-motion="reduce"] .character-scene-shards *{animation:none!important}
+
+/* Individual visual rhythms for the seven real members — abstract design, not fictional skills. */
+.player-page[data-player="dstx"] .character-geometry-mark{animation-duration:7s}
+.player-page[data-player="more"] .character-geometry-mark{animation-name:signature-rise;animation-duration:5s}
+.player-page[data-player="th0maz7"] .character-geometry-mark{animation-name:signature-invert;animation-duration:9s}
+.player-page[data-player="lyel"] .character-geometry-mark{animation-name:signature-wave;animation-duration:6s}
+.player-page[data-player="tz"] .character-geometry-mark{animation-name:signature-pivot;animation-duration:11s}
+.player-page[data-player="levi"] .character-geometry-mark{animation-name:signature-expand;animation-duration:8s}
+.player-page[data-player="catty"] .character-geometry-mark{animation-name:signature-turn;animation-duration:14s}
+@media(prefers-reduced-motion:no-preference){
+ @keyframes signature-rise{from{opacity:.22;transform:translateY(10px)}to{opacity:.85;transform:translateY(-10px)}}
+ @keyframes signature-invert{from{opacity:.3;transform:rotate(-6deg)}to{opacity:.85;transform:rotate(8deg)}}
+ @keyframes signature-wave{from{opacity:.25;transform:translateX(-15px)}to{opacity:.9;transform:translateX(15px)}}
+ @keyframes signature-pivot{from{opacity:.3;transform:rotate(-2deg) scale(.98)}to{opacity:.85;transform:rotate(4deg) scale(1.03)}}
+ @keyframes signature-expand{from{opacity:.25;transform:scale(.91)}to{opacity:1;transform:scale(1.065)}}
+ @keyframes signature-turn{from{opacity:.3;transform:rotate(-12deg)}to{opacity:.85;transform:rotate(12deg)}}
+}
+@media(prefers-reduced-motion:reduce){.player-page .character-geometry-mark{animation:none!important}}
+html[data-motion="reduce"] .player-page .character-geometry-mark{animation:none!important}

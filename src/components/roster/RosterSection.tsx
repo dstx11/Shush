@@ -37,9 +37,10 @@ export function RosterSection() {
   }, [selectedPlayer]);
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const stop = () => { if (media.matches) setLeaving(null); };
+    const stop = () => { if (media.matches || document.documentElement.dataset.motion === 'reduce') setLeaving(null); };
     media.addEventListener('change', stop);
-    return () => media.removeEventListener('change', stop);
+    document.addEventListener('shush:reduce-motion', stop);
+    return () => { media.removeEventListener('change', stop); document.removeEventListener('shush:reduce-motion', stop); };
   }, []);
   useEffect(() => {
     const element = camera.ref.current;
