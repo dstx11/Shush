@@ -29,13 +29,16 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   useEffect(() => {
     const remember = () => {
       // History entries can be replaced repeatedly while editing shared URLs.
+      // A POP can trigger a transient scroll event before the restoration frame.
+      // Never overwrite the saved entry with that temporary layout position.
+      if (previousPath.current !== pathname + hash) return;
       scrollPositions.delete(key);
       scrollPositions.set(key, window.scrollY);
       if (scrollPositions.size > 64) scrollPositions.delete(scrollPositions.keys().next().value!);
     };
     window.addEventListener('scroll', remember, { passive: true });
     return () => window.removeEventListener('scroll', remember);
-  }, [key]);
+  }, [key, pathname, hash]);
 
   // This effect runs after Suspense commits the loaded page, including on a
   // slow first visit. Anchors and keyboard focus cannot race the route import.

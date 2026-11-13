@@ -69,7 +69,7 @@ test('V5 posters: exact PNG preview, both formats and focus recovery', async ({ 
 });
 
 test('V5 poster resource failure offers retry without closing the page', async ({ page }) => {
-  await page.goto('/esports/valorant/premier'); await expect(page.locator('.verified-match')).toHaveCount(5);
+  await page.goto('/esports/valorant/premier'); await expect(page.locator('.verified-match')).toHaveCount(10);
   // WebKit may reuse an already-decoded logo without issuing a request.
   // Inject one decode failure at the resource boundary, independent of cache.
   await page.evaluate(() => {

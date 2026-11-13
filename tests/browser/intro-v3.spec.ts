@@ -55,7 +55,7 @@ test('Motion setting is keyboard accessible, persistent and disables visual anim
 test('The content panels use real records and the origin no longer lists personal nick references',async ({page})=>{
  await page.goto('/');
  await expect(page.locator('.signal-panel')).toHaveCount(4);
- await expect(page.locator('.signal-panel-competition')).toContainText('5 partidas');
+ await expect(page.locator('.signal-panel-competition')).toContainText('10 partidas');
  await expect(page.locator('.signal-panel-roster')).toContainText('07 nicks');
  await page.goto('/company');
  await expect(page.locator('.about-origin-story')).not.toContainText('contraponto ao Less');
