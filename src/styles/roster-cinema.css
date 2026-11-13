@@ -1,0 +1,73 @@
+/* A player-selection scene made from real portraits and independent abstract signatures. */
+.player-page{--selector-ease:cubic-bezier(.16,1,.3,1);--selector-speed:.7s}
+.roster-intro-line{display:flex;justify-content:space-between;align-items:end;gap:1.5rem;margin:0 0 clamp(1.4rem,4vw,2.8rem);border-top:1px solid var(--line);padding-top:clamp(1rem,2.6vw,2rem)}
+.roster-intro-line strong{font:800 clamp(1.55rem,4vw,4.5rem)/1.06 var(--font-heading);letter-spacing:-.055em;max-width:17ch}
+.roster-intro-line p{font:.75rem/1.8 var(--font-mono);color:var(--muted);max-width:37ch}
+.character-spotlight{background:radial-gradient(ellipse at 32% 34%,color-mix(in srgb,var(--player-accent) 12%,transparent),transparent 62%),var(--surface)}
+.character-media{background:radial-gradient(ellipse at 50% 43%,var(--player-wash),#0c0d15 88%)}
+.character-signature-scene{position:absolute;inset:0;isolation:isolate;pointer-events:none;z-index:0;overflow:hidden}
+.character-backlight{position:absolute;inset:-15%;background:radial-gradient(circle at 52% 40%,color-mix(in srgb,var(--player-accent) 33%,transparent),transparent 56%);opacity:.78;translate:var(--lens-x,0px) var(--lens-y,0px)}
+.character-geometry{position:absolute;inset:-6% 4%;width:92%;height:112%;color:var(--player-accent);stroke:currentColor;stroke-width:1.4;opacity:.62;translate:var(--lens-x,0px) var(--lens-y,0px)}
+.character-geometry-mark{stroke-width:2.4;opacity:.7}.character-geometry-inner{opacity:.4}.character-geometry-cross{opacity:.4}
+.character-scene-shards i{position:absolute;width:clamp(25px,5vw,60px);height:clamp(25px,5vw,60px);border:1px solid color-mix(in srgb,var(--player-accent) 40%,transparent);rotate:45deg;opacity:.3}
+.character-scene-shards i:nth-child(1){top:16%;left:11%}.character-scene-shards i:nth-child(2){top:22%;right:12%;width:30px;height:30px}.character-scene-shards i:nth-child(3){bottom:21%;left:17%;width:18px;height:18px}.character-scene-shards i:nth-child(4){bottom:26%;right:10%;width:42px;height:42px}
+.character-scene-serial,.character-scene-foot{position:absolute;z-index:5;left:1.5rem;color:var(--player-accent);font:650 .56rem/1.5 var(--font-mono);letter-spacing:.16em}
+.character-scene-serial{top:1.5rem}.character-scene-foot{bottom:1.5rem;right:1.5rem;left:auto}
+.character-scene-grid{position:absolute;inset:0;opacity:.16;background-image:linear-gradient(90deg,currentColor 1px,transparent 1px),linear-gradient(currentColor 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(ellipse at 50% 44%,black,transparent 75%)}
+.character-scene-vignette{position:absolute;inset:0;z-index:3;background:linear-gradient(90deg,#0b0a13a8,transparent 23%,transparent 75%,#080a1570)}
+.character-media>img,.character-media>.portrait-placeholder{z-index:1;translate:var(--portrait-x,0px) var(--portrait-y,0px)}
+.character-media::after{z-index:2}
+.character-identity{z-index:5}
+.character-identity::before{content:"";position:absolute;z-index:-1;inset:auto 0 0;background:linear-gradient(0deg,#080812c0,transparent);height:60%;pointer-events:none}
+.character-identity .section-kicker{display:inline-flex;align-items:center;gap:.65rem}
+.character-identity .section-kicker::before{content:"";display:block;width:.45rem;height:.45rem;background:var(--player-accent);border-radius:50%;box-shadow:0 0 15px var(--player-accent)}
+.character-role-tape{display:block;width:max-content;max-width:100%;margin-top:.85rem;padding:.45rem .75rem;border:1px solid color-mix(in srgb,var(--player-accent) 50%,transparent);background:#0b0b16a6;color:#fff;font:650 clamp(.61rem,1vw,.75rem)/1.4 var(--font-mono);letter-spacing:.09em}
+.character-dossier-meta{display:flex;align-items:center;gap:.75rem;color:var(--player-accent);font:.64rem var(--font-mono);letter-spacing:.15em}
+.character-dossier-meta::after{content:"";height:1px;flex:1;background:color-mix(in srgb,var(--player-accent) 40%,transparent)}
+.character-copy .section-kicker{font-size:.69rem}
+.character-select .character-copy .player-dna{gap:1.25rem}
+.character-select .character-copy dl>div{position:relative}
+.character-select .character-copy .player-dna dt{letter-spacing:.08em}
+.character-controls .selection-help{margin-right:1rem}
+.character-controls .selector-sound,.character-controls .selector-replay{height:2.75rem;width:auto;border-radius:.65rem;padding:0 .9rem;font:650 .65rem var(--font-mono);white-space:nowrap}
+.character-controls .selector-sound[aria-pressed="true"]{border-color:var(--player-accent);color:var(--player-accent)}
+.character-strip{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.018),transparent)}
+.player-select-card{position:relative;border-color:transparent;isolation:isolate}
+.player-select-card::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:var(--player-accent);transform:scaleX(0);transform-origin:left}
+.player-select-card.is-active::before{transform:scaleX(1)}
+.player-select-card.is-active{border-color:var(--player-accent)}
+.strip-avatar{aspect-ratio:1.25;background:radial-gradient(ellipse at 50% 33%,var(--player-wash),var(--surface-2));border:1px solid color-mix(in srgb,var(--player-accent) 15%,transparent);border-radius:.65rem}
+.player-select-card.is-active .strip-avatar{border-color:var(--player-accent);box-shadow:inset 0 0 20px color-mix(in srgb,var(--player-accent) 10%,transparent)}
+.player-card-name strong{font-weight:750;letter-spacing:-.01em}
+.player-card-select:focus-visible .strip-avatar{outline:2px solid var(--player-accent);outline-offset:3px}
+.player-card-select[aria-pressed="true"] .player-card-name strong{color:var(--player-accent)}
+.player-selection-footer{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:clamp(.9rem,2vw,1.5rem) .2rem;color:var(--muted);font:.6rem/1.6 var(--font-mono);letter-spacing:.07em}
+.player-selection-footer strong{color:var(--player-accent);font-weight:650}
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-motion="reduce"]) .character-backlight,html:not([data-motion="reduce"]) .character-geometry,html:not([data-motion="reduce"]) .character-media>img{transition:translate .6s var(--selector-ease)}
+ html:not([data-motion="reduce"]) .character-geometry-orbit{transform-origin:center;animation:player-orbit 48s linear infinite}
+ html:not([data-motion="reduce"]) .character-geometry-mark{transform-origin:center;animation:player-mark 8s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .character-backlight{animation:player-lights 7s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .character-scene-shards i{animation:player-shards 11s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .character-scene-shards i:nth-child(even){animation-duration:14s;animation-direction:alternate-reverse}
+ html:not([data-motion="reduce"]) .player-card-select .strip-avatar{transition:transform .45s var(--selector-ease),border-color .24s,box-shadow .3s}
+ html:not([data-motion="reduce"]) .player-card-select:is(:hover,:focus-visible) .strip-avatar{transform:translateY(-6px) rotate(-1.5deg);border-color:var(--player-accent)}
+ html:not([data-motion="reduce"]) .player-select-card.is-active .strip-avatar{animation:selected-glow 2.8s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .character-role-tape{animation:player-name-reveal .65s .13s var(--selector-ease) both}
+ html:not([data-motion="reduce"]) .character-signal-flare{animation:player-flare .58s ease-out both}
+ @keyframes player-orbit{to{transform:rotate(360deg)}}
+ @keyframes player-mark{to{transform:scale(1.065) rotate(6deg);opacity:1}}
+ @keyframes player-lights{to{opacity:.4;transform:scale(1.08)}}
+ @keyframes player-shards{to{transform:translate3d(8px,-9px,0) rotate(8deg)}}
+ @keyframes selected-glow{to{box-shadow:inset 0 0 22px color-mix(in srgb,var(--player-accent) 22%,transparent),0 0 18px color-mix(in srgb,var(--player-accent) 15%,transparent)}}
+ @keyframes player-name-reveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes player-flare{from{opacity:.8;transform:translateX(-70%)}to{opacity:0;transform:translateX(130%)}}
+}
+.character-signal-flare{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;background:linear-gradient(105deg,transparent 42%,color-mix(in srgb,var(--player-accent) 28%,transparent) 50%,transparent 58%)}
+.character-media[data-stage-visible="false"] .character-geometry *, .character-media[data-stage-visible="false"] .character-scene-shards *, .character-media[data-stage-visible="false"] .character-backlight{animation-play-state:paused!important}
+@media(max-width:1050px){.character-controls .selector-replay{display:none}}
+@media(max-width:767px){.roster-intro-line{align-items:start;flex-direction:column}.roster-intro-line strong{font-size:clamp(1.6rem,7vw,2.8rem)}.character-scene-serial{left:1rem;top:1rem}.character-scene-foot{right:1rem;bottom:1rem}.character-identity h2{font-size:clamp(3.4rem,16vw,5.5rem)}.character-controls .selector-sound{height:2.75rem;padding:0 .65rem}.character-role-tape{font-size:.6rem}.character-geometry{inset:0 2%;width:96%;height:100%}.player-selection-footer{padding-inline:1rem}}
+@media(max-width:360px){.character-controls .selector-sound{font-size:.56rem}.character-controls{gap:.3rem}.character-controls button{width:2.6rem;height:2.6rem}}
+@media(prefers-reduced-motion:reduce){.character-signal-flare{display:none}.character-geometry *,.character-backlight,.character-scene-shards *{animation:none!important}}
+html[data-motion="reduce"] .character-signal-flare{display:none}
+html[data-motion="reduce"] .character-geometry *,html[data-motion="reduce"] .character-backlight,html[data-motion="reduce"] .character-scene-shards *{animation:none!important}
