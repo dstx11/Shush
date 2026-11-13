@@ -140,9 +140,14 @@ export function DropSection() {
             <div className="drop-gallery-label"><span className="mono">SHS / Drop 01</span><span className="mono">{views[view].label}</span></div>
             <button type="button" className="jersey-zoom-surface drop-gallery-image-button" aria-label="Ampliar camisola" aria-haspopup="dialog" onClick={(event) => { event.currentTarget.focus({ preventScroll: true }); setExpanded(true); }}><div key={view} className="jersey-view-arrival"><JerseyPreview config={config} view={view} /></div><span className="jersey-zoom-label" aria-hidden="true">Ampliar <span><ArrowIcon /></span></span></button>
             <div className="view-control drop-view-control" role="group" aria-label="Vista da jersey">{(Object.keys(views) as View[]).map((key) => <button key={key} type="button" aria-pressed={view === key} onClick={() => setView(key)}><span aria-hidden="true">{key === 'front' ? '01' : '02'}</span> {views[key].label}</button>)}</div>
-            <p className="drop-preview-note">Pré-visualização indicativa. A posição, a frase e a impressão são confirmadas no pedido manual.</p>
+            <p className="drop-preview-note">Imagem indicativa. A posição, a frase e a impressão podem variar na versão final.</p>
           </div>
-          <aside id="customizacao" className="drop-editor" aria-labelledby="customizer-title">
+          <aside id="customizacao" className="drop-editor" aria-labelledby="customizer-title"
+            onFocusCapture={event => {
+              if (window.innerHeight <= 520 && event.target instanceof HTMLInputElement && event.target.type !== 'radio') {
+                event.target.scrollIntoView({ block: 'center', behavior: 'instant' });
+              }
+            }}>
             <div className="drop-mobile-preview"><div aria-hidden="true"><JerseyPreview config={config} view="back" compact /></div><div><span className="mono">A tua versão</span><strong>{config.nick || 'SHUSH'} / {config.number || '00'}</strong><small>Tamanho {config.size}</small></div><a className="editorial-link" href="#product-preview" onClick={() => setView('back')} aria-label="Ver pré-visualização completa"><span aria-hidden="true"><ArrowIcon /></span></a></div>
             <JerseyCustomizer config={config} message={message} onChange={(next) => edit({ ...next, nick: sanitizeDropText(next.nick, 14), phrase: sanitizeDropText(next.phrase, 44) })} />
             <div className="drop-transfer-actions" aria-busy={pending}><button className="site-button button-primary" type="button" onClick={copy} disabled={pending}>Copiar resumo <span aria-hidden="true">⧉</span></button><button className="utility-button" type="button" onClick={download}>Descarregar TXT <span aria-hidden="true">↓</span></button><button className="utility-button" type="button" onClick={share} disabled={pending}>Partilhar personalização <span aria-hidden="true"><ArrowIcon /></span></button><button className="utility-button" type="button" onClick={reset}>Repor <span aria-hidden="true">↺</span></button></div>

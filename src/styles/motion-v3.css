@@ -36,3 +36,6 @@ html[data-motion="reduce"] .shush-reading-progress{display:none}
 .motion-compact{font-size:.68rem;gap:.5rem}
 @media(max-width:1150px){.header-utilities .competition-signal{display:none}}
 @media(max-width:767px){.header-utilities{display:none}.overlay-foot .motion-compact{width:fit-content}}
+.shush-navigation{flex-wrap:wrap}
+.desktop-navigation{min-width:0;flex:1;max-width:max-content;flex-wrap:wrap}
+@media(min-width:768px) and (max-width:1000px){.header-utilities .motion-compact>span:last-child{display:none}}

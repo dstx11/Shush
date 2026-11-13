@@ -53,6 +53,6 @@ test('Drop: editing reveals the back and the enlarged preview preserves the desi
   await gallery.getByRole('button', { name: 'Verso', exact: true }).click();
   await gallery.getByRole('button', { name: 'Fechar ampliação' }).click();
   await expect(trigger).toBeFocused();
-  await expect(page.getByLabel('Resumo do pedido', { exact: true })).toHaveValue(/Nick: Lyel\nNúmero: 04/);
-  await expect(page.getByLabel('Resumo do pedido', { exact: true })).toHaveValue(/Só rounds\./);
+  await expect(page.getByLabel('Resumo da personalização', { exact: true })).toHaveValue(/Nick: Lyel\nNúmero: 04/);
+  await expect(page.getByLabel('Resumo da personalização', { exact: true })).toHaveValue(/Só rounds\./);
 });

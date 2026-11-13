@@ -59,6 +59,12 @@ for(const css of christmasStyles){
 const notFound = await readText('404.html');
 const redirects = await readText('_redirects');
 const headers = await readText('_headers');
+expect(headers, 'Strict-Transport-Security: max-age=15552000', 'host HTTPS policy');
+for (const entry of Object.values(manifest)) {
+  for (const asset of [entry.file, ...(entry.css ?? [])]) {
+    if (asset && /-[A-Za-z0-9_-]{8}\.(js|css)$/.test(asset)) expect(headers, '/'+asset+'\n  Cache-Control: public, max-age=31536000, immutable', 'versioned resource cache');
+  }
+}
 const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 

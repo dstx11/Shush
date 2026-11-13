@@ -40,3 +40,5 @@ html[data-motion="reduce"] .shush-intro-v3 *,html[data-motion="reduce"] .shush-i
 .shush-intro-v3 .intro-skip{font:600 .72rem var(--font-ui);letter-spacing:0;display:inline-flex;gap:.7rem;align-items:center;min-height:44px;padding:.55rem .85rem;border-color:var(--control-line);color:var(--text)}
 .shush-intro-v3 .intro-skip:hover{background:var(--surface-2);color:var(--text)}
 .shush-root[data-entering="true"] .route-frame,.shush-root[data-entering="true"] .route-frame *,.shush-root[data-entering="true"] .route-frame *::before,.shush-root[data-entering="true"] .route-frame *::after{animation-play-state:paused!important}
+
+.shush-intro-v3.is-leaving :is(.shush-intro-v3-title,.shush-intro-v3-emblem>img,.shush-intro-v3-overline,.shush-intro-v3-stage>p){animation:none;opacity:1;transform:none;filter:none}

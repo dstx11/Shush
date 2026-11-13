@@ -28,6 +28,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
 });
 
 test('Initial splash covers prerendered content while the JavaScript loads', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/assets/index-*.js', async route => { await ready; await route.continue(); });

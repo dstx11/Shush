@@ -54,7 +54,7 @@ export function buildDropUrl(config: DropConfig, origin: string) {
 }
 
 export function dropSummary(config: DropConfig) {
-  return ['SHUSH — Drop 01', 'Nick: ' + (config.nick.trim() || 'SHUSH'), 'Número: ' + (config.number || '00').padStart(2, '0'), 'Tamanho: ' + config.size, 'Frase: ' + (config.phrase.trim() || '—'), 'Pedido manual.'].join('\n');
+  return ['SHUSH — Drop 01', 'Nick: ' + (config.nick.trim() || 'SHUSH'), 'Número: ' + (config.number || '00').padStart(2, '0'), 'Tamanho: ' + config.size, 'Frase: ' + (config.phrase.trim() || '—'), 'Pré-visualização. Encomendas ainda indisponíveis.'].join('\n');
 }
 
 export function readDropDraft(serialized: string) {

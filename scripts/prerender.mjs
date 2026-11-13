@@ -9,6 +9,14 @@ try {
   const { routeMetadata } = await vite.ssrLoadModule('/src/data/meta.ts');
   const { pageSchema, identitySchema } = await vite.ssrLoadModule('/src/data/seo.ts');
   const manifest = JSON.parse(await readFile(new URL('../dist/.vite/manifest.json', import.meta.url), 'utf8'));
+  // Exact build filenames avoid overlapping Cache-Control rules and never
+  // cache unversioned public images or future hand-authored scripts forever.
+  const versioned = new Set(Object.values(manifest).flatMap(entry => [entry.file, ...(entry.css ?? [])])
+    .filter(path => path && /-[A-Za-z0-9_-]{8}\.(js|css)$/.test(path)));
+  if (versioned.size > 90) throw new Error('Too many asset header rules');
+  const headers = await readFile(new URL('../dist/_headers', import.meta.url), 'utf8');
+  await writeFile(new URL('../dist/_headers', import.meta.url), headers + '\n' +
+    [...versioned].map(path => `/${path}\n  Cache-Control: public, max-age=31536000, immutable\n`).join('\n'));
   const routeEntries = {
     '/': 'HomePage', '/esports/valorant/premier': 'PremierPage',
     '/esports/valorant/roster': 'RosterPage', '/content': 'ContentPage',

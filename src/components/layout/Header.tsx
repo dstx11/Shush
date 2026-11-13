@@ -47,7 +47,7 @@ export function Header() {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Tab') {
-        const links = Array.from(mobilePanelRef.current?.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>('a, button') ?? []);
+        const links = Array.from(mobilePanelRef.current?.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>('a, button:not([disabled])') ?? []);
         const controls = [menuButtonRef.current, ...links].filter((element): element is HTMLButtonElement | HTMLAnchorElement => Boolean(element));
         const index = controls.indexOf(document.activeElement as HTMLButtonElement | HTMLAnchorElement);
         if (event.shiftKey && index <= 0) { event.preventDefault(); controls[controls.length - 1]?.focus(); }

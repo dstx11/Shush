@@ -156,7 +156,7 @@ test('Drop: real front/back preview and manual request values', async ({ page },
   await page.getByRole('button', { name: /Verso/ }).click();
   await expect(page.getByRole('button', { name: /Verso/ })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByLabel('Pré-visualização: SHUSH 07')).toBeVisible();
-  const summary = page.getByLabel('Resumo do pedido', { exact: true });
+  const summary = page.getByLabel('Resumo da personalização', { exact: true });
   await expect(summary).toHaveValue(/SHUSH/);
   await expect(summary).toHaveValue(/07/);
   await expect(summary).toHaveValue(/Só rounds\./);
@@ -318,7 +318,7 @@ test('Drop: blocked APIs recover without losing fields', async ({ page }) => {
   await page.getByLabel('Nick', { exact: true }).fill('SHUSH 愛');
   await page.getByRole('button', { name: 'Copiar resumo' }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Seleciona o resumo' })).toBeVisible();
-  await expect(page.getByLabel('Resumo do pedido')).toHaveValue(/Nick: SHUSH 愛/);
+  await expect(page.getByLabel('Resumo da personalização')).toHaveValue(/Nick: SHUSH 愛/);
   await page.getByRole('button', { name: 'Partilhar personalização' }).click();
   await expect(page.getByLabel('Ligação para copiar')).toHaveValue(/drop=1/);
   await page.locator('.drop-draft summary').click();
