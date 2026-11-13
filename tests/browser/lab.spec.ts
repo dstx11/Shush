@@ -17,7 +17,7 @@ test('LAB has a real keyboard entrance, usable sections and accessible modal',as
  const lab=page.getByRole('dialog',{name:'SHUSH LAB'});
  await expect(lab).toContainText('LAB');
  await expect(lab.getByText('LOCAL ONLY')).toBeVisible();
- await lab.getByRole('button',{name:/Componentes/}).click();
+ await lab.locator('.lab-side').getByRole('button',{name:/Componentes/}).click();
  await lab.getByRole('button',{name:/Selecionar este estado/}).click();
  await expect(lab.getByRole('button',{name:/Selecionado/})).toHaveAttribute('aria-pressed','true');
  const axe=await new AxeBuilder({page}).include('.shush-lab').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
@@ -30,7 +30,7 @@ test('season preview can be cancelled; committed choice persists and resets',asy
  await expect(page.locator('.shush-root')).toHaveAttribute('data-season','base');
  await openLab(page);
  let lab=page.getByRole('dialog',{name:'SHUSH LAB'});
- await lab.getByRole('button',{name:/Seasons/}).click();
+ await lab.locator('.lab-side').getByRole('button',{name:/Seasons/}).click();
  await lab.locator('.lab-season-choice').last().click();
  await expect(page.locator('.shush-root')).toHaveAttribute('data-season','halloween');
  await lab.getByRole('button',{name:'Cancelar pré-visualização'}).click();
@@ -43,20 +43,20 @@ test('season preview can be cancelled; committed choice persists and resets',asy
  await expect(page.locator('.shush-root')).toHaveAttribute('data-season','halloween');
  await openLab(page);
  lab=page.getByRole('dialog',{name:'SHUSH LAB'});
- await lab.getByRole('button',{name:/Seasons/}).click();
+ await lab.locator('.lab-side').getByRole('button',{name:/Seasons/}).click();
  await lab.getByRole('button',{name:'Usar calendário automático'}).click();
  await expect(page.locator('.shush-root')).toHaveAttribute('data-season','base');
 });
 test('motion controls change an actual animation; observatory shows browser data',async ({page})=>{
  await openLab(page);
  const lab=page.getByRole('dialog',{name:'SHUSH LAB'});
- await lab.getByRole('button',{name:/Motion/}).click();
+ await lab.locator('.lab-side').getByRole('button',{name:/Motion/}).click();
  await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 850ms/);
  await lab.getByRole('slider',{name:/Duração/}).fill('1300');
  await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 1300ms/);
  await lab.getByRole('button',{name:'Pausar'}).click();
  await expect(lab.locator('.lab-demo-object')).toHaveClass(/is-paused/);
- await lab.getByRole('button',{name:/Performance/}).click();
+ await lab.locator('.lab-side').getByRole('button',{name:/Performance/}).click();
  await expect(lab.locator('.lab-metrics')).toContainText('Recursos carregados');
  await expect(lab.locator('.lab-metrics')).not.toContainText('A medir…',{timeout:5000});
 });
