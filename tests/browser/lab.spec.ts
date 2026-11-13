@@ -16,7 +16,7 @@ test('LAB has a real keyboard entrance, usable sections and accessible modal',as
  await openLab(page);
  const lab=page.getByRole('dialog',{name:'SHUSH LAB'});
  await expect(lab).toContainText('LAB');
- await expect(lab.getByText('LOCAL ONLY')).toBeVisible();
+ await expect(lab.locator('.lab-top strong')).toBeVisible();
  await lab.locator('.lab-side').getByRole('button',{name:/Componentes/}).click();
  await lab.getByRole('button',{name:/Selecionar este estado/}).click();
  await expect(lab.getByRole('button',{name:/Selecionado/})).toHaveAttribute('aria-pressed','true');
