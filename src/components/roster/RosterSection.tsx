@@ -6,6 +6,9 @@ import { players, playerDropUrl, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { AppLink } from '../ui/AppLink';
+import { PlayerSignature } from './PlayerSignature';
+import { useCinematicPointer } from '../../hooks/useCinematicPointer';
+import { useSelectCue } from '../../hooks/useSelectCue';
 
 function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
   return (
@@ -21,19 +24,38 @@ export function RosterSection() {
   const selectedIndex = Math.max(0, players.findIndex((player) => player.id === params.get('player')));
   const selectedPlayer = players[selectedIndex] ?? players[0];
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
+  const camera = useCinematicPointer<HTMLDivElement>();
+  const { enabled: soundEnabled, setEnabled: setSoundEnabled, play: playCue } = useSelectCue();
+  const [replayCycle, setReplayCycle] = useState(0);
+  const [stageVisible, setStageVisible] = useState(true);
   const previous = useRef(selectedPlayer);
   const [direction, setDirection] = useState(1);
   const [leaving, setLeaving] = useState<Player | null>(null);
   useEffect(() => {
-    if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) setLeaving(previous.current);
+    if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') setLeaving(previous.current);
     previous.current = selectedPlayer;
   }, [selectedPlayer]);
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const stop = () => { if (media.matches) setLeaving(null); };
+    const stop = () => { if (media.matches || document.documentElement.dataset.motion === 'reduce') setLeaving(null); };
     media.addEventListener('change', stop);
-    return () => media.removeEventListener('change', stop);
+    document.addEventListener('shush:reduce-motion', stop);
+    return () => { media.removeEventListener('change', stop); document.removeEventListener('shush:reduce-motion', stop); };
   }, []);
+  useEffect(() => {
+    const element = camera.ref.current;
+    if (!element || !('IntersectionObserver' in window)) return;
+    let inView = false;
+    const sync = () => setStageVisible(inView && !document.hidden);
+    const observer = new IntersectionObserver(entries => {
+      inView = entries[0]?.isIntersecting ?? false;
+      sync();
+    }, { rootMargin: '80px' });
+    observer.observe(element);
+    document.addEventListener('visibilitychange', sync);
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
+  }, [selectedPlayer.id, replayCycle]);
+
   const stripRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -44,13 +66,25 @@ export function RosterSection() {
     strip.scrollTo({ left: Math.max(0, target), behavior: 'instant' });
   }, [selectedIndex]);
   const selectPlayer = useCallback((index: number) => {
+    if (index < 0 || index >= players.length) return;
+    playCue();
     setDirection(index === (selectedIndex + 1) % players.length ? 1 : -1);
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('player', players[index].id);
       return next;
     }, { replace: true, preventScrollReset: true });
-  }, [setParams, selectedIndex]);
+  }, [setParams, selectedIndex, playCue]);
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!/^[1-7]$/.test(event.key) || event.altKey || event.ctrlKey || event.metaKey || event.repeat ||
+          document.querySelector('dialog[open]') || (event.target instanceof Element &&
+          event.target.closest('input, textarea, select, [contenteditable="true"]'))) return;
+      selectPlayer(Number(event.key) - 1);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [selectPlayer]);
   useEffect(() => {
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     if (connection?.saveData) return;
@@ -75,9 +109,10 @@ export function RosterSection() {
       <div className="shell">
         <div className="player-heading">
           <h1 id="roster-title">Roster<span className="roster-count"> / 07</span></h1>
-          <span className="mono">SHUSH · VALORANT</span>
+          <span className="mono">SHUSH · VALORANT / PLAYER SELECT</span>
         </div>
 
+        <div className="roster-intro-line"><strong>Sete pessoas.<br/>Escolhe quem entra.</strong><p>Um jogador de cada vez. Explora o roster com as miniaturas, as setas ou as teclas de 1 a 7.</p></div>
         <div className="player-stage">
 
 
@@ -85,13 +120,15 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" className="character-spotlight" aria-labelledby="selected-player-name">
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
-              <span className="section-kicker">SHUSH / VALORANT</span>
+              <span className="section-kicker">SHUSH / PLAYER SELECT</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
+              <span className="character-role-tape">{selectedPlayer.roles.join(' / ')}</span>
 
               <span className="sr-only">Camisola #{selectedPlayer.number}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
-            <div key={`media-${selectedPlayer.id}`} className="character-media"
+            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" data-stage-visible={stageVisible}
+              ref={camera.ref} onPointerMove={camera.onPointerMove} onPointerLeave={camera.onPointerLeave}
               onPointerDown={(event) => { if (event.pointerType === 'touch') gesture.current = { x: event.clientX, y: event.clientY }; }}
               onPointerCancel={() => { gesture.current = null; }}
               onPointerUp={(event) => {
@@ -104,11 +141,15 @@ export function RosterSection() {
                   if (dx < 0) selectNext(); else selectPrevious();
                 }
               }}>
-              {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(null)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
+              <PlayerSignature player={selectedPlayer} index={selectedIndex} />
+              <span className="character-signal-flare" key={`flare-${selectedPlayer.id}-${replayCycle}`} aria-hidden="true" />
+              {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
               <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
             </div>
 
           <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Seleciona um retrato <span aria-hidden="true">· ← →</span></span>
+            <button type="button" className="selector-sound" onClick={() => setSoundEnabled(value => !value)} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Desativar som de seleção' : 'Ativar som de seleção'}>{soundEnabled ? 'SOM ON' : 'SOM OFF'}</button>
+            <button type="button" className="selector-replay" onClick={() => setReplayCycle(cycle => cycle + 1)} aria-label="Rever entrada do jogador">Rever entrada</button>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
               <span aria-hidden="true">←</span>
             </button>
@@ -179,6 +220,7 @@ export function RosterSection() {
 
 
         </div>
+        <div className="player-selection-footer"><span><strong>SHUSH / CHOOSE YOUR PLAYER</strong></span><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span>A apresentação usa os retratos e perfis reais da equipa.</span></div>
         </div>
       </div>
     </section>

@@ -21,11 +21,11 @@
 .winter-ornament-scene-label { top: 1.3rem; }
 .winter-ornament-scene-foot { bottom: 1.3rem; }
 .winter-ornament-light { position: absolute; inset: 12% 15% 11%; background: radial-gradient(ellipse at 50% 40%,#7a956356,transparent 67%); filter: blur(26px); pointer-events: none; }
-.winter-ornament-tree { position: absolute; inset: 0; pointer-events: none; }
-.winter-ornament-silhouette { position: absolute; left: 13%; top: 10%; width: 74%; height: 76%; background: linear-gradient(105deg,#143b30 4%,#2f6e54 48%,#0c3d32 100%); clip-path: polygon(50% 0%,61% 18%,56% 18%,69% 35%,64% 35%,82% 56%,73% 56%,95% 82%,5% 82%,27% 56%,18% 56%,36% 35%,31% 35%,44% 18%,39% 18%); filter: drop-shadow(0 0 26px #70a37a55); }
-.winter-ornament-silhouette::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(161deg,transparent 0 17px,#6aaf812d 18px 19px,transparent 21px 31px); clip-path: inherit; }
-.winter-ornament-star { position: absolute; top: 6.5%; left: 50%; transform: translateX(-50%); font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1; color: #f3d699; text-shadow: 0 0 25px #f9da9c9c; }
-.winter-ornament-trunk { position: absolute; bottom: 12%; left: 47%; width: 6%; height: 12%; border-radius: .35rem; background: linear-gradient(90deg,#372b26,#70503a,#372b26); }
+
+
+
+
+
 .winter-player-ornament { position: absolute; z-index: 2; display: grid; justify-items: center; gap: .38rem; border: 0; background: none; color: #f8ebd5; transform: translate(-50%,-50%); padding: .45rem; min-width: 5rem; min-height: 5rem; }
 .winter-ornament-ball { position: relative; display: grid; place-items: center; width: clamp(2.8rem,5.1vw,4.1rem); aspect-ratio: 1; border-radius: 50%; border: 1px solid #ffe4af91; background: radial-gradient(circle at 26% 20%,#fff6dab3 0%,#dbb870 13%,#9e353f 46%,#441f2c 90%); box-shadow: inset -8px -12px 15px #0008, 0 11px 23px #0008, 0 0 0 0 #f3d195; transition: transform .3s,box-shadow .3s; }
 .winter-player-ornament:nth-of-type(3n) .winter-ornament-ball { background: radial-gradient(circle at 28% 18%,#fff6dab3 0%,#d1d0b0 13%,#3c8d79 46%,#173b3e 95%); }
@@ -111,3 +111,19 @@
 @media (prefers-reduced-motion: reduce) {
   .winter-player-ornament .winter-ornament-ball,.winter-gift-card,.winter-gift-box { transition: none !important; }
 }
+
+/* One tree only: the canvas in HeroShowcase. These seven lights are a constellation. */
+.winter-ornament-constellation{background:radial-gradient(ellipse at 52% 45%,#4266553f,transparent 60%),linear-gradient(160deg,#142926,#0b1a20 85%);isolation:isolate}
+.winter-ornament-constellation-art{position:absolute;inset:0;z-index:0;display:grid;place-items:center;overflow:hidden;pointer-events:none}
+.winter-ornament-constellation-art svg{position:absolute;inset:2% 0;width:100%;height:96%;stroke:#edcb9470;stroke-width:1.15;opacity:.48}
+.winter-ornament-constellation-art>span{color:#edcb94;font:700 clamp(1.1rem,2.8vw,2.6rem)/1 var(--font-heading);letter-spacing:.12em;text-shadow:0 0 45px #efc98055;opacity:.35}
+.winter-ornament-constellation-art>span i{font-style:normal;font-size:.7em}
+.winter-ornament-constellation .winter-player-ornament{z-index:2}
+.winter-ornament-constellation .winter-ornament-light{inset:15% 18%}
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-motion="reduce"]) .winter-ornament-constellation-art svg{animation:winter-constellation-drift 20s ease-in-out infinite alternate}
+ html:not([data-motion="reduce"]) .winter-ornament-constellation-art>span{animation:winter-constellation-pulse 7s ease-in-out infinite alternate}
+ @keyframes winter-constellation-drift{to{transform:scale(1.04) rotate(1.5deg);opacity:.67}}
+ @keyframes winter-constellation-pulse{to{opacity:.48}}
+}
+@media(max-width:767px){.winter-ornament-constellation-art>span{font-size:1.15rem}.winter-ornament-constellation .winter-player-ornament{min-width:3rem;min-height:3rem;padding:.25rem}}

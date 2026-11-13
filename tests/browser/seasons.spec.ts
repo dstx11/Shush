@@ -21,6 +21,9 @@ for(const [season,date,headline] of cases){
   if(season==='christmas'){
    await expect(page.locator('.winter-tree-canvas')).toBeAttached();
    await expect(page.locator('.winter-player-ornament')).toHaveCount(7);
+   await expect(page.locator('.winter-tree-stage canvas')).toHaveCount(1);
+   await expect(page.locator('.winter-ornament-tree, .winter-ornament-silhouette')).toHaveCount(0);
+   await expect(page.locator('.winter-ornament-constellation')).toBeVisible();
   }else{
    await expect(page.locator('.winter-tree-canvas')).toHaveCount(0);
    await expect(page.locator('.team-cover-player')).toHaveCount(3);
