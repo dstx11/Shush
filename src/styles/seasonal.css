@@ -1,6 +1,6 @@
 /* The permanent SHUSH identity; colour changes are deliberate, not separate websites. */
 .shush-root {
- --bg:#15131a;--surface:#201d28;--surface-2:#292431;--field:#19161f;--text:#f3eef4;--muted:#b9b0c3;--purple:#c4afe9;--purple-text:#c4afe9;--signal:#c4afe9;--line:#403849;--solid-border:#403849;--control-line:#7e718e;--accent-hover:#d8c9f2;--on-accent:#261c35;--paper:#f3eef4;--ink:#15131a;--season-accent:#c4afe9;--season-haze:#5b487a;--season-rgb:196,175,233;--font-heading:"Manrope",ui-sans-serif,system-ui,sans-serif;
+ --bg:#15131a;--surface:#201d28;--surface-2:#292431;--field:#19161f;--text:#f3eef4;--muted:#b9b0c3;--purple:#c4afe9;--purple-text:#c4afe9;--signal:#c4afe9;--line:#403849;--solid-border:#403849;--control-line:#7e718e;--accent-hover:#d8c9f2;--on-accent:#261c35;--paper:#f3eef4;--ink:#15131a;--season-accent:#c4afe9;--season-haze:#51445f;--season-rgb:196,175,233;--font-heading:"Manrope",ui-sans-serif,system-ui,sans-serif;
  background:var(--bg);color:var(--text);
 }
 .shush-root[data-season="christmas"]{--bg:#0e1919;--surface:#182b29;--surface-2:#223a34;--text:#f6efdf;--muted:#b4c5bb;--signal:#edcb94;--line:#405448;--control-line:#899e8a;--accent-hover:#f8ddb1;--on-accent:#17241d;--paper:#f6efdf;--ink:#0e1919;--season-accent:#edcb94;--season-haze:#466c5b;--season-rgb:237,203,148;--font-heading:"SHUSH Hearth",Georgia,serif;}
@@ -17,7 +17,7 @@
 .shush-root:not([data-season="christmas"]) .desktop-nav-link[aria-current="page"]{background:var(--signal);color:var(--on-accent)}
 .shush-root:not([data-season="christmas"]) .shush-header::after{display:none}
 .shush-root:not([data-season="christmas"]) .navigation-overlay{background:var(--bg)}
-.shush-hero{position:relative;isolation:isolate;overflow:clip;min-height:min(820px,100svh);background:radial-gradient(ellipse at 78% 43%,var(--season-haze),transparent 58%),linear-gradient(155deg,var(--bg),#111017 85%)}
+.shush-hero{position:relative;isolation:isolate;overflow:clip;min-height:min(820px,100svh);background:radial-gradient(ellipse at 78% 43%,var(--season-haze),transparent 58%),radial-gradient(ellipse at 10% 90%,#bf956b14,transparent 45%),linear-gradient(155deg,var(--bg),#111017 85%)}
 .shush-hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;background-image:linear-gradient(90deg,#fff1 1px,transparent 1px),linear-gradient(#fff1 1px,transparent 1px);background-size:96px 96px;mask-image:linear-gradient(90deg,transparent,#000 65%,transparent)}
 .shush-hero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;min-height:clamp(610px,78svh,850px);gap:clamp(1rem,5vw,5rem);position:relative}
 .shush-hero-copy{position:relative;z-index:2;padding-block:4.5rem 3rem}
@@ -27,7 +27,7 @@
 .shush-hero-overline{margin:clamp(1.75rem,6vh,4.5rem) 0 .6rem;font:600 .73rem var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .shush-hero h1{font:800 clamp(3.1rem,5.6vw,6.6rem)/1.02 var(--font-heading);letter-spacing:-.075em;margin:0;max-width:12ch;text-wrap:balance}
 .shush-hero h1 span,.shush-hero h1 em{display:block;font-style:normal}
-.shush-hero h1 em{color:var(--season-accent)}
+.shush-hero h1 em{color:var(--season-accent);font-family:"SHUSH Hearth",Georgia,serif;font-weight:450;letter-spacing:-.055em}
 .shush-hero-lead{max-width:43ch;color:var(--text);opacity:.84;line-height:1.85;font-size:clamp(.92rem,1.1vw,1.05rem);margin:2rem 0}
 .shush-hero-actions{gap:.7rem}
 .shush-hero-lower{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:35rem;border-top:1px solid var(--line);margin-top:clamp(2rem,6vh,4rem);padding-top:1.2rem;color:var(--muted);font:500 .7rem var(--font-mono)}

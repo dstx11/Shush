@@ -8,10 +8,10 @@ const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)')
   || document.documentElement.dataset.motion === 'reduce' || (() => { try { return localStorage.getItem('shush:motion:v1') === 'reduce'; } catch { return false; } })();
 function shouldPlay(id: SeasonId) {
   if (typeof window === 'undefined' || reduceMotion()) return false;
-  try { return sessionStorage.getItem(INTRO_SEEN(id)) !== '1'; }
+  try { return sessionStorage.getItem(INTRO_SEEN(id)) !== '1' && localStorage.getItem(INTRO_SEEN(id)) !== '1'; }
   catch { return false; } // A restricted browser must never be trapped behind an overlay.
 }
-export function BrandIntro() {
+export function BrandIntro({ onComplete }: { onComplete: () => void }) {
   const { id, theme } = useSeason();
   const [visible, setVisible] = useState(() => shouldPlay(id));
   const [leaving, setLeaving] = useState(false);
@@ -25,6 +25,7 @@ export function BrandIntro() {
     const boot = document.getElementById('shush-boot-stage');
     if (!visible) {
       boot?.remove();
+      onComplete();
       if (didOpen.current) document.getElementById('main-content')?.focus({ preventScroll: true });
       return;
     }
@@ -35,50 +36,45 @@ export function BrandIntro() {
     boot?.remove();
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    try { sessionStorage.setItem(INTRO_SEEN(id), '1'); } catch { /* optional storage */ }
+    try { sessionStorage.setItem(INTRO_SEEN(id), '1'); localStorage.setItem(INTRO_SEEN(id), '1'); } catch { /* optional storage */ }
     return () => {
       document.body.style.overflow = previousOverflow;
       if (element.open) element.close();
     };
-  }, [visible, id]);
+  }, [visible, id, onComplete]);
 
-  // Resources can finish early; the sequence still gets time to breathe.
-  // On slow or failed assets we exit within 4.9 s, not an endless loading screen.
+  // No minimum duration: cached resources can reveal the page immediately.
+  // The exit is visual continuity, not a second simulated loading task.
   useEffect(() => {
     if (!visible) return;
     let active = true;
-    let ready = false;
-    let minimumElapsed = false;
     let finishing = false;
     const timeouts: number[] = [];
     const later = (fn: () => void, milliseconds: number) => {
-      const timer = window.setTimeout(() => { if (active) fn(); }, milliseconds);
-      timeouts.push(timer);
+      timeouts.push(window.setTimeout(() => { if (active) fn(); }, milliseconds));
     };
     const finish = () => {
-      if (finishing) return;
+      if (finishing || !active) return;
       finishing = true;
+      timeouts.forEach(timer => window.clearTimeout(timer));
       setPhase(3);
       setLeaving(true);
-      later(() => setVisible(false), 380);
+      later(() => setVisible(false), 320);
     };
-    const maybeFinish = () => { if (ready && minimumElapsed) finish(); };
-    const markReady = () => { ready = true; maybeFinish(); };
-    later(() => setPhase(1), 850);
-    later(() => setPhase(2), 1850);
-    later(() => { minimumElapsed = true; maybeFinish(); }, 2950);
-    later(finish, 4470);
-    window.addEventListener('shush:ready', markReady, { once: true });
+    later(() => setPhase(1), 500);
+    later(() => setPhase(2), 1200);
+    later(finish, 3000);
     const images = Array.from(document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')).slice(0, 7);
-    Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(() => { if (active) markReady(); });
+    Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(finish);
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const onChange = () => { if (reduceMotion()) finish(); };
+    const onChange = () => { if (reduceMotion()) setVisible(false); };
     media.addEventListener('change', onChange);
+    document.addEventListener('shush:reduce-motion', onChange);
     return () => {
       active = false;
       timeouts.forEach(timer => window.clearTimeout(timer));
-      window.removeEventListener('shush:ready', markReady);
       media.removeEventListener('change', onChange);
+      document.removeEventListener('shush:reduce-motion', onChange);
     };
   }, [visible]);
 
@@ -87,7 +83,7 @@ export function BrandIntro() {
       aria-label="Entrada SHUSH" aria-describedby="intro-description"
       onCancel={event => { event.preventDefault(); setVisible(false); }}>
     <div className="shush-intro-v3-grid" aria-hidden="true" />
-    <div className="shush-intro-v3-top" aria-hidden="true"><span>SHUSH / VALORANT</span><span>{theme.chapter}</span></div>
+    <div className="shush-intro-v3-top"><span aria-hidden="true">SHUSH / VALORANT</span><button className="intro-skip" type="button" onClick={() => setVisible(false)}>Saltar apresentação <span aria-hidden="true">↗</span></button></div>
     <div className="shush-intro-v3-stage">
       <div className="shush-intro-v3-emblem" aria-hidden="true">
         <span className="shush-intro-v3-ring shush-intro-v3-ring-a" />
@@ -95,7 +91,7 @@ export function BrandIntro() {
         <SeasonArtwork id={id} />
         <img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="" />
       </div>
-      <span className="shush-intro-v3-overline">IDENTIDADE EM MOVIMENTO / 001</span>
+      <span className="shush-intro-v3-overline">SEM BARULHO. SÓ ROUNDS.</span>
       <strong className="shush-intro-v3-title">SHUSH<span>.</span></strong>
       <p id="intro-description">{theme.introSub}</p>
     </div>

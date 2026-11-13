@@ -133,7 +133,8 @@ export function DropSection() {
   return (
     <section id="products" className="drop-page" aria-labelledby="drop-title">
       <div className="shell">
-        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Personaliza a camisola.<br />Guarda a tua versão para um pedido manual.</p></div>
+        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Experimenta o teu nick e número.<br />Guarda ou partilha a tua versão.</p></div>
+        <p className="drop-availability"><span className="section-kicker">PRÉ-VISUALIZAÇÃO</span> O Drop 01 ainda não está disponível para encomenda. Podes experimentar, guardar e partilhar a tua personalização.</p>
         <div className="drop-layout">
           <div id="product-preview" className="audit-drop-gallery">
             <div className="drop-gallery-label"><span className="mono">SHS / Drop 01</span><span className="mono">{views[view].label}</span></div>
@@ -150,7 +151,7 @@ export function DropSection() {
             <details className="drop-draft"><summary>Rascunho neste dispositivo</summary><p>Guarda apenas quando escolheres. O rascunho fica neste browser e pode ser recuperado ou removido aqui.</p><div className="action-row"><button className="utility-button" type="button" onClick={saveDraft}>Guardar rascunho</button><button className="utility-button" type="button" onClick={restoreDraft} disabled={!draftAvailable}>Recuperar rascunho</button><button className="utility-button" type="button" onClick={deleteDraft} disabled={!draftAvailable}>Remover rascunho</button></div></details>
           </aside>
         </div>
-        <section className="drop-process" aria-labelledby="drop-process-title"><div><span className="section-kicker">Depois da personalização</span><h2 id="drop-process-title">Guarda a tua<br />personalização.</h2></div><ol><li><span className="mono">01 / Personaliza</span><p>Escolhe o nick, número, tamanho e uma frase opcional.</p></li><li><span className="mono">02 / Guarda o resumo</span><p>Copia o texto, descarrega o TXT ou partilha a tua versão.</p></li><li><span className="mono">03 / Pedido manual</span><p>Este site prepara o resumo; não envia nem reserva uma camisola. O canal oficial para pedidos ainda não está publicado.</p></li></ol></section>
+        <section className="drop-process" aria-labelledby="drop-process-title"><div><span className="section-kicker">Depois da personalização</span><h2 id="drop-process-title">Guarda a tua<br />personalização.</h2></div><ol><li><span className="mono">01 / Personaliza</span><p>Escolhe o nick, número, tamanho e uma frase opcional.</p></li><li><span className="mono">02 / Guarda o resumo</span><p>Copia o texto, descarrega o TXT ou partilha a tua versão.</p></li><li><span className="mono">03 / Fica contigo</span><p>Guarda o resumo ou a ligação para recuperares esta versão. Ainda não são aceites encomendas pelo site.</p></li></ol></section>
       </div>
       {expanded ? <JerseyLightbox view={view} onViewChange={setView} onClose={() => setExpanded(false)}><JerseyPreview config={config} view={view} /></JerseyLightbox> : null}
     </section>

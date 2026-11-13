@@ -79,6 +79,10 @@ expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
   expect(html, '<h1', `${path} prerendered heading`);
+  const pageEntry = ({'content.html':'ContentPage','company.html':'AboutPage','products/jersey.html':'DropPage','esports/valorant/roster.html':'RosterPage','esports/valorant/premier.html':'PremierPage'})[path];
+  for (const css of manifest['src/pages/'+pageEntry+'.tsx']?.css ?? []) {
+    expect(html, 'href="/'+css+'"', `${path} static route CSS`);
+  }
   expectAbsent(html, 'shush-loading', `${path} unfinished loading shell`);
   expect(html, `<title>${title}</title>`, `${path} title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);

@@ -24,7 +24,7 @@ test('Cinematic intro is automatic, has no Enter button, and remains dismissible
  await page.goto('/');
  const intro=page.getByRole('dialog',{name:'Entrada SHUSH'});
  await expect(intro).toBeVisible();
- await expect(intro.getByRole('button')).toHaveCount(0);
+ await expect(intro.getByRole('button', {name: /Saltar apresentação/})).toBeVisible();
  await expect(intro).toHaveAttribute('aria-describedby','intro-description');
  await page.keyboard.press('Escape');
  await expect(intro).toHaveCount(0);
@@ -54,9 +54,9 @@ test('Motion setting is keyboard accessible, persistent and disables visual anim
 });
 test('The content panels use real records and the origin no longer lists personal nick references',async ({page})=>{
  await page.goto('/');
- await expect(page.locator('.signal-panel')).toHaveCount(4);
- await expect(page.locator('.signal-panel-competition')).toContainText('5 partidas');
- await expect(page.locator('.signal-panel-roster')).toContainText('07 nicks');
+ await expect(page.locator('.shush-signals')).toContainText('O grupo fica.');
+ await expect(page.locator('.home-score')).toHaveCount(3);
+ await expect(page.locator('.home-lineup > a')).toHaveCount(7);
  await page.goto('/company');
  await expect(page.locator('.about-origin-story')).not.toContainText('contraponto ao Less');
  await expect(page.locator('.about-origin-story')).not.toContainText('ao aspas');

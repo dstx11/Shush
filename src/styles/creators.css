@@ -29,3 +29,7 @@
 .creator-feature:nth-child(even) .creator-art { order: 2; }
 .creator-handle { color: var(--muted); font: .85rem var(--font-mono); }
 @media (max-width: 767px) { .creator-feature:nth-child(even) .creator-art { order: initial; } .creator-art { height: auto; min-height: 0; } }
+
+.creator-introduction{color:var(--muted);font-size:1rem;line-height:1.85;max-width:37ch}
+.creator-description{max-width:37ch;color:var(--muted);font-size:.95rem;line-height:1.85}
+.creator-channel-note{font:500 .65rem/1.7 var(--font-mono);letter-spacing:.12em;color:var(--signal);margin-top:.5rem}

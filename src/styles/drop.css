@@ -85,3 +85,6 @@ button:disabled { cursor: default; opacity: .55; }
 .drop-editor .drop-mobile-preview .editorial-link { color: var(--text); }
 .drop-gallery-label { border-bottom: 1px solid var(--line); padding-bottom: .65rem; }
 .audit-drop-image { background: var(--surface); border-radius: var(--radius-md); }
+
+.drop-availability{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem 1rem;padding:1rem 1.25rem;margin:-1rem 0 2rem;border:1px solid var(--line);border-left:2px solid var(--signal);border-radius:.6rem;background:var(--surface);color:var(--muted);font-size:.85rem;line-height:1.8}
+.drop-availability .section-kicker{font-size:.65rem;letter-spacing:.1em;color:var(--text)}

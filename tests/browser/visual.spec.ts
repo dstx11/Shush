@@ -45,7 +45,7 @@ for (const [name, path, selector] of regions) {
       await page.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
     } else {
       if (name === 'about-intro') {
-        await expect(region.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
+        await expect(region.getByRole('heading', { level: 1 })).toContainText('Um nome.');
         await expect(region).toHaveScreenshot(`${name}.png`, { animations: 'disabled' });
         await region.screenshot({ path: testInfo.outputPath(`${name}.png`), animations: 'disabled' });
       } else {
