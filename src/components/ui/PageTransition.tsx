@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useRef, type ReactNode } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
 
 const scrollPositions = new Map<string, number>();
@@ -16,6 +16,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
   const restoringKey = useRef<string | null>(null);
+  const departingKey = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -27,12 +28,27 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     return () => { active = false; clearTimeout(timeout); };
   }, []);
 
+  // Capture scroll before React replaces the outgoing route's DOM. Otherwise
+  // WebKit may clamp the viewport while the old passive scroll listener is
+  // still attached and overwrite the original position with a false value.
+  useLayoutEffect(() => {
+    if (departingKey.current === key) departingKey.current = null;
+    if (navigationType === 'POP' && scrollPositions.has(key)) restoringKey.current = key;
+    return () => {
+      if (restoringKey.current !== key) {
+        scrollPositions.delete(key);
+        scrollPositions.set(key, window.scrollY);
+      }
+      departingKey.current = key;
+    };
+  }, [key]);
+
   useEffect(() => {
     const remember = () => {
       // History entries can be replaced repeatedly while editing shared URLs.
       // A POP can trigger a transient scroll event before the restoration frame.
       // Never overwrite the saved entry with that temporary layout position.
-      if (previousPath.current !== pathname + hash || restoringKey.current === key) return;
+      if (previousPath.current !== pathname + hash || restoringKey.current === key || departingKey.current === key) return;
       scrollPositions.delete(key);
       scrollPositions.set(key, window.scrollY);
       if (scrollPositions.size > 64) scrollPositions.delete(scrollPositions.keys().next().value!);
