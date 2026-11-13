@@ -80,9 +80,9 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
 
   if (!visible) return null;
   return <dialog ref={dialog} className={'brand-intro shush-season-intro shush-intro-v3' + (leaving ? ' is-leaving' : '')}
-      aria-label="Entrada SHUSH" aria-describedby="intro-description"
+      data-phase={phase} aria-label="Entrada SHUSH" aria-describedby="intro-description"
       onCancel={event => { event.preventDefault(); setVisible(false); }}>
-    <div className="shush-intro-v3-grid" aria-hidden="true" />
+    <div className="shush-intro-v3-grid" aria-hidden="true" /><div className="shush-intro-v3-rays" aria-hidden="true"><span/><span/><span/><span/><span/></div>
     <div className="shush-intro-v3-top"><span aria-hidden="true">SHUSH / VALORANT</span><button className="intro-skip" type="button" onClick={() => setVisible(false)}>Saltar apresentação <span aria-hidden="true">↗</span></button></div>
     <div className="shush-intro-v3-stage">
       <div className="shush-intro-v3-emblem" aria-hidden="true">
@@ -92,12 +92,13 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
         <img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="" />
       </div>
       <span className="shush-intro-v3-overline">SEM BARULHO. SÓ ROUNDS.</span>
-      <strong className="shush-intro-v3-title">SHUSH<span>.</span></strong>
+      <strong className="shush-intro-v3-title"><span className="sr-only">SHUSH.</span>{Array.from('SHUSH').map((letter,index)=><span aria-hidden="true" key={index}>{letter}</span>)}<span aria-hidden="true" className="intro-period">.</span></strong>
+      <div className="shush-intro-v3-cutline" aria-hidden="true"><span>O SILÊNCIO ANTES DO ROUND</span><span>UMA EQUIPA. O MESMO SINAL.</span><span>SHUSH / VALORANT</span></div>
       <p id="intro-description">{theme.introSub}</p>
     </div>
     <div className="shush-intro-v3-bottom">
       <div className="shush-intro-v3-progress-head">
-        <span aria-live="off">{phase === 0 ? 'A compor a experiência' : phase === 1 ? 'A revelar a identidade' : phase === 2 ? 'A preparar o próximo round' : 'Pronto'}</span>
+        <span aria-live="off">{phase === 0 ? 'A preparar a primeira cena' : phase === 1 ? 'A revelar o sinal' : phase === 2 ? 'O lobby está a abrir' : 'Pronto'}</span>
         <span aria-hidden="true">{String(Math.min(phase + 1, 3)).padStart(2, '0')} / 03</span>
       </div>
       <div className={'shush-intro-v3-track phase-' + phase} aria-hidden="true"><span /></div>

@@ -14,7 +14,7 @@
 .shush-intro-v3-ring-b{inset:21%;border-style:dashed;opacity:.64}
 .shush-intro-v3-overline{font:600 .63rem var(--font-mono);letter-spacing:.25em;color:var(--muted);margin-top:.55rem}
 .shush-intro-v3-title{font:800 clamp(4.5rem,13vw,11rem)/.9 var(--font-heading);letter-spacing:-.11em;color:var(--text);margin:.2rem 0 0}
-.shush-intro-v3-title span{color:var(--season-accent)}
+.shush-intro-v3-title .intro-period{color:var(--season-accent)}
 .shush-intro-v3-stage>p{font:500 clamp(.82rem,1.5vw,1.08rem)/1.7 var(--font-ui);margin:1rem 0 0;color:var(--muted);max-width:30ch}
 .shush-intro-v3-bottom{width:min(100%,800px);margin-inline:auto;display:grid;gap:.9rem}
 .shush-intro-v3-progress-head{color:var(--text)}
@@ -42,3 +42,23 @@ html[data-motion="reduce"] .shush-intro-v3 *,html[data-motion="reduce"] .shush-i
 .shush-root[data-entering="true"] .route-frame,.shush-root[data-entering="true"] .route-frame *,.shush-root[data-entering="true"] .route-frame *::before,.shush-root[data-entering="true"] .route-frame *::after{animation-play-state:paused!important}
 
 .shush-intro-v3.is-leaving :is(.shush-intro-v3-title,.shush-intro-v3-emblem>img,.shush-intro-v3-overline,.shush-intro-v3-stage>p){animation:none;opacity:1;transform:none;filter:none}
+
+/* Cinematic title treatment: detail, not a second loading timer. */
+.shush-intro-v3-rays{position:absolute;inset:11% 0;display:grid;grid-template-columns:repeat(5,1fr);pointer-events:none;opacity:.1;z-index:-1}
+.shush-intro-v3-rays span{border-right:1px solid var(--season-accent);transform:skewX(-13deg)}
+.shush-intro-v3-title{display:flex;align-items:baseline;justify-content:center;gap:0}
+.shush-intro-v3-title>span:not(.sr-only){display:inline-block;letter-spacing:-.085em}
+.shush-intro-v3-title .intro-period{letter-spacing:-.12em}
+.shush-intro-v3-cutline{position:relative;height:1.5rem;width:min(100%,35rem);margin:.25rem 0;font:700 clamp(.62rem,1.15vw,.77rem)/1.5 var(--font-mono);letter-spacing:.16em;color:var(--season-accent)}
+.shush-intro-v3-cutline span{position:absolute;inset:0;display:block;opacity:0;transform:translateY(9px);transition:opacity .35s,transform .45s cubic-bezier(.16,1,.3,1)}
+.shush-intro-v3[data-phase="0"] .shush-intro-v3-cutline span:nth-child(1),.shush-intro-v3[data-phase="1"] .shush-intro-v3-cutline span:nth-child(2),.shush-intro-v3[data-phase="2"] .shush-intro-v3-cutline span:nth-child(3),.shush-intro-v3[data-phase="3"] .shush-intro-v3-cutline span:nth-child(3){opacity:1;transform:none}
+@media(prefers-reduced-motion:no-preference){
+ .shush-intro-v3-title>span:not(.sr-only){animation:shush-letter-enter .85s cubic-bezier(.16,1,.3,1) both}
+ .shush-intro-v3-title>span:nth-child(3){animation-delay:.08s}.shush-intro-v3-title>span:nth-child(4){animation-delay:.16s}.shush-intro-v3-title>span:nth-child(5){animation-delay:.24s}.shush-intro-v3-title>span:nth-child(6){animation-delay:.32s}.shush-intro-v3-title>span:nth-child(7){animation-delay:.4s}
+ .shush-intro-v3-rays{animation:shush-rays-enter 1.5s ease both}
+ @keyframes shush-letter-enter{from{opacity:0;transform:translateY(38px) rotate(3deg)}to{opacity:1;transform:none}}
+ @keyframes shush-rays-enter{from{opacity:0;transform:scaleX(.94)}to{opacity:.1;transform:none}}
+}
+.shush-intro-v3.is-leaving .shush-intro-v3-title>span{animation:none;opacity:1;transform:none}
+html[data-motion="reduce"] .shush-intro-v3-cutline span{transition:none}
+@media(prefers-reduced-motion:reduce){.shush-intro-v3-cutline span{transition:none}}
