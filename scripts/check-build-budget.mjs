@@ -25,7 +25,8 @@ if(coreCss>15.5*1024)failures.push('Base stylesheet exceeds 15.5 kB gzip');
 if(christmasCss>10.5*1024)failures.push('Lazy Christmas stylesheet exceeds 10.5 kB gzip');
 // Route splitting repeats compression dictionaries but removes unrelated CSS from each visit.
 // Guard both the smaller entry and the complete distribution, including deferred routes.
-if(css>40*1024)failures.push('Combined CSS exceeds 40 kB gzip');
+// Combined route-lazy CSS includes SHUSH LAB and Home-only worldbuilding scenes; startup remains independently capped.
+if(css>42*1024)failures.push('Combined CSS exceeds 42 kB gzip');
 for (const name of ['RosterPage', 'PremierPage', 'ContentPage', 'DropPage', 'AboutPage']) {
   const route = manifest['src/pages/'+name+'.tsx'];
   const size = sum((route?.css ?? []).map(path => join(dist,path)));
