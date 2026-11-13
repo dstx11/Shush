@@ -32,17 +32,17 @@ test('Home and Creators show real people and dated records', async ({ page }) =>
 test('V5 Match Explorer filters and verified map aggregates', async ({ page }) => {
   await page.goto('/esports/valorant/premier');
   await page.getByRole('button', { name: 'Vitórias', exact: true }).click();
-  await expect(page.locator('.verified-match')).toHaveCount(2);
-  await expect(page.getByLabel('Mapa', { exact: true }).locator('option')).toHaveText(['Todos os mapas', 'Ascent']);
+  await expect(page.locator('.verified-match')).toHaveCount(5);
+  await expect(page.getByLabel('Mapa', { exact: true }).locator('option')).toHaveText(['Todos os mapas', 'Ascent', 'Haven', 'Breeze']);
   await page.getByRole('button', { name: 'Derrotas', exact: true }).click();
-  await expect(page.locator('.verified-match')).toHaveCount(3);
+  await expect(page.locator('.verified-match')).toHaveCount(5);
   await page.getByLabel('Mapa', { exact: true }).selectOption('Haven');
   await expect(page.locator('.verified-match')).toHaveCount(1);
   await expect(page.locator('.verified-match')).toContainText('EnLitro');
   await expect(page.locator('.map-performance-row').filter({ hasText: 'Ascent' })).toContainText('2 partidas · 2 V / 0 D');
   await expect(page.getByLabel('Taxa de vitória em Ascent')).toHaveAttribute('value', '100');
   await page.locator('.match-detail summary').click();
-  await expect(page.locator('.verified-match-source')).toContainText('10');
+  await expect(page.locator('.verified-match-source')).toContainText('13');
   await expect(page.locator('.verified-match-source a')).toHaveAttribute('href', /tracker.gg\/valorant\/premier\/teams\/.+\/matches$/);
 });
 
@@ -69,7 +69,7 @@ test('V5 posters: exact PNG preview, both formats and focus recovery', async ({ 
 });
 
 test('V5 poster resource failure offers retry without closing the page', async ({ page }) => {
-  await page.goto('/esports/valorant/premier'); await expect(page.locator('.verified-match')).toHaveCount(5);
+  await page.goto('/esports/valorant/premier'); await expect(page.locator('.verified-match')).toHaveCount(10);
   // WebKit may reuse an already-decoded logo without issuing a request.
   // Inject one decode failure at the resource boundary, independent of cache.
   await page.evaluate(() => {

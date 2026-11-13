@@ -215,9 +215,9 @@ test('mobile menu contains keyboard focus and player selector stays compact', as
 
 test('Premier: filters, real call-ups, missing states and calendar download', async ({ page }) => {
   await page.goto('/esports/valorant/premier');
-  await expect(page.locator('.verified-match')).toHaveCount(5);
+  await expect(page.locator('.verified-match')).toHaveCount(10);
   await expect(page.locator('.verified-match').first()).toContainText('EnLitro');
-  await expect(page.locator('meter')).toHaveCount(4);
+  await expect(page.locator('meter')).toHaveCount(6);
   await page.locator('.legacy-archive > summary').click();
   await expect(page.locator('.match-week')).toHaveCount(7);
   const first = page.locator('.match-week').first();
