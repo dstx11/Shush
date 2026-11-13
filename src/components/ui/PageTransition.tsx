@@ -91,6 +91,11 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     const items = frame.querySelectorAll<HTMLElement>(
       '.motion-section, .section-index, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article, .about-origin-story, .drop-layout, .signal-panel'
     );
+    const revealFocused = (event: FocusEvent) => {
+      if (!(event.target instanceof Element)) return;
+      event.target.closest(".motion-in")?.classList.add("motion-visible");
+    };
+    frame.addEventListener("focusin", revealFocused);
     const observer = new IntersectionObserver(entries => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
@@ -112,6 +117,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     document.addEventListener('shush:reduce-motion', stop);
     return () => {
       observer.disconnect();
+      frame.removeEventListener("focusin", revealFocused);
       media.removeEventListener('change', stop);
       document.removeEventListener('shush:reduce-motion', stop);
       items.forEach(element => element.classList.remove('motion-in'));

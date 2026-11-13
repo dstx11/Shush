@@ -55,9 +55,9 @@ function IncognitoScene(){
  </div>;
 }
 const secrets=[
- {hint:'01 / ORIGEM',body:'O nome SHUSH surgiu em 2022, inspirado no contraste com a LOUD.'},
- {hint:'02 / NICKS',body:'O More foi a nossa resposta bem-humorada ao Less.'},
- {hint:'03 / SÍMBOLO',body:'O ponto e vírgula foi o nosso contraponto ao aspas.'}
+ {hint:'01 / ORIGEM',body:'O nome SHUSH nasceu em 2022, entre partidas e conversas.'},
+ {hint:'02 / NICKS',body:'O que começou como uma brincadeira tornou-se uma identidade partilhada.'},
+ {hint:'03 / SÍMBOLO',body:'Até os símbolos guardam um pouco da nossa história.'}
 ];
 function HiddenScene(){
  const [open,setOpen]=useState<number[]>([]);

@@ -12,10 +12,11 @@ const { outputText } = ts.transpileModule(source, { compilerOptions: {
   module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX,
 } });
 
-function mount({ reduced = false, paused = false } = {}) {
+function mount({ reduced = false, paused = false, manual = false } = {}) {
   let effect, cleanup, intersection, resize, motion, visibility, refIndex = 0, stateIndex = 0;
   let draws = 0, next = 0;
   const frames = new Map();
+  const preferenceListeners = new Map();
   const gradient = { addColorStop() {} };
   const ctx = new Proxy({}, { get: (_, key) => {
     if (key === 'clearRect') return () => draws++;
@@ -25,10 +26,10 @@ function mount({ reduced = false, paused = false } = {}) {
   const canvas = { dataset: {}, getContext: () => ctx };
   const frame = { getBoundingClientRect: () => ({ width: 550, height: 635 }) };
   const media = { matches: reduced, addEventListener: (_, fn) => { motion = fn; }, removeEventListener: () => { motion = undefined; } };
-  const document = { hidden: false, addEventListener: (_, fn) => { visibility = fn; }, removeEventListener: () => { visibility = undefined; } };
+  const document = { documentElement: { dataset: { motion: manual ? "reduce" : "system" } }, hidden: false, addEventListener: (_, fn) => { visibility = fn; }, removeEventListener: () => { visibility = undefined; } };
   const exports = {};
   runInNewContext(outputText, {
-    exports, Math, document, Event: class { constructor(type) { this.type = type; } }, window: { matchMedia: () => media, devicePixelRatio: 1, dispatchEvent() {} },
+    exports, Math, document, Event: class { constructor(type) { this.type = type; } }, window: { matchMedia: () => media, devicePixelRatio: 1, dispatchEvent() {}, addEventListener: (type, fn) => preferenceListeners.set(type, fn), removeEventListener: type => preferenceListeners.delete(type) },
     requestAnimationFrame: fn => { frames.set(++next, fn); return next; },
     cancelAnimationFrame: id => frames.delete(id),
     ResizeObserver: class { constructor(fn) { resize = fn; } observe() {} disconnect() { resize = undefined; } },
@@ -44,11 +45,12 @@ function mount({ reduced = false, paused = false } = {}) {
   return {
     frames, get draws() { return draws; }, get revealed() { return canvas.dataset.revealed === 'true'; },
     visible: (value, ratio = value ? 1 : 0) => intersection([{ isIntersecting: value, intersectionRatio: ratio }]),
-    reduced: value => motion({ matches: value }),
+    reduced: value => { media.matches = value; motion(); },
+    manual: value => { document.documentElement.dataset.motion = value ? "reduce" : "system"; preferenceListeners.get("shush:motion-preference")(); },
     hidden: value => { document.hidden = value; visibility(); },
     tick: time => { const batch = [...frames.values()]; frames.clear(); batch.forEach(fn => fn(time)); },
     rotate: () => tree.props.children.find(child => child?.type === 'canvas').props.onKeyDown({ key: 'ArrowRight', preventDefault() {} }),
-    cleanup: () => { cleanup(); assert.equal(intersection, undefined); assert.equal(resize, undefined); assert.equal(motion, undefined); assert.equal(visibility, undefined); },
+    cleanup: () => { cleanup(); assert.equal(intersection, undefined); assert.equal(resize, undefined); assert.equal(motion, undefined); assert.equal(visibility, undefined); assert.equal(preferenceListeners.size, 0); },
   };
 }
 
@@ -60,7 +62,7 @@ active.tick(40);
 assert.equal(active.frames.size, 1, 'only one loop');
 active.tick(10_000);
 assert.equal(active.revealed, true, 'a delayed frame completes the reveal by real elapsed time');
-for (const state of ['hidden', 'reduced']) {
+for (const state of ['hidden', 'reduced', 'manual']) {
   active[state](true);
   assert.equal(active.frames.size, 0, `${state}: cancel pending frame`);
   active[state](false);
@@ -74,7 +76,7 @@ active.visible(true);
 active.cleanup();
 assert.equal(active.frames.size, 0, 'unmount: cancel');
 
-for (const settings of [{ reduced: true }, { paused: true }]) {
+for (const settings of [{ reduced: true }, { paused: true }, { manual: true }]) {
   const idle = mount(settings);
   idle.visible(true);
   assert.equal(idle.frames.size, 0, 'static mode never schedules frames');

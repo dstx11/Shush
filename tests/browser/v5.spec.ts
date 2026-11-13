@@ -129,7 +129,7 @@ test('Intro can be skipped with keyboard and is remembered across reloads', asyn
   const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
   await expect(intro).toBeVisible();
   await expect(intro).toHaveJSProperty('open', true);
-  await expect(intro.getByRole('button')).toHaveCount(0);
+  await expect(intro.getByRole('button', { name: /Saltar apresentação/ })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(intro).toHaveCount(0);
   await page.reload();

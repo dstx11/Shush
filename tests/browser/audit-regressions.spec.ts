@@ -20,7 +20,7 @@ test('Back restores the reading position instead of returning to the hero', asyn
   const before = await page.evaluate(() => window.scrollY);
   await link.click();
   await expect(page).toHaveURL('/company');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await page.goBack();
   await expect(page.locator('.home-lineup > a')).toHaveCount(7);
   await expect.poll(async () => Math.abs(await page.evaluate(() => window.scrollY) - before)).toBeLessThan(100);

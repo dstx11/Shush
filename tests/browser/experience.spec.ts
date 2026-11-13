@@ -28,6 +28,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
 });
 
 test('Initial splash covers prerendered content while the JavaScript loads', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/assets/index-*.js', async route => { await ready; await route.continue(); });
@@ -58,11 +59,11 @@ test('Slow navigation keeps the current page usable until the next route is read
   await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/company');
   await expect(page.locator('.navigation-toggle')).toBeEnabled();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await page.locator('header .brand-mark').click();
   // React Router uses a transition: retain the current content while the next
   // chunk is pending instead of replacing it with a full-page spinner.
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('A culpa foi');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await expect(page.locator('.shush-loading')).toHaveCount(0);
   await expect(page.locator('footer a').first()).toBeAttached();
   release();

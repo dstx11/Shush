@@ -1,6 +1,6 @@
 import { useRouteMetadata } from './hooks/useRouteMetadata';
 import { SeasonProvider, useSeason } from './seasonal/SeasonProvider';
-import { lazy, Suspense, useRef, type ComponentType } from 'react';
+import { lazy, Suspense, useCallback, useRef, useState, type ComponentType } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { BrandIntro } from './components/ui/BrandIntro';
 import { Footer } from './components/layout/Footer';
@@ -32,6 +32,8 @@ export default function App(props: AppProps) {
 }
 function SeasonApp({ initialPage, initialPath }: AppProps) {
   const { id: seasonId } = useSeason();
+  const [entering, setEntering] = useState(true);
+  const completeEntrance = useCallback(() => setEntering(false), []);
   // The startup route has already been imported. Render it directly so the
   // first client commit does not briefly replace prerendered content with Suspense.
   const page = (path: string, fallback: ComponentType) => {
@@ -43,10 +45,10 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
   useRouteMetadata(location.pathname);
 
   return (
-    <div data-season={seasonId} className={`shush-root min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
+    <div data-entering={entering ? "true" : "false"} data-season={seasonId} className={`shush-root min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <div className="shush-reading-progress" aria-hidden="true" />
-      <BrandIntro />
+      <BrandIntro onComplete={completeEntrance} />
       <Header />
       <main id="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>

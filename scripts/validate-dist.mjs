@@ -59,6 +59,12 @@ for(const css of christmasStyles){
 const notFound = await readText('404.html');
 const redirects = await readText('_redirects');
 const headers = await readText('_headers');
+expect(headers, 'Strict-Transport-Security: max-age=15552000', 'host HTTPS policy');
+for (const entry of Object.values(manifest)) {
+  for (const asset of [entry.file, ...(entry.css ?? [])]) {
+    if (asset && /-[A-Za-z0-9_-]{8}\.(js|css)$/.test(asset)) expect(headers, '/'+asset+'\n  Cache-Control: public, max-age=31536000, immutable', 'versioned resource cache');
+  }
+}
 const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 
@@ -79,6 +85,10 @@ expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
   expect(html, '<h1', `${path} prerendered heading`);
+  const pageEntry = ({'content.html':'ContentPage','company.html':'AboutPage','products/jersey.html':'DropPage','esports/valorant/roster.html':'RosterPage','esports/valorant/premier.html':'PremierPage'})[path];
+  for (const css of manifest['src/pages/'+pageEntry+'.tsx']?.css ?? []) {
+    expect(html, 'href="/'+css+'"', `${path} static route CSS`);
+  }
   expectAbsent(html, 'shush-loading', `${path} unfinished loading shell`);
   expect(html, `<title>${title}</title>`, `${path} title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);

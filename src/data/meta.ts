@@ -28,11 +28,11 @@ export const routeMetadata: Record<string, RouteMetadata> = {
   },
   '/products/jersey': {
     title: 'Camisola SHUSH Drop 01 — Personalização',
-    description: 'Personaliza a camisola SHUSH Drop 01 com nome e número. Explora a frente e as costas, guarda o rascunho e prepara o resumo do pedido manual.',
+    description: 'Personaliza a camisola SHUSH Drop 01 com nome e número. Explora a frente e as costas, guarda o rascunho e partilha a tua versão. Encomendas ainda indisponíveis.',
     image: '/assets/jersey/frontjersey.webp',
   },
   '/company': {
     title: 'Sobre a SHUSH — A equipa e a nossa história',
-    description: 'A SHUSH nasceu em 2022 inspirada na LOUD: a história dos primeiros nicks, da equipa de VALORANT e de uma identidade que ganhou vida própria.',
+    description: 'Desde 2022: conhece a origem da SHUSH, a equipa de VALORANT, os creators e a identidade que partilhamos dentro e fora do servidor.',
   },
 };

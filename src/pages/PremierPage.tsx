@@ -1,3 +1,4 @@
+import '../styles/premier.css';
 import { useState } from 'react';
 import { Button } from '../components/ui/Button';
 import { AppLink } from '../components/ui/AppLink';

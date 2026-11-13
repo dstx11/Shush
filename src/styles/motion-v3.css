@@ -20,19 +20,9 @@
 @media(prefers-reduced-motion:no-preference){
  html:not([data-motion="reduce"]) .motion-in{opacity:0;transform:translate3d(0,24px,0);transition:opacity .7s var(--move-spring),transform .8s var(--move-spring);transition-delay:var(--motion-delay,0ms)}
  html:not([data-motion="reduce"]) .motion-in.motion-visible{opacity:1;transform:translate3d(0,0,0)}
- html:not([data-motion="reduce"]) .signal-panel{transition:transform .55s var(--move-spring),border-color .4s,box-shadow .4s}
- html:not([data-motion="reduce"]) .signal-panel:is(:hover,:focus-visible){transform:translateY(-7px);border-color:var(--season-accent);box-shadow:0 25px 60px #0003}
- html:not([data-motion="reduce"]) .signal-panel-target svg{animation:shush-target-orbit 30s linear infinite;transform-origin:center}
- html:not([data-motion="reduce"]) .signal-panel-faces>span{transition:transform .6s var(--move-spring)}
- html:not([data-motion="reduce"]) .signal-panel-roster:is(:hover,:focus-visible) .signal-panel-faces>span{transform:translateY(-9px) rotate(var(--tilt,0deg))}
- html:not([data-motion="reduce"]) .signal-panel-shirt img{transition:transform .7s var(--move-spring)}
- html:not([data-motion="reduce"]) .signal-panel-jersey:is(:hover,:focus-visible) img{transform:translateY(-9px) rotate(-4deg)}
- html:not([data-motion="reduce"]) .signal-panel-symbol>span{transition:transform .7s var(--move-spring)}
- html:not([data-motion="reduce"]) .signal-panel-origin:is(:hover,:focus-visible) .signal-panel-symbol>span{transform:rotate(-12deg) scale(1.05)}
  html:not([data-motion="reduce"]) .about-perspective-art>span{animation:shush-symbol-pulse 7s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .shush-hero-aura{animation:shush-aura 10s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .shush-visual-watermark{animation:shush-watermark 9s ease-in-out infinite alternate}
- @keyframes shush-target-orbit{to{transform:rotate(360deg)}}
  @keyframes shush-symbol-pulse{to{transform:scale(1.035);opacity:1}}
  @keyframes shush-aura{to{transform:scale(1.08);opacity:.55}}
  @keyframes shush-watermark{to{transform:translateY(-8px);opacity:.7}}
@@ -40,5 +30,12 @@
 html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 html[data-motion="reduce"] .motion-in{opacity:1!important;transform:none!important}
 html[data-motion="reduce"] .shush-reading-progress{display:none}
-@media(max-width:900px){.shush-signals-heading{align-items:start;flex-direction:column}.about-perspective{grid-template-columns:1fr}.about-perspective-art{min-height:150px}}
-@media(max-width:767px){.shush-signals{padding-block:3rem}.shush-signals-heading h2{font-size:clamp(2.1rem,9vw,3.4rem)}.shush-signals-grid{grid-template-columns:1fr}.signal-panel{min-height:370px}.signal-panel-target,.signal-panel-faces,.signal-panel-shirt{height:190px}.signal-panel-faces>span{width:25vw;height:170px}.signal-panel-caption h3{font-size:clamp(1.5rem,6.5vw,2.5rem)}.about-perspective{padding:1.4rem}.about-perspective-art>span{font-size:5.5rem}.shush-reading-progress{height:2px}}
+@media(max-width:900px){.about-perspective{grid-template-columns:1fr}.about-perspective-art{min-height:150px}}
+
+.header-utilities{display:flex;align-items:center;gap:1rem}
+.motion-compact{font-size:.68rem;gap:.5rem}
+@media(max-width:1150px){.header-utilities .competition-signal{display:none}}
+@media(max-width:767px){.header-utilities{display:none}.overlay-foot .motion-compact{width:fit-content}}
+.shush-navigation{flex-wrap:wrap}
+.desktop-navigation{min-width:0;flex:1;max-width:max-content;flex-wrap:wrap}
+@media(min-width:768px) and (max-width:1000px){.header-utilities .motion-compact>span:last-child{display:none}}

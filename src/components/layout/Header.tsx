@@ -1,3 +1,4 @@
+import { MotionControl } from '../ui/MotionControl';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -46,7 +47,7 @@ export function Header() {
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Tab') {
-        const links = Array.from(mobilePanelRef.current?.querySelectorAll<HTMLAnchorElement>('a') ?? []);
+        const links = Array.from(mobilePanelRef.current?.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>('a, button:not([disabled])') ?? []);
         const controls = [menuButtonRef.current, ...links].filter((element): element is HTMLButtonElement | HTMLAnchorElement => Boolean(element));
         const index = controls.indexOf(document.activeElement as HTMLButtonElement | HTMLAnchorElement);
         if (event.shiftKey && index <= 0) { event.preventDefault(); controls[controls.length - 1]?.focus(); }
@@ -104,10 +105,10 @@ export function Header() {
           ))}
         </div>
 
-        <AppLink href="/esports/valorant/premier" className="competition-signal" aria-label="Premier: partidas verificadas">
+        <div className="header-utilities"><MotionControl compact /><AppLink href="/esports/valorant/premier" className="competition-signal" aria-label="Premier: partidas verificadas">
           <StatusBadge >Premier</StatusBadge>
           <strong>Partidas verificadas</strong>
-        </AppLink>
+        </AppLink></div>
 
         <button
           ref={menuButtonRef}
@@ -143,7 +144,7 @@ export function Header() {
                 </AppLink>
               ))}
             </div>
-            <div className="overlay-foot"><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
+            <div className="overlay-foot"><MotionControl compact /><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
           </div>
         ) : null}
       </nav>
