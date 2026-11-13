@@ -5,13 +5,13 @@ import { players } from '../../data/players';
 import { AppLink } from '../ui/AppLink';
 
 const ornamentPositions = [
-  { x: 50, y: 14 },
-  { x: 38, y: 31 },
-  { x: 64, y: 35 },
-  { x: 27, y: 52 },
-  { x: 52, y: 53 },
-  { x: 75, y: 60 },
-  { x: 45, y: 78 },
+  { x: 20, y: 38 },
+  { x: 50, y: 29 },
+  { x: 80, y: 38 },
+  { x: 14, y: 70 },
+  { x: 38, y: 74 },
+  { x: 63, y: 74 },
+  { x: 86, y: 70 },
 ] as const;
 
 const destinations = [
@@ -47,18 +47,21 @@ export function WinterLobby() {
         <div className="winter-lobby-heading">
           <div>
             <span className="section-kicker">SHUSH / THE SEVEN ORNAMENTS</span>
-            <h2 id="winter-lobby-title">Sete nomes.<br /><em>Uma só árvore.</em></h2>
+            <h2 id="winter-lobby-title">Sete luzes.<br /><em>Uma só árvore.</em></h2>
           </div>
-          <p>Cada ornamento corresponde a um dos nossos jogadores. Escolhe um para conhecer o nick por trás das luzes.</p>
+          <p>A nossa árvore está no início da página. Aqui, os sete ornamentos formam uma constelação do roster: escolhe uma luz e descobre a pessoa por trás do nick.</p>
         </div>
         <div className="winter-lobby-layout">
-          <div className="winter-ornament-scene" aria-label="Escolher um dos sete jogadores da SHUSH">
-            <span className="winter-ornament-scene-label">THE SHUSH CHRISTMAS TREE / 07</span>
+          <div className="winter-ornament-scene winter-ornament-constellation" aria-label="Constelação de sete ornamentos. A única árvore está na abertura de Natal.">
+            <span className="winter-ornament-scene-label">SEVEN LIGHTS / ONE TREE</span>
             <div className="winter-ornament-light" aria-hidden="true" />
-            <div className="winter-ornament-tree" aria-hidden="true">
-              <div className="winter-ornament-silhouette" />
-              <div className="winter-ornament-star">✦</div>
-              <div className="winter-ornament-trunk" />
+            <div className="winter-ornament-constellation-art" aria-hidden="true">
+              <svg viewBox="0 0 600 540" preserveAspectRatio="none" fill="none">
+                <path d="M50 225 C140 95 255 112 300 175 S470 100 550 225 M50 370 C170 445 240 388 300 402 S452 445 550 370 M50 225 Q300 314 550 225 M50 370 Q300 308 550 370"/>
+                <circle cx="300" cy="288" r="180" strokeDasharray="2 15"/>
+                <circle cx="300" cy="288" r="128"/>
+              </svg>
+              <span>SHUSH <i>✦</i> 07</span>
             </div>
             {players.map((member, index) => {
               const position = ornamentPositions[index];
@@ -78,7 +81,7 @@ export function WinterLobby() {
                 </button>
               );
             })}
-            <span className="winter-ornament-scene-foot">SELECIONA UM ORNAMENTO ✦</span>
+            <span className="winter-ornament-scene-foot">A ÁRVORE ESTÁ NO INÍCIO / SELECIONA UMA LUZ</span>
           </div>
           <div className="winter-lobby-profile" aria-live="polite" aria-atomic="true">
             <div className="winter-lobby-profile-meta"><span>ORNAMENT {String(active + 1).padStart(2, '0')} / 07</span><span>SHUSH ROSTER</span></div>
