@@ -15,6 +15,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   const firstNavigation = useRef(initialNavigation);
   const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
+  const restoringKey = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -31,7 +32,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
       // History entries can be replaced repeatedly while editing shared URLs.
       // A POP can trigger a transient scroll event before the restoration frame.
       // Never overwrite the saved entry with that temporary layout position.
-      if (previousPath.current !== pathname + hash) return;
+      if (previousPath.current !== pathname + hash || restoringKey.current === key) return;
       scrollPositions.delete(key);
       scrollPositions.set(key, window.scrollY);
       if (scrollPositions.size > 64) scrollPositions.delete(scrollPositions.keys().next().value!);
@@ -47,6 +48,8 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     const samePage = previousPath.current === path;
     // Query changes (player, jersey) preserve both focus and position.
     if (samePage) return;
+    const restoreTimers: number[] = [];
+    let stopRestoring = () => {};
     const frame = window.requestAnimationFrame(() => {
       previousPath.current = path;
       // A visitor can start editing before this deferred navigation frame.
@@ -56,7 +59,33 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
           focused.matches('input, textarea, select, button, [contenteditable="true"]')) return;
       const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
       if (restored !== undefined) {
-        window.scrollTo({ top: restored, left: 0, behavior: 'instant' });
+        // WebKit can commit the route before its lazy CSS has completed. The
+        // first scroll is then clamped to a short interim document. Retry a
+        // handful of times after layout/paint rather than losing the position.
+        restoringKey.current = key;
+        let active = true;
+        const settle = () => {
+          if (active && window.location.pathname === pathname && window.location.hash === hash) {
+            window.scrollTo({ top: restored, left: 0, behavior: 'instant' });
+          }
+        };
+        const interrupt = () => {
+          active = false;
+          if (restoringKey.current === key) restoringKey.current = null;
+          for (const timer of restoreTimers) window.clearTimeout(timer);
+          for (const type of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+            window.removeEventListener(type, interrupt);
+          }
+        };
+        stopRestoring = interrupt;
+        for (const type of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+          window.addEventListener(type, interrupt, { passive: true });
+        }
+        settle();
+        for (const milliseconds of [100, 300, 750]) {
+          restoreTimers.push(window.setTimeout(settle, milliseconds));
+        }
+        restoreTimers.push(window.setTimeout(interrupt, 1000));
         document.getElementById('main-content')?.focus({ preventScroll: true });
         return;
       }
@@ -83,7 +112,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
         document.getElementById('main-content')?.focus({ preventScroll: true });
       }
     });
-    return () => window.cancelAnimationFrame(frame);
+    return () => { window.cancelAnimationFrame(frame); stopRestoring(); };
   }, [pathname, hash, key, navigationType]);
 
   useEffect(() => {
