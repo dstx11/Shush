@@ -168,3 +168,5 @@
 
 /* Prevent decorative vector motion when offscreen or the tab is hidden. */
 .season-art.is-idle .season-art-motif,.season-art.is-idle .season-art-outline{animation-play-state:paused}
+
+.season-preview-toolbar{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;justify-content:center;gap:.6rem;padding:1rem;background:#17131ff5;border:1px solid var(--line);border-radius:1rem;box-shadow:0 12px 50px #0008;width:max-content;max-width:calc(100% - 2rem);flex-wrap:wrap;font:.75rem var(--font-ui)}.season-preview-toolbar button{padding:.6rem .8rem;border:1px solid var(--line);border-radius:.5rem;background:var(--surface);color:var(--text)}
