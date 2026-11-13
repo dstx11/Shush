@@ -56,7 +56,7 @@ function staticRouteMetadata(): Plugin {
         const image = imagePath.startsWith('http') ? imagePath : `${siteUrl}${imagePath}`;
 
         let html = source
-          .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(metadata.title)}</title>`)
+          .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml('Shush')}</title>`)
           .replace(
             /<link rel="canonical" href="[^"]*"\s*\/>/,
             `<link rel="canonical" href="${escapeHtml(canonical)}" />`,

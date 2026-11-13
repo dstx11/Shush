@@ -29,7 +29,7 @@ export function useRouteMetadata(pathname: string) {
     const image = metadata.image ?? defaultMetadata.image ?? '/assets/jersey/frontjersey.webp';
     const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
-    document.title = metadata.title;
+    document.title = 'Shush';
     setMeta('meta[name="description"]', metadata.description);
     setMeta('meta[property="og:title"]', metadata.title);
     setMeta('meta[property="og:description"]', metadata.description);

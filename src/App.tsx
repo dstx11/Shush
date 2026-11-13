@@ -3,6 +3,7 @@ import { SeasonProvider, useSeason } from './seasonal/SeasonProvider';
 import { lazy, Suspense, useCallback, useRef, useState, type ComponentType } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { BrandIntro } from './components/ui/BrandIntro';
+import { LabGate } from './components/lab/LabGate';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { PageTransition } from './components/ui/PageTransition';
@@ -78,6 +79,7 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
         </Suspense>
       </main>
       <Footer />
+      <LabGate />
     </div>
   );
 }

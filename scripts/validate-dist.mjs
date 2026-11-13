@@ -80,7 +80,7 @@ expect(index, 'rel="canonical" href="https://shush.pt"', 'root canonical URL');
 if (/rel="preload" as="image" href="\/assets\/avatars\//.test(index)) failures.push('Home must not preload a fixed roster member');
 
 expect(notFound, '<meta name="robots" content="noindex,nofollow"', '404 noindex');
-expect(notFound, '<title>404 — SHUSH</title>', '404 title');
+expect(notFound, '<title>Shush</title>', '404 title');
 
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
@@ -90,7 +90,7 @@ for (const [path, canonical, title] of routeFiles) {
     expect(html, 'href="/'+css+'"', `${path} static route CSS`);
   }
   expectAbsent(html, 'shush-loading', `${path} unfinished loading shell`);
-  expect(html, `<title>${title}</title>`, `${path} title`);
+  expect(html, '<title>Shush</title>', `${path} browser tab title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
   expect(html, `property="og:image:alt" content="${title}"`, `${path} OG image alt`);
@@ -142,16 +142,15 @@ for (const url of [
 }
 
 // Audit the built HTML, so crawler metadata cannot silently diverge from React.
-const seenTitles = new Set();
 const seenDescriptions = new Set();
 for (const file of ['index.html', ...routeFiles.map(([path]) => path)]) {
   const html = await readText(file);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   const description = html.match(/name="description" content="([^"]+)"/)?.[1];
   const canonical = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
-  if (!title || seenTitles.has(title)) failures.push(`${file}: missing/duplicate title`);
+  if (title !== 'Shush') failures.push(`${file}: browser title must be Shush`);
   if (!description || seenDescriptions.has(description)) failures.push(`${file}: missing/duplicate description`);
-  seenTitles.add(title); seenDescriptions.add(description);
+  seenDescriptions.add(description);
   if ([...html.matchAll(/<h1[\s>]/g)].length !== 1) failures.push(`${file}: expected one H1`);
   const scripts = [...html.matchAll(/<script id="shush-schema" type="application\/ld\+json">(.*?)<\/script>/g)];
   try {
@@ -160,7 +159,8 @@ for (const file of ['index.html', ...routeFiles.map(([path]) => path)]) {
     if (schema['@context'] !== 'https://schema.org') throw new Error('Invalid schema context');
     const graph = schema['@graph'];
     const page = graph.find(item => ['WebPage', 'AboutPage'].includes(item['@type']));
-    if (page?.url !== canonical || page?.name !== title || page?.description !== description)
+    const metaTitle = html.match(/property="og:title" content="([^"]+)"/)?.[1];
+    if (page?.url !== canonical || page?.name !== metaTitle || page?.description !== description)
       throw new Error('Schema page and metadata disagree');
     if (!graph.some(item => item['@type'] === 'SportsTeam' && item.name === 'SHUSH')) throw new Error('Missing team');
     if (!graph.some(item => item['@type'] === 'WebSite' && item.name === 'SHUSH')) throw new Error('Missing site name');
