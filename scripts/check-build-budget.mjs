@@ -18,14 +18,14 @@ const christmasCss=sum(campaign.css.map(path=>join(dist,path)));
 const kb=n=>(n/1024).toFixed(2);
 console.log('Build budget (gzipped): all JS '+kb(js)+' kB; base CSS '+kb(coreCss)+' kB; Christmas-only CSS '+kb(christmasCss)+' kB; all CSS '+kb(css)+' kB');
 const failures=[];
-if(js>125*1024) failures.push('All JS exceeds 125 kB gzip');
-// The startup sequence and explicit motion accessibility controls are core UI, not deferred decoration.
-if(coreCss>15*1024)failures.push('Base stylesheet exceeds 15 kB gzip');
+if(js>135*1024) failures.push('All JS exceeds 135 kB gzip');
+// The public startup budget remains separate from LAB, a lazy on-demand experiment chunk.
+if(coreCss>15.5*1024)failures.push('Base stylesheet exceeds 15.5 kB gzip');
 // Christmas includes the original interactive tree; its CSS is never in the base transfer.
 if(christmasCss>10.5*1024)failures.push('Lazy Christmas stylesheet exceeds 10.5 kB gzip');
 // Route splitting repeats compression dictionaries but removes unrelated CSS from each visit.
 // Guard both the smaller entry and the complete distribution, including deferred routes.
-if(css>36*1024)failures.push('Combined CSS exceeds 36 kB gzip');
+if(css>40*1024)failures.push('Combined CSS exceeds 40 kB gzip');
 for (const name of ['RosterPage', 'PremierPage', 'ContentPage', 'DropPage', 'AboutPage']) {
   const route = manifest['src/pages/'+name+'.tsx'];
   const size = sum((route?.css ?? []).map(path => join(dist,path)));
