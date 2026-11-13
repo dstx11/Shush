@@ -19,4 +19,6 @@ This change does not replace createRoot with hydration. Existing build-time disa
 
 Administrative branch protection cannot be updated through the available GitHub mutation tools; the local gh client has no authenticated session. No credentials or unrelated sessions were accessed. Protection therefore remains a separate operational task.
 
-Build validation, browser CI and visual review results will be recorded in the pull request before deployment. Bundle sizes are gzip build measurements, not Core Web Vitals or device performance claims.
+Build validation passes. Global CSS changed from 20.48 to 14.67 KiB gzip; combined CSS changed from 32.86 to 35.29 KiB due to separate compression dictionaries. Total JS is 121.37 KiB versus 121.80 KiB. The serif accent uses an existing local font resource; reduced CSS does not imply reduced total first-load bytes. Global CSS now has a stricter 15 KiB budget; each route stylesheet is capped at 3 KiB and the whole CSS distribution at 36 KiB.
+
+Browser CI and visual review results are recorded in the pull request before deployment. Bundle sizes are gzip build measurements, not Core Web Vitals or device performance claims.

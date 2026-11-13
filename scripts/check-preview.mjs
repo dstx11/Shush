@@ -37,6 +37,7 @@ for (let attempt = 0; attempt < 20; attempt++) {
 assert.ok(ready, 'Cloudflare did not publish the current build within the bounded wait.');
 
 function checkSecurity(response) {
+  assert.match(response.headers.get('strict-transport-security') ?? '', /max-age=15552000/);
   assert.match(response.headers.get('content-security-policy') ?? '', /frame-ancestors 'none'/);
   assert.equal(response.headers.get('x-content-type-options'), 'nosniff');
   assert.equal(response.headers.get('x-frame-options'), 'DENY');
@@ -69,6 +70,7 @@ assert.equal(redirect.status, 301);
 assert.equal(new URL(redirect.headers.get('location'), base).pathname, '/products/jersey');
 const asset = await get(entry);
 assert.equal(asset.status, 200, 'current production entry asset must be available');
+assert.equal(asset.headers.get('cache-control'), 'public, max-age=31536000, immutable', 'versioned entry cache');
 console.log('PASS real 404, canonical redirect and current entry asset.');
 
 for (const path of ['/robots.txt', '/sitemap.xml']) {
