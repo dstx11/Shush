@@ -39,7 +39,7 @@ export function CinematicStory(){
    </div>
    <div className="shell shush-cinema-layout">
     <div className="shush-cinema-stage" aria-hidden="true">
-     <div className="shush-cinema-horizon"/>
+     <div className="shush-cinema-horizon"/><div className="shush-cinema-cameos">{players.slice(0,3).map(player=>player.avatar?<img key={player.id} src={player.avatar.replace('.webp','-384.webp')} width="384" height="384" alt="" loading="lazy" decoding="async"/>:null)}</div>
      <svg className="shush-cinema-orbit" viewBox="0 0 620 620" fill="none" stroke="currentColor">
       <circle cx="310" cy="310" r="250" strokeDasharray="3 15"/>
       <circle cx="310" cy="310" r="194"/>

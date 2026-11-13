@@ -4,6 +4,7 @@ import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { creators, players } from '../../data/players';
 import { verifiedMatches } from '../../data/verified-matches';
 import { formatDate } from '../../lib/premier';
+const lastChecked = new Intl.DateTimeFormat('pt-PT',{day:'numeric',month:'long',year:'numeric',timeZone:'Europe/Lisbon'}).format(new Date(verifiedMatches[0].verifiedAt+'T12:00:00Z'));
 
 export function HomeHub() {
   return <div className="home-discover shell" id="discover">
@@ -12,7 +13,7 @@ export function HomeHub() {
       <div className="home-lineup">{players.map(player => <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`} aria-label={`Conhecer ${player.displayName}`}><div><PlayerPortrait player={player} decorative sizes="(max-width: 767px) 40vw, 14vw" /><span className="mono">#{player.number}</span></div><strong>{player.displayName}</strong><small>{player.roles[0]}</small></AppLink>)}</div>
     </section>
     <section className="home-records" aria-labelledby="home-records-title">
-      <div className="home-records-heading"><span className="section-kicker">Premier / abril–junho 2026</span><h2 id="home-records-title">O resultado<br /> fica.</h2><p>Partidas do nosso registo. Verificação manual de 10 de outubro de 2026.</p><AppLink className="editorial-link" href="/esports/valorant/premier#verified-results">Ver todas as partidas <ArrowIcon /></AppLink></div>
+      <div className="home-records-heading"><span className="section-kicker">Premier / abril–junho 2026</span><h2 id="home-records-title">O resultado<br /> fica.</h2><p>Partidas documentadas no nosso registo. Última verificação: {lastChecked}.</p><AppLink className="editorial-link" href="/esports/valorant/premier#verified-results">Ver todas as partidas <ArrowIcon /></AppLink></div>
       <div className="home-score-list">{verifiedMatches.slice(0,3).map(match => <AppLink key={match.id} className="home-score" href="/esports/valorant/premier#verified-results" aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}; ${formatDate(match.date)}`}><span className="home-score-meta"><time dateTime={match.date}>{formatDate(match.date)}</time><span>{match.map}</span></span><span className="home-score-teams"><strong>SHUSH <span>vs {match.opponent}</span></strong><b>{match.shushScore}<small>:</small>{match.opponentScore}</b></span></AppLink>)}</div>
     </section>
     <section className="home-people" aria-labelledby="home-creators-title"><div><span className="section-kicker">Creators</span><h2 id="home-creators-title">Nem tudo fica<br /> no Discord.</h2><AppLink className="editorial-link" href="/content">Conhecer os canais <ArrowIcon /></AppLink></div><div className="home-creator-links">{creators.map(player => <AppLink key={player.id} href={player.creatorUrl!} target="_blank" rel="noopener noreferrer"><PlayerPortrait player={player} decorative thumbnail sizes="80px" /><span><strong>{player.displayName}</strong><small>{player.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</small></span><span aria-hidden="true"><ArrowIcon /></span></AppLink>)}</div></section>
