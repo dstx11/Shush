@@ -31,6 +31,8 @@ jobs:
           git add tests/browser/baselines/desktop-1366/home-hero.png tests/browser/baselines/mobile-390/home-hero.png
           if ! git diff --cached --quiet; then
             git commit -m "test: track intentional SHUSH cinematic hero visual composition"
+            git fetch origin feat/cinematic-refinement
+            git rebase origin/feat/cinematic-refinement
             git push origin HEAD:refs/heads/feat/cinematic-refinement
           fi
       - uses: actions/upload-artifact@v7
