@@ -1,9 +1,15 @@
 import {lazy,Suspense,useEffect,useState} from 'react';
+import {useLocation} from 'react-router-dom';
+import {useSeason} from '../../seasonal/SeasonProvider';
+import {ErrorBoundary} from '../ui/ErrorBoundary';
 
 const ShushLab=lazy(()=>import('./ShushLab'));
 
 export function LabGate(){
  const [open,setOpen]=useState(false);
+ const {preview,theme,previewSeason,commitSeason}=useSeason();
+ const location=useLocation();
+ useEffect(()=>setOpen(false),[location.pathname]);
  useEffect(()=>{
   let count=0;
   let previous=0;
@@ -24,6 +30,8 @@ export function LabGate(){
   document.addEventListener('click',logo);
   return ()=>{document.removeEventListener('keydown',keyboard);document.removeEventListener('click',logo);};
  },[]);
- if(!open)return null;
- return <Suspense fallback={null}><ShushLab onClose={()=>setOpen(false)}/></Suspense>;
+ return <>
+ {!open&&preview&&<aside className="season-preview-toolbar" aria-label="Pré-visualização temporária"><span role="status">Pré-visualização · {theme.label}</span><button onClick={()=>commitSeason(preview)}>Aplicar edição</button><button onClick={()=>previewSeason(null)}>Cancelar</button><button onClick={()=>setOpen(true)}>Voltar ao LAB</button></aside>}
+ {open&&<ErrorBoundary fallback={<aside className="season-preview-toolbar" role="alert">Não foi possível abrir o LAB. <button onClick={()=>setOpen(false)}>Fechar</button><button onClick={()=>window.location.reload()}>Tentar novamente</button></aside>}><Suspense fallback={<div className="season-preview-toolbar" role="status">A carregar laboratório… <button onClick={()=>setOpen(false)}>Cancelar</button></div>}><ShushLab onExplore={()=>setOpen(false)} onClose={()=>{previewSeason(null);setOpen(false);}}/></Suspense></ErrorBoundary>}
+ </>;
 }
