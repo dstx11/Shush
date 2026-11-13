@@ -14,5 +14,5 @@
  html:not([data-motion="reduce"]) .shush-hero-visual:is(:hover,:focus-within)::after{content:"SIGNAL / SHUSH"}
  @keyframes shush-camera-breathe{to{opacity:.45}}
 }
-@media(pointer:coarse){.shush-hero-camera{opacity:.14}}
+@media(pointer:coarse){.shush-hero-camera{opacity:0!important}.shush-hero-visual::after{content:none!important}}
 @media(max-width:767px){.shush-hero-visual::after{font-size:.48rem}}
