@@ -46,6 +46,10 @@ The seven owner-confirmed account associations live in `src/data/competitive-pro
 
 There is no authorized public Tracker VALORANT API, so the site does not fetch or mirror statistics. [Research and the future authorization/snapshot requirements](docs/competitive-profiles.md) document this decision. The supplied DSTX link retains its selected Competitive season; the UI never presents it as the current season or compares it to Premier profiles.
 
+## Results and provenance
+
+The Premier archive currently lists ten recent results manually checked on the public Tracker.gg team Matches page on 13 November 2026. It is a dated snapshot, not a live score feed or the complete match history; each record preserves a source URL and verification date. Future fixtures remain unconfirmed until independently documented.
+
 ## Public routes
 
 - `/` — Home
@@ -64,7 +68,7 @@ Legacy URLs redirect to the closest current destination.
 - Canonical routes get route-specific static metadata pages during the Vite build.
 - `public/_redirects` contains canonical legacy/trailing-slash redirects.
 - A top-level `404.html` gives unknown direct URLs a real 404 response.
-- Known deep routes receive static HTML with correct route metadata; React renders their body on the client. This is not body pre-rendering or hydration.
+- Known deep routes receive prerendered static HTML with route-specific metadata and readable page content even without JavaScript. React mounts the interactive client without server hydration.
 - Node.js is pinned through `.node-version`.
 - Target: Cloudflare Pages
 
@@ -78,6 +82,6 @@ A closed calendar with incomplete results is labelled as a closed published phas
 
 Research, product decisions and remaining release checks are recorded in [docs/design-evolution.md](docs/design-evolution.md). Roster selections can be shared through `?player=<player-id>` on the canonical roster route.
 
-The V3 tactical editorial design uses distinct compositions for Home, Player Select, Match Center, Creators, Drop and About. [V3 progress and release evidence](docs/overhaul-v3-progress.md) records each implementation block. The Drop supports front/back preview, grapheme-aware personalization, shareable URLs, summary copying, TXT downloads, reset and explicitly saved local drafts. The calendar exports published Lisbon windows as tentative events, without implying confirmed fixtures or playoff participation.
+The SHUSH design system uses distinct compositions for Home, Player Select, Match Center, Creators, Drop and About. The homepage now includes a cinematic editorial sequence, a lightweight CSS scroll-driven stage, a pointer-reactive hero and seasonal variants. [Motion, accessibility, code ownership and data provenance](docs/MOTION-AND-CONTENT.md) describes the current production system. The Drop supports front/back preview, grapheme-aware personalization, shareable URLs, summary copying, TXT downloads, reset and explicitly saved local drafts. The calendar exports published Lisbon windows as tentative events, without implying confirmed fixtures or playoff participation.
 
-Eight committed visual baselines protect the Home viewport, active player, customized jersey and About introduction at desktop 1366px and mobile 390px. They use the pinned CI Linux Chromium environment, fonts-ready rendering and a fixed clock; macOS/Windows rendering may differ. Snapshot updates are disabled by default. For an intentional design change, generate candidates with `pnpm exec playwright test visual.spec.ts --update-snapshots`, inspect the diffs and commit the reviewed images. All six route screenshots remain available separately at every QA width.
+Fourteen committed visual baselines protect the Home viewport, active player, customized jersey and About introduction at desktop 1366px and mobile 390px. They use the pinned CI Linux Chromium environment, fonts-ready rendering and a fixed clock; macOS/Windows rendering may differ. Snapshot updates are disabled by default. For an intentional design change, generate candidates with `pnpm exec playwright test visual.spec.ts --update-snapshots`, inspect the diffs and commit the reviewed images. All six route screenshots remain available separately at every QA width.
