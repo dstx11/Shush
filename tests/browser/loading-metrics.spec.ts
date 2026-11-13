@@ -23,6 +23,7 @@ test('record initial and repeat loading measurements', async ({ page }, info) =>
   const samples = [];
   for (let run = 0; run < 3; run++) {
     await page.goto('/');
+    await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
     if (run === 0) await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
     // Each pair starts with an unseen intro and then repeats in the same context.
     await page.evaluate(() => {
