@@ -52,7 +52,7 @@ test('motion controls change an actual animation; observatory shows browser data
  const lab=page.getByRole('dialog',{name:'SHUSH LAB'});
  await lab.locator('.lab-side').getByRole('button',{name:/Motion/}).click();
  await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 850ms/);
- await lab.getByRole('slider',{name:/Duração/}).focus();
+ await lab.locator('.lab-controls input[type="range"]').first().focus();
  await page.keyboard.press('End');
  await expect(lab.locator('.lab-demo')).toHaveAttribute('style',/--demo-duration: 1800ms/);
  await lab.getByRole('button',{name:'Pausar'}).click();
