@@ -60,6 +60,9 @@ body { background: var(--ink); }
 .page-heading > p { max-width: 28rem; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 
 @media (max-width: 1180px) { .competition-signal { display: none; } .shush-navigation { gap: 1rem; }  }
+@media (min-width: 768px) and (max-width: 900px) {
+  .shush-navigation .brand-mark span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 @media (max-width: 767px) {
   .shell { width: min(calc(100% - 2.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)), var(--page-width)); }
   .desktop-navigation, .competition-signal { display: none; }
