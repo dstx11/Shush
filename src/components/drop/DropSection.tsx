@@ -1,3 +1,4 @@
+import {CopyIcon} from '../ui/CopyIcon';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -32,6 +33,8 @@ export function DropSection() {
   const [manualLink, setManualLink] = useState('');
   const [draftAvailable, setDraftAvailable] = useState(false);
   const [pending, setPending] = useState(false);
+  const [undo,setUndo]=useState<{config:DropConfig;view:View;query:string}|null>(null);
+  const resetControl=useRef<HTMLButtonElement>(null);
   const operation = useRef(0);
   const appliedQuery = useRef(params.toString());
   const mounted = useRef(true);
@@ -50,6 +53,7 @@ export function DropSection() {
     const next = readDropConfig(new URLSearchParams(query));
     operation.current += 1;
     setPending(false);
+    setUndo(null);
     setConfig(next.config);
     setView(next.shared ? 'back' : 'front');
     setManualLink('');
@@ -62,6 +66,7 @@ export function DropSection() {
     setManualLink('');
   };
   const edit = (next: DropConfig) => {
+    setUndo(null);
     invalidateTransfer();
     if (next.nick !== config.nick || next.number !== config.number || next.phrase !== config.phrase) setView('back');
     setConfig(next);
@@ -99,10 +104,24 @@ export function DropSection() {
     catch { setFeedback('Não foi possível descarregar. Seleciona o resumo abaixo.'); }
   };
   const reset = () => {
+    if(config.nick===defaultDropConfig.nick&&config.number===defaultDropConfig.number&&config.size===defaultDropConfig.size&&config.phrase===defaultDropConfig.phrase&&view==='front'){
+      clearSharedQuery();setFeedback('A personalização já está no estado inicial.');return;
+    }
+    const previous={config:{...config},view,query:params.toString()};
     edit({ ...defaultDropConfig });
+    setUndo(previous);
     clearSharedQuery();
     setView('front');
     setFeedback('Personalização reposta.');
+  };
+  const undoReset=()=>{
+    if(!undo)return;
+    invalidateTransfer();
+    setConfig(undo.config);setView(undo.view);
+    appliedQuery.current=undo.query;
+    setParams(new URLSearchParams(undo.query),{replace:true,preventScrollReset:true});
+    setUndo(null);setFeedback('Personalização anterior recuperada.');
+    requestAnimationFrame(()=>resetControl.current?.focus({preventScroll:true}));
   };
   const saveDraft = () => {
     invalidateTransfer();
@@ -150,7 +169,7 @@ export function DropSection() {
             }}>
             <div className="drop-mobile-preview"><div aria-hidden="true"><JerseyPreview config={config} view="back" compact /></div><div><span className="mono">A tua versão</span><strong>{config.nick || 'SHUSH'} / {config.number || '00'}</strong><small>Tamanho {config.size}</small></div><a className="editorial-link" href="#product-preview" onClick={() => setView('back')} aria-label="Ver pré-visualização completa"><span aria-hidden="true"><ArrowIcon /></span></a></div>
             <JerseyCustomizer config={config} message={message} onChange={(next) => edit({ ...next, nick: sanitizeDropText(next.nick, 14), phrase: sanitizeDropText(next.phrase, 44) })} />
-            <div className="drop-transfer-actions" aria-busy={pending}><button className="site-button button-primary" type="button" onClick={copy} disabled={pending}>Copiar resumo <span aria-hidden="true">⧉</span></button><button className="utility-button" type="button" onClick={download}>Descarregar TXT <span aria-hidden="true">↓</span></button><button className="utility-button" type="button" onClick={share} disabled={pending}>Partilhar personalização <span aria-hidden="true"><ArrowIcon /></span></button><button className="utility-button" type="button" onClick={reset}>Repor <span aria-hidden="true">↺</span></button></div>
+            <div className="drop-transfer-actions" aria-busy={pending}><button className="site-button button-primary" type="button" aria-label="Copiar resumo" aria-busy={pending} data-transfer={feedback==='Resumo copiado.'?'success':undefined} onClick={copy} disabled={pending}>{feedback==='Resumo copiado.'?'Copiado':pending?'A aguardar…':'Copiar resumo'} <CopyIcon done={feedback==='Resumo copiado.'}/></button><button className="utility-button" type="button" onClick={download}>Descarregar TXT <span aria-hidden="true">↓</span></button><button className="utility-button" type="button" onClick={share} disabled={pending}>Partilhar personalização <span aria-hidden="true"><ArrowIcon /></span></button><button className="utility-button" type="button" ref={resetControl} onClick={reset}>Repor <span aria-hidden="true">↺</span></button>{undo&&<button className="utility-button" type="button" onClick={undoReset}>Desfazer reposição</button>}</div>
             <p className="action-feedback" role="status">{feedback}</p>
             {manualLink ? <label className="manual-copy"><span>Ligação para copiar</span><input value={manualLink} readOnly onFocus={(event) => event.target.select()} /></label> : null}
             <details className="drop-draft"><summary>Rascunho neste dispositivo</summary><p>Guarda apenas quando escolheres. O rascunho fica neste browser e pode ser recuperado ou removido aqui.</p><div className="action-row"><button className="utility-button" type="button" onClick={saveDraft}>Guardar rascunho</button><button className="utility-button" type="button" onClick={restoreDraft} disabled={!draftAvailable}>Recuperar rascunho</button><button className="utility-button" type="button" onClick={deleteDraft} disabled={!draftAvailable}>Remover rascunho</button></div></details>

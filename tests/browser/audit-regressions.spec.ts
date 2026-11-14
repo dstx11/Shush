@@ -14,6 +14,9 @@ test('Unavailable portrait retains identity and selection recovers', async ({ pa
 
 test('Back restores the reading position instead of returning to the hero', async ({ page }) => {
   await page.goto('/');
+  // The prerender is replaced at boot; exercise history after the app is ready.
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+  await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
   const link = page.locator('.home-closing a[href="/company"]');
   await link.scrollIntoViewIfNeeded();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(300);

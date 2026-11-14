@@ -1,3 +1,4 @@
+import {CopyIcon} from '../ui/CopyIcon';
 import {useModalDialog} from '../../hooks/useModalDialog';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -253,7 +254,7 @@ function PlayerActions({ playerId, playerName, riotId }: { playerId: string; pla
     setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
   };
   return <div className="player-utilities">
-    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" onClick={copy} disabled={pending}>Copiar Riot ID <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
+    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" aria-label="Copiar Riot ID" aria-busy={pending} data-transfer={feedback==='Riot ID copiado.'?'success':undefined} onClick={copy} disabled={pending}>{feedback==='Riot ID copiado.'?'Copiado':pending?'A aguardar…':'Copiar Riot ID'} <CopyIcon done={feedback==='Riot ID copiado.'}/></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
     <p className="action-feedback" role="status">{feedback}</p>
     {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
   </div>;
