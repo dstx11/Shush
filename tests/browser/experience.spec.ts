@@ -122,7 +122,7 @@ test('Motion: portrait arrival completes and reduced motion can be enabled at ru
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/esports/valorant/roster?player=catty');
   const portrait = page.locator('.character-media > img');
-  await expect(portrait).toHaveCSS('animation-name', 'portrait-arrive');
+  await expect(portrait).toHaveCSS('animation-name', 'cozy-appear');
   await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
   await expect(portrait).toHaveCSS('opacity', '1');
   await page.screenshot({ path: testInfo.outputPath('roster-motion-settled.png'), fullPage: true });
