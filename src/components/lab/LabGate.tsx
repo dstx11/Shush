@@ -11,6 +11,11 @@ export function LabGate(){
  const location=useLocation();
  useEffect(()=>setOpen(false),[location.pathname]);
  useEffect(()=>{
+  if(open||!preview)return;
+  const frame=requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>('.season-preview-toolbar button')?.focus({preventScroll:true}));
+  return ()=>cancelAnimationFrame(frame);
+ },[open,preview]);
+ useEffect(()=>{
   let count=0;
   let previous=0;
   const keyboard=(event:KeyboardEvent)=>{
