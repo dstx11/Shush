@@ -29,12 +29,14 @@ No React rerenders from cursor parallax, no WebGL, no third-party animation fram
 
 Validate with `pnpm run validate`, Playwright on Chromium/WebKit, desktop and mobile visual evidence, and Cloudflare preview/production HTTP smoke tests.
 
-## Spatial lobby and dossiers
+## Integrated selection and dossiers
 
-The seven real portraits now share one persistent scene. A single CSS camera offset follows the selected index; individual depth and active states retarget interrupted transitions. Selection remains addressable by URL, the existing seven-player strip, number shortcuts and touch controls. Focusing a lobby member brings it into the camera view; the full strip remains the compact alternative for direct access.
+The roster now uses one composition: a compact seven-player selector comes before the selected portrait and published facts. The second row of large portraits and oversized introductory heading were removed. Decorative geometry, idle glow and orbit effects were reduced. Existing direct selection, keyboard shortcuts, touch gestures, shared URLs and optional audio remain available.
 
-A native modal dossier shows the selected player's published role, jersey number, Riot ID and available creator link. Previous/next keeps the surrounding lobby and URL in sync. Escape closes the dossier and restores focus to its current player's opening control. Missing biographies and statistics are omitted rather than invented.
+Native dossiers preserve the current selection and allow previous/next navigation. Escape returns focus to the current player control. Seasonal preview exploration and local LAB error recovery remain unchanged.
 
-LAB previews can leave the modal without persisting the selection. A temporary toolbar can apply, cancel or return to the LAB while browsing real routes. Normal close cancels the preview. Navigation closes the LAB, and lazy LAB failures stay inside their own error boundary. Browser tests cover the explored state and dossier selection; visual references include the intended lobby layout.
+## Readable entrance
 
-The two roster reference images were regenerated and visually reviewed. The one-off refresh workflow was removed afterwards; screenshot assertions remain active.
+The automatic introduction now has a 1600 ms readable identity beat, a 320 ms exit and a 3000 ms maximum asset wait. Previously, cached images could dismiss it before its arrival animation finished. The minimal scene uses the real logo, wordmark and seasonal subtitle, without orbit rings, decorative rays or simulated numbered loading steps. The remembered intro key is versioned so returning visitors see the revised introduction once. Reduced-motion users and blocked storage still bypass it; Escape and skip remain available.
+
+Browser regression coverage verifies the minimum readable beat and bounded exit. Visual comparisons wait until the introduction closes before capturing page content.
