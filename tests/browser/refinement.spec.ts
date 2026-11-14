@@ -192,7 +192,7 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     }
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     const clipped = await page.evaluate(() => [...document.querySelectorAll('a,button,input,select,textarea')].filter(element => {
-      if (!element.checkVisibility() || element.closest('.character-strip,.home-lineup,.shared-lobby')) return false;
+      if (!element.checkVisibility() || element.closest('.character-strip,.home-lineup')) return false;
       const bounds = element.getBoundingClientRect();
       return bounds.width > 0 && bounds.height > 0 && (bounds.left < -1 || bounds.right > innerWidth + 1);
     }).map(element => element.getAttribute('aria-label') || element.textContent?.trim().slice(0, 50)));
