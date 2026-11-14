@@ -8,7 +8,7 @@ These are inspirations, not copied code, artwork, cinematics, or sound. The SHUS
 
 ## Character select
 
-The existing `RosterSection` preserves URLs (`?player=`), seven buttons and seven public Tracker.gg links, true game roles, jersey links, share and copy, and mobile swipe. The additions are:
+The existing `RosterSection` preserves URLs (`?player=`), seven buttons and seven public Tracker.gg mappings, true game roles, jersey links, share and copy, and mobile swipe. The additions are:
 - Seven different SVG signatures rendered by `PlayerSignature.tsx`. Their paths and visual rhythms are unique to the seven roster IDs, not gameplay stats.
 - Fine-pointer parallax via the shared `useCinematicPointer` hook; CSS properties use transforms/translate, and the loop stops on pointer exit or in background tabs.
 - Selection feedback, a direction-aware portrait change, optional replay, and an original synthetic cue that starts **muted** and only plays after explicit user opt-in.
