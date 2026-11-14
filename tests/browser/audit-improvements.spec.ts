@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const representative = (name: string) => ['desktop-1366', 'mobile-390', 'mobile-webkit'].includes(name);
-test('ready resources reveal the page within the exit transition and resume its animations', async ({ page }, info) => {
+test('ready resources preserve the readable entrance then resume page animations', async ({ page }, info) => {
   test.skip(!representative(info.project.name), 'Representative entrance engines');
   const now = Date.parse('2026-11-13T12:00:00Z');
   await page.clock.install({ time: now });
@@ -14,7 +14,10 @@ test('ready resources reveal the page within the exit transition and resume its 
     await document.fonts.ready;
     await Promise.allSettled([...document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')].map(img => img.decode()));
   });
-  await page.clock.fastForward(500);
+  await page.clock.runFor(500);
+  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toBeVisible();
+  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'paused');
+  await page.clock.runFor(1600);
   await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
   await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'running');

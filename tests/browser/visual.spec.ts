@@ -18,6 +18,7 @@ for (const [name, path, selector] of regions) {
       Math.random = () => 0;
     });
     await page.goto(path);
+    await expect(page.getByRole('dialog',{name:'Entrada SHUSH'})).toHaveCount(0,{timeout:7000});
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     if (name === 'drop-preview') await page.getByRole('button', { name: /Verso/ }).click();

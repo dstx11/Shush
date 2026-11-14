@@ -1,6 +1,6 @@
 import {useModalDialog} from '../../hooks/useModalDialog';
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
 import { players, playerDropUrl, type Player } from '../../data/players';
@@ -11,10 +11,10 @@ import { PlayerSignature } from './PlayerSignature';
 import { useCinematicPointer } from '../../hooks/useCinematicPointer';
 import { useSelectCue } from '../../hooks/useSelectCue';
 
-function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
+function TrackerButton({ href, playerName }: { href: string; playerName: string }) {
   return (
-    <AppLink href={href} target="_blank" rel="noopener noreferrer" className={`tracker-button${compact ? ' tracker-button-compact' : ''}`} aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
-      <span>{compact ? 'Tracker.gg' : 'Partidas Competitive'}</span>
+    <AppLink href={href} target="_blank" rel="noopener noreferrer" className="tracker-button" aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
+      <span>Partidas Competitive</span>
       <span className="tracker-button-arrow" aria-hidden="true"><ArrowIcon /></span>
     </AppLink>
   );
@@ -115,14 +115,6 @@ export function RosterSection() {
           <span className="mono">SHUSH · VALORANT / PLAYER SELECT</span>
         </div>
 
-        <div className="roster-intro-line"><strong>Sete pessoas.<br/>Escolhe quem entra.</strong><p>Um jogador de cada vez. Explora o roster com as miniaturas, as setas ou as teclas de 1 a 7.</p></div>
-        <div className="shared-lobby" role="group" aria-label="Lobby dos sete jogadores" style={{'--camera-index':selectedIndex} as CSSProperties}>
-          <div className="lobby-horizon" aria-hidden="true"/><span className="lobby-caption" aria-hidden="true">SHUSH / LOBBY · 01—07</span>
-          <div className="lobby-world">{players.map((player,index)=><button key={player.id} type="button" className="lobby-person" data-active={index===selectedIndex} style={{'--position':index,'--depth':index%2} as CSSProperties} aria-label={`Selecionar ${player.displayName} no lobby`} aria-pressed={index===selectedIndex} onFocus={()=>selectPlayer(index)} onClick={()=>selectPlayer(index)}>
-            <PlayerPortrait player={player} decorative thumbnail sizes="180px"/><span><small>#{player.number}</small><strong>{player.displayName}</strong></span>
-          </button>)}</div>
-          <p className="lobby-current" aria-hidden="true">{String(selectedIndex+1).padStart(2,'0')} / {selectedPlayer.displayName}</p>
-        </div>
         <div className="player-stage">
 
 
@@ -157,7 +149,7 @@ export function RosterSection() {
               <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
             </div>
 
-          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Seleciona um retrato <span aria-hidden="true">· ← →</span></span>
+          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Escolhe um jogador <span aria-hidden="true">· ← →</span></span>
             <button type="button" className="selector-sound" onClick={() => setSoundEnabled(value => !value)} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Desativar som de seleção' : 'Ativar som de seleção'}>{soundEnabled ? 'SOM ON' : 'SOM OFF'}</button>
             <button type="button" className="selector-replay" onClick={() => setReplayCycle(cycle => cycle + 1)} aria-label="Rever entrada do jogador">Rever entrada</button>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
@@ -169,7 +161,6 @@ export function RosterSection() {
           </div>
                     <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
-            const profile = getCompetitiveProfile(player.id);
             return (
               <div key={player.id} className={`player-select-card${index === selectedIndex ? ' is-active' : ''}`}>
                 <button type="button" className="player-card-select" aria-pressed={index === selectedIndex} aria-controls="selected-player" onClick={() => selectPlayer(index)} onKeyDown={(event) => {
@@ -185,19 +176,14 @@ export function RosterSection() {
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong></span>
                 </button>
-                {profile ? (
-                  <div className="player-card-account">
-                    <span className="player-card-riot-id">{profile.riotId}</span>
-                    <TrackerButton href={profile.trackerUrl} playerName={player.displayName} compact />
-                  </div>
-                ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
+
               </div>
             );
           })}
         </div>
 
             <div key={`copy-${selectedPlayer.id}`} className="character-copy">
-              <button type="button" className="utility-button" onClick={()=>setDossierOpen(true)}>Abrir dossier de {selectedPlayer.displayName} <ArrowIcon/></button>
+              <p><button type="button" className="utility-button" onClick={()=>setDossierOpen(true)}>Abrir dossier de {selectedPlayer.displayName} <ArrowIcon/></button></p>
               <span className="section-kicker">Em jogo</span>
               <dl className="player-dna"><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl>
 
@@ -231,7 +217,7 @@ export function RosterSection() {
 
 
         </div>
-        <div className="player-selection-footer"><span><strong>SHUSH / CHOOSE YOUR PLAYER</strong></span><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span>A apresentação usa os retratos e perfis reais da equipa.</span></div>
+        <p className="player-selection-footer">Setas · Teclas 1–7 · Deslizar no telemóvel</p>
         </div>
       </div>
       {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>{setDossierOpen(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>(".character-copy .utility-button")?.focus({preventScroll:true}));}} onPrevious={selectPrevious} onNext={selectNext}/>}
@@ -267,7 +253,7 @@ function PlayerActions({ playerId, playerName, riotId }: { playerId: string; pla
     setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
   };
   return <div className="player-utilities">
-    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" onClick={copy} disabled={pending}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
+    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" onClick={copy} disabled={pending}>Copiar Riot ID <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
     <p className="action-feedback" role="status">{feedback}</p>
     {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
   </div>;

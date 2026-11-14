@@ -81,13 +81,13 @@ test('Season microinteractions convey progress and react to user actions',async 
  await expect(page.locator('.season-dead-silence')).toHaveClass(/is-lit/);
 });
 
-test('shared lobby stays mounted and dossier preserves selection and focus',async ({page},info)=>{
+test('single selection scene and dossier preserve selection and focus',async ({page},info)=>{
  test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative interaction states');
  await page.goto('/esports/valorant/roster?player=invalid');
- await page.getByRole('button',{name:'Selecionar DSTX no lobby',exact:true}).click();
+ await page.locator('.player-card-select').first().click();
  await expect(page).toHaveURL(/player=dstx/);
  await page.keyboard.press('7');
- await expect(page.locator('.lobby-person[data-active="true"]')).toHaveAttribute('aria-label','Selecionar Catty no lobby');
+ await expect(page.locator('.player-card-select[aria-pressed="true"]')).toContainText('Catty');
  await page.getByRole('button',{name:'Abrir dossier de Catty',exact:true}).click();
  const dossier=page.getByRole('dialog',{name:'Catty',exact:true});
  await expect(dossier).toBeVisible();
