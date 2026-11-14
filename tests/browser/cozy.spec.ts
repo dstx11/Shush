@@ -65,7 +65,7 @@ test('layout: navigation is centred and player actions share an alignment',async
  const navigation=page.locator('.desktop-navigation');
  if(await navigation.isVisible()){
   const menu=await navigation.boundingBox();
-  expect(Math.abs(menu!.x+menu!.width/2-page.viewportSize()!.width/2)).toBeLessThan(1);
+  expect(Math.abs(menu!.x+menu!.width/2-(await page.evaluate(()=>document.documentElement.clientWidth))/2)).toBeLessThan(1);
   const brand=await page.locator('header .brand-mark').boundingBox();
   const utilities=await page.locator('.header-utilities').boundingBox();
   expect(menu!.x-brand!.x-brand!.width).toBeGreaterThan(8);
