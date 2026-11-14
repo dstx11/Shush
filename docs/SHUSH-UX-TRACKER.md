@@ -14,7 +14,7 @@ Esta lista preserva o âmbito acordado. Não confunde código existente, altera�
 | 02 | Transições de luz | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 03 | Profundidade pelo contraste | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 04 | Fundos que respiram lentamente | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
-| 05 | Revelações por máscaras | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
+| 05 | Revelações por máscaras | Por implementar | Definir revelações sem deslocação e validar o fallback sem animações. |
 | 06 | Texturas e materialidade discretas | Aplicado nesta revisão | `src/styles/cozy.css` + teste de estados de cópia; rever desktop/mobile e movimento reduzido. |
 | 07 | Continuidade entre estados | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 08 | Momentos de repouso | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
@@ -43,7 +43,7 @@ Esta lista preserva o âmbito acordado. Não confunde código existente, altera�
 | 31 | Saída da intro ligada à página | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 32 | Detalhe sazonal discreto na intro | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 33 | Continuidade entre páginas | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
-| 34 | Reconhecimento imediato da navegação | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
+| 34 | Reconhecimento imediato da navegação | Por implementar | Mostrar reconhecimento imediato também quando uma rota ainda está a carregar. |
 | 35 | Direção fotográfica consistente | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 36 | Conteúdo próprio por secção | Por implementar | Depende de conteúdo real adicional da equipa; não substituir por histórias ou dados inventados. |
 | 37 | Variedade de composição | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
@@ -66,7 +66,7 @@ Esta lista preserva o âmbito acordado. Não confunde código existente, altera�
 | 54 | Dossier adaptado aos dados reais | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 55 | Tolerância a cliques repetidos | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 56 | Distinguir cancelamento de erro | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
-| 57 | Desfazer alterações reversíveis | Por implementar | Adicionar recuperação da configuração anterior sem interferir com os rascunhos existentes. |
+| 57 | Desfazer alterações reversíveis | Aplicado nesta revisão | Drop: desfazer reposição recupera campos, vista e URL; devolve foco ao controlo e não altera rascunhos. Teste em `cozy.spec.ts`. |
 | 58 | Guardar sem interromper | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 59 | Validação no momento certo | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
 | 60 | Recuperação sem perda de trabalho | Parcial / existente | Rever o percurso completo e registar evidência específica antes de fechar. |
