@@ -28,3 +28,13 @@ The **only rendered tree** is the animated Canvas `ChristmasTree` inside `HeroSh
 No React rerenders from cursor parallax, no WebGL, no third-party animation framework, and no autoplay sound. Seasonal particles use opacity/transform and respect the site's reduced motion setting. CSS for the player select is route-only, while the heavier Christmas Canvas and seasonal experiences remain conditionally loaded. All historical versions and Git commits are preserved; deprecated files are removed only when demonstrably unused.
 
 Validate with `pnpm run validate`, Playwright on Chromium/WebKit, desktop and mobile visual evidence, and Cloudflare preview/production HTTP smoke tests.
+
+## Spatial lobby and dossiers
+
+The seven real portraits now share one persistent scene. A single CSS camera offset follows the selected index; individual depth and active states retarget interrupted transitions. Selection remains addressable by URL, the existing seven-player strip, number shortcuts and touch controls. Focusing a lobby member brings it into the camera view; the full strip remains the compact alternative for direct access.
+
+A native modal dossier shows the selected player's published role, jersey number, Riot ID and available creator link. Previous/next keeps the surrounding lobby and URL in sync. Escape closes the dossier and restores focus to its current player's opening control. Missing biographies and statistics are omitted rather than invented.
+
+LAB previews can leave the modal without persisting the selection. A temporary toolbar can apply, cancel or return to the LAB while browsing real routes. Normal close cancels the preview. Navigation closes the LAB, and lazy LAB failures stay inside their own error boundary. Browser tests cover the explored state and dossier selection; visual references include the intended lobby layout.
+
+The two roster reference images were regenerated and visually reviewed. The one-off refresh workflow was removed afterwards; screenshot assertions remain active.

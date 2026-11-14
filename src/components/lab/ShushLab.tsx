@@ -20,7 +20,7 @@ const swatches:Record<SeasonId,string>={
  base:'#c4afe9',christmas:'#edcb94',newyear:'#c8d5f2',carnival:'#e9baf8',
  valentines:'#f1a7c1',easter:'#d1c7fe',summer:'#ffa58b',halloween:'#eab17d'
 };
-function SeasonStudio(){
+function SeasonStudio({onExplore}:{onExplore:()=>void}){
  const {id,theme,automatic,override,preview,previewSeason,commitSeason}=useSeason();
  const selected=preview??id;
  const choices=Object.keys(themes).filter(isSeasonId);
@@ -35,7 +35,7 @@ function SeasonStudio(){
      <span>{preview===choice?'Em pré-visualização':id===choice?'Edição ativa':'Explorar edição'}</span>
    </button>
   )}</div>
-  <div className="lab-actions"><button className="lab-primary" type="button" onClick={()=>commitSeason(selected)}>Aplicar esta edição</button><button type="button" onClick={()=>previewSeason(null)} disabled={!preview}>Cancelar pré-visualização</button><button type="button" onClick={()=>commitSeason('auto')}>Usar calendário automático</button></div>
+  <div className="lab-actions"><button type="button" disabled={!preview} onClick={onExplore}>Explorar o site com esta edição</button><button className="lab-primary" type="button" onClick={()=>commitSeason(selected)}>Aplicar esta edição</button><button type="button" onClick={()=>previewSeason(null)} disabled={!preview}>Cancelar pré-visualização</button><button type="button" onClick={()=>commitSeason('auto')}>Usar calendário automático</button></div>
   <p className="lab-note" role="status">{preview?'A pré-visualização é temporária.':'A edição acompanha a tua escolha ou as datas do calendário.'}</p>
  </div>;
 }
@@ -119,12 +119,12 @@ function PerformanceStudio(){
   <p className="lab-note">Amostra de aproximadamente 850 ms enquanto este painel está aberto. Os tempos de navegação incluem o carregamento do documento, não apenas a mudança de rota.</p>
  </div>;
 }
-export default function ShushLab({onClose}:{onClose:()=>void}){
+export default function ShushLab({onClose,onExplore}:{onClose:()=>void;onExplore:()=>void}){
  const dialog=useRef<HTMLDialogElement>(null);
  const [page,setPage]=useState<Page>('overview');
- const {id,override,previewSeason}=useSeason();
+ const {id,override}=useSeason();
  useModalDialog(dialog,true);
- useEffect(()=>()=>previewSeason(null),[previewSeason]);
+
  const commands=useMemo(()=>pages.filter(item=>item.id!=='overview'),[]);
  const choose=(next:Page)=>setPage(next);
  return <dialog ref={dialog} className="shush-lab" aria-label="SHUSH LAB" onCancel={event=>{event.preventDefault();onClose();}}>
@@ -137,7 +137,7 @@ export default function ShushLab({onClose}:{onClose:()=>void}){
     {page==='overview'?<section className="lab-panel" aria-labelledby="lab-overview-title"><div className="lab-panel-intro"><span className="lab-eyebrow">EXPERIMENTAL SPACE / 00</span><h3 id="lab-overview-title">A identidade não acaba na homepage.</h3><p>Este espaço reúne as ferramentas locais de direção artística, movimento e verificação. Nada do que testares aqui altera o site de outros visitantes.</p></div>
       <div className="lab-overview-grid"><div><span>ACTIVE SEASON</span><strong>{themes[id].label}</strong><small>{override==='auto'?'Definida pelo calendário':'Personalizada neste navegador'}</small></div><div><span>ROSTER</span><strong>{players.length.toString().padStart(2,'0')}</strong><small>Jogadores publicados</small></div><div><span>MATCH ARCHIVE</span><strong>{verifiedMatches.length.toString().padStart(2,'0')}</strong><small>Resultados documentados</small></div></div>
       <div className="lab-command-list" aria-label="Ferramentas">{commands.map(item=><button type="button" key={item.id} onClick={()=>choose(item.id)}><span>{item.label}</span><span aria-hidden="true">↗</span></button>)}</div>
-     </section>:page==='seasons'?<SeasonStudio/>:page==='motion'?<MotionStudio/>:page==='components'?<ComponentStudio/>:<PerformanceStudio/>}
+     </section>:page==='seasons'?<SeasonStudio onExplore={onExplore}/>:page==='motion'?<MotionStudio/>:page==='components'?<ComponentStudio/>:<PerformanceStudio/>}
    </div></div>
    <footer className="lab-foot"><span>SHUSH LAB / LOCAL EXPERIMENTS</span><span>Alt + Shift + S · Escape para sair</span></footer>
   </div>

@@ -20,7 +20,7 @@ export function PlayerSignature({player,index}:{player:Player;index:number}){
    <g className="character-geometry-mark">{strokes.map((d,i)=><path d={d} key={i}/>)}</g>
    <path className="character-geometry-cross" d="M300 15V72 M300 528V585 M15 300H72 M528 300H585"/>
   </svg>
-  <div className="character-scene-shards"><i/><i/><i/><i/></div>
+
   <span className="character-scene-serial">SHUSH / IDENTITY {String(index+1).padStart(2,'0')}</span>
   <span className="character-scene-foot">PLAYER FILE // #{player.number}</span>
   <span className="character-scene-grid"/>

@@ -67,3 +67,21 @@ test('exact browser title stays Shush on public routes and missing pages',async 
   await expect(page).toHaveTitle('Shush');
  }
 });
+
+test('preview explores real pages without committing and can be cancelled',async ({page})=>{
+ await openLab(page);
+ const lab=page.getByRole('dialog',{name:'SHUSH LAB'});
+ await lab.locator('.lab-side').getByRole('button',{name:/Seasons/}).click();
+ await lab.locator('.lab-season-choice').last().click();
+ await lab.getByRole('button',{name:'Explorar o site com esta edição'}).click();
+ await expect(lab).toHaveCount(0);
+ const toolbar=page.getByRole('complementary',{name:'Pré-visualização temporária'});
+ await expect(toolbar).toBeVisible();
+ await expect(page.locator('.shush-root')).toHaveAttribute('data-season','halloween');
+ await expect.poll(()=>page.evaluate(()=>localStorage.getItem('shush:season:v1'))).toBeNull();
+ if(await page.getByRole('button',{name:'Abrir navegação',exact:true}).isVisible())await page.getByRole('button',{name:'Abrir navegação',exact:true}).click();
+ await page.locator('#primary-navigation,#mobile-navigation').getByRole('link',{name:'Roster',exact:true}).click();
+ await expect(toolbar).toBeVisible();
+ await toolbar.getByRole('button',{name:'Cancelar',exact:true}).click();
+ await expect(page.locator('.shush-root')).toHaveAttribute('data-season','base');
+});

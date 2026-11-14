@@ -1,5 +1,6 @@
+import {useModalDialog} from '../../hooks/useModalDialog';
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { copyText, shareUrl } from '../../lib/browser-transfer';
 import { useSearchParams } from 'react-router-dom';
 import { players, playerDropUrl, type Player } from '../../data/players';
@@ -26,6 +27,7 @@ export function RosterSection() {
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
   const camera = useCinematicPointer<HTMLDivElement>();
   const { enabled: soundEnabled, setEnabled: setSoundEnabled, play: playCue } = useSelectCue();
+  const [dossierOpen,setDossierOpen]=useState(false);
   const [replayCycle, setReplayCycle] = useState(0);
   const [stageVisible, setStageVisible] = useState(true);
   const previous = useRef(selectedPlayer);
@@ -68,13 +70,14 @@ export function RosterSection() {
   const selectPlayer = useCallback((index: number) => {
     if (index < 0 || index >= players.length) return;
     playCue();
-    setDirection(index === (selectedIndex + 1) % players.length ? 1 : -1);
+    if(index===selectedIndex&&params.get("player")===players[index].id)return;
+    setDirection(index > selectedIndex || (selectedIndex===players.length-1 && index===0) ? 1 : -1);
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('player', players[index].id);
       return next;
     }, { replace: true, preventScrollReset: true });
-  }, [setParams, selectedIndex, playCue]);
+  }, [setParams, selectedIndex, playCue, params]);
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!/^[1-7]$/.test(event.key) || event.altKey || event.ctrlKey || event.metaKey || event.repeat ||
@@ -113,6 +116,13 @@ export function RosterSection() {
         </div>
 
         <div className="roster-intro-line"><strong>Sete pessoas.<br/>Escolhe quem entra.</strong><p>Um jogador de cada vez. Explora o roster com as miniaturas, as setas ou as teclas de 1 a 7.</p></div>
+        <div className="shared-lobby" role="group" aria-label="Lobby dos sete jogadores" style={{'--camera-index':selectedIndex} as CSSProperties}>
+          <div className="lobby-horizon" aria-hidden="true"/><span className="lobby-caption" aria-hidden="true">SHUSH / LOBBY · 01—07</span>
+          <div className="lobby-world">{players.map((player,index)=><button key={player.id} type="button" className="lobby-person" data-active={index===selectedIndex} style={{'--position':index,'--depth':index%2} as CSSProperties} aria-label={`Selecionar ${player.displayName} no lobby`} aria-pressed={index===selectedIndex} onFocus={()=>selectPlayer(index)} onClick={()=>selectPlayer(index)}>
+            <PlayerPortrait player={player} decorative thumbnail sizes="180px"/><span><small>#{player.number}</small><strong>{player.displayName}</strong></span>
+          </button>)}</div>
+          <p className="lobby-current" aria-hidden="true">{String(selectedIndex+1).padStart(2,'0')} / {selectedPlayer.displayName}</p>
+        </div>
         <div className="player-stage">
 
 
@@ -187,6 +197,7 @@ export function RosterSection() {
         </div>
 
             <div key={`copy-${selectedPlayer.id}`} className="character-copy">
+              <button type="button" className="utility-button" onClick={()=>setDossierOpen(true)}>Abrir dossier de {selectedPlayer.displayName} <ArrowIcon/></button>
               <span className="section-kicker">Em jogo</span>
               <dl className="player-dna"><div><dt>Funções</dt><dd>{selectedPlayer.roles.join(' / ')}</dd></div>{selectedPlayer.agents?.length ? <div><dt>Agentes favoritos</dt><dd>{selectedPlayer.agents.join(' / ')}</dd></div> : null}{selectedPlayer.sensitivity ? <div><dt>Sensibilidade</dt><dd>{selectedPlayer.sensitivity}</dd></div> : null}{selectedPlayer.equipment ? <div><dt>Equipamento</dt><dd>{selectedPlayer.equipment}</dd></div> : null}</dl>
 
@@ -223,6 +234,7 @@ export function RosterSection() {
         <div className="player-selection-footer"><span><strong>SHUSH / CHOOSE YOUR PLAYER</strong></span><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span>A apresentação usa os retratos e perfis reais da equipa.</span></div>
         </div>
       </div>
+      {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>{setDossierOpen(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>(".character-copy .utility-button")?.focus({preventScroll:true}));}} onPrevious={selectPrevious} onNext={selectNext}/>}
     </section>
   );
 }
@@ -259,4 +271,15 @@ function PlayerActions({ playerId, playerName, riotId }: { playerId: string; pla
     <p className="action-feedback" role="status">{feedback}</p>
     {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
   </div>;
+}
+
+function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;onClose:()=>void;onPrevious:()=>void;onNext:()=>void}){
+ const dialog=useRef<HTMLDialogElement>(null);
+ useModalDialog(dialog);
+ const profile=getCompetitiveProfile(player.id);
+ return <dialog ref={dialog} className="match-poster-dialog player-dossier" aria-labelledby="dossier-name" onCancel={event=>{event.preventDefault();onClose();}}>
+  <div className="action-row"><span className="section-kicker">SHUSH / DOSSIER</span><button type="button" className="utility-button" onClick={onClose}>Voltar ao lobby</button></div>
+  <div className="dossier-body" key={player.id}><PlayerPortrait player={player} eager sizes="(max-width:600px) 85vw, 320px"/><div><h2 id="dossier-name">{player.displayName}</h2><p>{player.roles.join(' / ')}</p><p>Camisola #{player.number}</p>{profile&&<><p>{profile.riotId}</p><TrackerButton href={profile.trackerUrl} playerName={player.displayName}/></>}{player.creatorUrl&&<AppLink className="editorial-link" href={player.creatorUrl} target="_blank">{player.creatorType==='twitch'?'Twitch':'YouTube'} <ArrowIcon/></AppLink>}<AppLink className="editorial-link" href={playerDropUrl(player)}>Personalizar camisola <ArrowIcon/></AppLink></div></div>
+  <div className="action-row"><button type="button" className="utility-button" onClick={onPrevious}>Jogador anterior</button><button type="button" className="utility-button" onClick={onNext}>Jogador seguinte</button></div>
+ </dialog>;
 }
