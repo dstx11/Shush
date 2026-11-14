@@ -72,3 +72,18 @@ test('Non-JavaScript visits remain usable without the intro overlay',async ({bro
   await expect(page.locator('.home-lineup>a')).toHaveCount(7);
  }finally{await context.close();}
 });
+
+test('cached assets do not erase the readable introduction beat',async ({page},info)=>{
+ test.skip(!representative(info.project.name),'Representative entrance coverage');
+ await page.clock.install({time:new Date('2026-11-12T12:00:00Z')});
+ await page.clock.pauseAt(Date.parse('2026-11-12T12:00:00Z')+100);
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.goto('/');
+ const intro=page.getByRole('dialog',{name:'Entrada SHUSH'});
+ await expect(intro).toBeVisible();
+ await page.clock.runFor(900);
+ await expect(intro).toBeVisible();
+ await page.clock.runFor(3500);
+ await expect(intro).toHaveCount(0);
+ await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
+});
