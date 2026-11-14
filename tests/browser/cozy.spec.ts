@@ -34,3 +34,26 @@ test('reset can be undone with configuration, view, URL and focus restored',asyn
  await expect(page.getByRole('button',{name:'Repor',exact:true})).toBeFocused();
  await expect(page.getByRole('button',{name:'Desfazer reposição',exact:true})).toHaveCount(0);
 });
+
+test('pointer and button feedback leave the content geometry stable',async ({page},info)=>{
+ test.skip(info.project.name!=='desktop-1366','Fine-pointer geometry');
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.goto('/esports/valorant/roster');
+ await expect(page.getByRole('dialog',{name:'Entrada SHUSH'})).toHaveCount(0,{timeout:6500});
+ const image=page.locator('.character-media>img');
+ await image.scrollIntoViewIfNeeded();
+ const position=()=>image.evaluate(node=>{const r=node.getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY};});
+ const before=await position();
+ await page.locator('.character-media').hover({position:{x:80,y:140}});
+ await expect.poll(()=>page.locator('.character-media').evaluate(node=>(node as HTMLElement).style.getPropertyValue('--lens-x'))).not.toBe('');
+ const after=await position();
+ expect(Math.abs(after.x-before.x)).toBeLessThan(1);
+ expect(Math.abs(after.y-before.y)).toBeLessThan(1);
+ const button=page.getByRole('button',{name:'Copiar Riot ID',exact:true});
+ await button.scrollIntoViewIfNeeded();
+ const initial=await button.boundingBox();
+ await button.hover();
+ const hovered=await button.boundingBox();
+ expect(Math.abs(initial!.x-hovered!.x)).toBeLessThan(1);
+ expect(Math.abs(initial!.y-hovered!.y)).toBeLessThan(1);
+});
