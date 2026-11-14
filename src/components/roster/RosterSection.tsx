@@ -11,10 +11,10 @@ import { PlayerSignature } from './PlayerSignature';
 import { useCinematicPointer } from '../../hooks/useCinematicPointer';
 import { useSelectCue } from '../../hooks/useSelectCue';
 
-function TrackerButton({ href, playerName, compact = false }: { href: string; playerName: string; compact?: boolean }) {
+function TrackerButton({ href, playerName }: { href: string; playerName: string }) {
   return (
-    <AppLink href={href} target="_blank" rel="noopener noreferrer" className={`tracker-button${compact ? ' tracker-button-compact' : ''}`} aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
-      <span>{compact ? 'Tracker.gg' : 'Partidas Competitive'}</span>
+    <AppLink href={href} target="_blank" rel="noopener noreferrer" className="tracker-button" aria-label={`Consultar ${playerName} no Tracker.gg (abre numa nova janela)`}>
+      <span>Partidas Competitive</span>
       <span className="tracker-button-arrow" aria-hidden="true"><ArrowIcon /></span>
     </AppLink>
   );
@@ -161,7 +161,6 @@ export function RosterSection() {
           </div>
                     <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
-            const profile = getCompetitiveProfile(player.id);
             return (
               <div key={player.id} className={`player-select-card${index === selectedIndex ? ' is-active' : ''}`}>
                 <button type="button" className="player-card-select" aria-pressed={index === selectedIndex} aria-controls="selected-player" onClick={() => selectPlayer(index)} onKeyDown={(event) => {
@@ -177,12 +176,7 @@ export function RosterSection() {
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong></span>
                 </button>
-                {profile ? (
-                  <div className="player-card-account">
-                    <span className="player-card-riot-id">{profile.riotId}</span>
-                    <TrackerButton href={profile.trackerUrl} playerName={player.displayName} compact />
-                  </div>
-                ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
+
               </div>
             );
           })}
@@ -223,7 +217,7 @@ export function RosterSection() {
 
 
         </div>
-        <div className="player-selection-footer"><span><strong>SHUSH / ROSTER</strong></span><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span>A apresentação usa os retratos e perfis reais da equipa.</span></div>
+        <p className="player-selection-footer">Setas · Teclas 1–7 · Deslizar no telemóvel</p>
         </div>
       </div>
       {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>{setDossierOpen(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>(".character-copy .utility-button")?.focus({preventScroll:true}));}} onPrevious={selectPrevious} onNext={selectNext}/>}
@@ -259,7 +253,7 @@ function PlayerActions({ playerId, playerName, riotId }: { playerId: string; pla
     setFeedback(result === 'copied' ? 'Ligação do jogador copiada.' : result === 'shared' ? 'Opções de partilha abertas.' : result === 'cancelled' ? 'Partilha cancelada.' : 'Seleciona a ligação abaixo para partilhar.');
   };
   return <div className="player-utilities">
-    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" onClick={copy} disabled={pending}>Copiar Riot ID <span aria-hidden="true">⧉</span></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
+    <div className="action-row" aria-busy={pending}><button type="button" className="utility-button" onClick={copy} disabled={pending}>Copiar Riot ID <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg></button><button type="button" className="utility-button" onClick={share} disabled={pending}>Partilhar jogador <span aria-hidden="true"><ArrowIcon /></span></button></div>
     <p className="action-feedback" role="status">{feedback}</p>
     {manual ? <label className="manual-copy"><span>Texto para copiar</span><input readOnly value={manual} onFocus={(event) => event.target.select()} /></label> : null}
   </div>;
