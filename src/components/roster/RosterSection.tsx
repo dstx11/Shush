@@ -234,7 +234,7 @@ export function RosterSection() {
         <div className="player-selection-footer"><span><strong>SHUSH / CHOOSE YOUR PLAYER</strong></span><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span>A apresentação usa os retratos e perfis reais da equipa.</span></div>
         </div>
       </div>
-      {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>setDossierOpen(false)} onPrevious={selectPrevious} onNext={selectNext}/>}
+      {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>{setDossierOpen(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>(".character-copy .utility-button")?.focus({preventScroll:true}));}} onPrevious={selectPrevious} onNext={selectNext}/>}
     </section>
   );
 }
