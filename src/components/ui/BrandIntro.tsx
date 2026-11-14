@@ -83,7 +83,7 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
   return <dialog ref={dialog} className={'brand-intro shush-season-intro shush-intro-v3' + (leaving ? ' is-leaving' : '')}
       data-phase={phase} aria-label="Entrada SHUSH" aria-describedby="intro-description"
       onCancel={event => { event.preventDefault(); setVisible(false); }}>
-    <div className="shush-intro-v3-top"><span aria-hidden="true">SHUSH / VALORANT</span><button className="intro-skip" type="button" onClick={() => setVisible(false)}>Saltar apresentação <span aria-hidden="true">↗</span></button></div>
+    <div className="shush-intro-v3-top"><span aria-hidden="true">SHUSH / VALORANT</span><button className="intro-skip" type="button" onClick={() => setVisible(false)}>Saltar apresentação</button></div>
     <div className="shush-intro-v3-stage">
       <div className="shush-intro-v3-emblem" aria-hidden="true">
         <img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="" />
