@@ -95,5 +95,6 @@ test('shared lobby stays mounted and dossier preserves selection and focus',asyn
  await expect(page.getByRole('dialog',{name:'DSTX',exact:true})).toBeVisible();
  await page.keyboard.press('Escape');
  await expect(page.getByRole('dialog')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Abrir dossier de DSTX',exact:true})).toBeFocused();
  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
 });
