@@ -83,6 +83,7 @@ test('cached assets do not erase the readable introduction beat',async ({page},i
  await expect(intro).toBeVisible();
  await page.clock.runFor(900);
  await expect(intro).toBeVisible();
+ await page.screenshot({path:info.outputPath('intro-readable-beat.png'),animations:'disabled'});
  await page.clock.runFor(3500);
  await expect(intro).toHaveCount(0);
  await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
