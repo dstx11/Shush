@@ -42,7 +42,7 @@
   html:not([data-motion="reduce"]) .shush-signal-orbit{animation:shush-orbit-scene linear both;animation-timeline:--shush-story;animation-range:entry 0% exit 100%}
   html:not([data-motion="reduce"]) .shush-signal-portraits{animation:shush-portrait-scene linear both;animation-timeline:--shush-story;animation-range:entry 0% exit 100%}
   @keyframes shush-orbit-scene{from{transform:rotate(-45deg) scale(.9)}to{transform:rotate(55deg) scale(1.12)}}
-  @keyframes shush-portrait-scene{from{transform:translateY(25px) scale(.92);opacity:.07}to{transform:translateY(-20px) scale(1.08);opacity:.28}}
+  @keyframes shush-portrait-scene{from{opacity:.07}to{opacity:.28}}
  }
 }
 @media(max-width:900px){.shush-signal-storyboard{grid-template-columns:1fr}.shush-signal-stage{position:relative;top:auto;width:100%;height:clamp(300px,62vw,530px);min-height:0}.shush-signal-chapters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.shush-signal-chapters li{min-height:0;padding:1.5rem 0}.shush-signal-chapters h3{font-size:clamp(1.25rem,2.6vw,2rem)}}
