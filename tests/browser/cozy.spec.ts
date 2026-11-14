@@ -57,3 +57,21 @@ test('pointer and button feedback leave the content geometry stable',async ({pag
  expect(Math.abs(initial!.x-hovered!.x)).toBeLessThan(1);
  expect(Math.abs(initial!.y-hovered!.y)).toBeLessThan(1);
 });
+
+test('layout: navigation is centred and player actions share an alignment',async ({page})=>{
+ await page.goto('/esports/valorant/roster');
+ await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+ await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
+ const navigation=page.locator('.desktop-navigation');
+ if(await navigation.isVisible()){
+  const menu=await navigation.boundingBox();
+  expect(Math.abs(menu!.x+menu!.width/2-page.viewportSize()!.width/2)).toBeLessThan(1);
+  const brand=await page.locator('header .brand-mark').boundingBox();
+  const utilities=await page.locator('.header-utilities').boundingBox();
+  expect(menu!.x-brand!.x-brand!.width).toBeGreaterThan(8);
+  expect(utilities!.x-menu!.x-menu!.width).toBeGreaterThan(8);
+ }
+ const copy=await page.getByRole('button',{name:'Copiar Riot ID',exact:true}).boundingBox();
+ const share=await page.getByRole('button',{name:'Partilhar jogador',exact:true}).boundingBox();
+ expect(Math.abs(copy!.width-share!.width)).toBeLessThan(1);
+});
