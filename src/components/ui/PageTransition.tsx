@@ -17,15 +17,39 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   const hasCommitted = useRef(false);
 
   useEffect(() => {
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+    return () => { window.history.scrollRestoration = previous; };
+  }, []);
+
+  useEffect(() => {
+    let departing = false;
     const remember = () => {
+      if (departing) return;
       // History entries can be replaced repeatedly while editing shared URLs.
       scrollPositions.delete(key);
       scrollPositions.set(key, window.scrollY);
       if (scrollPositions.size > 64) scrollPositions.delete(scrollPositions.keys().next().value!);
     };
+    // Freeze the outgoing position before a lazy-route fallback can shrink
+    // the document and emit a scroll event at the clamped position.
+    const navigate = (event: MouseEvent) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.defaultPrevented) return;
+      const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+      if (!(link instanceof HTMLAnchorElement) || link.target || link.hasAttribute('download')) return;
+      const destination = new URL(link.href);
+      if (destination.origin === window.location.origin && destination.pathname !== pathname) {
+        remember();
+        departing = true;
+      }
+    };
     window.addEventListener('scroll', remember, { passive: true });
-    return () => window.removeEventListener('scroll', remember);
-  }, [key]);
+    document.addEventListener('click', navigate, true);
+    return () => {
+      window.removeEventListener('scroll', remember);
+      document.removeEventListener('click', navigate, true);
+    };
+  }, [key, pathname]);
 
   // This effect runs after Suspense commits the loaded page, including on a
   // slow first visit. Anchors and keyboard focus cannot race the route import.
