@@ -1,0 +1,34 @@
+name: Refresh reviewed roster references
+on:
+  push:
+    branches: [subtle-roster-intro]
+    paths: [.github/workflows/refresh-roster-reference.yml]
+permissions:
+  contents: write
+jobs:
+  references:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: subtle-roster-intro
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm run build
+      - run: pnpm exec playwright test tests/browser/visual.spec.ts --grep 'player-profile' --project desktop-1366 --project mobile-390 --update-snapshots
+      - name: Save intended roster references
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tests/browser/baselines/desktop-1366/player-profile.png tests/browser/baselines/mobile-390/player-profile.png
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh references for integrated subtle roster'
+            git push origin HEAD:subtle-roster-intro
+          fi
+
+# Refresh after simplifying selector actions.
