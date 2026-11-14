@@ -2,17 +2,17 @@
 .drop-page { padding-block: var(--page-top) var(--section-space); }
 .drop-layout { display: grid; grid-template-columns: 1.05fr .85fr; gap: 3rem; padding-top: .5rem; align-items: start; }
 .audit-drop-gallery { position: sticky; top: 6rem; min-height: 0; padding: 0; border: 0; background: transparent; }
-.drop-gallery-label { display: flex; justify-content: space-between; gap: 1rem; }
+.drop-gallery-label { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.25rem; }
 .audit-drop-image, .drop-mini-image { position: relative; width: 100%; aspect-ratio: 1; container-type: inline-size; background: var(--bg); }
 .audit-drop-image img, .drop-mini-image img { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: screen; }
 .audit-live-print { position: absolute; top: 13%; left: 50%; width: 55%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .7cqi; color: #fff; text-align: center; font-family: var(--font-heading); line-height: 1.1; pointer-events: none; }
 .audit-live-print > span { max-width: 100%; font-size: var(--print-name-size, 6cqi); font-weight: 700; letter-spacing: .025em; overflow-wrap: anywhere; text-transform: none; }
 .audit-live-print > strong { font-size: 17cqi; font-weight: 700; line-height: 1; letter-spacing: -.035em; }
 .audit-live-print > small { max-width: 85%; font: 500 1.5cqi/1.2 var(--font-ui); overflow-wrap: anywhere; text-transform: none; }
-.drop-view-control { border-block: 1px solid var(--line); padding-block: .6rem; gap: .5rem; }
+.drop-view-control { justify-content: center; border-block: 1px solid var(--line); padding-block: .6rem; gap: .5rem; }
 .drop-view-control button { display: flex; gap: 1rem; align-items: center; justify-content: space-between; min-width: 7rem; padding-inline: .6rem; }
 .drop-view-control button > span { color: var(--signal); font-size: .75rem; }
-.drop-preview-note { margin-top: 1rem; color: var(--muted); font-size: .8rem; line-height: 1.8; max-width: 33rem; }
+.drop-preview-note { margin: 0; padding: 1rem 1.25rem 1.25rem; color: var(--muted); font-size: .8rem; line-height: 1.8; max-width: 33rem; }
 .drop-editor { --paper: var(--text); min-width: 0; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); color: var(--text); padding: 1.75rem; }
 .customizer-heading h2 { margin-block: .9rem; font: 600 clamp(1.8rem, 3vw, 2.8rem)/1.05 var(--font-heading); letter-spacing: -.035em; }
 .customizer-heading p { color: var(--muted); font-size: .8rem; line-height: 1.7; }
@@ -83,7 +83,7 @@ button:disabled { cursor: default; opacity: .55; }
 .drop-editor .size-options input:checked + span { background: var(--signal); color: var(--on-accent); border-color: var(--signal); }
 .drop-editor .order-summary textarea { background: var(--field); border-color: var(--line); color: var(--text); border-radius: var(--radius-sm); font-size: .8rem; }
 .drop-editor .drop-mobile-preview .editorial-link { color: var(--text); }
-.drop-gallery-label { border-bottom: 1px solid var(--line); padding-bottom: .65rem; }
+.drop-gallery-label { border-bottom: 1px solid var(--line); }
 .audit-drop-image { background: var(--surface); border-radius: var(--radius-md); }
 
 .drop-availability{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem 1rem;padding:1rem 1.25rem;margin:-1rem 0 2rem;border:1px solid var(--line);border-left:2px solid var(--signal);border-radius:.6rem;background:var(--surface);color:var(--muted);font-size:.85rem;line-height:1.8}
