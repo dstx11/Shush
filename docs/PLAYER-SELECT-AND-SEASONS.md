@@ -31,7 +31,7 @@ Validate with `pnpm run validate`, Playwright on Chromium/WebKit, desktop and mo
 
 ## Integrated selection and dossiers
 
-The roster now uses one composition: a compact seven-player selector comes before the selected portrait and published facts. The second row of large portraits and oversized introductory heading were removed. Decorative geometry, idle glow and orbit effects were reduced. Existing direct selection, keyboard shortcuts, touch gestures, shared URLs and optional audio remain available.
+The roster now uses one composition: a compact seven-player selector comes before the selected portrait and published facts. The second row of large portraits and oversized introductory heading were removed. Decorative geometry, idle glow and orbit effects were reduced. Existing direct selection, keyboard shortcuts, touch gestures, shared URLs and optional audio remain available. The selector is dedicated to choosing people; the selected profile provides its one external Tracker action, instead of repeating seven external links beside the selection controls.
 
 Native dossiers preserve the current selection and allow previous/next navigation. Escape returns focus to the current player control. Seasonal preview exploration and local LAB error recovery remain unchanged.
 
