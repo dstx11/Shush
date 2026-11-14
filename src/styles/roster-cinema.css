@@ -49,7 +49,7 @@
  html:not([data-motion="reduce"]) .character-geometry-mark{transform-origin:center;animation:player-mark 8s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .character-backlight{animation:player-lights 7s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .player-card-select .strip-avatar{transition:transform .45s var(--selector-ease),border-color .24s,box-shadow .3s}
- html:not([data-motion="reduce"]) .player-card-select:is(:hover,:focus-visible) .strip-avatar{transform:translateY(-6px) rotate(-1.5deg);border-color:var(--player-accent)}
+ html:not([data-motion="reduce"]) .player-card-select:is(:hover,:focus-visible) .strip-avatar{transform:translateY(-2px) rotate(-.5deg);border-color:var(--player-accent)}
  html:not([data-motion="reduce"]) .player-select-card.is-active .strip-avatar{animation:selected-glow 2.8s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .character-role-tape{animation:player-name-reveal .65s .13s var(--selector-ease) both}
  html:not([data-motion="reduce"]) .character-signal-flare{animation:player-flare .58s ease-out both}
