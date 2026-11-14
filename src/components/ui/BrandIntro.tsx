@@ -1,9 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSeason } from '../../seasonal/SeasonProvider';
 import { lisbonDate, type SeasonId } from '../../seasonal/calendar.mjs';
-import { SeasonArtwork } from '../seasonal/SeasonArtwork';
 
-const INTRO_SEEN = (id: SeasonId) => 'shush:intro:' + id + ':' + lisbonDate().year;
+const INTRO_SEEN = (id: SeasonId) => 'shush:intro:v2:' + id + ':' + lisbonDate().year;
 const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
   || document.documentElement.dataset.motion === 'reduce' || (() => { try { return localStorage.getItem('shush:motion:v1') === 'reduce'; } catch { return false; } })();
 function shouldPlay(id: SeasonId) {
@@ -43,12 +42,13 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
     };
   }, [visible, id, onComplete]);
 
-  // No minimum duration: cached resources can reveal the page immediately.
-  // The exit is visual continuity, not a second simulated loading task.
+  // Give the identity one readable beat, without ever waiting indefinitely for assets.
   useEffect(() => {
     if (!visible) return;
     let active = true;
     let finishing = false;
+    let ready = false;
+    let minimumElapsed = false;
     const timeouts: number[] = [];
     const later = (fn: () => void, milliseconds: number) => {
       timeouts.push(window.setTimeout(() => { if (active) fn(); }, milliseconds));
@@ -63,9 +63,10 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
     };
     later(() => setPhase(1), 500);
     later(() => setPhase(2), 1200);
+    later(()=>{minimumElapsed=true;if(ready)finish();},1600);
     later(finish, 3000);
     const images = Array.from(document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')).slice(0, 7);
-    Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(finish);
+    Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(()=>{ready=true;if(minimumElapsed)finish();});
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
     const onChange = () => { if (reduceMotion()) setVisible(false); };
     media.addEventListener('change', onChange);
@@ -82,27 +83,18 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
   return <dialog ref={dialog} className={'brand-intro shush-season-intro shush-intro-v3' + (leaving ? ' is-leaving' : '')}
       data-phase={phase} aria-label="Entrada SHUSH" aria-describedby="intro-description"
       onCancel={event => { event.preventDefault(); setVisible(false); }}>
-    <div className="shush-intro-v3-grid" aria-hidden="true" /><div className="shush-intro-v3-rays" aria-hidden="true"><span/><span/><span/><span/><span/></div>
     <div className="shush-intro-v3-top"><span aria-hidden="true">SHUSH / VALORANT</span><button className="intro-skip" type="button" onClick={() => setVisible(false)}>Saltar apresentação <span aria-hidden="true">↗</span></button></div>
     <div className="shush-intro-v3-stage">
       <div className="shush-intro-v3-emblem" aria-hidden="true">
-        <span className="shush-intro-v3-ring shush-intro-v3-ring-a" />
-        <span className="shush-intro-v3-ring shush-intro-v3-ring-b" />
-        <SeasonArtwork id={id} />
         <img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="" />
       </div>
       <span className="shush-intro-v3-overline">SEM BARULHO. SÓ ROUNDS.</span>
       <strong className="shush-intro-v3-title"><span className="sr-only">SHUSH.</span>{Array.from('SHUSH').map((letter,index)=><span aria-hidden="true" key={index}>{letter}</span>)}<span aria-hidden="true" className="intro-period">.</span></strong>
-      <div className="shush-intro-v3-cutline" aria-hidden="true"><span>O SILÊNCIO ANTES DO ROUND</span><span>UMA EQUIPA. O MESMO SINAL.</span><span>SHUSH / VALORANT</span></div>
       <p id="intro-description">{theme.introSub}</p>
     </div>
     <div className="shush-intro-v3-bottom">
-      <div className="shush-intro-v3-progress-head">
-        <span aria-live="off">{phase === 0 ? 'A preparar a primeira cena' : phase === 1 ? 'A revelar o sinal' : phase === 2 ? 'O lobby está a abrir' : 'Pronto'}</span>
-        <span aria-hidden="true">{String(Math.min(phase + 1, 3)).padStart(2, '0')} / 03</span>
-      </div>
       <div className={'shush-intro-v3-track phase-' + phase} aria-hidden="true"><span /></div>
-      <span className="shush-intro-v3-caption" role="status">{phase === 3 ? 'SHUSH pronta.' : 'A preparar SHUSH…'}</span>
+      <span className="shush-intro-v3-caption" role="status">{phase === 3 ? 'A entrar no site.' : 'SHUSH / PORTUGAL'}</span>
     </div>
   </dialog>;
 }
