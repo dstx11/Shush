@@ -9,8 +9,8 @@
 .about-brand-panel > p { margin-block: 1.5rem; color: var(--muted); font-size: .94rem; line-height: 1.9; }
 .about-counts { display: flex; gap: 2rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--muted); font: .8rem var(--font-mono); }
 .about-counts strong { font: 600 2rem var(--font-heading); color: var(--paper); padding-right: .5rem; }
-.about-paths { display: grid; margin-top: 2rem; }
-.about-paths a { display: grid; grid-template-columns: .4fr 1fr .5fr 2rem; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding-block: 1.5rem; color: var(--paper); text-decoration: none; }
+.about-paths { display: grid; gap: .75rem; margin-top: 2rem; }
+.about-paths a { display: grid; grid-template-columns: .4fr 1fr .5fr 2rem; align-items: center; gap: 1rem; border-bottom: 1px solid var(--line); padding: 1.5rem; color: var(--paper); text-decoration: none; }
 .about-paths strong { font: 600 clamp(1.7rem, 3.2vw, 3.2rem)/1.1 var(--font-heading); letter-spacing: -.035em; }
 .about-paths a > span:nth-child(3) { color: var(--muted); font-size: .875rem; }
 .about-paths a > span:last-child { color: var(--signal); font-size: 1.5rem; text-align: right; transition: transform .18s; }
@@ -22,7 +22,7 @@
 .partner-content img { width: 5rem; height: auto; }
 .partner-content h2 { font: 600 clamp(2rem, 4vw, 4rem)/1 var(--font-heading); letter-spacing: -.035em; }
 .partner-content p { margin-top: .75rem; color: var(--muted); font-size: .875rem; line-height: 1.8; }
-.about-brand-download { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+.about-brand-download { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-top: 2.5rem; padding: 1.5rem; border-top: 1px solid var(--line); }
 .about-brand-download h2 { font: 600 1.7rem/1.2 var(--font-heading); letter-spacing: -.035em; margin-top: .8rem; }
 .about-brand-download p { color: var(--muted); font: .8rem var(--font-mono); margin-top: .75rem; }
 .not-found-page { padding-block: max(9rem, calc(8rem + env(safe-area-inset-top))) 5rem; min-height: 80svh; display: grid; align-items: center; }
