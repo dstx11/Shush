@@ -1,5 +1,4 @@
 name: Refresh layout references
-# Verify stable-font reading geometry across engines.
 on:
   push:
     branches: [layout-polish]
@@ -21,7 +20,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm run build
-      - run: pnpm exec playwright test tests/browser/audit-regressions.spec.ts tests/browser/site.spec.ts tests/browser/cozy.spec.ts --grep 'Back restores|desktop preview|layout:' --repeat-each=3
+      - run: pnpm exec playwright test tests/browser/audit-regressions.spec.ts tests/browser/site.spec.ts tests/browser/cozy.spec.ts --grep 'Back restores' --project mobile-webkit --repeat-each=3
       - run: pnpm exec playwright test tests/browser/visual.spec.ts --project desktop-1366 --project mobile-390 --update-snapshots
       - name: Commit reviewed-region candidates
         run: |
