@@ -63,10 +63,10 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     const path = pathname + hash;
     const samePage = previousPath.current === path;
     // Query changes (player, jersey) preserve both focus and position.
-    if (samePage) { scrollReady.current = true; return; }
+    if (samePage && navigationType !== 'POP') { scrollReady.current = true; return; }
+    previousPath.current = path;
     const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
     const frame = window.requestAnimationFrame(() => {
-      previousPath.current = path;
       scrollReady.current = true;
       // A visitor can start editing before this deferred navigation frame.
       // Preserve that interaction rather than moving focus away mid-keystroke.
