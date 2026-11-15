@@ -56,7 +56,6 @@
  @keyframes player-mark{to{transform:scale(1.065) rotate(6deg);opacity:1}}
  @keyframes player-lights{to{opacity:.4;transform:scale(1.08)}}
  @keyframes player-shards{to{transform:translate3d(8px,-9px,0) rotate(8deg)}}
- @keyframes selected-glow{to{box-shadow:inset 0 0 22px color-mix(in srgb,var(--player-accent) 22%,transparent),0 0 18px color-mix(in srgb,var(--player-accent) 15%,transparent)}}
  @keyframes player-name-reveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
  @keyframes player-flare{from{opacity:.8;transform:translateX(-70%)}to{opacity:0;transform:translateX(130%)}}
 }
