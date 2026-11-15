@@ -265,6 +265,7 @@ function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;onClose
  useModalDialog(dialog);
  const profile=getCompetitiveProfile(player.id);
  const index=players.findIndex(member=>member.id===player.id);
+ useEffect(()=>{dialog.current?.querySelector('.dossier-body')?.scrollTo({top:0,behavior:'instant'});},[player.id]);
  return <dialog ref={dialog} className="match-poster-dialog player-dossier" aria-labelledby="dossier-name"
   onCancel={event=>{event.preventDefault();onClose();}}
   onKeyDown={event=>{
@@ -274,7 +275,7 @@ function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;onClose
    if(event.key==='ArrowRight'){event.preventDefault();onNext();}
   }}>
   <header className="dossier-heading"><span className="section-kicker">SHUSH / DOSSIER</span><button type="button" className="utility-button" onClick={onClose}>Voltar ao lobby</button></header>
-  <div className="dossier-body">
+  <div className="dossier-body" tabIndex={0} role="region" aria-label="Informação do jogador">
    <figure className="dossier-portrait"><PlayerPortrait player={player} eager sizes="(max-width:600px) 85vw, 380px"/><figcaption>Camisola <strong>#{player.number}</strong></figcaption></figure>
    <div className="dossier-information"><span className="section-kicker">VALORANT / ROSTER</span><h2 id="dossier-name">{player.displayName}</h2>
     <dl className="dossier-facts"><div><dt>Funções</dt><dd>{player.roles.join(' / ')}</dd></div>
