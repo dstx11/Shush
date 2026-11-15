@@ -17,3 +17,5 @@ export const verifiedMatches: VerifiedMatch[] = [
   { id: '2026-04-19-demons', date: '2026-04-19', map: 'Bind', opponent: 'Demons 2', shushScore: 5, opponentScore: 13 },
   { id: '2026-04-11-ilpsni', date: '2026-04-11', map: 'Split', opponent: 'ILPSNI', shushScore: 5, opponentScore: 13 },
 ].map(match => ({ ...match, source: matchSource, verifiedAt: '2026-11-13' }));
+
+export const verifiedMatchHref = (match: Pick<VerifiedMatch, 'id'>) => `/esports/valorant/premier#match-${encodeURIComponent(match.id)}`;
