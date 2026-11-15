@@ -75,3 +75,52 @@ test('layout: navigation is centred and player actions share an alignment',async
  const share=await page.getByRole('button',{name:'Partilhar jogador',exact:true}).boundingBox();
  expect(Math.abs(copy!.width-share!.width)).toBeLessThan(1);
 });
+
+test('dossier: keyboard selection keeps navigation in reach and restores lobby focus',async ({page},info)=>{
+ test.skip(!['desktop-1366','mobile-390','mobile-webkit','landscape-844'].includes(info.project.name),'Representative modal layouts');
+ await page.goto('/esports/valorant/roster?player=dstx');
+ await page.getByRole('button',{name:'Abrir dossier de DSTX',exact:true}).click();
+ let dossier=page.getByRole('dialog',{name:'DSTX',exact:true});
+ await expect(dossier).toBeVisible();
+ await expect(dossier.getByRole('button',{name:'Voltar ao lobby',exact:true})).toBeFocused();
+ await page.keyboard.press('ArrowRight');
+ dossier=page.getByRole('dialog',{name:'More',exact:true});
+ await expect(dossier).toBeVisible();
+ await expect(dossier.getByRole('status')).toHaveText('2 / 7');
+ await expect(dossier.getByRole('link',{name:'Personalizar camisola',exact:true})).toHaveAttribute('href',/nick=More&number=13/);
+ await expect(dossier.getByRole('button',{name:'Voltar ao lobby',exact:true})).toBeFocused();
+ const controls=await dossier.locator('.dossier-navigation').boundingBox();
+ expect(controls!.y).toBeGreaterThanOrEqual(0);
+ expect(controls!.y+controls!.height).toBeLessThanOrEqual(page.viewportSize()!.height+1);
+ await dossier.getByRole('button',{name:'Jogador anterior',exact:true}).click();
+ await expect(page.getByRole('dialog',{name:'DSTX',exact:true})).toBeVisible();
+ await page.keyboard.press('Escape');
+ await expect(page.getByRole('dialog')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Abrir dossier de DSTX',exact:true})).toBeFocused();
+});
+
+test('draft recovery can be undone without losing unsaved edits, view or saved data',async ({page},info)=>{
+ test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative draft engines');
+ await page.goto('/products/jersey?drop=1&nick=MORE&number=13&size=L&phrase=Round');
+ await page.locator('.drop-draft summary').click();
+ await page.getByRole('button',{name:'Guardar rascunho',exact:true}).click();
+ await expect(page.locator('.draft-state')).toHaveText('Guardado');
+ await page.getByLabel('Nick',{exact:true}).fill('TEMP');
+ await page.getByLabel('Número',{exact:true}).fill('19');
+ await page.getByRole('button',{name:/Frente/}).click();
+ const original=page.url();
+ await expect(page.locator('.draft-state')).toHaveText('Alterações por guardar');
+ await page.getByRole('button',{name:'Recuperar rascunho',exact:true}).click();
+ await expect(page.getByLabel('Nick',{exact:true})).toHaveValue('MORE');
+ await expect(page.locator('.draft-state')).toHaveText('Guardado');
+ await page.getByRole('button',{name:'Desfazer recuperação',exact:true}).click();
+ await expect(page.getByLabel('Nick',{exact:true})).toHaveValue('TEMP');
+ await expect(page.getByLabel('Número',{exact:true})).toHaveValue('19');
+ await expect(page).toHaveURL(original);
+ await expect(page.locator('.drop-view-control button[aria-pressed="true"]')).toContainText('Frente');
+ await expect(page.locator('.draft-state')).toHaveText('Alterações por guardar');
+ await expect(page.getByRole('button',{name:'Recuperar rascunho',exact:true})).toBeFocused();
+ const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('shush:drop01:draft:v1')!).config);
+ expect(stored.nick).toBe('MORE');
+ expect(stored.number).toBe('13');
+});
