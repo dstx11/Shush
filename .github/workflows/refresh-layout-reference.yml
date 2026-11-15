@@ -1,4 +1,5 @@
 name: Refresh layout references
+# Recheck guarded restoration before recording references.
 on:
   push:
     branches: [layout-polish]
