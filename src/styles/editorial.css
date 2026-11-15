@@ -116,7 +116,7 @@ body { background: var(--ink); }
  .team-cover-player:is(:hover, :focus-visible) img { transform: scale(1.06); }
  .team-cover-player.cover-2:is(:hover, :focus-visible) { transform: translateY(-3.5rem); }
  .verified-match { transition: border-color .2s, transform .2s; }
- .verified-match:focus-within, .verified-match:hover { transform: translateY(-3px); border-color: var(--signal); }
+ .verified-match:focus-within, .verified-match:hover { border-color: var(--signal); }
  @keyframes section-arrive { from { opacity: .25; transform: translateY(24px); } to { opacity: 1; transform: none; } }
 }
 @media (max-width: 767px) {
