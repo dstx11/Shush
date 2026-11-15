@@ -11,14 +11,16 @@ type PageTransitionProps = {
 export function PageTransition({ children, initialNavigation }: PageTransitionProps) {
   const { pathname, hash, key } = useLocation();
   const navigationType = useNavigationType();
+  // Native fragment navigation can reuse Router's default history key.
+  const entryKey = key + hash;
   const previousPath = useRef<string | null>(null);
   const firstNavigation = useRef(initialNavigation);
   const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
-  const activeKey = useRef(key);
+  const activeKey = useRef(entryKey);
   const scrollReady = useRef(false);
-  if (activeKey.current !== key) {
-    activeKey.current = key;
+  if (activeKey.current !== entryKey) {
+    activeKey.current = entryKey;
     scrollReady.current = false;
   }
 
@@ -33,8 +35,8 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     const remember = () => {
       if (departing || !scrollReady.current) return;
       // History entries can be replaced repeatedly while editing shared URLs.
-      scrollPositions.delete(key);
-      scrollPositions.set(key, window.scrollY);
+      scrollPositions.delete(entryKey);
+      scrollPositions.set(entryKey, window.scrollY);
       if (scrollPositions.size > 64) scrollPositions.delete(scrollPositions.keys().next().value!);
     };
     // Freeze the outgoing position before a lazy-route fallback can shrink
@@ -55,7 +57,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
       window.removeEventListener('scroll', remember);
       document.removeEventListener('click', navigate, true);
     };
-  }, [key, pathname]);
+  }, [entryKey, pathname]);
 
   // This effect runs after Suspense commits the loaded page, including on a
   // slow first visit. Anchors and keyboard focus cannot race the route import.
@@ -65,7 +67,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     // Query changes (player, jersey) preserve both focus and position.
     if (samePage && navigationType !== 'POP') { scrollReady.current = true; return; }
     previousPath.current = path;
-    const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
+    const restored = navigationType === 'POP' ? scrollPositions.get(entryKey) : undefined;
     const frame = window.requestAnimationFrame(() => {
       scrollReady.current = true;
       // A visitor can start editing before this deferred navigation frame.
@@ -103,7 +105,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
       }
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [pathname, hash, key, navigationType]);
+  }, [pathname, hash, entryKey, navigationType]);
 
   useEffect(() => {
     const frame = frameRef.current;

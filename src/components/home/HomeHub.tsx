@@ -2,7 +2,7 @@ import { ArrowIcon } from '../ui/ArrowIcon';
 import { AppLink } from '../ui/AppLink';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { creators, players } from '../../data/players';
-import { verifiedMatches } from '../../data/verified-matches';
+import { verifiedMatches, verifiedMatchHref } from '../../data/verified-matches';
 import { formatDate } from '../../lib/premier';
 const lastChecked = formatDate(verifiedMatches[0].verifiedAt);
 
@@ -14,7 +14,7 @@ export function HomeHub() {
     </section>
     <section className="home-records" aria-labelledby="home-records-title">
       <div className="home-records-heading"><span className="section-kicker">Premier / abril–junho 2026</span><h2 id="home-records-title">O resultado<br /> fica.</h2><p>Partidas documentadas. Última verificação: {lastChecked}.</p><AppLink className="editorial-link" href="/esports/valorant/premier#verified-results">Ver todas as partidas <ArrowIcon /></AppLink></div>
-      <div className="home-score-list">{verifiedMatches.slice(0,3).map(match => <AppLink key={match.id} className="home-score" href="/esports/valorant/premier#verified-results" aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}; ${formatDate(match.date)}`}><span className="home-score-meta"><time dateTime={match.date}>{formatDate(match.date)}</time><span>{match.map}</span></span><span className="home-score-teams"><strong>SHUSH <span>vs {match.opponent}</span></strong><b>{match.shushScore}<small>:</small>{match.opponentScore}</b></span></AppLink>)}</div>
+      <div className="home-score-list">{verifiedMatches.slice(0,3).map(match => <AppLink key={match.id} className="home-score" href={verifiedMatchHref(match)} aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}; ${formatDate(match.date)}`}><span className="home-score-meta"><time dateTime={match.date}>{formatDate(match.date)}</time><span>{match.map}</span></span><span className="home-score-teams"><strong>SHUSH <span>vs {match.opponent}</span></strong><b>{match.shushScore}<small>:</small>{match.opponentScore}</b></span></AppLink>)}</div>
     </section>
     <section className="home-people" aria-labelledby="home-creators-title"><div><span className="section-kicker">Creators</span><h2 id="home-creators-title">Nem tudo fica<br /> no Discord.</h2><AppLink className="editorial-link" href="/content">Conhecer os canais <ArrowIcon /></AppLink></div><div className="home-creator-links">{creators.map(player => <AppLink key={player.id} href={player.creatorUrl!} target="_blank" rel="noopener noreferrer"><PlayerPortrait player={player} decorative thumbnail sizes="80px" /><span><strong>{player.displayName}</strong><small>{player.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</small></span><span aria-hidden="true"><ArrowIcon /></span></AppLink>)}</div></section>
     <div className="home-closing"><AppLink href="/company"><span className="section-kicker">Sobre a SHUSH</span><strong>Começámos com<br />uma piada.</strong><span>Ler a nossa história <ArrowIcon /></span></AppLink><AppLink href="/products/jersey"><span className="section-kicker">Drop 01</span><strong>A nossa camisola.<br />O teu nick.</strong><span>Personalizar <ArrowIcon /></span></AppLink></div>

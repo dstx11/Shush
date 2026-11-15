@@ -124,3 +124,55 @@ test('draft recovery can be undone without losing unsaved edits, view or saved d
  expect(stored.nick).toBe('MORE');
  expect(stored.number).toBe('13');
 });
+
+test('home result opens the actual match and gives it keyboard focus',async ({page},info)=>{
+ test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative contextual navigation engines');
+ await page.goto('/');
+ await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+ await page.locator('.home-score').first().click();
+ await expect(page).toHaveURL(/premier#match-2026-06-06-enlitro$/);
+ const match=page.locator('#match-2026-06-06-enlitro');
+ await expect(match).toBeFocused();
+ await expect(match.locator('details')).toHaveAttribute('open','');
+ await expect(match).toContainText('EnLitro');
+ const box=await match.boundingBox();
+ const header=await page.locator('header').boundingBox();
+ expect(box!.y).toBeGreaterThanOrEqual(header!.y+header!.height-1);
+});
+
+test('match links copy the exact match URL with stable button feedback and a manual fallback',async ({page},info)=>{
+ test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative transfer engines');
+ await page.addInitScript(()=>{Object.defineProperty(navigator,'clipboard',{value:{writeText:async(value:string)=>{if(sessionStorage.getItem('block-match-copy'))throw new Error('blocked');sessionStorage.setItem('copied-match',value);}},configurable:true});document.execCommand=()=>false;});
+ await page.goto('/esports/valorant/premier#match-2026-05-10-prime');
+ const match=page.locator('#match-2026-05-10-prime');
+ await expect(match.locator('details')).toHaveAttribute('open','');
+ const copy=match.getByRole('button',{name:'Copiar ligação desta partida',exact:true});
+ const before=await copy.boundingBox();
+ await copy.click();
+ await expect(copy).toContainText('Copiado');
+ expect(await page.evaluate(()=>sessionStorage.getItem('copied-match'))).toBe(page.url());
+ const after=await copy.boundingBox();
+ expect(Math.abs(before!.width-after!.width)).toBeLessThan(1);
+ await page.evaluate(()=>sessionStorage.setItem('block-match-copy','1'));
+ await page.reload();
+ await match.getByRole('button',{name:'Copiar ligação desta partida',exact:true}).click();
+ await expect(match.getByLabel('Ligação da partida',{exact:true})).toHaveValue(page.url());
+ await expect(match.getByRole('status')).toContainText('Seleciona a ligação');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
+});
+
+test('match filters reset with focus and direct navigation reveals a previously hidden match',async ({page},info)=>{
+ test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative filter engines');
+ await page.goto('/esports/valorant/premier#match-2026-06-06-enlitro');
+ const filters=page.getByRole('group',{name:'Filtrar resultados',exact:true});
+ await filters.getByRole('button',{name:'Vitórias',exact:true}).click();
+ await expect(page.locator('.verified-match')).toHaveCount(5);
+ await page.getByRole('button',{name:'Limpar filtros',exact:true}).click();
+ await expect(page.locator('.verified-match')).toHaveCount(10);
+ await expect(filters.getByRole('button',{name:'Todas',exact:true})).toBeFocused();
+ await filters.getByRole('button',{name:'Vitórias',exact:true}).click();
+ await page.goto('/esports/valorant/premier#match-2026-05-16-vallhalla');
+ await expect(page.locator('#match-2026-05-16-vallhalla')).toBeFocused();
+ await expect(page.locator('.verified-match')).toHaveCount(10);
+ await expect(filters.getByRole('button',{name:'Todas',exact:true})).toHaveAttribute('aria-pressed','true');
+});
