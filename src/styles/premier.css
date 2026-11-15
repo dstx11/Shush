@@ -104,4 +104,4 @@
 }
 
 .verified-match{scroll-margin-top:7rem}
-.shush-root .verified-match:target{border-color:var(--signal);outline:1px solid var(--signal);outline-offset:3px}
+.shush-root .verified-match:is(:target,.is-linked){border-color:var(--signal);outline:1px solid var(--signal);outline-offset:3px}
