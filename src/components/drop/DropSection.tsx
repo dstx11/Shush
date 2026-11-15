@@ -31,10 +31,13 @@ export function DropSection() {
   const [expanded, setExpanded] = useState(false);
   const [feedback, setFeedback] = useState(() => initial.corrected ? 'A ligação tinha valores inválidos. Foram usados valores seguros.' : initial.shared ? 'Personalização carregada da ligação.' : '');
   const [manualLink, setManualLink] = useState('');
-  const [draftAvailable, setDraftAvailable] = useState(false);
+  const [savedDraft, setSavedDraft] = useState<DropConfig|null>(null);
+  const draftAvailable=Boolean(savedDraft);
+  const draftMatches=Boolean(savedDraft&&(['nick','number','size','phrase'] as const).every(key=>savedDraft[key]===config[key]));
   const [pending, setPending] = useState(false);
-  const [undo,setUndo]=useState<{config:DropConfig;view:View;query:string}|null>(null);
+  const [undo,setUndo]=useState<{config:DropConfig;view:View;query:string;kind:'reset'|'draft'}|null>(null);
   const resetControl=useRef<HTMLButtonElement>(null);
+  const restoreControl=useRef<HTMLButtonElement>(null);
   const operation = useRef(0);
   const appliedQuery = useRef(params.toString());
   const mounted = useRef(true);
@@ -42,8 +45,10 @@ export function DropSection() {
 
   useEffect(() => {
     mounted.current = true;
-    try { setDraftAvailable(Boolean(localStorage.getItem(dropDraftKey))); } catch { /* Optional storage. */ }
-    return () => { mounted.current = false; operation.current += 1; };
+    try { setSavedDraft(readDropDraft(localStorage.getItem(dropDraftKey)??'')); } catch { /* Optional storage. */ }
+    const syncDraft=(event:StorageEvent)=>{if(event.key===dropDraftKey||event.key===null)setSavedDraft(readDropDraft(event.newValue??''));};
+    window.addEventListener('storage',syncDraft);
+    return () => { mounted.current = false; operation.current += 1; window.removeEventListener('storage',syncDraft); };
   }, []);
 
   const query = params.toString();
@@ -107,7 +112,7 @@ export function DropSection() {
     if(config.nick===defaultDropConfig.nick&&config.number===defaultDropConfig.number&&config.size===defaultDropConfig.size&&config.phrase===defaultDropConfig.phrase&&view==='front'){
       clearSharedQuery();setFeedback('A personalização já está no estado inicial.');return;
     }
-    const previous={config:{...config},view,query:params.toString()};
+    const previous={config:{...config},view,query:params.toString(),kind:'reset' as const};
     edit({ ...defaultDropConfig });
     setUndo(previous);
     clearSharedQuery();
@@ -121,14 +126,15 @@ export function DropSection() {
     appliedQuery.current=undo.query;
     setParams(new URLSearchParams(undo.query),{replace:true,preventScrollReset:true});
     setUndo(null);setFeedback('Personalização anterior recuperada.');
-    requestAnimationFrame(()=>resetControl.current?.focus({preventScroll:true}));
+    const control=undo.kind==='draft'?restoreControl:resetControl;
+    requestAnimationFrame(()=>control.current?.focus({preventScroll:true}));
   };
   const saveDraft = () => {
     invalidateTransfer();
     try {
       const safe = readDropConfig(new URL(buildDropUrl(config, window.location.origin)).searchParams).config;
       localStorage.setItem(dropDraftKey, JSON.stringify({ version: 1, config: safe }));
-      setDraftAvailable(true);
+      setSavedDraft(safe);
       setFeedback('Rascunho guardado neste dispositivo.');
     } catch { setFeedback('O dispositivo não permitiu guardar. Podes descarregar o resumo.'); }
   };
@@ -137,7 +143,10 @@ export function DropSection() {
     try {
       const draft = readDropDraft(localStorage.getItem(dropDraftKey) ?? '');
       if (!draft) { setFeedback('O rascunho está indisponível ou é inválido. A tua versão foi mantida.'); return; }
+      const previous={config:{...config},view,query:params.toString(),kind:'draft' as const};
       edit(draft);
+      setUndo(previous);
+      setSavedDraft(draft);
       clearSharedQuery();
       setView('back');
       setFeedback('Rascunho recuperado.');
@@ -145,7 +154,7 @@ export function DropSection() {
   };
   const deleteDraft = () => {
     invalidateTransfer();
-    try { localStorage.removeItem(dropDraftKey); setDraftAvailable(false); setFeedback('Rascunho removido deste dispositivo.'); }
+    try { localStorage.removeItem(dropDraftKey); setSavedDraft(null); setFeedback('Rascunho removido deste dispositivo.'); }
     catch { setFeedback('O dispositivo não permitiu remover o rascunho.'); }
   };
 
@@ -169,10 +178,10 @@ export function DropSection() {
             }}>
             <div className="drop-mobile-preview"><div aria-hidden="true"><JerseyPreview config={config} view="back" compact /></div><div><span className="mono">A tua versão</span><strong>{config.nick || 'SHUSH'} / {config.number || '00'}</strong><small>Tamanho {config.size}</small></div><a className="editorial-link" href="#product-preview" onClick={() => setView('back')} aria-label="Ver pré-visualização completa"><span aria-hidden="true"><ArrowIcon /></span></a></div>
             <JerseyCustomizer config={config} message={message} onChange={(next) => edit({ ...next, nick: sanitizeDropText(next.nick, 14), phrase: sanitizeDropText(next.phrase, 44) })} />
-            <div className="drop-transfer-actions" aria-busy={pending}><button className="site-button button-primary" type="button" aria-label="Copiar resumo" aria-busy={pending} data-transfer={feedback==='Resumo copiado.'?'success':undefined} onClick={copy} disabled={pending}>{feedback==='Resumo copiado.'?'Copiado':pending?'A aguardar…':'Copiar resumo'} <CopyIcon done={feedback==='Resumo copiado.'}/></button><button className="utility-button" type="button" onClick={download}>Descarregar TXT <span aria-hidden="true">↓</span></button><button className="utility-button" type="button" onClick={share} disabled={pending}>Partilhar personalização <span aria-hidden="true"><ArrowIcon /></span></button><button className="utility-button" type="button" ref={resetControl} onClick={reset}>Repor <span aria-hidden="true">↺</span></button>{undo&&<button className="utility-button" type="button" onClick={undoReset}>Desfazer reposição</button>}</div>
+            <div className="drop-transfer-actions" aria-busy={pending}><button className="site-button button-primary" type="button" aria-label="Copiar resumo" aria-busy={pending} data-transfer={feedback==='Resumo copiado.'?'success':undefined} onClick={copy} disabled={pending}>{feedback==='Resumo copiado.'?'Copiado':pending?'A aguardar…':'Copiar resumo'} <CopyIcon done={feedback==='Resumo copiado.'}/></button><button className="utility-button" type="button" onClick={download}>Descarregar TXT <span aria-hidden="true">↓</span></button><button className="utility-button" type="button" onClick={share} disabled={pending}>Partilhar personalização <span aria-hidden="true"><ArrowIcon /></span></button><button className="utility-button" type="button" ref={resetControl} onClick={reset}>Repor <span aria-hidden="true">↺</span></button>{undo&&<button className="utility-button" type="button" onClick={undoReset}>{undo.kind==='draft'?'Desfazer recuperação':'Desfazer reposição'}</button>}</div>
             <p className="action-feedback" role="status">{feedback}</p>
             {manualLink ? <label className="manual-copy"><span>Ligação para copiar</span><input value={manualLink} readOnly onFocus={(event) => event.target.select()} /></label> : null}
-            <details className="drop-draft"><summary>Rascunho neste dispositivo</summary><p>Guarda apenas quando escolheres. O rascunho fica neste browser e pode ser recuperado ou removido aqui.</p><div className="action-row"><button className="utility-button" type="button" onClick={saveDraft}>Guardar rascunho</button><button className="utility-button" type="button" onClick={restoreDraft} disabled={!draftAvailable}>Recuperar rascunho</button><button className="utility-button" type="button" onClick={deleteDraft} disabled={!draftAvailable}>Remover rascunho</button></div></details>
+            <details className="drop-draft"><summary>Rascunho neste dispositivo{draftAvailable&&<span className="draft-state" data-saved={draftMatches}>{draftMatches?'Guardado':'Alterações por guardar'}</span>}</summary><p>Guarda apenas quando escolheres. O rascunho fica neste browser e pode ser recuperado ou removido aqui.</p><div className="action-row"><button className="utility-button" type="button" onClick={saveDraft}>Guardar rascunho</button><button className="utility-button" type="button" ref={restoreControl} onClick={restoreDraft} disabled={!draftAvailable}>Recuperar rascunho</button><button className="utility-button" type="button" onClick={deleteDraft} disabled={!draftAvailable}>Remover rascunho</button></div></details>
           </aside>
         </div>
         <section className="drop-process" aria-labelledby="drop-process-title"><div><span className="section-kicker">Depois da personalização</span><h2 id="drop-process-title">Guarda a tua<br />personalização.</h2></div><ol><li><span className="mono">01 / Personaliza</span><p>Escolhe o nick, número, tamanho e uma frase opcional.</p></li><li><span className="mono">02 / Guarda o resumo</span><p>Copia o texto, descarrega o TXT ou partilha a tua versão.</p></li><li><span className="mono">03 / Fica contigo</span><p>Guarda o resumo ou a ligação para recuperares esta versão. Ainda não são aceites encomendas pelo site.</p></li></ol></section>
