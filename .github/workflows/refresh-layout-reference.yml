@@ -1,5 +1,5 @@
 name: Refresh layout references
-# Recheck guarded restoration before recording references.
+# Verify stable-font reading geometry across engines.
 on:
   push:
     branches: [layout-polish]
