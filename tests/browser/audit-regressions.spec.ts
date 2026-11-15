@@ -13,11 +13,6 @@ test('Unavailable portrait retains identity and selection recovers', async ({ pa
 });
 
 test('Back restores the reading position instead of returning to the hero', async ({ page }) => {
-  const trace: string[] = [];
-  page.on('console', message => { if (message.text().startsWith('SCROLLTEST')) trace.push(message.text()); });
-  await page.addInitScript(() => {
-    for (const type of ['scroll', 'click', 'popstate']) window.addEventListener(type, () => console.debug('SCROLLTEST', JSON.stringify({type,path:location.pathname,y:scrollY,height:document.documentElement.scrollHeight,key:history.state?.key})), true);
-  });
   await page.goto('/');
   // The prerender is replaced at boot; exercise history after the app is ready.
   await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
@@ -33,9 +28,7 @@ test('Back restores the reading position instead of returning to the hero', asyn
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await page.goBack();
   await expect(page.locator('.home-lineup > a')).toHaveCount(7);
-  try {
-    await expect.poll(async () => Math.abs(await page.evaluate(() => window.scrollY) - before)).toBeLessThan(100);
-  } catch (error) { console.log(JSON.stringify({before,trace})); throw error; }
+  await expect.poll(async () => Math.abs(await page.evaluate(() => window.scrollY) - before)).toBeLessThan(100);
 });
 
 test('Public pages include their content when JavaScript is unavailable', async ({ browser, baseURL }) => {
