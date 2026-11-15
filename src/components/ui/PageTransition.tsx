@@ -15,6 +15,12 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   const firstNavigation = useRef(initialNavigation);
   const frameRef = useRef<HTMLDivElement>(null);
   const hasCommitted = useRef(false);
+  const activeKey = useRef(key);
+  const scrollReady = useRef(false);
+  if (activeKey.current !== key) {
+    activeKey.current = key;
+    scrollReady.current = false;
+  }
 
   useEffect(() => {
     const previous = window.history.scrollRestoration;
@@ -25,7 +31,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
   useEffect(() => {
     let departing = false;
     const remember = () => {
-      if (departing) return;
+      if (departing || !scrollReady.current) return;
       // History entries can be replaced repeatedly while editing shared URLs.
       scrollPositions.delete(key);
       scrollPositions.set(key, window.scrollY);
@@ -57,15 +63,16 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     const path = pathname + hash;
     const samePage = previousPath.current === path;
     // Query changes (player, jersey) preserve both focus and position.
-    if (samePage) return;
+    if (samePage) { scrollReady.current = true; return; }
+    const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
     const frame = window.requestAnimationFrame(() => {
       previousPath.current = path;
+      scrollReady.current = true;
       // A visitor can start editing before this deferred navigation frame.
       // Preserve that interaction rather than moving focus away mid-keystroke.
       const focused = document.activeElement;
       if (focused && frameRef.current?.contains(focused) &&
           focused.matches('input, textarea, select, button, [contenteditable="true"]')) return;
-      const restored = navigationType === 'POP' ? scrollPositions.get(key) : undefined;
       if (restored !== undefined) {
         window.scrollTo({ top: restored, left: 0, behavior: 'instant' });
         document.getElementById('main-content')?.focus({ preventScroll: true });
@@ -73,6 +80,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
       }
       const isInitialCommit = firstNavigation.current && !hasCommitted.current;
       hasCommitted.current = true;
+      if (isInitialCommit && !hash && window.scrollY > 0) return;
       // A slow initial route must not steal focus from a visitor who has
       // already opened/closed the header menu. Subsequent SPA routes still
       // move focus to their content after the lazy page commits.
