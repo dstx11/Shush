@@ -12,8 +12,6 @@ body { background: var(--ink); }
 .site-button:hover { background: var(--accent-hover); border-color: var(--signal); }
 .button-secondary { border-color: var(--control-line); background: transparent; color: var(--paper); }
 .button-secondary:hover { background: var(--surface-2); }
-.button-arrow { transition: transform .18s; }
-.site-button:hover .button-arrow { transform: translateX(3px); }
 .editorial-link { min-height: 2.75rem; font-size: .875rem; }
 
 .shush-header { position: fixed; inset: 0 0 auto; z-index: 50; padding: calc(.75rem + env(safe-area-inset-top)) 0 .75rem; background: #15131af5; border-bottom: 1px solid var(--line); pointer-events: auto; animation: none; }
@@ -25,10 +23,8 @@ body { background: var(--ink); }
 .shush-navigation .brand-mark span { font: 700 .9rem var(--font-heading); letter-spacing: .12em; }
 .desktop-navigation { display: flex; gap: .25rem; padding: .25rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); }
 .desktop-nav-link { position: relative; display: flex; align-items: center; min-height: 2.5rem; padding: .5rem .85rem; border-radius: .7rem; color: var(--muted); font-size: .875rem; font-weight: 600; text-decoration: none; }
-.desktop-nav-link::after { content: none; }
 .desktop-nav-link:hover { color: var(--text); background: var(--surface-2); }
 .desktop-nav-link[aria-current='page'] { color: var(--on-accent); background: var(--signal); }
-.desktop-nav-link[aria-current='page']::after, .desktop-nav-link:hover::after { transform: scaleX(1); }
 .competition-signal { display: grid; gap: .15rem; padding-left: 1rem; border-left: 1px solid var(--line); color: var(--muted); font: .7rem/1.6 var(--font-mono); text-decoration: none; }
 .competition-signal .status-badge { color: var(--signal); }
 .competition-signal strong { font-weight: 400; max-width: 12rem; }
@@ -79,7 +75,6 @@ body { background: var(--ink); }
   .page-heading { gap: 1.25rem; padding-bottom: 1.75rem; }
   .page-heading h1 { font-size: var(--title-size); }
 }
-@media (prefers-reduced-motion: reduce) { .desktop-nav-link::after, .button-arrow { transition: none; } }
 /* Three real portraits form one team cover; no product competes with the players. */
 
 .hero-wordmark { display: block; font: 700 .8rem var(--font-heading); letter-spacing: .3em; color: var(--signal); margin-bottom: 1.25rem; }

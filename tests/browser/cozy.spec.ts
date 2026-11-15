@@ -176,3 +176,27 @@ test('match filters reset with focus and direct navigation reveals a previously 
  await expect(page.locator('.verified-match')).toHaveCount(10);
  await expect(filters.getByRole('button',{name:'Todas',exact:true})).toHaveAttribute('aria-pressed','true');
 });
+
+test('menu controls show keyboard selection without moving and respect reduced motion',async ({page},info)=>{
+ test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative keyboard and touch engines');
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.goto('/esports/valorant/roster');
+ await expect(page.getByRole('dialog',{name:'Entrada SHUSH'})).toHaveCount(0,{timeout:6500});
+ const copy=page.getByRole('button',{name:'Copiar Riot ID',exact:true});
+ const share=page.getByRole('button',{name:'Partilhar jogador',exact:true});
+ await share.scrollIntoViewIfNeeded();
+ const idle=await share.evaluate(el=>({background:getComputedStyle(el).backgroundColor,rect:el.getBoundingClientRect().toJSON()}));
+ await copy.focus();
+ await copy.press('Tab');
+ await expect(share).toBeFocused();
+ await expect.poll(()=>share.evaluate(el=>getComputedStyle(el).backgroundColor)).not.toBe(idle.background);
+ const selected=await share.evaluate(el=>({rect:el.getBoundingClientRect().toJSON(),outline:getComputedStyle(el).outlineStyle,light:getComputedStyle(el,'::before').opacity}));
+ expect(selected.rect).toEqual(idle.rect);
+ expect(selected.outline).not.toBe('none');
+ await expect.poll(()=>share.evaluate(el=>getComputedStyle(el,'::before').opacity)).toBe('1');
+ await page.emulateMedia({reducedMotion:'reduce'});
+ await expect(share).toBeFocused();
+ expect(await share.evaluate(el=>getComputedStyle(el,'::before').transitionDuration)).toBe('0s');
+ await share.press('Tab');
+ await expect(share).not.toBeFocused();
+});
