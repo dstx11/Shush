@@ -10,7 +10,7 @@ verified match data, seasonal calendar, one Canvas Christmas tree and local-only
 | P0 | Browser titles overwrite route metadata with `Shush`, including 404 | Use real metadata in client and static build; test SPA, direct URLs and canonical query handling |
 | P0 | Intro enforces 1600ms and waits up to 3000ms before its exit | 850ms readable beat, bounded 1800ms asset wait, 200ms exit; immediate skip, persistence and reduced motion preserved |
 | P0 | Roster CSS has successive overrides and dead lateral-motion rules | One stable player stage; consolidate layout/motion; seven accessible choices, rapid selection, fallback portraits, gestures and dossiers remain |
-| P1 | Player information repeats portrait roles and presents equal-weight actions | Editorial player file, role chips, primary dossier action, grouped competitive actions, contextual creator/jersey routes |
+| P1 | Player information repeats portrait roles and presents equal-weight actions | Editorial player file, role chips, prominent dossier action, primary competitive link, grouped secondary actions, contextual creator/jersey routes |
 | P1 | Mobile selector does not explain offscreen choices | Numbered compact player cards and visible horizontal exploration hint; keyboard/Home/End and centered selection |
 | P1 | Drop exports text only | Lazy image share studio for real player identity and personalized jersey; resilient loading/export, Unicode, explicit indicative composition |
 | P1 | Hover state and idle/selected state have different strength across controls | Shared motion tokens; stable light/fill/press feedback, strong persistent selected state, coarse-pointer and reduced-motion rules |
@@ -37,4 +37,52 @@ Core Web Vitals targets are not measured production results.
 
 ## Verification and delivery
 
-To be filled with actual results after implementation and visual inspection.
+### Validation
+
+`pnpm run validate` passes: TypeScript, seasonal scheduling, Premier records,
+competitive profiles, local Drop configuration, tree lifecycle, refinement checks,
+asset/link integrity, build, distribution and unchanged bundle limits.
+Linux and Windows CI validation also pass on 6aaad901.
+
+Gzip: all JS 134.99 KiB (limit 135), base CSS 15.34 KiB (limit 15.5),
+Christmas CSS 10.17 KiB, all CSS 43.08 KiB (previously 44.96).
+These are all-chunk compressed totals, not initial-route transfer or field metrics.
+No dependency or budget increase.
+
+### Visual review
+
+Before/after full-page evidence covers all six routes in 12 viewport/engine projects.
+Existing suites retain keyboard, focus, reduced motion, 200% text, blocked APIs,
+URL state, snapshots, assets and accessibility checks.
+
+Manually inspected: desktop Home, roster and About; mobile 320 Creators, 375/390
+roster and 430 About; tablet 768 roster and 1024 Premier; wide 1920 Creators;
+landscape 844 roster; all three desktop Christmas scenes. Native browser QA covers
+player/jersey cards and nested-dialog Escape/focus restoration. Capture coverage is
+broader than this manual sample; not every full-page pixel was manually inspected.
+
+Fixed during QA: nested card Escape also closed the player dossier; an overly broad
+heading selector enlarged its studio title; seasonal control aliases were scoped
+above their variable definitions; the centring test measured viewport rather than
+content width after stable scrollbar gutters.
+
+Reviewed reference changes: Home/roster desktop and mobile, desktop About and three
+desktop tree scenes. Tree scenes change by one pixel in container width from the
+scrollbar gutter; composition and single-Canvas lifecycle stay intact. Drop
+references were separately inspected after correcting selected-control colors. No blanket screenshot
+update command was used.
+
+### Preserved behavior and boundaries
+
+Seven real portraits/players, optional sound, deep links, swipe, keyboard shortcuts,
+dossiers, verified Tracker identities, match archive, calendar/TXT/poster exports,
+local drafts/reset/undo, jersey front/back zoom, Creator channels, brand download,
+partner, seasonal scheduling, LAB and one main Christmas tree remain.
+The new studio shares bounded resource loading, offscreen rendering, stale-result
+rejection, error/retry and download logic.
+
+No approved clips, anecdotes, equipment, chemistry or new results were provided.
+Those remain content-dependent; no invented content, fake live data, price,
+checkout or order flow was added. Jersey PNGs are indicative, not print proofs.
+
+Final browser and publication results will follow the corrected run.
