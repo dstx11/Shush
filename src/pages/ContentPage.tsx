@@ -8,7 +8,7 @@ import { PlayerPortrait } from '../components/ui/PlayerPortrait';
 export function ContentPage() {
   return <section id="content-creators" className="creator-page" aria-labelledby="content-title"><div className="shell">
     <div className="page-heading creator-heading"><div><span className="section-kicker">SHUSH / Creators</span><h1 id="content-title">Nem tudo fica<br /><span>no Discord.</span></h1></div><p className="creator-introduction">Duas formas de continuar a conversa. Escolhe o canal, acompanha os conteúdos e conhece quem está do outro lado.</p></div>
-    <div className="creator-features">{creators.map((creator, index) => {
+    <nav className="creator-jump" aria-label="Escolher creator">{creators.map(creator=><a className="utility-button" key={creator.id} href={`#creator-${creator.id}`}>{creator.displayName}<span className="mono">{creator.creatorType==='twitch'?'Twitch':'YouTube'}</span></a>)}</nav><div className="creator-features">{creators.map((creator, index) => {
       const twitch = creator.creatorType === 'twitch';
       const platform = twitch ? 'Twitch' : 'YouTube';
       return <article key={creator.id} className={`creator-feature is-${creator.creatorType}`} aria-labelledby={`creator-${creator.id}`}>

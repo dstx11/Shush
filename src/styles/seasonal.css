@@ -67,10 +67,10 @@
 @media (prefers-reduced-motion:no-preference){
  .shush-hero-copy>*{animation:shush-hero-enter .7s cubic-bezier(.16,1,.3,1) both}
  .shush-hero-copy>*:nth-child(2){animation-delay:.08s}.shush-hero-copy>*:nth-child(3){animation-delay:.13s}.shush-hero-copy>*:nth-child(4){animation-delay:.19s}.shush-hero-copy>*:nth-child(5){animation-delay:.24s}
- .shush-hero-player{transition:transform .5s cubic-bezier(.16,1,.3,1),border-color .25s}
- .shush-hero-player:is(:hover,:focus-visible){transform:translateY(-2%);border-color:var(--season-accent)}
+ .shush-hero-player{transition:border-color .25s}
+ .shush-hero-player:is(:hover,:focus-visible){border-color:var(--season-accent)}
  .shush-hero-player img{transition:transform .6s cubic-bezier(.16,1,.3,1)}
- .shush-hero-player:is(:hover,:focus-visible) img{transform:scale(1.055)}
+ .shush-hero-player:is(:hover,:focus-visible) img{opacity:.92}
  .season-art-motif{transform-origin:50% 50%;animation:season-art-breathe 10s ease-in-out infinite alternate}
  .season-art-outline{transform-origin:50% 50%;animation:season-art-rotate 90s linear infinite}
  .season-feature-stage{transition:border-color .3s ease,transform .6s cubic-bezier(.16,1,.3,1)}
@@ -120,7 +120,7 @@
 .shush-hero-player-2.team-cover-player{height:80%;transform:translateY(4%)}
 .shush-hero-player>.shush-hero-player-tag{inset:auto 0 0;display:grid;gap:.3rem;flex-direction:initial;padding:1.1rem .7rem .8rem}
 @media(prefers-reduced-motion:no-preference){
- .shush-hero-player.team-cover-player:is(:hover,:focus-visible){transform:translateY(-2%)}
+ .shush-hero-player.team-cover-player:is(:hover,:focus-visible){border-color:var(--season-accent)}
 }
 @media(max-width:767px){.shush-hero-portraits.team-cover{margin-top:0;padding-top:1.5rem}.shush-hero-player>.shush-hero-player-tag{padding:.7rem .4rem}}
 
@@ -170,3 +170,5 @@
 .season-art.is-idle .season-art-motif,.season-art.is-idle .season-art-outline{animation-play-state:paused}
 
 .season-preview-toolbar{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;justify-content:center;gap:.6rem;padding:1rem;background:#17131ff5;border:1px solid var(--line);border-radius:1rem;box-shadow:0 12px 50px #0008;width:max-content;max-width:calc(100% - 2rem);flex-wrap:wrap;font:.75rem var(--font-ui)}.season-preview-toolbar button{padding:.6rem .8rem;border:1px solid var(--line);border-radius:.5rem;background:var(--surface);color:var(--text)}
+
+.shush-hero h1{letter-spacing:-.06em}.shush-hero-lead{max-width:40ch}.shush-hero-actions .site-button{min-width:12rem}@media(max-width:360px){.shush-hero-actions{display:grid}.shush-hero-actions .site-button{width:100%}}

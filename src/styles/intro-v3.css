@@ -1,6 +1,6 @@
 /* A single readable brand beat, followed by an automatic reveal. */
-.shush-intro-v3{position:fixed;inset:0;margin:0;max-width:none;max-height:none;width:100%;height:100%;padding:clamp(1.25rem,4vw,3rem);overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:0;background:radial-gradient(ellipse at 50% 48%,var(--season-haze),transparent 65%),var(--bg);color:var(--text);border:0;border-radius:0;text-align:center;z-index:1000;isolation:isolate;opacity:1;transition:opacity .32s ease}
-.shush-intro-v3::backdrop{background:var(--bg);transition:background .32s ease}
+.shush-intro-v3{position:fixed;inset:0;margin:0;max-width:none;max-height:none;width:100%;height:100%;padding:clamp(1.25rem,4vw,3rem);overflow:hidden;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:0;background:radial-gradient(ellipse at 50% 48%,var(--season-haze),transparent 65%),var(--bg);color:var(--text);border:0;border-radius:0;text-align:center;z-index:1000;isolation:isolate;opacity:1;transition:opacity .2s ease}
+.shush-intro-v3::backdrop{background:var(--bg);transition:background .2s ease}
 .shush-intro-v3.is-leaving::backdrop{background:transparent}.shush-intro-v3.is-leaving{opacity:0;transform:none}
 .shush-intro-v3-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;font:500 .62rem var(--font-mono);letter-spacing:.1em;color:var(--muted);text-align:left}
 .shush-intro-v3 .intro-skip{font:600 .72rem var(--font-ui);display:inline-flex;gap:.7rem;align-items:center;min-height:44px;padding:.55rem .85rem;border-color:var(--control-line);color:var(--text)}
@@ -13,10 +13,9 @@
 .shush-intro-v3-title>span:not(.sr-only){display:inline-block}.shush-intro-v3-title .intro-period{color:var(--season-accent)}
 .shush-intro-v3-stage>p{font:500 clamp(.8rem,1.3vw,1rem)/1.7 var(--font-ui);margin:1rem 0 0;color:var(--muted);max-width:36ch}
 .shush-intro-v3-bottom{width:min(100%,28rem);margin-inline:auto;display:grid;gap:.8rem}
-.shush-intro-v3-track{height:1px;background:var(--line);overflow:hidden}.shush-intro-v3-track>span{display:block;width:12%;height:100%;background:var(--season-accent);transition:width .7s ease}
-.shush-intro-v3-track.phase-1>span{width:50%}.shush-intro-v3-track.phase-2>span{width:85%}.shush-intro-v3-track.phase-3>span{width:100%}
+.shush-intro-v3-track{height:1px;background:var(--line)}.shush-intro-v3-track>span{display:block;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--season-accent),transparent)}
 .shush-intro-v3-caption{min-height:1rem;font:500 .56rem var(--font-mono);letter-spacing:.1em;color:var(--muted)}
-@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .shush-intro-v3-emblem>img{animation:intro-soft-reveal .7s ease both}html:not([data-motion="reduce"]) .shush-intro-v3-title>span:not(.sr-only){animation:intro-soft-reveal .7s .15s ease both}@keyframes intro-soft-reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .shush-intro-v3-emblem>img{animation:intro-soft-reveal .45s ease both}html:not([data-motion="reduce"]) .shush-intro-v3-title>span:not(.sr-only){animation:intro-soft-reveal .45s .15s ease both}@keyframes intro-soft-reveal{from{opacity:0}to{opacity:1}}}
 @media(max-height:500px){.shush-intro-v3-emblem{width:90px;height:50px;margin-bottom:.5rem}.shush-intro-v3-title{font-size:3.5rem}.shush-intro-v3-stage>p{margin-top:.4rem}}
 html[data-motion="reduce"] .shush-intro-v3 *{animation:none!important;transition:none!important}
 .shush-root[data-entering="true"] .route-frame,.shush-root[data-entering="true"] .route-frame *,.shush-root[data-entering="true"] .route-frame *::before,.shush-root[data-entering="true"] .route-frame *::after{animation-play-state:paused!important}

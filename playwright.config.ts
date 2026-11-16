@@ -16,6 +16,7 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
+    ...[{name:'mobile-375',width:375,height:812},{name:'mobile-430',width:430,height:932},{name:'desktop-1440',width:1440,height:900}].map(item=>({name:item.name,testMatch:['**/overhaul.spec.ts','**/site.spec.ts'],use:{browserName:'chromium' as const,viewport:{width:item.width,height:item.height},isMobile:item.width<768,hasTouch:item.width<768}})),
     { name: 'mobile-320', use: { browserName: 'chromium', viewport: { width: 320, height: 740 }, isMobile: true, hasTouch: true } },
     { name: 'mobile-390', use: { browserName: 'chromium', viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true } },
     { name: 'tablet-768', use: { browserName: 'chromium', viewport: { width: 768, height: 1024 }, hasTouch: true } },

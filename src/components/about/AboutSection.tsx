@@ -11,6 +11,7 @@ export function AboutSection(){
     <div className="about-counts"><span><strong>{players.length}</strong> jogadores</span><span><strong>{creators.length}</strong> creators</span></div>
    </div>
   </div>
+  <nav className="about-chapter-nav" aria-label="Nesta história"><a className="editorial-link" href="#origin-title">01 / A origem</a><a className="editorial-link" href="#about-perspective-title">02 / A equipa</a><a className="editorial-link" href="#partners">03 / Quem ajuda</a></nav>
   <section className="about-origin" aria-labelledby="origin-title">
    <div className="about-origin-index"><span className="section-kicker">A ORIGEM / THE OPPOSITE</span><span className="about-origin-semicolon" aria-hidden="true">;</span></div>
    <div className="about-origin-story"><h2 id="origin-title">Eles eram LOUD.<br/><em>Nós fomos SHUSH.</em></h2>

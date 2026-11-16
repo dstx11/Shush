@@ -8,7 +8,7 @@ export function useCinematicPointer<T extends HTMLElement>(){
   if(typeof window==='undefined')return;
   window.cancelAnimationFrame(frame.current);
   const node=ref.current;
-  for(const name of ['--lens-x','--lens-y','--portrait-x','--portrait-y'])node?.style.removeProperty(name);
+  for(const name of ['--lens-x','--lens-y'])node?.style.removeProperty(name);
  },[]);
  const onPointerMove=useCallback((event:PointerEvent<T>)=>{
   if(event.pointerType!=='mouse'||window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -23,8 +23,6 @@ export function useCinematicPointer<T extends HTMLElement>(){
   frame.current=window.requestAnimationFrame(()=>{
    node.style.setProperty('--lens-x',(x*15).toFixed(1)+'px');
    node.style.setProperty('--lens-y',(y*12).toFixed(1)+'px');
-   node.style.setProperty('--portrait-x',(-x*8).toFixed(1)+'px');
-   node.style.setProperty('--portrait-y',(-y*6).toFixed(1)+'px');
   });
  },[]);
  useEffect(()=>{

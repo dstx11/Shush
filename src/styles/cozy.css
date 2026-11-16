@@ -26,7 +26,12 @@
 .shush-root :is(.editorial-link:hover>span,a:hover .arrow-icon){transform:none;translate:none}
 .shush-root .motion-section{transform:none!important;translate:none!important}
 .shush-root :is(.character-media>img,.character-geometry,.shush-hero-portraits,.shush-hero-camera,.shush-hero-visual .season-art){translate:none!important}
-@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .shush-root :is(.route-enter,.character-identity,.character-copy,.character-media>img){animation-name:cozy-appear}html:not([data-motion="reduce"]) .shush-root .portrait-depart{animation-name:cozy-leave}html:not([data-motion="reduce"]) .shush-root .shush-signal-stage>strong{animation:cozy-breathe 9s ease-in-out infinite alternate}@keyframes cozy-appear{from{opacity:.82}to{opacity:1}}@keyframes cozy-leave{to{opacity:0}}@keyframes cozy-breathe{to{opacity:.88}}}
+@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .route-enter{animation:cozy-appear .25s ease-out both}@keyframes cozy-appear{from{opacity:.8}to{opacity:1}}}
 @media(max-width:767px){.shush-root .character-strip{padding:.75rem}.shush-root :is(.character-spotlight,.creator-feature,.audit-drop-gallery){border-radius:var(--radius-md)}}
 
 .shush-root button:is([aria-label="Copiar Riot ID"],[aria-label="Copiar resumo"]){inline-size:100%;min-inline-size:0}
+
+.shush-root :is(.calendar-filters,.view-control) button[aria-pressed="true"]{background:var(--surface-selected);color:var(--on-accent);border-color:var(--action)}
+.shush-root :is(.utility-button,.site-button,.tracker-button):disabled{opacity:.55}
+.shush-root :is(.utility-button,.site-button,.tracker-button)>svg,.shush-root .editorial-link>svg{flex-shrink:0;align-self:center}
+.shush-root [data-transfer="error"]{border-color:var(--error)}
