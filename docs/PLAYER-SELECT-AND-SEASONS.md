@@ -1,3 +1,5 @@
+> Historical implementation notes. Current architecture and November 16 changes: [experience overhaul](experience-overhaul-2026-11.md).
+
 # SHUSH — Player Select and seasonal refinement
 
 ## Research basis — 13 November 2026
@@ -37,6 +39,6 @@ Native dossiers preserve the current selection and allow previous/next navigatio
 
 ## Readable entrance
 
-The automatic introduction now has a 1600 ms readable identity beat, a 320 ms exit and a 3000 ms maximum asset wait. Previously, cached images could dismiss it before its arrival animation finished. The minimal scene uses the real logo, wordmark and seasonal subtitle, without orbit rings, decorative rays or simulated numbered loading steps. The remembered intro key is versioned so returning visitors see the revised introduction once. Reduced-motion users and blocked storage still bypass it; Escape and skip remain available.
+The automatic introduction now has a 850 ms readable identity beat, a 200 ms exit and an 1800 ms maximum asset wait. Previously, cached images could dismiss it before its arrival animation finished. The minimal scene uses the real logo, wordmark and seasonal subtitle, without orbit rings, decorative rays or simulated numbered loading steps. The remembered intro key is versioned so returning visitors see the revised introduction once. Reduced-motion users and blocked storage still bypass it; Escape and skip remain available.
 
 Browser regression coverage verifies the minimum readable beat and bounded exit. Visual comparisons wait until the introduction closes before capturing page content.

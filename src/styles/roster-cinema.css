@@ -8,7 +8,7 @@
 .character-media[data-stage-visible=false] .character-backlight{animation-play-state:paused}
 /* The frame keeps navigation in reach while long player details scroll. */
 .player-dossier[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;max-height:calc(100svh - 2rem);padding:0;overflow:hidden}
-.dossier-heading,.dossier-navigation{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;background:var(--surface)}
+.dossier-heading,.dossier-navigation{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;background:var(--surface)}
 .dossier-heading{border-bottom:1px solid var(--line)}
 .dossier-navigation{border-top:1px solid var(--line)}
 .dossier-navigation .utility-button{min-width:7.5rem}
@@ -18,7 +18,7 @@
 .dossier-portrait figcaption{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-top:1px solid var(--line);color:var(--muted);font:.75rem var(--font-mono)}
 .dossier-portrait figcaption strong{color:var(--text)}
 .dossier-information{min-width:0}
-.dossier-body h2{font:700 clamp(2.4rem,6vw,4rem)/1.05 var(--font-heading);letter-spacing:-.045em;margin:.5rem 0 1.5rem;overflow-wrap:anywhere}
+.dossier-information>h2{font:700 clamp(2.4rem,6vw,4rem)/1.05 var(--font-heading);letter-spacing:-.045em;margin:.5rem 0 1.5rem;overflow-wrap:anywhere}
 .dossier-facts{display:grid;gap:1rem;margin:0 0 1.5rem}
 .dossier-facts>div{border-bottom:1px solid var(--line);padding-bottom:1rem}
 .dossier-facts dt{font:.72rem var(--font-mono);color:var(--muted);margin-bottom:.45rem}
@@ -26,7 +26,7 @@
 .dossier-actions{display:grid;gap:.75rem}
 .dossier-actions .tracker-button{background:transparent;color:var(--text);border-color:var(--control-line)}
 .dossier-actions .editorial-link{display:inline-flex;align-items:center;justify-content:space-between;color:var(--player-accent,var(--signal))}
-@media(max-width:600px){.dossier-body{grid-template-columns:1fr;padding:1rem}.dossier-portrait>img,.dossier-portrait>.portrait-placeholder{height:15rem}.dossier-heading,.dossier-navigation{padding:.75rem;gap:.5rem}.dossier-heading .section-kicker{font-size:.6rem}.dossier-heading .utility-button{font-size:.72rem}.dossier-navigation .utility-button{min-width:0;font-size:.75rem}.dossier-body h2{margin-bottom:1.1rem}}
+@media(max-width:600px){.dossier-body{grid-template-columns:1fr;padding:1rem}.dossier-portrait>img,.dossier-portrait>.portrait-placeholder{height:15rem}.dossier-heading,.dossier-navigation{padding:.75rem;gap:.5rem}.dossier-heading .section-kicker{font-size:.6rem}.dossier-heading .utility-button{font-size:.72rem}.dossier-navigation .utility-button{min-width:0;font-size:.75rem}.dossier-information>h2{margin-bottom:1.1rem}}
 @media(max-height:500px) and (min-width:601px){.dossier-portrait>img,.dossier-portrait>.portrait-placeholder{height:15rem}.dossier-body{padding:1rem}}
 
 

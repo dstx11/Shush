@@ -1,14 +1,10 @@
+import {within,loadCanvasImage} from './canvas-resources';
 import type {CardSubject} from '../components/studio/CanvasStudio';
 import {getCompetitiveProfile} from '../data/competitive-profiles';
 
-const within=<T>(promise:Promise<T>,ms:number)=>new Promise<T>((resolve,reject)=>{
- const timer=window.setTimeout(()=>reject(new Error('Recurso indisponível.')),ms);
- promise.then(value=>{clearTimeout(timer);resolve(value);},error=>{clearTimeout(timer);reject(error);});
-});
 export async function drawShareCard(canvas:HTMLCanvasElement,subject:CardSubject,height:1080|1350){
  await Promise.allSettled([within(document.fonts.load('700 120px Manrope'),2500)]);
- const image=new Image();image.src=subject.kind==='player'?subject.player.avatar??'':'/assets/jersey/backjersey.webp';
- await within(image.decode(),8000);
+ const image=await loadCanvasImage(subject.kind==='player'?subject.player.avatar??'':'/assets/jersey/backjersey.webp');
  canvas.width=1080;canvas.height=height;
  const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Canvas indisponível.');
  ctx.fillStyle='#15131a';ctx.fillRect(0,0,1080,height);

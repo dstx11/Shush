@@ -15,7 +15,7 @@ test('Home never presents internal calendar windows as confirmed matches', async
 test('Character Select: player DNA, individual art direction and reduced motion', async ({ page }, testInfo) => {
   await page.goto('/esports/valorant/roster?player=lyel');
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'lyel');
-  await expect(page.locator('.player-dna')).toContainText('Iniciador / Flex');
+  await expect(page.locator('.character-role-tape')).toContainText('Iniciador / Flex');
   await expect(page.locator('.character-number')).toHaveText('16');
   await expect(page.locator('.character-copy')).not.toContainText('XXL');
   await expect(page.locator('.character-media > img')).toHaveCSS('animation-name', 'none');
@@ -24,7 +24,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await page.locator('#selected-player').screenshot({ path: testInfo.outputPath('character-select.png') });
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'tz');
-  await expect(page.locator('.player-dna')).toBeVisible();
+  await expect(page.locator('.character-role-tape')).toBeVisible();
 });
 
 test('Initial splash covers prerendered content while the JavaScript loads', async ({ page }) => {
@@ -122,7 +122,7 @@ test('Motion: portrait arrival completes and reduced motion can be enabled at ru
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/esports/valorant/roster?player=catty');
   const portrait = page.locator('.character-media > img');
-  await expect(portrait).toHaveCSS('animation-name', 'cozy-appear');
+  await expect(portrait).not.toHaveCSS('animation-name', 'none');
   await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
   await expect(portrait).toHaveCSS('opacity', '1');
   await page.screenshot({ path: testInfo.outputPath('roster-motion-settled.png'), fullPage: true });

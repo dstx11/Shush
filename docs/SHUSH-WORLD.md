@@ -40,7 +40,7 @@ Abre através de `Alt + Shift + S` ou cinco cliques rápidos no logótipo. É ca
 
 A página pública não carrega o código do laboratório até o visitante o abrir. O CSS de hero e da narrativa é importado por componentes da Home. Não introduz bibliotecas de animação externas. O movimento utiliza sobretudo propriedades de composição e fica inativo no modo reduzido.
 
-O separador apresenta sempre exatamente **Shush**, incluindo a página 404, por decisão de identidade. As descrições, URLs canónicos, Open Graph, Twitter cards e dados estruturados continuam específicos de cada página. Esta decisão enfraquece a diferenciação dos títulos nos motores de pesquisa e é uma escolha explícita do produto.
+Desde a revisão de 16/11/2026, o separador apresenta o título específico de cada rota, definido em `src/data/meta.ts`, tanto no HTML estático como na navegação React. A página inexistente apresenta `404 — SHUSH`. Esta orientação substitui a decisão anterior de usar sempre `Shush`. Os parâmetros de jogador e camisola continuam a apontar para o URL canónico da página.
 
 O arquivo Premier é uma fotografia manual de dez partidas verificadas no [Tracker.gg](https://tracker.gg/valorant/premier/teams/a5552155-90d0-4559-b879-f08e5f9f05b8), revista a 13/11/2026. Não é um feed em direto, nem o histórico completo.
 

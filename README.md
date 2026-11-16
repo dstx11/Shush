@@ -2,6 +2,8 @@
 
 Official SHUSH website. A static Vite + React + TypeScript experience focused on Valorant Premier, the public roster, creators and Drop 01.
 
+The Player Select keeps seven real players, shareable URLs and native dossiers. The optional Card Studio exports player and jersey compositions to PNG; the jersey remains a preview with no ordering flow. Current design and verification notes: [November experience overhaul](docs/experience-overhaul-2026-11.md).
+
 ## Stack
 
 - Vite

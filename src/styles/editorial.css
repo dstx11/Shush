@@ -97,7 +97,7 @@ body { background: var(--ink); }
  .team-cover-player small { font-size: .5rem; }
  .team-cover-player strong { font-size: clamp(1.1rem, 5vw, 1.8rem); }
 }
-@media (prefers-reduced-motion: no-preference) { .team-cover { animation: shush-reveal .5s ease-out both; } .team-cover-player img { transition: transform .35s ease; } .team-cover-player:hover img { transform: scale(1.035); } }
+@media (prefers-reduced-motion: no-preference) { .team-cover { animation: shush-reveal .5s ease-out both; } }
 
 /* Staggered photo contact sheet; pointer and keyboard reveal the same details. */
 

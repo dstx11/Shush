@@ -23,10 +23,6 @@
   --ease-out: cubic-bezier(.16,1,.3,1);
   --motion-fast: 160ms;
   --motion-reveal: 440ms;
-  --surface-raised: var(--surface-2);
-  --surface-selected: var(--signal);
-  --border-subtle: var(--line);
-  --action: var(--signal);
   color-scheme: dark;
   --field: #19161f;
   --control-line: #7e718e;
