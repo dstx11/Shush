@@ -58,10 +58,10 @@ URL state, snapshots, assets and accessibility checks.
 Manually inspected: desktop Home, roster and About; mobile 320 Creators, 375/390
 roster and 430 About; tablet 768 roster and 1024 Premier; wide 1920 Creators;
 landscape 844 roster; all three desktop Christmas scenes. Native browser QA covers
-player/jersey cards and nested-dialog Escape/focus restoration. Capture coverage is
+player/jersey cards and nested-dialog Escape/focus restoration and keyboard isolation. Capture coverage is
 broader than this manual sample; not every full-page pixel was manually inspected.
 
-Fixed during QA: nested card Escape also closed the player dossier; an overly broad
+Fixed during QA: nested card Escape also closed the player dossier, and card arrow keys reached the underlying player selector; an overly broad
 heading selector enlarged its studio title; seasonal control aliases were scoped
 above their variable definitions; the centring test measured viewport rather than
 content width after stable scrollbar gutters.
@@ -85,4 +85,22 @@ No approved clips, anecdotes, equipment, chemistry or new results were provided.
 Those remain content-dependent; no invented content, fake live data, price,
 checkout or order flow was added. Jersey PNGs are indicative, not print proofs.
 
-Final browser and publication results will follow the corrected run.
+### Measured loading sample
+
+On source 6aaad901, three initial/repeat pairs in Chromium 390 × 844 recorded
+startup LCP candidates of 124–128ms on initial visits and 64–164ms on repeat visits;
+observed startup CLS was zero and no long tasks were observed. Initial visit samples
+settled around 1.49–1.52s including the intro, repeat samples around 189–214ms.
+This is an unthrottled local CI preview with an existing browser context/cache,
+not a physical phone, cold-cache production visit, field INP or Core Web Vitals
+certification. Metrics JSON is attached to the CI artifact.
+
+### Release evidence
+
+PR: https://github.com/dstx11/Shush/pull/28
+
+The release gate is the full corrected CI run: both operating-system validation
+jobs and all three browser shards must pass before merge. The production check
+then compares the deployed asset entry to this build on all six routes, plus
+metadata, HTTP status, 404, robots and security behavior. Final run/deployment
+status is recorded in the PR and the delivery response rather than predicted here.

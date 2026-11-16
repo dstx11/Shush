@@ -40,7 +40,7 @@ function CanvasExportDialog({title,label,details,initialHeight=1080,formatLabel,
    catch{fail();}
   },'image/png');}catch{window.clearTimeout(timer.current);fail();}
  };
- return <dialog ref={dialog} className="match-poster-dialog" aria-labelledby="export-title" onCancel={event=>{event.preventDefault();event.stopPropagation();onClose();}}>
+ return <dialog ref={dialog} className="match-poster-dialog" aria-labelledby="export-title" onKeyDown={event=>event.stopPropagation()} onCancel={event=>{event.preventDefault();event.stopPropagation();onClose();}}>
   <div className="poster-heading"><h2 id="export-title">{title}</h2><button type="button" className="utility-button" autoFocus onClick={onClose}>Fechar ×</button></div>
   <div className="poster-layout"><div className="poster-preview" aria-busy={!ready&&!error}><canvas ref={canvas} aria-label={label} hidden={!ready}/>{!ready&&!error&&<p role="status">A preparar {resource}…</p>}{error&&<p role="alert">{error}</p>}</div><div className="poster-options">{details}<div className="view-control" role="group" aria-label={formatLabel}>{([1080,1350] as const).map(value=><button key={value} type="button" aria-pressed={height===value} onClick={()=>{if(value!==height){setReady(false);setHeight(value);}}}>{value===1080?'Quadrado':'Vertical'}</button>)}</div><span className="mono">1080 × {height} px · PNG</span><button type="button" className="site-button" disabled={!ready||exporting} aria-busy={exporting} onClick={download}>{exporting?'A preparar PNG…':'Descarregar PNG ↓'}</button>{error&&<button type="button" className="utility-button" onClick={()=>setAttempt(value=>value+1)}>Tentar novamente</button>}</div></div>
  </dialog>;

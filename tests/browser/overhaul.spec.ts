@@ -34,6 +34,8 @@ test('identity and jersey cards export the exact preview and recover focus',asyn
   await expect(dialog).toBeVisible();
   const png=dialog.getByRole('button',{name:'Descarregar PNG ↓',exact:true});
   await expect(png).toBeEnabled();
+  await page.keyboard.press('ArrowRight');
+  if(kind==='player')await expect(page.getByRole('dialog',{name:'More',exact:true})).toBeVisible();
   const canvas=dialog.locator('canvas');
   expect(await canvas.evaluate(node=>[node.width,node.height])).toEqual([1080,1350]);
   await dialog.getByRole('button',{name:'Quadrado',exact:true}).click();
