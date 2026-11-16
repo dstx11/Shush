@@ -123,4 +123,4 @@ body { background: var(--ink); }
 
 /* Container rem units follow text enlargement as well as viewport changes. */
 @container navigation (max-width:75rem){.header-utilities .competition-signal{display:none}}
-@container navigation (max-width:47.99rem){.desktop-navigation,.header-utilities{display:none}.shush-navigation{grid-template-columns:minmax(0,1fr) auto}.navigation-toggle{display:flex;justify-self:end}}
+@container navigation (max-width:47.99rem){.shush-header :is(.desktop-navigation,.header-utilities){display:none}.shush-navigation{grid-template-columns:minmax(0,1fr) auto}.navigation-toggle{display:flex;justify-self:end}}

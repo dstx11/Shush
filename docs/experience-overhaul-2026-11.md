@@ -44,8 +44,8 @@ competitive profiles, local Drop configuration, tree lifecycle, refinement check
 asset/link integrity, build, distribution and unchanged bundle limits.
 Linux and Windows CI validation also pass on 6aaad901.
 
-Gzip: all JS 134.97 KiB (limit 135), base CSS 15.41 KiB (limit 15.5),
-Christmas CSS 10.17 KiB, all CSS 43.15 KiB (previously 44.96).
+Gzip: all JS 134.98 KiB (limit 135), base CSS 15.41 KiB (limit 15.5),
+Christmas CSS 10.17 KiB, all CSS 43.16 KiB (previously 44.96).
 These are all-chunk compressed totals, not initial-route transfer or field metrics.
 No dependency or budget increase.
 
