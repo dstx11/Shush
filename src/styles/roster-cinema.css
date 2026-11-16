@@ -2,7 +2,7 @@
 .character-signature-scene{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
 .character-backlight{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 35%,color-mix(in srgb,var(--player-accent) 12%,transparent),transparent 70%);opacity:.7;translate:var(--lens-x,0px) var(--lens-y,0px)}
 .character-geometry{position:absolute;inset:8%;width:84%;height:84%;color:var(--player-accent);stroke:currentColor;stroke-width:1;opacity:.13}.character-geometry-inner,.character-geometry-cross{opacity:.5}
-.character-scene-serial,.character-scene-foot{position:absolute;top:1rem;color:#d4ccdfff;font:.6rem/1.5 var(--font-mono);letter-spacing:.08em}.character-scene-serial{left:1rem}.character-scene-foot{right:1rem}
+.character-scene-serial,.character-scene-foot{max-width:calc(50% - 1.5rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;position:absolute;top:1rem;color:#d4ccdfff;font:.6rem/1.5 var(--font-mono);letter-spacing:.08em}.character-scene-serial{left:1rem}.character-scene-foot{right:1rem}
 .character-signal-flare{position:absolute;z-index:4;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,#ffffff13 55%,transparent 80%);opacity:0}
 @media(prefers-reduced-motion:no-preference){html:not([data-motion=reduce]) .character-backlight{transition:translate .5s var(--ease-out)}html:not([data-motion=reduce]) .character-signal-flare{animation:player-light-reveal .55s ease-out both}@keyframes player-light-reveal{from{opacity:0;transform:scaleX(.2);transform-origin:left}50%{opacity:1}to{opacity:0;transform:scaleX(1)}}}
 .character-media[data-stage-visible=false] .character-backlight{animation-play-state:paused}

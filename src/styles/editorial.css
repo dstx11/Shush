@@ -56,7 +56,7 @@ body { background: var(--ink); }
 .page-heading > p { max-width: 28rem; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 
 @media (max-width: 1180px) { .competition-signal { display: none; } .shush-navigation { gap: 1rem; }  }
-@media (min-width: 768px) and (max-width: 900px) {
+@container navigation (width <= 24rem) or (48rem <= width <= 56.25rem) {
   .shush-navigation .brand-mark span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 @media (max-width: 767px) {
@@ -124,3 +124,5 @@ body { background: var(--ink); }
 /* Container rem units follow text enlargement as well as viewport changes. */
 @container navigation (max-width:75rem){.header-utilities .competition-signal{display:none}}
 @container navigation (max-width:47.99rem){.shush-header :is(.desktop-navigation,.header-utilities){display:none}.shush-navigation{grid-template-columns:minmax(0,1fr) auto}.navigation-toggle{display:flex;justify-self:end}}
+
+@container navigation (width<=24rem){.shush-navigation{gap:.5rem}.shush-navigation .brand-mark{min-width:0;max-width:100%}.shush-navigation .brand-mark img{max-width:100%}.overlay-link{grid-template-columns:1rem minmax(0,1fr) auto;overflow-wrap:anywhere}}

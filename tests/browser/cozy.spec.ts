@@ -6,6 +6,8 @@ test('copy feedback changes visibly without moving the controls',async ({page},i
  for(const [path,name,success] of [['/esports/valorant/roster','Copiar Riot ID','Riot ID copiado.'],['/products/jersey','Copiar resumo','Resumo copiado.']]){
   await page.goto(path);
   const button=page.getByRole('button',{name,exact:true});
+  await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
+  await expect(button).toBeVisible();
   const before=await button.boundingBox();
   await button.click();
   await expect(button).toContainText('Copiado');

@@ -195,8 +195,12 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     }else{
       const toggle=page.getByRole('button',{name:'Abrir navegação',exact:true});
       await expect(page.locator('.header-utilities')).toBeHidden();
-      await expect(toggle).toBeVisible();await toggle.click();
+      await expect(toggle).toBeVisible();
+      const brand=await page.locator('header .brand-mark').boundingBox(),button=await toggle.boundingBox();
+      expect(brand!.x+brand!.width).toBeLessThanOrEqual(button!.x+1);
+      await toggle.click();
       await expect(page.locator('#mobile-navigation').getByRole('link',{name:'Home',exact:true})).toBeVisible();
+      expect(await page.locator('#mobile-navigation a').evaluateAll(links=>links.every(link=>link.scrollWidth<=link.clientWidth+1))).toBe(true);
       await page.keyboard.press('Escape');await expect(toggle).toBeFocused();
     }
     if (path.endsWith('/premier')) {
