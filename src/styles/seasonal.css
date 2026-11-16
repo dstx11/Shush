@@ -30,7 +30,7 @@
 .shush-hero h1 em{color:var(--season-accent);font-family:"SHUSH Hearth",Georgia,serif;font-weight:450;letter-spacing:-.055em}
 .shush-hero-lead{max-width:43ch;color:var(--text);opacity:.84;line-height:1.85;font-size:clamp(.92rem,1.1vw,1.05rem);margin:2rem 0}
 .shush-hero-actions{gap:.7rem}
-.shush-hero-lower{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:35rem;border-top:1px solid var(--line);margin-top:clamp(2rem,6vh,4rem);padding-top:1.2rem;color:var(--muted);font:500 .7rem var(--font-mono)}
+.shush-hero-lower{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;max-width:35rem;border-top:1px solid var(--line);margin-top:clamp(2rem,6vh,4rem);padding-top:1.2rem;color:var(--muted);font:500 .7rem var(--font-mono)}
 .shush-hero-lower .editorial-link{color:var(--season-accent);font-size:.75rem}
 .shush-hero-visual{position:relative;height:min(64vw,650px);min-height:420px;display:grid;place-items:center;isolation:isolate}
 .shush-hero-aura{position:absolute;inset:10% 4%;border-radius:50%;background:radial-gradient(circle,rgba(var(--season-rgb),.23),transparent 68%);opacity:.75}

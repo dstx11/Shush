@@ -186,6 +186,8 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    const viewportWidth=page.viewportSize()!.width;
+    await expect.poll(()=>page.evaluate(()=>Math.max(document.documentElement.scrollWidth,innerWidth))).toBeLessThanOrEqual(viewportWidth+1);
     const desktopNav=page.locator('.desktop-navigation');
     if(await desktopNav.isVisible()){
       const menu=await desktopNav.boundingBox(),brand=await page.locator('header .brand-mark').boundingBox();

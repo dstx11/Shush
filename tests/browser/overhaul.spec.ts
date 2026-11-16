@@ -1,13 +1,14 @@
 import {test,expect} from '@playwright/test';
 import {routeMetadata} from '../../src/data/meta';
 
-// The before reference is the deployed website, captured before this PR is merged.
-// These are evidence files, not automatically approved screenshot baselines.
+// Production-before evidence was captured in runs 43906611475 and 43909144607.
+// Opt in to a fresh external capture; release checks always validate the local build.
+// These evidence files never automatically approve screenshot baselines.
 for(const [name,path] of Object.entries({home:'/',roster:'/esports/valorant/roster?player=more',premier:'/esports/valorant/premier',drop:'/products/jersey',creators:'/content',about:'/company'})){
- test(`review before and after: ${name}`,async({page},info)=>{
+ test(`review route: ${name}`,async({page},info)=>{
   test.setTimeout(60000);
   await page.addInitScript(()=>{localStorage.setItem('shush:motion:v1','reduce');localStorage.setItem('shush:season:v1','base');localStorage.setItem('shush:home:rotation:v1','3');});
-  for(const version of ['before','after']){
+  for(const version of process.env.SHUSH_CAPTURE_BEFORE==='1'?['before','after']:['after']){
    await page.goto(version==='before'?`https://shush.pt${path}`:path);
    await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
    await expect(page.getByRole('heading',{level:1})).toBeVisible();

@@ -44,15 +44,15 @@ competitive profiles, local Drop configuration, tree lifecycle, refinement check
 asset/link integrity, build, distribution and unchanged bundle limits.
 Linux and Windows CI validation also pass on 6aaad901.
 
-Gzip: all JS 134.97 KiB (limit 135), base CSS 15.46 KiB (limit 15.5),
-Christmas CSS 10.17 KiB, all CSS 43.24 KiB (previously 44.96).
+Gzip: all JS 134.98 KiB (limit 135), base CSS 15.47 KiB (limit 15.5),
+Christmas CSS 10.17 KiB, all CSS 43.25 KiB (previously 44.96).
 These are all-chunk compressed totals, not initial-route transfer or field metrics.
 No dependency or budget increase.
 
 ### Visual review
 
 Before/after full-page evidence covers all six routes in 12 viewport/engine projects.
-Existing suites retain keyboard, focus, reduced motion, 200% text, blocked APIs,
+Production-before pairs were captured in runs 43906611475 and 43909144607; later release runs capture the local after-state, with fresh live-before retrieval opt-in via SHUSH_CAPTURE_BEFORE=1. This preserves genuine before evidence after publication and avoids making release checks depend on the old public build/network. Existing suites retain keyboard, focus, reduced motion, 200% text, blocked APIs,
 URL state, snapshots, assets and accessibility checks.
 
 Manually inspected: desktop Home, roster and About; mobile 320 Creators, 375/390
@@ -64,7 +64,7 @@ broader than this manual sample; not every full-page pixel was manually inspecte
 Fixed during QA: nested card Escape also closed the player dossier, and card arrow keys reached the underlying player selector; an overly broad
 heading selector enlarged its studio title; seasonal control aliases were scoped
 above their variable definitions; the centring test measured viewport rather than
-content width after stable scrollbar gutters. A 200% text screenshot exposed header overlap despite no horizontal overflow; rem-based container queries now compact the header with enlarged text, and tests assert separation or an operable compact menu. Narrow enlarged-text navigation also constrains the brand, wraps menu labels and clips decorative portrait serials to prevent text collisions. The copy-geometry test now awaits the completed entrance and visible control before recording its initial box.
+content width after stable scrollbar gutters. A 200% text screenshot exposed header overlap despite no horizontal overflow; rem-based container queries now compact the header with enlarged text, and tests assert separation or an operable compact menu. Narrow enlarged-text navigation also constrains the brand, wraps menu labels and clips decorative portrait serials to prevent text collisions. Inherited emergency word wrapping and a wrapping hero footer prevent enlarged Home text from inflating the mobile layout viewport; tests compare against the configured viewport rather than an already-inflated innerWidth. The copy-geometry test now awaits the completed entrance and visible control before recording its initial box.
 
 Reviewed reference changes: Home/roster desktop and mobile, desktop About and three
 desktop tree scenes. Tree scenes change by one pixel in container width from the
