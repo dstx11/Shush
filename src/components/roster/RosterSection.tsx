@@ -101,8 +101,8 @@ export function RosterSection() {
     <section id="roster" className="player-page" data-player={selectedPlayer.id} aria-labelledby="roster-title">
       <div className="shell">
         <div className="player-heading">
-          <h1 id="roster-title">Escolhe o teu lado.<span className="roster-count"> Roster / 07</span></h1>
-          <span className="mono">Sete pessoas. A mesma tag.</span>
+          <h1 id="roster-title">A mesma tag.<span className="roster-count"> ROSTER / SETE IDENTIDADES</span></h1>
+          <span className="mono">SILENCE BEFORE IMPACT</span>
         </div>
 
         <div className="player-stage">
@@ -112,7 +112,7 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" className="character-spotlight" aria-labelledby="selected-player-name">
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
-              <span className="section-kicker">SHUSH / PLAYER SELECT</span>
+              <span className="section-kicker">SHUSH / IDENTIDADE</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
               <span className="character-role-tape">{selectedPlayer.roles.join(' / ')}</span>
 

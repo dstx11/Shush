@@ -69,7 +69,7 @@ const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 
 expect(index, '<h1', 'prerendered Home heading');
-if (!['O nome é SHUSH.','O lobby ainda','Mudou o ano.','Hoje ninguém joga','Há duos','Deixámos pistas.','Só mais uma.','Há passos.'].some(value => index.includes(value))) failures.push('Missing seasonal Home content');
+if (!['Sem barulho.','O nome é SHUSH.','O lobby ainda','Mudou o ano.','Hoje ninguém joga','Há duos','Deixámos pistas.','Só mais uma.','Há passos.'].some(value => index.includes(value))) failures.push('Missing seasonal Home content');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow,max-image-preview:large"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');

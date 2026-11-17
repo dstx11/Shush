@@ -328,3 +328,38 @@ Refresh checked catalog counts/pricing, licenses and browser support before sign
 - **2026-11-17 / v1.2:** Added greenfield brand-system research from Figma and alternative-prototype evidence from NN/g; explicit instruction not to treat former SHUSH visuals as reference. No UI changes made.
 - **2026-11-17 / v1.1:** Binding greenfield-visual-reset clarification. The old design has no aesthetic authority; preserve only authentic content and actual functional contracts. Legacy fonts and styling explicitly demoted to optional research inputs. 
 - **2026-11-17 / v1.0:** Initial deep synthesis of UI libraries, licensing, web motion, UX heuristics, creator case studies, project constraints, accessibility, performance, testing and agent-documentation practices. No UI was implemented, no build/test run was made in this research-only change. See companion docs/SHUSH-MASTER-DESIGN-PROMPT.md for the task execution entrypoint.
+
+## 13. First greenfield implementation — 2026-11-17
+
+**Branch:** `shush-greenfield-luxury-rebuild`, based on research commit `7b9566e9fd033d2096aeaa4d064ccacc47842528` (PR #29 remains unmerged).
+
+**Alternatives implemented as static HTML explorations:** `docs/design-explorations/atelier.html`, `protocol.html`, `nocturne.html`. Each includes navigation, hero, primary action, portrait material and real-player links. These are development documents, not deployed routes or functional roster replacements. Rendered comparison is **pending**: neither screenshots nor user testing could be obtained in this environment.
+
+| Direction | Composition hypothesis | Tradeoff / decision |
+| --- | --- | --- |
+| Obsidian Atelier | Quiet masthead, editorial serif/sans contrast, arched portrait, restrained action | Best typographic distinction; borrow its contrast and framing |
+| Amethyst Protocol | Contained navigation, dense monospace headline, bevelled CTA, framed player tiles | Clear tactical character but too close to a generic gaming dashboard; reject as overall system |
+| Nocturne Cinema | Large overlapping image, expansive headline, low-contrast environmental lighting | Strong atmosphere; avoid image-dependent text contrast and dominant full-bleed photography |
+
+**Provisional implementation direction:** Nocturne Atelier. An editorial cover with three authentic portraits, arched contact-sheet images, large neutral sans display and licensed local Lora italic as an expressive counterpoint. Explicit new compositions; the functional roster logic remains intact. The final artistic choice still requires desktop/mobile screenshot critique.
+
+**Implemented:** new hero, desktop/mobile navigation presentation, PRESS buttons, shared dark tokens, redesigned homepage discovery/records/creator/closing compositions, and roster with a vertical desktop player index, stable arched portrait stage, separate dossier column and horizontally scrollable mobile choices. Replaced `players.css`; removed obsolete navigation definitions and the global `cozy.css` import rather than stacking more overrides. Existing standalone Premier, Creators, Drop, About and Christmas visual systems are **not** fully rebuilt. Seasonal calendar and experiences still run through their existing functional components. Non-base seasonal hero copy is preserved.
+
+**Fonts:** display uses the platform Helvetica Neue/Arial sans stack, expressive italic uses the existing licensed local Lora files (`Lora-OFL.txt`), body retains local Manrope for readable controls. This is an explicit mixed editorial typography decision, not a claim that a new font asset was commissioned. No additional packages, copied third-party components or license obligations.
+
+**Targeted reference verification:** web.dev animation guide https://web.dev/articles/animations-guide and W3C target-size guidance https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html opened 2026-11-17. Observed guidance: prefer transform/opacity to paint-heavy animation; AA minimum target is 24px with exceptions. Implementation inference: static lighting, opacity portrait transitions, 44px main controls, native focus and reduced-motion support. No claim of measured INP or WCAG conformance.
+
+**Validation actually executed:** `pnpm install --frozen-lockfile`; baseline and final `pnpm run validate` pass (typecheck, seasons, Premier, competitive profiles, Unicode Drop config, tree lifecycle/visit, refinement, assets, internal links, production build, emitted route metadata/security and bundle budgets). Distribution assertion now accepts the intentionally replaced base-brand heading `Sem barulho.` while preserving existing seasonal alternatives.
+
+| Build metric (script gzip output, kB) | Baseline | First milestone |
+| --- | ---: | ---: |
+| All JavaScript | 134.98 | 133.63 |
+| Base CSS | 15.46 | 14.76 |
+| Christmas-only CSS | 10.17 | 10.17 |
+| All CSS | 43.24 | 44.73 |
+
+These are build sizes, **not** real-user Web Vitals. No budget was raised. Total CSS increased through route-specific presentation, while eager CSS and total JS decreased.
+
+**Browser limitation:** Playwright Chromium installation returned a truncated ZIP. The available `/usr/bin/chromium` then failed at startup with `socket() failed: Operation not permitted`. The existing five `player-select-cinema.spec.ts` cases were invoked for `mobile-390`, but all failed before running assertions because the Playwright executable was unavailable. No screenshot, responsive check, axe scan or browser journey is claimed. Existing visual baselines were not regenerated. Production and master remain unchanged.
+
+**Required next work:** render all three explorations and selected implementation; review at desktop and mobile widths; fix any crop/overflow/contrast/focus regressions; adapt browser tests that intentionally reference retired visual hooks; complete Premier/Creators/Drop/About and seasonal visual rebuilding; run full browser/axe/reflow/WebKit and interaction/export tests; inspect intentional snapshot diffs; obtain a verified preview before release approval.
