@@ -1,0 +1,310 @@
+# SHUSH — Design Intelligence / Living Knowledge Base
+Version: 1.0 | Research cut-off: 2026-11-17 | Status: research and design guidance, not implemented UI.
+
+> Purpose: durable, evidence-linked design knowledge for future SHUSH work. This file informs decisions; it does not train or change model weights. Future agents must read relevant sections during substantial visual or UX work, then update discoveries with sources and observed results. Do not load the entire file for a trivial bugfix.
+
+## 1. Source of truth and project reality
+
+- Repository: https://github.com/dstx11/Shush ; deployment: https://shush.pt/.
+- Stack confirmed from package.json: React 19, React Router 7, Vite 8, TypeScript 6, Tailwind 4, pnpm. Static site deployed to Cloudflare Pages. Do not turn it into Next.js, a backend, ecommerce service or an account-based application.
+- Existing routes: Home (/), Premier (/esports/valorant/premier), Roster (/esports/valorant/roster), Creators (/content), Drop 01 (/products/jersey), About (/company).
+- Existing verified behaviors from README and November 16 overhaul: seven real players and portraits, real Riot IDs and corresponding links, shareable player selection, dossiers, keyboard/touch controls, real Premier archive and calendar exports, creators and channel links, jersey front/back, customizer, local drafts, undo, share/TXT/PNG exports, optional sound, seasonal themes, one Christmas-tree Canvas, LAB, route metadata, correct 404 and redirects.
+- Data source restrictions: do not invent match results, live stats, player histories, sponsors, product inventory, checkout, photos, biographies, clips, price, or external integrations. Real data overrides visual ambition.
+- Current README documents CI/browser checks. November 16 research reported approximately 135 KiB gzip all-JS, essentially its then 135 KiB budget; measure HEAD afresh before modifying. These figures are historical, not live performance metrics.
+- Existing root AGENTS.md is an important control document. Read it, but for substantial approved visual work follow the updated component adaptation policy there. No unapproved wholesale UI-kit installation.
+
+## 2. The prime design thesis
+
+Brand promise: **Sem barulho. Só rounds.** Creative translation: **Silence before impact.**
+Desired character: luxury dark purple + competitive precision + cinematic editorial + tactile/game-quality UI.
+Default = calm, legible, dark, visually confident. Action/selection = a brief controlled release of energy. User task completion outranks spectacle. Luxury is craft, not excessive glow; minimalism removes irrelevant noise, not useful information.
+A static screenshot must look excellent before animation. Every meaningful interaction must clearly respond; no animation should be necessary to understand critical content.
+The identity must not imitate a major org, a generic SaaS, a cyberpunk template, a Discord dashboard, or a component demo.
+
+## 3. Research findings — evidence and SHUSH application
+
+### R01 — Design research should explain decisions, not add visual noise
+Source: NN/g, ten usability heuristics, https://www.nngroup.com/articles/ten-usability-heuristics/ (checked 2026-11-17).
+Finding: visibility of system status and aesthetic/minimalist design favor clear feedback and task-relevant content. Implication: every control has distinct idle/hover/focus/selected/pressed/loading/success/failure states; do not add decorative status indicators without actual meaning.
+Confidence: direct guidance. Not a claim that SHUSH has passed usability testing.
+
+### R02 — Beauty can conceal UX defects
+Source: NN/g, https://www.nngroup.com/articles/aesthetic-usability-effect/ (reviewed September 2026).
+Finding: aesthetically pleasing interfaces are often perceived as more usable even when they have problems. Implication: independently test user journeys, keyboard and mobile, not merely ask whether screenshots look premium.
+Confidence: direct guidance.
+
+### R03 — Minimalist != empty
+Source: NN/g, https://www.nngroup.com/articles/aesthetic-minimalist-design/ .
+Finding: useful information and cues should remain; irrelevant elements compete for attention. Implication: real competitive detail is preserved, secondary actions progressively disclosed; never delete important content just to obtain large empty surfaces.
+Confidence: direct guidance.
+
+### R04 — Hierarchy is built from contrast, size and grouping
+Source: NN/g, https://www.nngroup.com/articles/visual-hierarchy-ux-definition/ .
+Finding: color/contrast, scale and proximity/common-region help direct attention. The squint test can reveal an accidental focal point. Implication: each viewport has one obvious focus, predictable groups, a differentiated primary CTA and consistent alignment anchors.
+Confidence: direct guidance.
+
+### R05 — Progressive disclosure balances rich functionality with simplicity
+Source: NN/g, https://www.nngroup.com/articles/progressive-disclosure/ .
+Finding: defer specialized options without removing them. Implication: a prominent roster player identity with on-demand dossier; primary Drop controls first and secondary export/reset/draft actions grouped contextually.
+Confidence: direct guidance.
+
+### R06 — Editorial structure makes cinematic work coherent
+Source: Bisous case study, 2026-06-29, https://tympanus.net/codrops/2026/06/29/inside-bisous-designing-an-editorial-experience-for-cinematic-cgi/ .
+Finding: consistent four-column grid, restrained palette, sans+mono pairing, subtly randomized typography and brand-derived micro-easter-eggs; continuous project transitions. Implication: retain a consistent spatial skeleton while varying per-page compositions, and invent SHUSH-specific microdetails based on the logo/team identity, not generic glows.
+Confidence: creator case study; principles are transferable, not a mandate to copy effects.
+
+### R07 — Motion should carry content relationships
+Source: Podium case study, 2026-06-23, https://tympanus.net/codrops/2026/06/23/podium-building-a-website-where-running-becomes-storytelling/ .
+Finding: designers rejected a pixel-heavy transition because it distracted from content and retained a media-as-transition-object approach. Implication: player portrait/home thumbnail should be the continuity object across related views; overlay effects should never obscure the player.
+Confidence: creator case study.
+
+### R08 — Mobile optimization can mean removing costly filters
+Source: 4WIDE case study, 2026-04-23, https://tympanus.net/codrops/2026/04/23/building-4wide-turning-distortion-blur-and-motion-into-a-coherent-experience/ .
+Finding: the author found mobile blur especially costly and used lighter geometry/images and reduced effects. Implication: SHUSH must not force desktop shaders onto mobile; visually equivalent fallback may outperform the original.
+Confidence: author observation, not a general device benchmark.
+
+### R09 — Uiverse is the primary micro-detail source
+Sources: https://uiverse.io/ and https://github.com/uiverse-io/galaxy , checked 2026-11-17.
+Finding: Uiverse shows 7,471 elements on the checked page; the Galaxy repository describes its component archive and MIT license. Use for buttons, switches, checkboxes, tooltips, loaders, tiny input states, CSS patterns. Community items vary widely in semantics and performance; inspect each rather than assuming production quality.
+License: carry required MIT copyright/license where substantial source is copied; provenance/author credit when practical. Do not infer identical licenses for unrelated resources.
+
+### R10 — React Bits is the primary high-impact-effects source
+Sources: https://reactbits.dev/get-started/index ; https://reactbits.dev/get-started/installation ; https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md , checked 2026-11-17.
+Finding: TS/JS and CSS/Tailwind variants, single-component copy or shadcn/jsrepo installation; source of effects such as Blur Text, Split Text, Electric Border, Dark Veil, Light Rays, Magic Bento, Depth Carousel. The license is MIT + Commons Clause, allows use in commercial websites but prohibits selling/sublicensing/redistributing the components themselves as a library/product. Retain notices and confirm third-party material notices.
+Implication: research individual components; adapt code into existing architecture; do not ship the entire catalogue or an unmodified library demo.
+
+### R11 — React Bits tools can replace expensive runtime effects with exports
+Source: https://reactbits.dev/tools (checked 2026-11-17).
+Finding: Background Studio exports images/video/code; Shape Magic and Texture Lab create exportable assets. Implication: prioritize pre-rendered textures, SVG framing and short optimized media before adding a new always-on shader.
+Asset licensing still requires checking for each generated/exported asset.
+
+### R12 — Aceternity has both free and paid surfaces
+Sources: https://ui.aceternity.com/components ; https://ui.aceternity.com/ai-recommendations ; https://ui.aceternity.com/pricing .
+Finding: free React/Tailwind/Motion components coexist with paid blocks, templates and advanced interactions. The catalogue is designed for AI discovery, but licensing and dependencies must be checked per item. Implication: use free cards, navigation, animated text, tooltips and layouts as candidates; no paywall circumvention, no blanket shadcn install.
+Confidence: official catalogue/pricing.
+
+### R13 — Motion shared layout is excellent for selection indicators
+Source: https://motion.dev/docs/react-layout-animations .
+Finding: React layout/layoutId supports shared elements and automatic transform-based layout transitions; potential layout distortion needs testing. Implication: evaluate for roster selection and active tabs, only after measuring dependency weight.
+Optimization: https://motion.dev/docs/react-reduce-bundle-size recommends lightweight imports/LazyMotion if installed. Do not assume advertised sample sizes equal SHUSH's bundled results.
+
+### R14 — Native View Transitions may avoid new dependencies
+Sources: https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition ; https://developer.chrome.com/blog/view-transitions-in-2025 .
+Finding: same-document transitions became broadly available in recent browsers, but feature/support details vary. Implication: prototype a progressive-enhancement route/selection transition; preserve focus, query state, scroll restoration, rapid input and browser back/forward. Do not use experimental element-scoped View Transitions without support assessment.
+Priority: CSS > native API > animation library > WebGL for equivalent effects.
+
+### R15 — GSAP is free but not public-domain or MIT
+Sources: https://gsap.com/blog/3-13/ ; https://gsap.com/standard-license/ .
+Finding: from GSAP 3.13 the bonus plugins are free for standard web use, including commercial projects, under GSAP's own no-charge license. Implication: use for genuinely complex choreography, not basic button hover. Check full license obligations and total bundle impact; avoid using GSAP and Motion for the same job.
+
+### R16 — Composite-friendly animation beats costly repaints
+Source: https://web.dev/articles/animations-guide .
+Finding: transform/opacity are often cheaper than animated paint-heavy properties such as blur/shadow; inspect in DevTools and apply will-change sparingly. Implication: move highlights via pseudo-element opacity/transform where possible, cap full-screen filtering and animated backdrop blur, watch for layer/memory cost.
+
+### R17 — Immediate feedback is a rendering problem, not merely click-handler speed
+Sources: https://web.dev/articles/optimize-inp and https://web.dev/articles/inp .
+Finding: INP incorporates input delay, event processing and next paint. Implication: roster rapid-switching should cancel stale work, avoid heavy synchronous updates and measure next-frame responsiveness.
+
+### R18 — Hero asset prioritization matters
+Source: https://web.dev/articles/optimize-lcp .
+Finding: do not lazy-load likely LCP images; consider priority hints with restraint. Implication: audit whether the hero portrait, logo or heading is LCP on each route; use correct loading priority only after measurement.
+
+### R19 — Movement must have a safe reduction mode
+Source: https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions .
+Finding: non-essential movement from interactions should be disable-able (WCAG 2.3.3 AAA). Implication: honor prefers-reduced-motion and existing SHUSH motion controls; avoid parallax/auto-loop dependence.
+AA compliance also needs focus, labels, contrast, keyboard, correct target sizes; automated scans do not prove conformance.
+
+### R20 — Target-size thresholds must not be misrepresented
+Source: https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum .
+Finding: WCAG 2.2 AA SC 2.5.8 baseline is 24x24 CSS px with exceptions; enhanced AAA threshold is 44x44. Implication: target comfortable ~44x44 for prominent mobile buttons where feasible, but cite 24x24 AA correctly.
+
+### R21 — Screenshot tests require human review
+Sources: https://playwright.dev/docs/test-snapshots and https://playwright.dev/docs/accessibility-testing .
+Finding: snapshot environments differ, automated axe catches only some issues. Implication: lock test browser/font/clock, manually inspect changes, test actual journeys and do not approve snapshots blindly.
+
+### R22 — Use perceptual color systems deliberately
+Source: https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/oklch .
+Finding: OKLCH separates perceptual lightness/chroma/hue and is broadly supported. Implication: create consistent dark-purple ramps and verify actual contrast in browser; OKLCH is a tool, not evidence of accessible combinations.
+
+### R23 — Repository instructions benefit from progressive disclosure
+Source: https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra (2026-09-11).
+Finding: bloated AGENTS.md and prompts create contradictions and waste context; route relevant tasks to focused docs, and define completion boundaries. Implication: keep AGENTS.md concise; use this long knowledge base only for design and major UI work; use the separate execution prompt rather than pasting all research into every interaction.
+
+## 4. Art direction and concrete craft rules
+
+### Colors
+Provisional foundations only, NOT approved production tokens:
+- Obsidian #09070F; midnight plum #120D1D; raised surface #1C1628; active surface #292039.
+- Muted stroke #3A2D49; core violet #9268C7; lavender #C5ABE6; warm white #F3EEF7; secondary text #B7ACBF.
+Use semantic tokens, validate contrast and chroma, inspect bright-purple light bleed. Strong purple is limited to branded highlights, primary actions and selected states. Neutral dark must dominate.
+
+### Surface materials
+Define matte graphite, smoked acrylic, satin plum, restrained metal/edge highlight, product studio and tactical graphite. Each needs idle/hover/focus/selected states. Do not put the same glossy glass card in every section. Optical highlight must not obscure text.
+
+### Typography
+Reuse existing Space Grotesk, Manrope and IBM Plex Mono unless audited alternatives prove better. Assign clear display, body, micro-label and tabular score roles. Correct line breaking, optical alignment, letter spacing, baseline rhythm. Body remains static; occasional title animation is intentional, not default.
+
+### Composition
+Create recognizable alignment anchors and content widths, but unique page compositions. Every viewport needs one dominant story and one clear next action. Use contrast, proximity, scale, negative space and deliberate grouping. Avoid repeating a generic SaaS hero + six bento cards pattern.
+
+### Border craft
+Develop a consistent hierarchy of hairline/inset/double-edge/selected-glow. Check rounded corners at 1x and 2x, internal alignment, stroke consistency, stacking and transitions. Use fewer but better accents; no illuminated border around every element.
+
+### Tactile controls
+Each real control has clear affordance and complete states: idle, hover, focus-visible, press, selected (if relevant), busy, success/failure, disabled. Prefer small compression, surface reflection and highlight motion over big scaling. No fake success, no decorative disabled actions that appear functional.
+
+### Signature language
+Choose 2–4 original motifs and apply consistently:
+- LUMEN: directional edge light linked to active/focus state.
+- PRESS: brief tactile compression and shadow/inner-light response.
+- TRANSFER: shared active indicator for nav, player selection and tabs.
+- APERTURE: selective mask reveal of portrait/hero.
+- SIGNAL: consistent local feedback, loaded/failed/success state.
+Never make these costly global effects without measured benefit.
+
+## 5. Page-specific design intelligence
+
+### Home
+Design the first static frame before writing animations. Strong editorial wordmark, actual competitive context and one obvious path. Story rhythm: identity -> verified competition -> roster -> creators -> jersey -> identity close. Distinct section types; no arbitrary landing-page padding inflation. A restrained ambient field may run behind the hero, not every section.
+
+### Roster — flagship
+Stable character stage and seven real player choices. Compare tactical rail, character tile selector, editorial hybrid. Portrait remains aligned while selection changes via masks/lighting/crossfade/name animation. Immediate active state; cancel stale image decoding/animation; preserve ?player= URL, swipes, Home/End/keyboard and dossiers. Avoid lateral slides and fake game character artwork. Dossier primary action is verified competitive link, secondary copy/share grouped clearly.
+
+### Premier
+Tactical information density: verified records vs published windows vs unknown status. Strong score numerals, hierarchy, provenance, accessible expansions and filters, timeline only if useful. Never imply a live schedule or determine elimination from incomplete archive. Preserve Lisbon timezone/calendar semantics.
+
+### Creators
+Editorial people-first presentation using available real imagery and verified channels. Discoverable external actions, no fabricated audience numbers or videos. Vary page composition but keep labels and interaction conventions consistent.
+
+### Drop 01
+Product stage with honest front/back imagery and functional customization. Use studio lighting, not fake 3D. Inputs with 16px+ mobile text where useful, live updates, clear controls for reset/undo/save/share/export, Unicode safety, error recovery; manual request, not checkout.
+
+### About
+Short real story from available records, editorial milestones, coherent use of real brand assets, partner and download. No fictional heroic lore or fake major-org claims. Keep it credible for a small esports organization.
+
+### Seasons / Christmas
+Ambient palette shifts without changing usability. One Christmas-tree Canvas. Manage RAF, offscreen state, cleanup, mobile density and reduced motion. No duplicate tree.
+
+## 6. Suggested component-fit shortlist (research candidates, not installed)
+
+| Need | Investigate | Priority | Design/engineering caveat |
+|---|---|---|---|
+| Main action | Uiverse subtle press + custom CSS | P0 | adapt semantic states and notices |
+| Active nav | native CSS shared pill / Motion layoutId | P0 | do not add Motion blindly |
+| Player focus | CSS mask + React Bits Pixel Transition | P0 | evaluate photos and motion cost |
+| Hero typography | Split Text / Masked Heading | P1 | keep first-frame readable |
+| Portrait emphasis | Spotlight Card / Glare Hover | P1 | avoid facial distortion |
+| Button edge | Electric Border or simpler CSS | P1 | prefer CSS if equivalent |
+| Match details | accessible accordion + subtle motion | P0 | verify season semantics |
+| Card surface | Uiverse visual study + native CSS | P0 | source can be adapted |
+| Atmosphere | Dark Veil vs optimized static export | P1 | max one heavy hero effect |
+| Background alternative | Silk / Light Rays | P2 | measure mobile |
+| Drop view change | CSS crossfade / View Transitions | P0 | no fake 3D |
+| Logo presence | Electric Logo | P2 | use as rare special intro |
+| Player previews | Depth Carousel / Option Wheel | P2 | prefer accessible rail if better |
+| Tooltip | Aceternity / native accessible popover | P1 | keyboard/touch behavior |
+| Toast | minimal live-region feedback | P0 | avoid generic huge notifications |
+| Season timeline | custom editorial timeline | P1 | no animation that hides results |
+| Text data | Count Up only on actual figures | P2 | misleading when data incomplete |
+| Signatures | original LUMEN / PRESS / TRANSFER | P1 | reuse throughout |
+
+Reject by default: always-on Glitch, multiple custom cursors, hyperspeed full-screen, large parallax on portraits, 3D globe without geographical task, unnecessary terminal UI, fake metric counters, accidental drag-only interaction, repeated animated bento cards.
+
+## 7. Motion and performance budgets (project heuristics, not external standards)
+
+- Recommend one clear moving focal point in a viewport, with at most one low-contrast ambient background. Use judgement, not a hard requirement.
+- Initial draft timings: 80–140ms instant feedback, 150–260ms hover, 200–350ms selection, 300–600ms panel/shared transition, 500–900ms rare cinematic reveal. Tune with user-task testing; never let animation block input.
+- Full static render should be attractive. Reduced effects degrade in order: remove looping glow -> simplify parallax -> remove shader -> remove nonessential entrance motion; retain status changes via nonmoving cues.
+- JS engine selection: CSS > Web Animations API/native View Transitions > one selective motion engine > WebGL only if a signature effect beats optimized CSS/SVG/still media.
+- Do not animate layout/paint-heavy blur continuously; prefer pseudo-elements and transform/opacity. Beware will-change memory allocation.
+- Initial image/LCP not lazy-loaded; viewport-outside media should be lazy. Check actual route-specific element with tracing.
+- Treat previous ~135 KiB gzip all-JS limit as a historical warning, not current measurement. Run current build/budget before change; measure per-route chunks and start-up main-thread work. Do not defeat tests by increasing budgets without evidence.
+- Official field targets (75th percentile): LCP <=2.5s; INP <=200ms; CLS <=0.1. Lab data cannot establish field results.
+
+## 8. Practical visual QA protocol
+
+1. Baseline each of six routes desktop and mobile, including representative player selected, mobile menu, Premier expanded state, customized jersey, seasonal Christmas.
+2. Static pass: check first-frame hierarchy, crop, proportion, type, spacing, edge, shadow, color, density.
+3. Interaction pass: idle -> hover -> focus -> press -> selected -> busy/success/error, pointer exit and rapid repeat.
+4. Responsive pass: 320, 375, 390, 430, 768, 1024, 1366, 1440, 1920 px, landscape mobile, 200% text/reflow, tablet.
+5. Accessibility pass: keyboard, screen-reader semantics/labels, Escape/focus restoration, touch gestures with alternatives, contrast, 24px AA target-size rule (prefer ~44px for primary touch controls), reduced motion.
+6. Reliability pass: direct links, back/forward, query state, local drafts, calendar/PNG/TXT, error states, asset decoding, offline/fallback conditions.
+7. Rendering pass: Chrome DevTools Paint Flashing, performance traces, CPU throttling, long tasks and mobile WebKit.
+8. Playwright screenshots with stable environment; never blindly update snapshots. Axe catches common issues but is not sufficient alone.
+9. Re-run relevant tests after each meaningful change, and full validation before release.
+
+Existing useful commands: pnpm run typecheck; pnpm run validate; pnpm run test:browser; pnpm run build; pnpm run check:bundle; pnpm run check:links; pnpm run check:assets.
+
+## 9. Design learning protocol — how future agents accumulate knowledge
+
+**This is repository knowledge, not permanent training.** AI agents gain context only when they read this file; they do not autonomously absorb future changes.
+
+For any significant design research or delivered UI iteration:
+1. Inspect relevant existing entries to avoid duplication.
+2. Research current primary sources, date them and distinguish observation from promotional claims.
+3. Add a numbered R-entry under Research findings or a dated entry below with: date, source URL, claimed observation, SHUSH implication, confidence (official guidance / creator case study / user testing / hypothesis), cost, and acceptance evidence.
+4. Update the component shortlist only when something is actually evaluated. Never label a preview as tested in SHUSH.
+5. Keep immutable factual constraints intact unless new verified project evidence changes them.
+6. Record alternatives REJECTED and why; save rejected approaches so later AI does not repeat known mistakes.
+7. If actual code is implemented, write commit/branch, screenshots inspected, test results and measured bundle/performance in a dated implementation entry.
+8. Revisit stale claims, license status, browser compatibility and pricing before making consequential technical choices.
+9. In case of conflict: user/current repository truth and verified test evidence > latest official docs > case study > design hypothesis; do not overwrite a fact with a preference.
+10. Keep root AGENTS.md short; only surface this knowledge for substantial UI, UX, motion, design or major refactor tasks.
+
+### Template for a new learning
+
+**ID:** RNN / date  
+**Source:** exact URL; accessed date; source type  
+**Observed:** what the source explicitly supports  
+**Inference:** what might transfer to SHUSH  
+**Recommendation:** adopt/adapt/recreate/reject with reason  
+**Risk and cost:** size/dependencies/performance/a11y/license  
+**Validation:** evidence needed or completed screenshot/test/metric  
+**Status:** research / prototype / shipped / rejected / superseded
+
+### Template for an implementation learning
+
+**Date + branch/commit:**  
+**Problem:**  
+**Options considered:**  
+**Decision and why:**  
+**Actual implementation:**  
+**Evidence:** named screenshots, user task results, measurements, tests  
+**Residual risks:**  
+**Follow-up not completed:**
+
+## 10. Current known design tensions / decisions requiring investigation
+
+- Rich interactive component sources vs original AGENTS.md blanket UI-library prohibition: allow controlled, licensed per-component source adaptation; avoid wholesale framework addition unless justified, reviewed and explicitly approved for the change.
+- Cinematic roster vs actual seven portraits and accessibility: stable main stage and small differentiated selection, with accessible static fallback.
+- Premium glass/blur vs performance: visual equivalence from gradients and pseudo-elements is often better.
+- Prompt length vs AI performance: detailed research lives here; operational prompt stays concise and points here.
+- Competition credibility vs design: factual gaps should use clear unknown/published status rather than beautiful fictional statistics.
+- Visual experimentation vs publishability: LAB/previews until real browser and full user journeys verified.
+
+## 11. Research source index and refresh rules
+
+Official/primary:
+- React Bits catalogue, installation and license: https://reactbits.dev/get-started/index ; https://reactbits.dev/get-started/installation ; https://github.com/DavidHDev/react-bits/blob/main/LICENSE.md
+- React Bits tools: https://reactbits.dev/tools
+- Uiverse and MIT archive: https://uiverse.io/ ; https://github.com/uiverse-io/galaxy
+- Aceternity: https://ui.aceternity.com/components ; https://ui.aceternity.com/ai-recommendations ; https://ui.aceternity.com/pricing
+- Motion layout and bundle: https://motion.dev/docs/react-layout-animations ; https://motion.dev/docs/react-reduce-bundle-size
+- GSAP release + license: https://gsap.com/blog/3-13/ ; https://gsap.com/standard-license/
+- Browser native transitions: https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition
+- Performance: https://web.dev/articles/animations-guide ; https://web.dev/articles/optimize-inp ; https://web.dev/articles/optimize-lcp ; https://web.dev/articles/vitals
+- Accessibility: https://www.w3.org/TR/WCAG22/ ; https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum ; https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions
+- Visual and a11y testing: https://playwright.dev/docs/test-snapshots ; https://playwright.dev/docs/accessibility-testing
+- UX: https://www.nngroup.com/articles/ten-usability-heuristics/ ; https://www.nngroup.com/articles/aesthetic-minimalist-design/ ; https://www.nngroup.com/articles/progressive-disclosure/ ; https://www.nngroup.com/articles/visual-hierarchy-ux-definition/
+- Agent guidance: https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra
+
+Creative case studies, not standards:
+- Podium: https://tympanus.net/codrops/2026/06/23/podium-building-a-website-where-running-becomes-storytelling/
+- 4WIDE: https://tympanus.net/codrops/2026/04/23/building-4wide-turning-distortion-blur-and-motion-into-a-coherent-experience/
+- Bisous: https://tympanus.net/codrops/2026/06/29/inside-bisous-designing-an-editorial-experience-for-cinematic-cgi/
+
+Refresh checked catalog counts/pricing, licenses and browser support before significant future decisions. Do not copy source page text verbatim into this file; these entries are concise synthesized lessons.
+
+## 12. Research history
+
+- **2026-11-17 / v1.0:** Initial deep synthesis of UI libraries, licensing, web motion, UX heuristics, creator case studies, project constraints, accessibility, performance, testing and agent-documentation practices. No UI was implemented, no build/test run was made in this research-only change. See companion docs/SHUSH-MASTER-DESIGN-PROMPT.md for the task execution entrypoint.
