@@ -10,7 +10,7 @@ test('luminous atmosphere moves, pauses offscreen and respects reduced motion', 
   const hero = page.locator('.lux-hero');
   await expect(hero).toHaveAttribute('data-scene-visible', 'true');
   const aura = () => hero.evaluate(node => ({ transform: getComputedStyle(node, '::before').transform, animation: getComputedStyle(node, '::before').animationName, state: getComputedStyle(node, '::before').animationPlayState }));
-  expect((await aura()).animation).toBe('violet-drift');
+  expect((await aura()).animation).toBe('fabric-light');
   const first = (await aura()).transform;
   await expect.poll(async () => (await aura()).transform).not.toBe(first);
   await page.locator('.lux-people').scrollIntoViewIfNeeded();
@@ -44,7 +44,7 @@ test('cinematic motion proof records the actual interface', async ({ browser }, 
     await page.waitForTimeout(1100);
     await page.getByRole('link', { name: 'Conhecer o roster', exact: true }).hover();
     await page.waitForTimeout(700);
-    await page.locator('.lux-portrait-1').hover();
+    await page.locator('.campaign-frame').first().hover();
     await page.waitForTimeout(700);
     await page.locator('.lux-roster-gallery').scrollIntoViewIfNeeded();
     await page.waitForTimeout(800);

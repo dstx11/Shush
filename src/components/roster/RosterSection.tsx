@@ -2,7 +2,7 @@ import {PlayerActions} from './PlayerActions';
 import {PlayerDossier} from './PlayerDossier';
 import {TrackerButton} from './TrackerButton';
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { players, playerDropUrl, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
@@ -102,7 +102,7 @@ export function RosterSection() {
     <section id="roster" className="player-page" data-player={selectedPlayer.id} aria-labelledby="roster-title">
       <div className="shell">
         <div className="player-heading">
-          <h1 id="roster-title">A mesma tag.<span className="roster-count"> ROSTER / SETE IDENTIDADES</span></h1>
+          <h1 id="roster-title">Roster.<span className="roster-count"> VALORANT / SETE JOGADORES</span></h1>
           <span className="mono">SILENCE BEFORE IMPACT</span>
         </div>
 
@@ -120,7 +120,7 @@ export function RosterSection() {
               <span className="sr-only">Camisola #{selectedPlayer.number}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
-            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" data-stage-visible={stageVisible}
+            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" data-number={selectedPlayer.number} style={{ '--silhouette': `url("/assets/campaign/${selectedPlayer.id}-mask.svg")` } as CSSProperties} data-stage-visible={stageVisible}
               ref={camera.ref} onPointerMove={camera.onPointerMove} onPointerLeave={camera.onPointerLeave}
               onPointerDown={(event) => { if (event.pointerType === 'touch') gesture.current = { x: event.clientX, y: event.clientY }; }}
               onPointerCancel={() => { gesture.current = null; }}
@@ -136,7 +136,7 @@ export function RosterSection() {
               }}>
               <PlayerSignature player={selectedPlayer} index={selectedIndex} />
               <span className="character-signal-flare" key={`flare-${selectedPlayer.id}-${replayCycle}`} aria-hidden="true" />
-              {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
+              {leaving?.avatar && <div className="portrait-depart" style={{ '--silhouette': `url("/assets/campaign/${leaving.id}-mask.svg")` } as CSSProperties} key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
               <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
             </div>
 
@@ -175,7 +175,7 @@ export function RosterSection() {
           </div>
 
             <div key={`copy-${selectedPlayer.id}`} className="character-copy">
-              <div className="player-file-heading"><span className="section-kicker">Ficheiro do jogador</span><span className="mono">#{selectedPlayer.number}</span></div><h3>{selectedPlayer.displayName}</h3><p className="player-file-caption">Uma tag partilhada. Uma maneira própria de jogar.</p>
+              <div className="player-file-heading"><span className="section-kicker">Ficheiro do jogador</span><span className="mono">#{selectedPlayer.number}</span></div><h3>Perfil competitivo</h3>
 
 
               {competitiveProfile ? (

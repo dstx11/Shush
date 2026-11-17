@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
 import { ArrowIcon } from '../ui/ArrowIcon';
@@ -11,6 +11,8 @@ import '../../styles/luxury-home.css';
 export function CoreHero() {
   const { id, theme } = useSeason();
   const featured = getHomePlayers();
+  const [active, setActive] = useState(1);
+  const cover = featured[active];
   const atmosphere = useRef<HTMLElement>(null);
   useEffect(() => {
     const node = atmosphere.current;
@@ -23,22 +25,34 @@ export function CoreHero() {
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
   }, []);
   return <section ref={atmosphere} data-scene-visible="false" id="top" className="lux-hero" aria-labelledby="hero-title">
-    <div className="lux-hero-top shell"><span>SHUSH / VALORANT + CREATORS</span><span>{id === 'base' ? 'SILENCE BEFORE IMPACT' : theme.label}</span></div>
-    <div className="lux-hero-layout shell">
-      <div className="lux-hero-copy">
-        <p className="lux-eyebrow"><span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" focusable="false"><path d="M6 3v13h12m-5-5 5 5-5 5" /></svg></span> Uma equipa. A nossa maneira.</p>
-        <h1 id="hero-title">{id === 'base' ? <>Sem barulho.<br /><em>Só rounds.</em></> : <>{theme.title[0]}<br /><em>{theme.title[1]}</em></>}</h1>
-        <p className="lux-hero-lead">{id === 'base' ? 'Sete pessoas. Uma tag. A mesma vontade de voltar ao servidor.' : theme.lead}</p>
-        <div className="lux-hero-actions"><Button href="/esports/valorant/roster">Conhecer o roster</Button><AppLink href="/company" className="lux-text-link">A nossa história <ArrowIcon /></AppLink></div>
-        <div className="lux-hero-note"><span className="lux-rule" aria-hidden="true" /><p>O silêncio é nosso.<br /><strong>O próximo round também.</strong></p></div>
+    <div className="campaign-stage">
+      <div className="campaign-masthead" aria-hidden="true">SHUSH</div>
+      <div className="campaign-sitter" key={cover.id} style={{ '--silhouette': `url("/assets/campaign/${cover.id}-mask.svg")` } as CSSProperties} aria-hidden="true">
+        <PlayerPortrait player={cover} eager decorative sizes="768px" />
       </div>
-      <div data-home-roster className="lux-hero-gallery" aria-label="Jogadores da SHUSH">
-        <span className="lux-hero-orbit" aria-hidden="true" />
-        <div className="lux-hero-gallery-label"><span>AS PESSOAS POR TRÁS DA TAG</span><span>01 — 07</span></div>
-        {featured.map((player,index) => <AppLink className={`lux-portrait lux-portrait-${index}`} key={player.id} data-home-player data-player={player.id} href={`/esports/valorant/roster?player=${player.id}`} aria-label={`Conhecer ${player.displayName}`}><PlayerPortrait player={player} decorative eager sizes={index === 1 ? '(max-width: 767px) 280px, (max-width: 1000px) 350px, 420px' : '(max-width: 767px) 225px, (max-width: 1000px) 270px, 320px'} /><span><small>#{player.number} / SHUSH</small><strong>{player.displayName}</strong><i aria-hidden="true"><ArrowIcon /></i></span></AppLink>)}
-        <span className="lux-gallery-footer">SILENCE BEFORE IMPACT</span>
+      <div className="campaign-caption shell">
+        <div className="campaign-title">
+          <p className="section-kicker">{id === 'base' ? 'VALORANT  /  PORTUGAL' : theme.label}</p>
+          <h1 id="hero-title">{id === 'base' ? <>Sem barulho.<br /><em>Só rounds.</em></> : <>{theme.title[0]}<br /><em>{theme.title[1]}</em></>}</h1>
+          {id !== 'base' && <p className="campaign-lead">{theme.lead}</p>}
+          <Button href="/esports/valorant/roster">Conhecer o roster</Button>
+        </div>
+        <AppLink href={`/esports/valorant/roster?player=${cover.id}`} className="campaign-credit" aria-label={`Abrir perfil de ${cover.displayName}`}>
+          <span>CAMISOLA {cover.number}</span><strong>{cover.displayName} <ArrowIcon /></strong>
+          <small>{cover.roles.join(' / ')}</small>
+        </AppLink>
       </div>
     </div>
-    <div className="lux-hero-bottom shell"><span>VALORANT / ROSTER / CREATORS / DROP 01</span><a href="#discover">Dentro da SHUSH <svg aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 3v18m-6-6 6 6 6-6" /></svg></a></div>
+    <div className="campaign-index shell">
+      <a className="campaign-discover" href="#discover">Dentro da SHUSH <span aria-hidden="true">↓</span></a>
+      <nav className="campaign-frames" data-home-roster aria-label="Jogadores em destaque">
+        {featured.map((player,index) => <AppLink className="campaign-frame" key={player.id} data-home-player data-player={player.id} data-featured={active === index}
+          href={`/esports/valorant/roster?player=${player.id}`} onMouseEnter={() => setActive(index)} onFocus={() => setActive(index)}
+          aria-label={`Conhecer ${player.displayName}`}>
+          <PlayerPortrait player={player} decorative thumbnail sizes="64px" />
+          <span><small>#{player.number}</small><strong>{player.displayName}</strong></span><ArrowIcon />
+        </AppLink>)}
+      </nav>
+    </div>
   </section>;
 }

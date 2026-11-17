@@ -20,7 +20,7 @@ test('cover portraits have enough source pixels for their square-image crop', as
     expect(sample.source).toBeGreaterThanOrEqual(sample.needed);
   }
   await page.evaluate(() => document.fonts.ready);
-  for (const name of await page.locator('.lux-portrait strong').all()) {
+  for (const name of await page.locator('.campaign-frame strong').all()) {
     const size = await name.evaluate(element => {
       const range = document.createRange();
       range.selectNodeContents(element);

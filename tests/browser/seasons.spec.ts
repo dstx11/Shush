@@ -27,7 +27,7 @@ for(const [season,date,headline] of cases){
   }else{
    await expect(page.locator('.winter-tree-canvas')).toHaveCount(0);
    await expect(page.locator('[data-home-player]')).toHaveCount(3);
-   await expect(page.locator('.lux-hero-orbit')).toBeAttached();
+   await expect(page.locator('.campaign-sitter')).toBeAttached();
   }
   await page.screenshot({path:info.outputPath(`campaign-${season}.png`),animations:'disabled'});
   const width=await page.evaluate(()=>[document.documentElement.clientWidth,document.documentElement.scrollWidth]);
