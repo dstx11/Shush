@@ -4,7 +4,7 @@
 .lux-hero-top{padding-block:1.5rem;border-bottom:1px solid #ffffff20}
 .lux-hero-layout{display:grid;grid-template-columns:1.1fr 1fr;align-items:center;gap:1rem;min-height:650px;padding-block:3rem}
 .lux-eyebrow{display:flex;gap:.8rem;align-items:center;color:#cdb4df;font-size:.75rem;letter-spacing:.03em}
-.lux-eyebrow>span{font-size:1.3rem}.lux-hero h1{position:relative;z-index:3;font:500 clamp(3.8rem,6.8vw,7rem)/1.02 var(--font-heading);letter-spacing:-.065em;margin:1.4rem 0 1.8rem;white-space:nowrap;text-wrap:initial}
+.lux-eyebrow>span{font-size:1.3rem}.lux-hero h1{position:relative;z-index:3;font:500 clamp(3.8rem,6.8vw,7rem)/1.02 var(--font-heading);letter-spacing:-.065em;margin:1.4rem 0 1.8rem;white-space:normal;text-wrap:initial}
 .lux-hero h1 em{font:italic 400 1.12em/.95 'SHUSH Hearth',Georgia,serif;letter-spacing:-.065em;color:#ceb5df}
 .lux-hero-lead{max-width:31ch;color:#b9aebf;font-size:1rem;line-height:1.8}
 .lux-hero-actions{display:flex;flex-wrap:wrap;gap:1.7rem;align-items:center;margin-top:2rem}

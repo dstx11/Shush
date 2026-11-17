@@ -3,7 +3,7 @@
  --bg:#0c0a10;--surface:#17121e;--surface-2:#251c30;--field:#15101b;--text:#f5f0f4;--muted:#b9aebf;--purple:#c4afe9;--purple-text:#c4afe9;--signal:#c4afe9;--line:#403849;--solid-border:#403849;--control-line:#7e718e;--accent-hover:#d8c9f2;--on-accent:#261c35;--paper:#f5f0f4;--ink:#0c0a10;--season-accent:#c4afe9;--season-haze:#51445f;--season-rgb:196,175,233;--font-heading:"Helvetica Neue",Arial,ui-sans-serif,sans-serif;
  background:var(--bg);color:var(--text);
 }
-.shush-root[data-season="christmas"]{--bg:#0e1919;--surface:#182b29;--surface-2:#223a34;--text:#f6efdf;--muted:#b4c5bb;--signal:#edcb94;--line:#405448;--control-line:#899e8a;--accent-hover:#f8ddb1;--on-accent:#17241d;--paper:#f6efdf;--ink:#0e1919;--season-accent:#edcb94;--season-haze:#466c5b;--season-rgb:237,203,148;--font-heading:"SHUSH Hearth",Georgia,serif;}
+.shush-root[data-season="christmas"]{--bg:#100b17;--surface:#1e1429;--surface-2:#2d1f3b;--field:#181020;--text:#f5edf3;--muted:#c0b1c7;--signal:#e4cbaa;--line:#594263;--control-line:#8c7696;--accent-hover:#f1dfc9;--on-accent:#251a2e;--paper:#f5edf3;--ink:#100b17;--season-accent:#e4cbaa;--season-haze:#493350;--season-rgb:228,203,170;--font-heading:"SHUSH Hearth",Georgia,serif;--ease-winter:cubic-bezier(.2,.7,.2,1)}
 .shush-root[data-season="newyear"]{--season-accent:#c8d5f2;--season-haze:#596aa1;--season-rgb:200,213,242;--signal:#c8d5f2;--on-accent:#171d32;}
 .shush-root[data-season="carnival"]{--season-accent:#e9baf8;--season-haze:#7c3c99;--season-rgb:233,186,248;--signal:#e9baf8;}
 .shush-root[data-season="valentines"]{--season-accent:#f1a7c1;--season-haze:#793250;--season-rgb:241,167,193;--signal:#f1a7c1;}

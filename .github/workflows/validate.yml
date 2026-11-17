@@ -121,7 +121,7 @@ jobs:
       - name: Capture representative design evidence
         if: matrix.shard == 1
         continue-on-error: true
-        run: pnpm exec playwright test site.spec.ts art-directions.spec.ts --project=desktop-1366 --project=mobile-390 --grep "responsive layout|art-direction evidence"
+        run: pnpm exec playwright test site.spec.ts art-directions.spec.ts seasons.spec.ts --project=desktop-1366 --project=mobile-390 --grep "responsive layout|art-direction evidence|Edition"
       - name: Save representative design evidence
         if: always() && matrix.shard == 1
         uses: actions/upload-artifact@v7

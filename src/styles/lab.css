@@ -32,7 +32,7 @@
 .lab-season-status strong{color:var(--text);font:700 .76rem/1.45 var(--font-heading);margin-top:.5rem}
 .lab-command-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}
 .lab-command-list button{display:flex;align-items:center;justify-content:space-between;min-height:4rem;padding:1rem;border:1px solid var(--control-line);border-radius:.55rem;background:transparent;color:var(--text);font-size:.76rem;text-align:left}
-.lab-command-list button:hover,.lab-actions button:hover,.lab-component-case button:hover{border-color:var(--season-accent);background:rgba(var(--season-rgb),.08)}
+.lab-command-list button:hover,.lab-actions button:hover,.lab-component-case button:not([aria-pressed="true"]):hover{border-color:var(--season-accent);background:rgba(var(--season-rgb),.08)}
 .lab-season-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}
 .lab-season-choice{display:flex;flex-direction:column;align-items:start;min-width:0;min-height:170px;text-align:left;padding:1rem;border:1px solid var(--line);border-radius:.75rem;background:var(--bg);color:var(--text)}
 .lab-season-choice[aria-pressed="true"]{border-color:var(--season-accent);background:rgba(var(--season-rgb),.1)}
