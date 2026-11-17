@@ -25,6 +25,10 @@ test('mobile jersey preview opens at the form and returns without losing the edi
   await page.getByLabel('Nick', { exact: true }).fill('SHUSH 愛');
   await page.getByLabel('Número', { exact: true }).fill('13');
   await page.getByLabel('Frase opcional', { exact: true }).fill('Só rounds.');
+  const miniature = page.locator('.drop-mini-image');
+  const miniatureHeight = (await miniature.boundingBox())!.height;
+  const phraseHeight = (await miniature.locator('.audit-live-print small').boundingBox())!.height;
+  expect(phraseHeight).toBeLessThan(miniatureHeight * .08);
   const trigger = page.getByRole('button', { name: 'Ampliar a minha personalização', exact: true });
   await trigger.scrollIntoViewIfNeeded();
   const before = await page.evaluate(() => ({ scroll: window.scrollY, hash: location.hash }));
