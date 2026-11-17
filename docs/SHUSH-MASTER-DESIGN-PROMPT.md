@@ -1,11 +1,13 @@
 # SHUSH — Master Creative Director / Full Remodel Execution Prompt
-Version: 8.0 | 2026-11-17 | For a coding/design agent with repository access
+Version: 8.1 | 2026-11-17 | For a coding/design agent with repository access
 
-## THE JOB
+## THE JOB — FULL GREENFIELD VISUAL RESET
 
-Remodel the real SHUSH website end-to-end: https://shush.pt/ , repository https://github.com/dstx11/Shush . The target is **quiet luxury x cinematic VALORANT esports x tactile AAA game UI**, with dark graphite/plum, restrained amethyst, refined silver highlights, intentional editorial composition, exceptional small UI details and measurable usability.
+**NON-NEGOTIABLE USER DECISION (2026-11-17): throw away the entire old visual design. Start the new SHUSH identity from a blank creative canvas.** The existing site is NOT a style reference, moodboard, palette seed, typographic constraint, layout inspiration or motion library to reuse. Treat its former compositions, CSS, styles, font choices and interaction decoration as disposable. Build a NEW artistic language and visual system, with new page compositions and new UI anatomy. The old implementation only establishes real content, meaningful features, technical behavior, constraints and testable user journeys. Rebuild those functions into new UI rather than preserving old visual patterns. Screenshots of the legacy site are for regression and before/after documentation ONLY.
 
-**This prompt is an execution brief, not permission to publish.** Use a dedicated branch and a verified preview; do not deploy to production without explicit authorization. Preserve the small, honest identity of SHUSH: **Sem barulho. Só rounds.** Never fake giant-org status, stats or content.
+Remodel the real SHUSH website end-to-end: https://shush.pt/ , repository https://github.com/dstx11/Shush . The target is **quiet luxury x cinematic VALORANT esports x tactile AAA game UI, designed completely from zero**, with a NEW bespoke palette centered on luxury black/plum, restrained amethyst and refined silver highlights, intentional editorial composition, exceptional small UI details and measurable usability.
+
+**This prompt is an execution brief, not permission to publish.** Use a dedicated branch and a verified preview; do not deploy to production without explicit authorization. Preserve the small, honest factual identity of SHUSH: **Sem barulho. Só rounds.** Never fake giant-org status, stats or content.
 
 Before substantial design work, read:
 1. AGENTS.md (binding repository conventions).
@@ -46,7 +48,7 @@ Preferred role split:
 
 ## BASELINE BEFORE MASS CHANGE
 
-Inspect current branch, package.json, AGENTS.md, README, actual source layout, real assets, visual snapshots and current CI checks. Confirm all six public routes and their existing content/state behavior. Compare actual production and local baseline screenshots. Note current bundle size; the historical all-JS gzip budget was ~135 KiB near saturation, and it must NOT be assumed current or enlarged casually. Check that the intro, router focus/scroll restoration, seasonal state and one Christmas-tree Canvas still work. Preserve everything real and authorized.
+Inspect current branch, package.json, AGENTS.md, README, actual source layout, real assets, visual snapshots and current CI checks. Confirm all six public routes and their existing content/state behavior. Compare actual production and local baseline screenshots. Note current bundle size; the historical all-JS gzip budget was ~135 KiB near saturation, and it must NOT be assumed current or enlarged casually. Check that the intro, router focus/scroll restoration, seasonal state and one Christmas-tree Canvas still work. Preserve everything real and authorized at the content/function level. Completely discard legacy appearance, styling and page composition.
 
 Create a branch and keep commits scoped by working phase. Do not mutate master or deploy. Keep an implementation ledger noting researched, designed, implemented, validated, rejected and pending decisions with exact evidence. Do not stop at a roadmap when implementation is possible.
 
@@ -64,7 +66,7 @@ Visual DNA:
 - atmospheric light and texture; no neon overuse, random purple blobs or cyberpunk template
 - sparse, legible gaming-style metadata and interactive status, never invented competitive data.
 
-Initial candidate palette, not approved values: #09070F, #120D1D, #1C1628, #292039, #3A2D49, #9268C7, #C5ABE6, #F3EEF7, #B7ACBF. Use semantic tokens; inspect real browser contrast and color relationships; prefer consistent ramps (OKLCH where useful). Keep existing brand assets and evaluate actual fonts before adding any.
+NEW greenfield candidate palette, unrelated to previous styling and not approved values: #09070F, #120D1D, #1C1628, #292039, #3A2D49, #9268C7, #C5ABE6, #F3EEF7, #B7ACBF. Use semantic tokens; inspect real browser contrast and color relationships; prefer consistent ramps (OKLCH where useful). Keep authentic logo/player/product assets as source material, but design all new framing, typography, materials and visual composition. Do not inherit existing font choices out of habit.
 
 Define at least these material roles: matte structural, satin content panel, smoked glass overlay, selected illuminated control, tactical Premier surface, product studio. Every role must have a coherent idle/hover/focus/selected/disabled treatment.
 
@@ -194,7 +196,7 @@ A visual quality matrix is useful: hierarchy, brand distinction, typography, mat
 
 ## EXECUTION PHASES
 
-0. Current branch/code/visual/bundle baseline; inventory and release guardrails.
+0. Current branch/code/functional/bundle baseline; capture legacy screenshots ONLY for before/after, not aesthetic direction; inventory and release guardrails.
 1. Focused primary research and design candidate register; first accumulated knowledge update.
 2. Design language: semantic palette, material/radius/spacing/type/border/state tokens.
 3. Component primitives: buttons, controls, navigation, status, panels; CSS refactor.
@@ -236,3 +238,19 @@ Make the website **visually extraordinary while operationally quiet**. Refine th
 **Research -> decide -> craft -> implement -> render -> critique -> optimize -> test -> record evidence -> deliver.**
 
 Begin with the actual code and relevant knowledge. Continue through a complete working release candidate within the available execution environment; if tooling/time blocks full completion, deliver coherent verified work and honestly list what remains. No background delivery promises.
+
+
+## GREENFIELD DESIGN ADDENDUM (USER DIRECTIVE — 2026-11-17)
+
+The previous SHUSH design must **not** influence the new one. Do not “refresh,” “evolve,” “modernize,” “preserve” or “polish” the existing look. Create a new design from the ground up.
+
+Required first creative deliverable:
+1. Research at least three DIFFERENT luxury-dark-purple art directions (for example: *Obsidian Atelier* — matte fashion editorial; *Amethyst Interface* — sophisticated tactile gaming; *Nocturne Cinema* — atmospheric brand storytelling). These names are starting hypotheses, not required final labels.
+2. Build distinct static hero + navigation + player-selection prototypes using the SAME real content, but different visual grammar, type, spacing, materials and information framing.
+3. Critically compare originality, premium quality, reading clarity, actual user tasks, mobile behavior, implementation feasibility and rendering cost. Do not reward the concept that has the most animation.
+4. Select a single coherent NEW design system and fully remodel every public page from it.
+5. Identify legacy UI and CSS that can be deleted once the new implementation passes feature and QA tests. Do not retain old code solely for backward visual compatibility.
+
+Nonvisual protection: verified roster, identity media rights, accurate Premier results, creators, jersey customization, public destinations, deep links, export/share behavior, seasonal scheduling, accessibility, hosting and real-data integrity.
+
+The selected NEW art direction is the only visual source of truth. Document its tokens, components and motion rules in the living intelligence file. Existing screenshots are evidence of what was replaced, **never** “golden masters” defining how the new SHUSH should look.
