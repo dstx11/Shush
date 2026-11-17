@@ -54,7 +54,7 @@ test('Premier opponent search combines with map and outcome and sorting preserve
   await expect(search).toHaveValue('');
   await expect(outcome.getByRole('button', { name: 'Todas', exact: true })).toBeFocused();
   await expect(matches).toHaveCount(10);
-  await page.getByLabel('Ordenar', { exact: true }).selectOption('oldest');
+  await page.getByRole('combobox', { name: 'Ordenar', exact: true }).selectOption('oldest');
   await expect(matches.first()).toHaveAttribute('id', 'match-2026-04-11-ilpsni');
   await expect(matches.last()).toHaveAttribute('id', 'match-2026-06-06-enlitro');
   await search.fill('Prime');
@@ -64,6 +64,6 @@ test('Premier opponent search combines with map and outcome and sorting preserve
   await page.getByRole('button', { name: 'Limpar filtros', exact: true }).click();
   await expect(matches).toHaveCount(10);
   await expect(matches.first()).toHaveAttribute('id', 'match-2026-06-06-enlitro');
-  await expect(page.getByLabel('Ordenar', { exact: true })).toHaveValue('newest');
+  await expect(page.getByRole('combobox', { name: 'Ordenar', exact: true })).toHaveValue('newest');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
