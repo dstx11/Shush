@@ -20,7 +20,7 @@
 .shush-hero{position:relative;isolation:isolate;overflow:clip;min-height:min(820px,100svh);background:radial-gradient(ellipse at 78% 43%,var(--season-haze),transparent 58%),radial-gradient(ellipse at 10% 90%,#bf956b14,transparent 45%),linear-gradient(155deg,var(--bg),#111017 85%)}
 .shush-hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;background-image:linear-gradient(90deg,#fff1 1px,transparent 1px),linear-gradient(#fff1 1px,transparent 1px);background-size:96px 96px;mask-image:linear-gradient(90deg,transparent,#000 65%,transparent)}
 .shush-hero-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;min-height:clamp(610px,78svh,850px);gap:clamp(1rem,5vw,5rem);position:relative}
-.shush-hero-copy{position:relative;z-index:2;padding-block:4.5rem 3rem}
+.shush-hero-copy{min-width:0;position:relative;z-index:2;padding-block:4.5rem 3rem}
 .shush-hero-eyebrow{display:flex;align-items:center;flex-wrap:wrap;gap:.7rem;color:var(--season-accent);font:600 .65rem/1.5 var(--font-mono);letter-spacing:.12em}
 .shush-hero-dot{width:.42rem;height:.42rem;border-radius:50%;background:var(--season-accent);box-shadow:0 0 14px rgba(var(--season-rgb),.5)}
 .shush-hero-index{border-left:1px solid var(--line);padding-left:.8rem;color:var(--muted)}
@@ -79,7 +79,7 @@
  @keyframes season-art-breathe{from{transform:scale(.975);opacity:.6}to{transform:scale(1.025);opacity:1}}
  @keyframes season-art-rotate{to{transform:rotate(360deg)}}
 }
-@media (max-width:950px){.shush-hero-layout{grid-template-columns:1fr;min-height:auto}.shush-hero-copy{padding-block:3rem 1rem}.shush-hero h1{font-size:clamp(3rem,9vw,6rem);max-width:16ch}.shush-hero-visual{height:clamp(310px,55vw,540px);min-height:0;max-width:700px;width:100%;margin-inline:auto}.shush-hero-portraits{height:100%}.season-feature{grid-template-columns:1fr}}
+@media (max-width:950px){.shush-hero-layout{grid-template-columns:minmax(0,1fr);min-height:auto}.shush-hero-copy{padding-block:3rem 1rem}.shush-hero h1{font-size:clamp(3rem,9vw,6rem);max-width:16ch}.shush-hero-visual{height:clamp(310px,55vw,540px);min-height:0;max-width:700px;width:100%;margin-inline:auto}.shush-hero-portraits{height:100%}.season-feature{grid-template-columns:1fr}}
 @media (max-width:767px){.shush-hero{min-height:0}.shush-hero-copy{padding-block:1.25rem 0}.shush-hero-overline{margin-top:1.4rem}.shush-hero h1{font-size:clamp(2.7rem,11vw,4.6rem);letter-spacing:-.07em}.shush-hero-lead{margin:1.3rem 0;font-size:.89rem;line-height:1.75}.shush-hero-lower{margin-top:1.2rem;padding-top:.8rem}.shush-hero-visual{height:clamp(275px,83vw,450px);margin-bottom:1rem}.shush-hero-player-tag{padding:.7rem .4rem}.shush-hero-player-tag small{font-size:.47rem}.shush-hero-player-tag strong{font-size:clamp(.7rem,3vw,1.1rem)}.season-feature-stage{min-height:300px;padding:1.25rem}.season-duo-fields{grid-template-columns:1fr}.season-duo-fields>span{display:none}.season-feature{padding-block:3rem}}
 @media (prefers-reduced-motion:reduce){.season-art *,.shush-hero-copy>*{animation:none!important}.shush-hero-player,.season-feature-stage{transition:none!important}}
 
@@ -171,4 +171,4 @@
 
 .season-preview-toolbar{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;justify-content:center;gap:.6rem;padding:1rem;background:#17131ff5;border:1px solid var(--line);border-radius:1rem;box-shadow:0 12px 50px #0008;width:max-content;max-width:calc(100% - 2rem);flex-wrap:wrap;font:.75rem var(--font-ui)}.season-preview-toolbar button{padding:.6rem .8rem;border:1px solid var(--line);border-radius:.5rem;background:var(--surface);color:var(--text)}
 
-.shush-hero h1{letter-spacing:-.06em}.shush-hero-lead{max-width:40ch}.shush-hero-actions .site-button{min-width:12rem}@media(max-width:360px){.shush-hero-actions{display:grid}.shush-hero-actions .site-button{width:100%}}
+.shush-hero h1{letter-spacing:-.06em}.shush-hero-lead{max-width:40ch}.shush-hero-actions .site-button{min-width:min(12rem,100%)}@media(max-width:360px){.shush-hero-actions{display:grid}.shush-hero-actions .site-button{width:100%}}

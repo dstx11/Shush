@@ -33,8 +33,6 @@
 .about-brand-panel { position: relative; }
 .about-brand-panel::before { content: ''; display: block; position: absolute; inset: 1rem; border: 1px solid #ffffff09; border-radius: 50%; pointer-events: none; }
 .drop-gallery-label { border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
-.drop-view-control { justify-content: center; }
-.drop-view-control button { min-width: 7rem; }
 .shush-header.is-scrolled { border-color: #645572; box-shadow: 0 8px 24px #0002; }
 @media (prefers-reduced-motion: no-preference) {
  .team-cover-player img { transition: translate .35s ease-out, transform .35s; }

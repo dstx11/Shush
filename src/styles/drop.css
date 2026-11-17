@@ -9,7 +9,7 @@
 .audit-live-print > span { max-width: 100%; font-size: var(--print-name-size, 6cqi); font-weight: 700; letter-spacing: .025em; overflow-wrap: anywhere; text-transform: none; }
 .audit-live-print > strong { font-size: 17cqi; font-weight: 700; line-height: 1; letter-spacing: -.035em; }
 .audit-live-print > small { max-width: 85%; font: 500 1.5cqi/1.2 var(--font-ui); overflow-wrap: anywhere; text-transform: none; }
-.drop-view-control { justify-content: center; border-block: 1px solid var(--line); padding-block: .6rem; gap: .5rem; }
+.drop-view-control { flex-wrap: wrap; justify-content: center; border-block: 1px solid var(--line); padding-block: .6rem; gap: .5rem; }
 .drop-view-control button { display: flex; gap: 1rem; align-items: center; justify-content: space-between; min-width: 7rem; padding-inline: .6rem; }
 .drop-view-control button > span { color: var(--signal); font-size: .75rem; }
 .drop-preview-note { margin: 0; padding: 1rem 1.25rem 1.25rem; color: var(--muted); font-size: .8rem; line-height: 1.8; max-width: none; }
@@ -53,10 +53,10 @@ button:disabled { cursor: default; opacity: .55; }
 @media (max-width: 1050px) { .drop-layout { gap: 1.5rem; grid-template-columns: 1fr 1fr; } .drop-editor { padding-left: 1.5rem; } .drop-process { grid-template-columns: 1fr; gap: 1.5rem; } }
 @media (max-width: 767px) {
   .drop-page { padding-block: var(--page-top) var(--section-space); }
-  .drop-layout { grid-template-columns: 1fr; gap: 2rem; }
+  .drop-layout { grid-template-columns: minmax(0,1fr); gap: 2rem; }
   .audit-drop-gallery { position: static; width: min(100%, 30rem); margin-inline: auto; }
   .drop-editor { border: 0; padding: 1.25rem; }
-  .drop-mobile-preview { display: grid; grid-template-columns: 5rem 1fr auto; position: sticky; z-index: 5; top: calc(4.3rem + env(safe-area-inset-top)); gap: .8rem; align-items: center; margin-bottom: 1.5rem; padding: .6rem .6rem .6rem 0; border-block: 1px solid var(--control-line); background: #201d28f5; color: var(--text); --paper: var(--text); }
+  .drop-mobile-preview { display: grid; grid-template-columns: min(5rem,25%) minmax(0,1fr) auto; position: sticky; z-index: 5; top: calc(4.3rem + env(safe-area-inset-top)); gap: .8rem; align-items: center; margin-bottom: 1.5rem; padding: .6rem .6rem .6rem 0; border-block: 1px solid var(--control-line); background: #201d28f5; color: var(--text); --paper: var(--text); }
   .drop-mobile-preview > div:nth-child(2) { min-width: 0; display: grid; gap: .3rem; }
   .drop-mobile-preview strong { font-size: .85rem; overflow-wrap: anywhere; }
   .drop-mobile-preview small { color: var(--muted); font: .62rem var(--font-mono); }
