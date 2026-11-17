@@ -9,3 +9,6 @@
 @media(max-width:1100px){.lux-competition{display:none}.lux-desktop{gap:1.1rem}.lux-navigation{gap:1rem}}
 @media(max-width:767px){.lux-navigation{min-height:72px}.lux-desktop,.lux-utilities{display:none}.lux-menu-toggle{display:flex}.lux-brand img{width:40px;height:24px}}
 @media(max-width:360px){.lux-brand span{font-size:11px}.lux-navigation{gap:.5rem}}
+/* Container units respond to enlarged root text as well as viewport width. */
+.lux-header{container:navigation/inline-size}
+@container navigation (max-width:48rem){.lux-navigation{min-height:72px}.lux-desktop,.lux-utilities{display:none}.lux-menu-toggle{display:flex}}

@@ -22,11 +22,11 @@ test('Home and Creators show real people and dated records', async ({ page }) =>
   await expect(page.locator('.creator-art img')).toHaveCount(2);
   for (const link of await page.locator('.creator-channel').all()) await expect(link).toHaveAttribute('target', '_blank');
   await page.goto('/');
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
-  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
-  await expect(page.locator('.home-score')).toHaveCount(3);
-  await expect(page.locator('.home-records-heading')).toContainText('abril–junho 2026');
-  await expect(page.locator('.home-creator-links > a')).toHaveCount(2);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
+  await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.lux-score')).toHaveCount(3);
+  await expect(page.locator('.lux-ledger-intro')).toContainText('abril–junho 2026');
+  await expect(page.locator('.lux-creator-links > a')).toHaveCount(2);
 });
 
 test('V5 Match Explorer filters and verified map aggregates', async ({ page }) => {
@@ -110,7 +110,7 @@ test('V5 intro: bounded initial experience, reduced motion and no SPA replay', a
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.locator('.brand-intro')).toHaveCount(0, { timeout: 7000 });
-  await page.locator('.home-closing a[href="/company"]').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.locator('.lux-closing a[href="/company"]').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.brand-intro')).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -134,7 +134,7 @@ test('Intro can be skipped with keyboard and is remembered across reloads', asyn
   await expect(intro).toHaveCount(0);
   await page.reload();
   await expect(intro).toHaveCount(0);
-  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeEnabled();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 

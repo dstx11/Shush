@@ -8,7 +8,7 @@ test('Home: balanced refreshes, three unique profiles and stable SPA return', as
   let previous: string[] = [];
   for (let visit = 0; visit < 7; visit++) {
     await page.reload();
-    const covers = page.locator('.team-cover-player');
+    const covers = page.locator('[data-home-player]');
     await expect(covers).toHaveCount(3);
     const ids = await covers.evaluateAll(items => items.map(item => item.getAttribute('data-player')!));
     expect(new Set(ids).size).toBe(3);
@@ -17,23 +17,23 @@ test('Home: balanced refreshes, three unique profiles and stable SPA return', as
     for (const [index, id] of ids.entries()) await expect(covers.nth(index)).toHaveAttribute('href', `/esports/valorant/roster?player=${id}`);
   }
   expect(Object.values(counts)).toEqual(Array(7).fill(3)); expect(centres.size).toBe(7);
-  await page.locator('.team-cover-player').first().click();
+  await page.locator('[data-home-player]').first().click();
   await expect(page).toHaveURL(new RegExp(`player=${previous[0]}`));
   await page.goBack();
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
-  expect(await page.locator('.team-cover-player').evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(previous);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
+  expect(await page.locator('[data-home-player]').evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(previous);
 });
 
 test('Home: unavailable storage still renders three stable players', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-10-11T12:00:00Z') });
   await page.addInitScript(() => Object.defineProperty(window, 'localStorage', { get() { throw new Error('Unavailable'); } }));
   await page.goto('/');
-  const players = page.locator('.team-cover-player');
+  const players = page.locator('[data-home-player]');
   await expect(players).toHaveCount(3);
   const before = await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')));
   await page.clock.fastForward(120_000);
   expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);
-  await page.locator('.home-closing a[href="/company"]').click(); await page.goBack();
+  await page.locator('.lux-closing a[href="/company"]').click(); await page.goBack();
   await expect(players).toHaveCount(3);
   expect(await players.evaluateAll(items => items.map(item => item.getAttribute('data-player')))).toEqual(before);
 });

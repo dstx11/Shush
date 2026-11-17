@@ -9,7 +9,7 @@ test('The first paint is a full-screen SHUSH experience before JavaScript resolv
  await page.route('**/assets/index-*.js',async route=>{await gate;await route.continue()});
  await page.goto('/',{waitUntil:'commit'});
  await expect(page.locator('#shush-boot-stage')).toBeVisible();
- await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+ await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
  expect(await page.evaluate(()=>Boolean(document.elementFromPoint(innerWidth/2,innerHeight/2)?.closest('#shush-boot-stage')))).toBe(true);
  unblock();
  await expect(page.locator('#shush-boot-stage')).toHaveCount(0,{timeout:5000});
@@ -55,12 +55,12 @@ test('Motion setting is keyboard accessible, persistent and disables visual anim
 test('The content panels use real records and the origin no longer lists personal nick references',async ({page})=>{
  await page.goto('/');
  await expect(page.locator('.shush-signals')).toContainText('O grupo fica.');
- await expect(page.locator('.home-score')).toHaveCount(3);
- await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+ await expect(page.locator('.lux-score')).toHaveCount(3);
+ await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
  await page.goto('/company');
- await expect(page.locator('.about-origin-story')).not.toContainText('contraponto ao Less');
- await expect(page.locator('.about-origin-story')).not.toContainText('ao aspas');
- await expect(page.locator('.about-perspective h2')).toBeVisible();
+ await expect(page.locator('.story-origin-copy')).not.toContainText('contraponto ao Less');
+ await expect(page.locator('.story-origin-copy')).not.toContainText('ao aspas');
+ await expect(page.locator('.story-team h2')).toBeVisible();
 });
 test('Non-JavaScript visits remain usable without the intro overlay',async ({browser,baseURL})=>{
  const context=await browser.newContext({javaScriptEnabled:false,baseURL});
@@ -69,7 +69,7 @@ test('Non-JavaScript visits remain usable without the intro overlay',async ({bro
   await page.goto('/');
   await expect(page.locator('#shush-boot-stage')).toBeHidden();
   await expect(page.getByRole('heading',{level:1})).toBeVisible();
-  await expect(page.locator('.home-lineup>a')).toHaveCount(7);
+  await expect(page.locator('.lux-lineup>a')).toHaveCount(7);
  }finally{await context.close();}
 });
 

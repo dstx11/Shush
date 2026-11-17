@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 
 // Calendar, live DOM theme, and the interactions that make each edition meaningful.
 const cases=[
- ['base','2026-11-12','O nome é SHUSH.'],
+ ['base','2026-11-12','Sem barulho.'],
  ['christmas','2026-12-12','O lobby ainda'],
  ['newyear','2026-12-30','Mudou o ano.'],
  ['carnival','2027-02-09','Hoje ninguém joga'],
@@ -26,8 +26,8 @@ for(const [season,date,headline] of cases){
    await expect(page.locator('.winter-ornament-constellation')).toBeVisible();
   }else{
    await expect(page.locator('.winter-tree-canvas')).toHaveCount(0);
-   await expect(page.locator('.team-cover-player')).toHaveCount(3);
-   await expect(page.locator('.season-art')).toBeAttached();
+   await expect(page.locator('[data-home-player]')).toHaveCount(3);
+   await expect(page.locator('.lux-hero-orbit')).toBeAttached();
   }
   await page.screenshot({path:info.outputPath(`campaign-${season}.png`),animations:'disabled'});
   const width=await page.evaluate(()=>[document.documentElement.clientWidth,document.documentElement.scrollWidth]);
@@ -85,5 +85,5 @@ test('Christmas styling loads on a direct roster visit and cannot leak into New 
  await expect.poll(()=>page.locator('.shush-root').evaluate(node=>getComputedStyle(node).getPropertyValue('--font-heading'))).toContain('SHUSH Hearth');
  await page.clock.fastForward(120_000);
  await expect(page.locator('.shush-root')).toHaveAttribute('data-season','newyear');
- await expect.poll(()=>page.locator('.shush-root').evaluate(node=>getComputedStyle(node).getPropertyValue('--font-heading'))).toContain('Manrope');
+ await expect.poll(()=>page.locator('.shush-root').evaluate(node=>getComputedStyle(node).getPropertyValue('--font-heading'))).toContain('Arial');
 });

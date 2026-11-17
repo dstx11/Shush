@@ -9,18 +9,18 @@ test('ready resources preserve the readable entrance then resume page animations
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'true');
-  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'paused');
+  await expect(page.locator('.lux-hero h1')).toHaveCSS('animation-play-state', 'paused');
   await page.evaluate(async () => {
     await document.fonts.ready;
     await Promise.allSettled([...document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')].map(img => img.decode()));
   });
   await page.clock.runFor(500);
   await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toBeVisible();
-  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'paused');
+  await expect(page.locator('.lux-hero h1')).toHaveCSS('animation-play-state', 'paused');
   await page.clock.runFor(1600);
   await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
-  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'running');
+  await expect(page.locator('.lux-hero h1')).toHaveCSS('animation-play-state', 'running');
   await page.reload();
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
   await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);

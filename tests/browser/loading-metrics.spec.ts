@@ -36,7 +36,7 @@ test('record initial and repeat loading measurements', async ({ page }, info) =>
       await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
       await page.evaluate(async () => {
         await document.fonts.ready;
-        await Promise.allSettled([...document.querySelectorAll<HTMLImageElement>('.opening img')].map(img => img.decode()));
+        await Promise.allSettled([...document.querySelectorAll<HTMLImageElement>('.lux-hero img')].map(img => img.decode()));
         await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
       });
       await expect.poll(() => page.evaluate(() => (window as unknown as { shushLoadingMetrics: { lcpCandidate: number } }).shushLoadingMetrics.lcpCandidate)).toBeGreaterThan(0);

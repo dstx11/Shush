@@ -1,6 +1,6 @@
 /* The permanent SHUSH identity; colour changes are deliberate, not separate websites. */
 .shush-root {
- --bg:#15131a;--surface:#201d28;--surface-2:#292431;--field:#19161f;--text:#f3eef4;--muted:#b9b0c3;--purple:#c4afe9;--purple-text:#c4afe9;--signal:#c4afe9;--line:#403849;--solid-border:#403849;--control-line:#7e718e;--accent-hover:#d8c9f2;--on-accent:#261c35;--paper:#f3eef4;--ink:#15131a;--season-accent:#c4afe9;--season-haze:#51445f;--season-rgb:196,175,233;--font-heading:"Manrope",ui-sans-serif,system-ui,sans-serif;
+ --bg:#0c0a10;--surface:#17121e;--surface-2:#251c30;--field:#15101b;--text:#f5f0f4;--muted:#b9aebf;--purple:#c4afe9;--purple-text:#c4afe9;--signal:#c4afe9;--line:#403849;--solid-border:#403849;--control-line:#7e718e;--accent-hover:#d8c9f2;--on-accent:#261c35;--paper:#f5f0f4;--ink:#0c0a10;--season-accent:#c4afe9;--season-haze:#51445f;--season-rgb:196,175,233;--font-heading:"Helvetica Neue",Arial,ui-sans-serif,sans-serif;
  background:var(--bg);color:var(--text);
 }
 .shush-root[data-season="christmas"]{--bg:#0e1919;--surface:#182b29;--surface-2:#223a34;--text:#f6efdf;--muted:#b4c5bb;--signal:#edcb94;--line:#405448;--control-line:#899e8a;--accent-hover:#f8ddb1;--on-accent:#17241d;--paper:#f6efdf;--ink:#0e1919;--season-accent:#edcb94;--season-haze:#466c5b;--season-rgb:237,203,148;--font-heading:"SHUSH Hearth",Georgia,serif;}
@@ -10,8 +10,6 @@
 .shush-root[data-season="easter"]{--season-accent:#d1c7fe;--season-haze:#647b72;--season-rgb:209,199,254;--signal:#d1c7fe;}
 .shush-root[data-season="summer"]{--season-accent:#ffa58b;--season-haze:#9f4b7b;--season-rgb:255,165,139;--signal:#ffa58b;}
 .shush-root[data-season="halloween"]{--season-accent:#eab17d;--season-haze:#5c305f;--season-rgb:234,177,125;--signal:#eab17d;}
-.shush-root:not([data-season="christmas"]) .site-button{border-radius:.72rem;border-color:var(--signal);background:var(--signal);color:var(--on-accent);box-shadow:none}
-.shush-root:not([data-season="christmas"]) .button-secondary{background:transparent;color:var(--text);border-color:var(--control-line)}
 .shush-root:not([data-season="christmas"]) .shush-header{background:#15131aef;border-bottom-color:var(--line);backdrop-filter:blur(14px)}
 .shush-root:not([data-season="christmas"]) .desktop-navigation{background:var(--surface);border-color:var(--line)}
 .shush-root:not([data-season="christmas"]) .desktop-nav-link[aria-current="page"]{background:var(--signal);color:var(--on-accent)}

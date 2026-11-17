@@ -162,7 +162,7 @@ export function DropSection() {
   return (
     <section id="products" className="drop-page" aria-labelledby="drop-title">
       <div className="shell">
-        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Experimenta o teu nick e número.<br />Guarda ou partilha a tua versão.</p></div>
+        <div className="drop-heading"><div><span className="section-kicker">SHUSH / PRODUCT STUDIO / 001</span><h1 id="drop-title">A tua<br /><em>versão.</em></h1></div><div className="drop-heading-note"><span>DROP 01 / CAMISOLA SHUSH</span><p>A nossa identidade.<br />O teu nome nas costas.</p><a className="editorial-link" href="#customizacao">Personalizar ↓</a></div></div>
         <p className="drop-availability"><span className="section-kicker">PRÉ-VISUALIZAÇÃO</span> O Drop 01 ainda não está disponível para encomenda. Podes experimentar, guardar e partilhar a tua personalização.</p>
         <div className="drop-layout">
           <div id="product-preview" className="audit-drop-gallery">

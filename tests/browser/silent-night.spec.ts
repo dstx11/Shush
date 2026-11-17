@@ -45,8 +45,8 @@ test('Permanent SHUSH content renders without JavaScript outside December', asyn
   try{
     const page=await context.newPage();
     await page.goto('/');
-    await expect(page.getByRole('heading',{name:/O nome é SHUSH/})).toBeVisible();
-    await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+    await expect(page.getByRole('heading',{name:/Sem barulho/})).toBeVisible();
+    await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
     await expect(page.locator('.winter-player-ornament')).toHaveCount(0);
   }finally{await context.close();}
 });

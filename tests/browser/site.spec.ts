@@ -28,7 +28,7 @@ for (const [name, path] of routes) {
       await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
-    if (name === 'home') await page.locator('.home-lineup').evaluate((element) => { element.scrollLeft = 0; });
+    if (name === 'home') await page.locator('.lux-lineup').evaluate((element) => { element.scrollLeft = 0; });
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
@@ -107,7 +107,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await open.click();
   await page.locator('#mobile-navigation').getByRole('link', { name: 'Roster', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Escolhe o teu lado. Roster / 07');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('A mesma tag. ROSTER / SETE IDENTIDADES');
   await expect(page.locator('#main-content')).toBeFocused();
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
@@ -122,9 +122,9 @@ test('slow initial Home enables the menu and preserves focus after closing', asy
   });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.navigation-toggle')).toBeDisabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeDisabled();
   release();
-  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeEnabled();
   const open = page.getByRole('button', { name: 'Abrir navegação' });
   await open.click();
   await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Home', exact: true })).toBeFocused();

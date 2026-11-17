@@ -4,7 +4,7 @@ import { AxeBuilder } from '@axe-core/playwright';
 test('Home never presents internal calendar windows as confirmed matches', async ({ page }) => {
   await page.clock.install({ time: new Date('2026-06-30T16:59:00Z') });
   await page.goto('/?matchday=week-2-day-1');
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
   await expect(page.locator('.matchday')).toHaveCount(0);
   await page.goto('/esports/valorant/premier');
   await expect(page.locator('.matchday-empty')).toContainText('sem data confirmada');
@@ -34,7 +34,7 @@ test('Initial splash covers prerendered content while the JavaScript loads', asy
   await page.route('**/assets/index-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/', { waitUntil: 'commit' });
   await expect(page.locator('#shush-boot-stage')).toBeVisible();
-  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
   expect(await page.evaluate(() => {
     const atCenter=document.elementFromPoint(innerWidth / 2, innerHeight / 2);
     return Boolean(atCenter?.closest('#shush-boot-stage'));
@@ -48,7 +48,7 @@ test('Initial splash covers prerendered content while the JavaScript loads', asy
   });
   release();
   await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
-  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeEnabled();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   expect(await page.evaluate(() => (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen)).toBe(false);
 });
@@ -58,16 +58,16 @@ test('Slow navigation keeps the current page usable until the next route is read
   const ready = new Promise<void>(resolve => { release = resolve; });
   await page.route('**/assets/HomePage-*.js', async route => { await ready; await route.continue(); });
   await page.goto('/company');
-  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeEnabled();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
-  await page.locator('header .brand-mark').click();
+  await page.locator('header .lux-brand').click();
   // React Router uses a transition: retain the current content while the next
   // chunk is pending instead of replacing it with a full-page spinner.
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await expect(page.locator('.shush-loading')).toHaveCount(0);
   await expect(page.locator('footer a').first()).toBeAttached();
   release();
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
   await expect(page.locator('.shush-loading')).toHaveCount(0);
 });
 
@@ -91,10 +91,10 @@ test('Character Select: arrow keys, Home/End, stable focus and preserved query p
 
 test('Home leads with real players and sourced results, while the jersey belongs to Drop', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
-  await expect(page.locator('.opening img[src*="/assets/jersey/"]')).toHaveCount(0);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
+  await expect(page.locator('.lux-hero img[src*="/assets/jersey/"]')).toHaveCount(0);
   await expect(page.locator('.verified-match')).toHaveCount(0);
-  await expect(page.locator('.team-cover img')).toHaveCount(3);
+  await expect(page.locator('[data-home-roster] img')).toHaveCount(3);
 });
 
 test('Character Select: swipe intent, cancellation and player jersey link', async ({ page }) => {
