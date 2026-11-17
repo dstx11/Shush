@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-// Cozy winter references reviewed in desktop/mobile after the intentional art
+// Editorial references reviewed in desktop/mobile after the intentional art
 // direction change. Keep pixel comparisons active and captures available for review.
 const regions = [
   ['home-hero', '/', '.lux-hero'],

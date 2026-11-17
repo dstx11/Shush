@@ -24,7 +24,7 @@ function mount({ reduced = false, paused = false, manual = false } = {}) {
     return () => {};
   } });
   const canvas = { dataset: {}, getContext: () => ctx };
-  const frame = { getBoundingClientRect: () => ({ width: 550, height: 635 }) };
+  const frame = { getBoundingClientRect: () => ({ width: 550, height: 635, top: 0 }), querySelector: () => ({ getBoundingClientRect: () => ({ bottom: 120 }) }) };
   const media = { matches: reduced, addEventListener: (_, fn) => { motion = fn; }, removeEventListener: () => { motion = undefined; } };
   const document = { documentElement: { dataset: { motion: manual ? "reduce" : "system" } }, hidden: false, addEventListener: (_, fn) => { visibility = fn; }, removeEventListener: () => { visibility = undefined; } };
   const exports = {};
