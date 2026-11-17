@@ -113,7 +113,7 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     if (!frame || !('IntersectionObserver' in window) || media.matches ||
         document.documentElement.dataset.motion === 'reduce') return;
     const items = frame.querySelectorAll<HTMLElement>(
-      '.motion-section, .section-index, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article, .about-origin-story, .drop-layout, .signal-panel'
+      '.motion-section, .section-index, .lux-roster-gallery, .lux-records, .lux-people, .lux-closing, .verified-match, .creator-feature, .story-origin, .story-team, .story-chapters article, .story-paths, .story-partner, .story-download, .drop-layout, .signal-panel'
     );
     const revealFocused = (event: FocusEvent) => {
       if (!(event.target instanceof Element)) return;

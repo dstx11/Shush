@@ -1,10 +1,10 @@
 /* One restrained signature per player. Only light responds to the pointer. */
 .character-signature-scene{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
-.character-backlight{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 35%,color-mix(in srgb,var(--player-accent) 12%,transparent),transparent 70%);opacity:.7;translate:var(--lens-x,0px) var(--lens-y,0px)}
-.character-geometry{position:absolute;inset:8%;width:84%;height:84%;color:var(--player-accent);stroke:currentColor;stroke-width:1;opacity:.13}.character-geometry-inner,.character-geometry-cross{opacity:.5}
+.character-backlight{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 35%,color-mix(in srgb,var(--player-accent) 20%,transparent),transparent 70%);opacity:.7;translate:var(--lens-x,0px) var(--lens-y,0px)}
+.character-geometry{position:absolute;inset:8%;width:84%;height:84%;color:var(--player-accent);stroke:currentColor;stroke-width:1;opacity:.23}.character-geometry-inner,.character-geometry-cross{opacity:.5}
 .character-scene-serial,.character-scene-foot{display:none}
-.character-signal-flare{position:absolute;z-index:4;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,#ffffff13 55%,transparent 80%);opacity:0}
-@media(prefers-reduced-motion:no-preference){html:not([data-motion=reduce]) .character-backlight{transition:translate .5s var(--ease-out)}html:not([data-motion=reduce]) .character-signal-flare{animation:player-light-reveal .55s ease-out both}@keyframes player-light-reveal{from{opacity:0;transform:scaleX(.2);transform-origin:left}50%{opacity:1}to{opacity:0;transform:scaleX(1)}}}
+.character-signal-flare{position:absolute;z-index:4;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 30%,#d1a0ff33 55%,transparent 80%);opacity:0}
+@media(prefers-reduced-motion:no-preference){html:not([data-motion=reduce]) .character-backlight{transition:translate .5s var(--ease-out)}html:not([data-motion=reduce]) .character-signal-flare{animation:player-light-reveal .75s ease-out both}@keyframes player-light-reveal{from{opacity:0;transform:scaleX(.2);transform-origin:left}50%{opacity:1}to{opacity:0;transform:scaleX(1)}}}
 .character-media[data-stage-visible=false] .character-backlight{animation-play-state:paused}
 /* The frame keeps navigation in reach while long player details scroll. */
 .player-dossier[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;max-height:calc(100svh - 2rem);padding:0;overflow:hidden}

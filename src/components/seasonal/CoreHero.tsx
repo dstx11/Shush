@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
 import { ArrowIcon } from '../ui/ArrowIcon';
@@ -10,7 +11,18 @@ import '../../styles/luxury-home.css';
 export function CoreHero() {
   const { id, theme } = useSeason();
   const featured = getHomePlayers();
-  return <section id="top" className="lux-hero" aria-labelledby="hero-title">
+  const atmosphere = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const node = atmosphere.current;
+    if (!node || !('IntersectionObserver' in window)) return;
+    let visible = false;
+    const sync = () => { node.dataset.sceneVisible = String(visible && !document.hidden); };
+    const observer = new IntersectionObserver(entries => { visible = entries[0]?.isIntersecting ?? false; sync(); });
+    observer.observe(node);
+    document.addEventListener('visibilitychange', sync);
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
+  }, []);
+  return <section ref={atmosphere} data-scene-visible="false" id="top" className="lux-hero" aria-labelledby="hero-title">
     <div className="lux-hero-top shell"><span>SHUSH / VALORANT + CREATORS</span><span>{id === 'base' ? 'SILENCE BEFORE IMPACT' : theme.label}</span></div>
     <div className="lux-hero-layout shell">
       <div className="lux-hero-copy">
