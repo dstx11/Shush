@@ -1,8 +1,10 @@
 import type { VerifiedMatch } from '../data/verified-matches';
 export type Outcome = 'all' | 'win' | 'loss';
 export const matchWon = (match: VerifiedMatch) => match.shushScore > match.opponentScore;
-export function filterMatches(matches: VerifiedMatch[], outcome: Outcome, map: string) {
-  return matches.filter(match => (outcome === 'all' || matchWon(match) === (outcome === 'win')) && (map === 'all' || match.map === map));
+const normalizeSearch = (value: string) => value.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim().replace(/\s+/g, ' ');
+export function filterMatches(matches: VerifiedMatch[], outcome: Outcome, map: string, query = '') {
+  const needle = normalizeSearch(query);
+  return matches.filter(match => (outcome === 'all' || matchWon(match) === (outcome === 'win')) && (map === 'all' || match.map === map) && normalizeSearch(match.opponent).includes(needle));
 }
 export function mapPerformance(matches: VerifiedMatch[]) {
   return [...new Set(matches.map(match => match.map))].map(map => {

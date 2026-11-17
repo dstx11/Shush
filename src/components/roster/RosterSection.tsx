@@ -49,6 +49,7 @@ export function RosterSection() {
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
   }, [selectedPlayer.id, replayCycle]);
 
+  const [allPlayersVisible, setAllPlayersVisible] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -57,7 +58,7 @@ export function RosterSection() {
     if (!strip || !card || strip.scrollWidth <= strip.clientWidth) return;
     const target = strip.scrollLeft + card.getBoundingClientRect().left - strip.getBoundingClientRect().left - (strip.clientWidth - card.offsetWidth) / 2;
     strip.scrollTo({ left: Math.max(0, target), behavior: 'instant' });
-  }, [selectedIndex]);
+  }, [selectedIndex, allPlayersVisible]);
   const selectPlayer = useCallback((index: number) => {
     if (index < 0 || index >= players.length) return;
     playCue();
@@ -139,7 +140,7 @@ export function RosterSection() {
               <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
             </div>
 
-                    <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
+                    <div className="player-selector"><div className="player-selector-heading"><span>{allPlayersVisible ? 'Todos à vista' : 'Desliza para explorar'}</span><button className="utility-button" type="button" aria-label="Ver os 7 jogadores" aria-pressed={allPlayersVisible} aria-controls="player-options" onClick={() => setAllPlayersVisible(value => !value)}>Ver os 7 <span aria-hidden="true">{allPlayersVisible ? '-' : '+'}</span></button></div><div ref={stripRef} id="player-options" className={`character-strip${allPlayersVisible ? ' is-expanded' : ''}`} role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
             return (
               <div key={player.id} className={`player-select-card${index === selectedIndex ? ' is-active' : ''}`}>
@@ -152,7 +153,7 @@ export function RosterSection() {
                 }}>
                   <span className="strip-avatar">
                     <span className="player-card-number" aria-hidden="true">#{player.number}</span>
-                    <PlayerPortrait player={player} decorative thumbnail sizes="(max-width: 767px) 72px, 55px" />
+                    <PlayerPortrait player={player} decorative thumbnail sizes={allPlayersVisible ? '(max-width: 767px) calc((100vw - 56px) / 3), 55px' : '(max-width: 767px) 72px, 55px'} />
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong><span aria-hidden="true">{String(index+1).padStart(2,'0')}</span></span>
                 </button>
@@ -160,7 +161,7 @@ export function RosterSection() {
               </div>
             );
           })}
-        </div>
+        </div></div>
 
           <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Escolhe um jogador <span aria-hidden="true">· ← →</span></span>
             <button type="button" className="selector-sound" onClick={() => setSoundEnabled(value => !value)} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Desativar som de seleção' : 'Ativar som de seleção'}>{soundEnabled ? 'SOM ON' : 'SOM OFF'}</button>

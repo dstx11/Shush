@@ -114,6 +114,9 @@ try {
   assert.equal(filterMatches(verifiedMatches, 'win', 'all').length, 5);
   assert.equal(filterMatches(verifiedMatches, 'loss', 'all').length, 5);
   assert.equal(filterMatches(verifiedMatches, 'loss', 'Ascent').length, 0);
+  assert.deepEqual(filterMatches(verifiedMatches, 'win', 'Ascent', '  pri\u0301me   ESPORTS ').map(match => match.id), ['2026-05-10-prime']);
+  assert.equal(filterMatches(verifiedMatches, 'loss', 'all', 'prime').length, 0);
+  assert.equal(filterMatches(verifiedMatches, 'all', 'all', '   ').length, 10);
   assert.deepEqual(mapPerformance(verifiedMatches), [
     { map: 'Haven', played: 2, wins: 1, losses: 1, rate: 50 },
     { map: 'Lotus', played: 1, wins: 0, losses: 1, rate: 0 },
