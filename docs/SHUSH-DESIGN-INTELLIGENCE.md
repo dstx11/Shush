@@ -3,6 +3,14 @@ Version: 1.0 | Research cut-off: 2026-11-17 | Status: research and design guidan
 
 > Purpose: durable, evidence-linked design knowledge for future SHUSH work. This file informs decisions; it does not train or change model weights. Future agents must read relevant sections during substantial visual or UX work, then update discoveries with sources and observed results. Do not load the entire file for a trivial bugfix.
 
+## 0. Creative reset — binding direction (2026-11-17)
+
+**The user explicitly discarded the entire former SHUSH visual design. Treat this as a GREENFIELD VISUAL REDESIGN, not an evolution of old appearance.** The existing site is only an inventory of real data, user journeys, implementation realities and regression tests. Old screenshots, palettes, typography, composition, spacing, layout patterns, hover styles and motion are **not** creative baselines. Their continued presence in code or documents is not a reason to keep them. Redesign every visual layer from first principles; refactor or replace UI components as necessary. Legacy visual regression snapshots are evidence of what changed, not target appearances; update only after human inspection.
+
+Keep only legitimate nonvisual contracts: verified content, authentic player and brand identity assets where appropriate, shareable URLs, page destinations, accessibility, exports, seasonal schedule, actual competition facts, metadata, deployment and technical reliability. Existing fonts are candidates, never required; old color names are historical, not palette prescriptions. The **new** user-approved direction is luxury dark purple with refined, dense-but-clean UI, responsive AAA-quality game-feel, cinematic but restrained movement, optical craft and original interaction language. Develop new palette/type/material systems through prototypes and evidence.
+
+**How research should affect the new design:** compare several original art directions first, establish new visual rules, then select/adapt sourced effects. Never use "preserve the existing design" as a decision criterion. Test real user journeys and benchmark performance against old build, not aesthetic resemblance. Future agents should record which old implementations were replaced and what new design hypothesis proved stronger.
+
 ## 1. Source of truth and project reality
 
 - Repository: https://github.com/dstx11/Shush ; deployment: https://shush.pt/.
@@ -19,7 +27,7 @@ Brand promise: **Sem barulho. Só rounds.** Creative translation: **Silence befo
 Desired character: luxury dark purple + competitive precision + cinematic editorial + tactile/game-quality UI.
 Default = calm, legible, dark, visually confident. Action/selection = a brief controlled release of energy. User task completion outranks spectacle. Luxury is craft, not excessive glow; minimalism removes irrelevant noise, not useful information.
 A static screenshot must look excellent before animation. Every meaningful interaction must clearly respond; no animation should be necessary to understand critical content.
-The identity must not imitate a major org, a generic SaaS, a cyberpunk template, a Discord dashboard, or a component demo.
+The NEW identity must not imitate a major org, a generic SaaS, a cyberpunk template, a Discord dashboard, or a component demo. There is no obligation to retain any legacy SHUSH visual expression.
 
 ## 3. Research findings — evidence and SHUSH application
 
@@ -133,7 +141,7 @@ Finding: bloated AGENTS.md and prompts create contradictions and waste context; 
 ## 4. Art direction and concrete craft rules
 
 ### Colors
-Provisional foundations only, NOT approved production tokens:
+Fully NEW candidate palette ideas only, NOT legacy or approved production tokens:
 - Obsidian #09070F; midnight plum #120D1D; raised surface #1C1628; active surface #292039.
 - Muted stroke #3A2D49; core violet #9268C7; lavender #C5ABE6; warm white #F3EEF7; secondary text #B7ACBF.
 Use semantic tokens, validate contrast and chroma, inspect bright-purple light bleed. Strong purple is limited to branded highlights, primary actions and selected states. Neutral dark must dominate.
@@ -142,7 +150,7 @@ Use semantic tokens, validate contrast and chroma, inspect bright-purple light b
 Define matte graphite, smoked acrylic, satin plum, restrained metal/edge highlight, product studio and tactical graphite. Each needs idle/hover/focus/selected states. Do not put the same glossy glass card in every section. Optical highlight must not obscure text.
 
 ### Typography
-Reuse existing Space Grotesk, Manrope and IBM Plex Mono unless audited alternatives prove better. Assign clear display, body, micro-label and tabular score roles. Correct line breaking, optical alignment, letter spacing, baseline rhythm. Body remains static; occasional title animation is intentional, not default.
+Treat legacy fonts such as Space Grotesk, Manrope and IBM Plex Mono only as research candidates, with NO preference. Explore an original type system from zero; select fonts for actual brand character, licensing, performance, legibility and optical composition. Assign clear display, body, micro-label and tabular score roles. Correct line breaking, optical alignment, letter spacing, baseline rhythm. Body remains static; occasional title animation is intentional, not default.
 
 ### Composition
 Create recognizable alignment anchors and content widths, but unique page compositions. Every viewport needs one dominant story and one clear next action. Use contrast, proximity, scale, negative space and deliberate grouping. Avoid repeating a generic SaaS hero + six bento cards pattern.
@@ -213,7 +221,7 @@ Reject by default: always-on Glitch, multiple custom cursors, hyperspeed full-sc
 ## 7. Motion and performance budgets (project heuristics, not external standards)
 
 - Recommend one clear moving focal point in a viewport, with at most one low-contrast ambient background. Use judgement, not a hard requirement.
-- Initial draft timings: 80–140ms instant feedback, 150–260ms hover, 200–350ms selection, 300–600ms panel/shared transition, 500–900ms rare cinematic reveal. Tune with user-task testing; never let animation block input.
+- New motion-system draft timings: 80–140ms instant feedback, 150–260ms hover, 200–350ms selection, 300–600ms panel/shared transition, 500–900ms rare cinematic reveal. Tune with user-task testing; never let animation block input.
 - Full static render should be attractive. Reduced effects degrade in order: remove looping glow -> simplify parallax -> remove shader -> remove nonessential entrance motion; retain status changes via nonmoving cues.
 - JS engine selection: CSS > Web Animations API/native View Transitions > one selective motion engine > WebGL only if a signature effect beats optimized CSS/SVG/still media.
 - Do not animate layout/paint-heavy blur continuously; prefer pseudo-elements and transform/opacity. Beware will-change memory allocation.
@@ -233,7 +241,7 @@ Reject by default: always-on Glitch, multiple custom cursors, hyperspeed full-sc
 8. Playwright screenshots with stable environment; never blindly update snapshots. Axe catches common issues but is not sufficient alone.
 9. Re-run relevant tests after each meaningful change, and full validation before release.
 
-Existing useful commands: pnpm run typecheck; pnpm run validate; pnpm run test:browser; pnpm run build; pnpm run check:bundle; pnpm run check:links; pnpm run check:assets.
+Validation commands inherited from the functional codebase, not from the previous visual style: pnpm run typecheck; pnpm run validate; pnpm run test:browser; pnpm run build; pnpm run check:bundle; pnpm run check:links; pnpm run check:assets.
 
 ## 9. Design learning protocol — how future agents accumulate knowledge
 
@@ -307,4 +315,5 @@ Refresh checked catalog counts/pricing, licenses and browser support before sign
 
 ## 12. Research history
 
+- **2026-11-17 / v1.1:** Binding greenfield-visual-reset clarification. The old design has no aesthetic authority; preserve only authentic content and actual functional contracts. Legacy fonts and styling explicitly demoted to optional research inputs. 
 - **2026-11-17 / v1.0:** Initial deep synthesis of UI libraries, licensing, web motion, UX heuristics, creator case studies, project constraints, accessibility, performance, testing and agent-documentation practices. No UI was implemented, no build/test run was made in this research-only change. See companion docs/SHUSH-MASTER-DESIGN-PROMPT.md for the task execution entrypoint.
