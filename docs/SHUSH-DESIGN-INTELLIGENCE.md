@@ -138,6 +138,16 @@ Finding: OKLCH separates perceptual lightness/chroma/hue and is broadly supporte
 Source: https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra (2026-09-11).
 Finding: bloated AGENTS.md and prompts create contradictions and waste context; route relevant tasks to focused docs, and define completion boundaries. Implication: keep AGENTS.md concise; use this long knowledge base only for design and major UI work; use the separate execution prompt rather than pasting all research into every interaction.
 
+### R24 — Genuine visual reinvention needs a new design language, not recoloring old components
+Source: Figma, "Figma on Figma: Evolving our visual language", 2024-09-16, https://www.figma.com/blog/figma-on-figma-evolving-our-visual-language/ ; checked 2026-11-17.
+Finding: Figma's brand studio developed new compositional primitives, color, typographic roles and integrated motion, tested as an interconnected language. Implication for SHUSH: explore NEW primitives, visual grammar, fonts, materials, composition and motion; no automatic preservation of legacy design. The user explicitly wants a zero-based redesign, stronger than the source's own "evolution" framing.
+Confidence: primary creator case study. Cost: exploratory prototypes and brand system engineering. Validation: compare multiple independent hero/nav/roster concepts with static screenshots and functional user journeys; no claim of implementation yet.
+
+### R25 — Prototyping multiple alternatives is superior to polishing one speculative design
+Source: Nielsen Norman Group, "Case Study: Iterative Design and Prototype Testing of the NN/g Homepage", 2018-08-26, https://www.nngroup.com/articles/case-study-iterative-design-prototyping/ ; checked 2026-11-17.
+Finding: several design variants and repeated user/task feedback changed hierarchy, media choice and presentation formats. Implication: create at least three *different* art-direction systems for SHUSH (not 3 purple variations), test core tasks and mobile, then adopt the strongest. The old site provides functionality and task insight, not aesthetic authority; avoid preserving old visual styling out of habit.
+Confidence: first-party usability case study, not outcome evidence for SHUSH. Cost: moderate prototyping. Validation: actual browser prototypes, user journeys and documented comparison; research-only at present.
+
 ## 4. Art direction and concrete craft rules
 
 ### Colors
@@ -315,5 +325,6 @@ Refresh checked catalog counts/pricing, licenses and browser support before sign
 
 ## 12. Research history
 
+- **2026-11-17 / v1.2:** Added greenfield brand-system research from Figma and alternative-prototype evidence from NN/g; explicit instruction not to treat former SHUSH visuals as reference. No UI changes made.
 - **2026-11-17 / v1.1:** Binding greenfield-visual-reset clarification. The old design has no aesthetic authority; preserve only authentic content and actual functional contracts. Legacy fonts and styling explicitly demoted to optional research inputs. 
 - **2026-11-17 / v1.0:** Initial deep synthesis of UI libraries, licensing, web motion, UX heuristics, creator case studies, project constraints, accessibility, performance, testing and agent-documentation practices. No UI was implemented, no build/test run was made in this research-only change. See companion docs/SHUSH-MASTER-DESIGN-PROMPT.md for the task execution entrypoint.
