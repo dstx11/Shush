@@ -34,9 +34,9 @@ export function CoreHero() {
       </div>
       <div data-home-roster className="lux-hero-gallery" aria-label="Jogadores da SHUSH">
         <span className="lux-hero-orbit" aria-hidden="true" />
-        <div className="lux-hero-gallery-label"><span>THE PEOPLE BEHIND THE TAG</span><span>01 — 07</span></div>
+        <div className="lux-hero-gallery-label"><span>AS PESSOAS POR TRÁS DA TAG</span><span>01 — 07</span></div>
         {featured.map((player,index) => <AppLink className={`lux-portrait lux-portrait-${index}`} key={player.id} data-home-player data-player={player.id} href={`/esports/valorant/roster?player=${player.id}`} aria-label={`Conhecer ${player.displayName}`}><PlayerPortrait player={player} decorative eager sizes={index === 1 ? '(max-width: 767px) 280px, (max-width: 1000px) 350px, 420px' : '(max-width: 767px) 225px, (max-width: 1000px) 270px, 320px'} /><span><small>#{player.number} / SHUSH</small><strong>{player.displayName}</strong><i aria-hidden="true"><ArrowIcon /></i></span></AppLink>)}
-        <span className="lux-gallery-footer">NO NOISE. ALL GAME.</span>
+        <span className="lux-gallery-footer">SILENCE BEFORE IMPACT</span>
       </div>
     </div>
     <div className="lux-hero-bottom shell"><span>VALORANT / ROSTER / CREATORS / DROP 01</span><a href="#discover">Dentro da SHUSH <svg aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 3v18m-6-6 6 6 6-6" /></svg></a></div>
