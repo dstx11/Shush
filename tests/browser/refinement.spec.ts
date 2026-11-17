@@ -186,6 +186,25 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
+    const viewportWidth=page.viewportSize()!.width;
+    await expect.poll(()=>page.evaluate(()=>Math.max(document.documentElement.scrollWidth,innerWidth))).toBeLessThanOrEqual(viewportWidth+1);
+    const desktopNav=page.locator('.desktop-navigation');
+    if(await desktopNav.isVisible()){
+      const menu=await desktopNav.boundingBox(),brand=await page.locator('header .brand-mark').boundingBox();
+      expect(menu!.x).toBeGreaterThanOrEqual(brand!.x+brand!.width);
+      const utilities=page.locator('.header-utilities');
+      if(await utilities.isVisible())expect((await utilities.boundingBox())!.x).toBeGreaterThanOrEqual(menu!.x+menu!.width);
+    }else{
+      const toggle=page.getByRole('button',{name:'Abrir navegação',exact:true});
+      await expect(page.locator('.header-utilities')).toBeHidden();
+      await expect(toggle).toBeVisible();
+      const brand=await page.locator('header .brand-mark').boundingBox(),button=await toggle.boundingBox();
+      expect(brand!.x+brand!.width).toBeLessThanOrEqual(button!.x+1);
+      await toggle.click();
+      await expect(page.locator('#mobile-navigation').getByRole('link',{name:'Home',exact:true})).toBeVisible();
+      expect(await page.locator('#mobile-navigation a').evaluateAll(links=>links.every(link=>link.scrollWidth<=link.clientWidth+1))).toBe(true);
+      await page.keyboard.press('Escape');await expect(toggle).toBeFocused();
+    }
     if (path.endsWith('/premier')) {
       await page.locator('.legacy-archive > summary').click();
       await page.locator('.match-week').first().locator('summary').click();

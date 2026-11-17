@@ -1,3 +1,4 @@
+import {routeMetadata} from '../../src/data/meta';
 import {test,expect} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
@@ -61,10 +62,10 @@ test('motion controls change an actual animation; observatory shows browser data
  await expect(lab.locator('.lab-metrics')).toContainText('Recursos carregados');
  await expect(lab.locator('.lab-metrics')).not.toContainText('A medir…',{timeout:5000});
 });
-test('exact browser title stays Shush on public routes and missing pages',async ({page})=>{
+test('browser titles identify each public route and missing pages',async ({page})=>{
  for(const path of ['/','/esports/valorant/premier','/esports/valorant/roster','/content','/company','/products/jersey','/missing-shush-page']){
   await page.goto(path);
-  await expect(page).toHaveTitle('Shush');
+  await expect(page).toHaveTitle(routeMetadata[path]?.title ?? '404 — SHUSH');
  }
 });
 

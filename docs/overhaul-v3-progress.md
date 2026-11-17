@@ -1,3 +1,5 @@
+> Historical October report, not the current release status. See [the current experience overhaul](experience-overhaul-2026-11.md).
+
 # SHUSH — Overhaul V3
 
 Working branch: audit-pro-20261007. Base: master. PR #1. No automatic merge.

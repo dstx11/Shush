@@ -1,12 +1,11 @@
+import {within,loadCanvasImage} from './canvas-resources';
 import type { VerifiedMatch } from '../data/verified-matches';
 import { formatDate } from './premier';
 
 export async function drawMatchPoster(canvas: HTMLCanvasElement, match: VerifiedMatch, height: 1080 | 1350) {
   // Font load failures use the same system fallback in the preview and PNG.
   await Promise.allSettled([within(document.fonts.load('800 160px Manrope'), 3000), within(document.fonts.load('600 32px "IBM Plex Mono"'), 3000)]);
-  const logo = new Image();
-  logo.src = '/assets/brand/shush-logo.webp';
-  await within(logo.decode(), 8000);
+  const logo = await loadCanvasImage('/assets/brand/shush-logo.webp');
   canvas.width = 1080; canvas.height = height;
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Canvas indisponível.');
@@ -33,9 +32,3 @@ export async function drawMatchPoster(canvas: HTMLCanvasElement, match: Verified
   text('SHUSH.PT', 790, height - 65, 24, '#c4afe9', 220, true);
 }
 
-function within<T>(resource: Promise<T>, milliseconds: number): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const timer = window.setTimeout(() => reject(new Error('Tempo de carregamento excedido.')), milliseconds);
-    resource.then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
-  });
-}

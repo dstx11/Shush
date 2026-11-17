@@ -7,7 +7,7 @@ Technical SEO uses the existing static React build, without tracking or new depe
 - `src/data/seo.ts` keeps page schema consistent with client navigation. Player and jersey query parameters canonicalize to their parent page.
 - Large search image previews are permitted; social previews use existing real assets.
 - Production remains indexable, preview deployments remain noindex, unknown URLs remain real 404s. No invented founding date, address, social account, review, offer, price or current result.
-- Distribution and browser tests guard unique metadata, schema consistency, headings, navigation and parameter canonicalization. Existing visual baselines remain unchanged.
+- Distribution and browser tests guard unique metadata, schema consistency, headings, navigation and parameter canonicalization. Browser tab titles use the same per-route metadata in static HTML and SPA navigation.
 
 ## Owner-side indexing and measurement
 

@@ -18,14 +18,14 @@
 .shush-reading-progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--season-accent);z-index:70;transform:scaleX(0);transform-origin:left;pointer-events:none}
 @supports(animation-timeline:scroll(root block)){.shush-reading-progress{animation:shush-scroll-progress linear both;animation-timeline:scroll(root block)}@keyframes shush-scroll-progress{to{transform:scaleX(1)}}}
 @media(prefers-reduced-motion:no-preference){
- html:not([data-motion="reduce"]) .motion-in{opacity:0;transform:translate3d(0,24px,0);transition:opacity .7s var(--move-spring),transform .8s var(--move-spring);transition-delay:var(--motion-delay,0ms)}
- html:not([data-motion="reduce"]) .motion-in.motion-visible{opacity:1;transform:translate3d(0,0,0)}
+ html:not([data-motion="reduce"]) .motion-in{opacity:.75;transition:opacity .45s var(--ease-out);transition-delay:var(--motion-delay,0ms)}
+ html:not([data-motion="reduce"]) .motion-in.motion-visible{opacity:1;transform:none}
  html:not([data-motion="reduce"]) .about-perspective-art>span{animation:shush-symbol-pulse 7s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .shush-hero-aura{animation:shush-aura 10s ease-in-out infinite alternate}
  html:not([data-motion="reduce"]) .shush-visual-watermark{animation:shush-watermark 9s ease-in-out infinite alternate}
  @keyframes shush-symbol-pulse{to{transform:scale(1.035);opacity:1}}
  @keyframes shush-aura{to{transform:scale(1.08);opacity:.55}}
- @keyframes shush-watermark{to{transform:translateY(-8px);opacity:.7}}
+ @keyframes shush-watermark{to{opacity:.7}}
 }
 html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 html[data-motion="reduce"] .motion-in{opacity:1!important;transform:none!important}

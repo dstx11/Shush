@@ -1,3 +1,4 @@
+import {lockPageScroll} from '../../hooks/useModalDialog';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSeason } from '../../seasonal/SeasonProvider';
 import { lisbonDate, type SeasonId } from '../../seasonal/calendar.mjs';
@@ -14,7 +15,6 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
   const { id, theme } = useSeason();
   const [visible, setVisible] = useState(() => shouldPlay(id));
   const [leaving, setLeaving] = useState(false);
-  const [phase, setPhase] = useState(0);
   const dialog = useRef<HTMLDialogElement>(null);
   const didOpen = useRef(false);
 
@@ -33,11 +33,10 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
     if (!element.open) element.showModal();
     didOpen.current = true;
     boot?.remove();
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const unlock=lockPageScroll();
     try { sessionStorage.setItem(INTRO_SEEN(id), '1'); localStorage.setItem(INTRO_SEEN(id), '1'); } catch { /* optional storage */ }
     return () => {
-      document.body.style.overflow = previousOverflow;
+      unlock();
       if (element.open) element.close();
     };
   }, [visible, id, onComplete]);
@@ -57,14 +56,11 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
       if (finishing || !active) return;
       finishing = true;
       timeouts.forEach(timer => window.clearTimeout(timer));
-      setPhase(3);
       setLeaving(true);
-      later(() => setVisible(false), 320);
+      later(() => setVisible(false), 200);
     };
-    later(() => setPhase(1), 500);
-    later(() => setPhase(2), 1200);
-    later(()=>{minimumElapsed=true;if(ready)finish();},1600);
-    later(finish, 3000);
+    later(()=>{minimumElapsed=true;if(ready)finish();},850);
+    later(finish, 1800);
     const images = Array.from(document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')).slice(0, 7);
     Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(()=>{ready=true;if(minimumElapsed)finish();});
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -81,7 +77,7 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
 
   if (!visible) return null;
   return <dialog ref={dialog} className={'brand-intro shush-season-intro shush-intro-v3' + (leaving ? ' is-leaving' : '')}
-      data-phase={phase} aria-label="Entrada SHUSH" aria-describedby="intro-description"
+      data-phase={leaving ? 'exit' : 'identity'} aria-label="Entrada SHUSH" aria-describedby="intro-description"
       onCancel={event => { event.preventDefault(); setVisible(false); }}>
     <div className="shush-intro-v3-top"><span aria-hidden="true">SHUSH / VALORANT</span><button className="intro-skip" type="button" onClick={() => setVisible(false)}>Saltar apresentação</button></div>
     <div className="shush-intro-v3-stage">
@@ -93,8 +89,8 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
       <p id="intro-description">{theme.introSub}</p>
     </div>
     <div className="shush-intro-v3-bottom">
-      <div className={'shush-intro-v3-track phase-' + phase} aria-hidden="true"><span /></div>
-      <span className="shush-intro-v3-caption" role="status">{phase === 3 ? 'A entrar no site.' : 'SHUSH / PORTUGAL'}</span>
+      <div className="shush-intro-v3-track" aria-hidden="true"><span /></div>
+      <span className="shush-intro-v3-caption" role="status">{leaving ? 'A entrar no site.' : 'SHUSH / PORTUGAL'}</span>
     </div>
   </dialog>;
 }

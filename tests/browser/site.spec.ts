@@ -107,7 +107,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await open.click();
   await page.locator('#mobile-navigation').getByRole('link', { name: 'Roster', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Roster / 07');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Escolhe o teu lado. Roster / 07');
   await expect(page.locator('#main-content')).toBeFocused();
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
@@ -327,14 +327,14 @@ test('About: real brand download and partner; static and SPA 404 recovery', asyn
   expect(image.subarray(0, 4).toString()).toBe('RIFF');
   expect(image.subarray(8, 12).toString()).toBe('WEBP');
   await page.goto('/unknown-shush-test');
-  await expect(page).toHaveTitle('Shush');
+  await expect(page).toHaveTitle('404 — SHUSH');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,nofollow');
   await expect(page.getByRole('heading', { name: /Fora do/ })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('spa-404.png'), fullPage: true });
   await page.getByRole('link', { name: 'Conhecer o roster', exact: true }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
   await page.goto('/404.html');
-  await expect(page).toHaveTitle('Shush');
+  await expect(page).toHaveTitle('404 — SHUSH');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex,nofollow');
   await expect(page.getByRole('navigation', { name: 'Recuperar navegação' })).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('static-404.png'), fullPage: true });

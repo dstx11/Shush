@@ -16,6 +16,13 @@
 }
 
 :root {
+  --control-height: 2.75rem;
+  --focus: #c4afe9;
+  --success: #9bc8ae;
+  --error: #efb7c3;
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --motion-fast: 160ms;
+  --motion-reveal: 440ms;
   color-scheme: dark;
   --field: #19161f;
   --control-line: #7e718e;
@@ -47,7 +54,7 @@
   --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
-html { background: var(--bg); scroll-behavior: smooth; scroll-padding-top: 6rem; }
+html { scrollbar-gutter: stable; background: var(--bg); scroll-behavior: smooth; scroll-padding-top: 6rem; }
 body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-ui); font-weight: 500; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -58,7 +65,7 @@ button { cursor: pointer; }
 .brand-mark img { display: block; height: 2rem; width: auto; object-fit: contain; }
 .brand-mark span { font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
 .status-badge { display: inline-flex; width: fit-content; align-items: center; gap: .4rem; }
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid #c4afe9; outline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 #main-content:focus { outline: none; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

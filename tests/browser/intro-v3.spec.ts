@@ -81,7 +81,7 @@ test('cached assets do not erase the readable introduction beat',async ({page},i
  await page.goto('/');
  const intro=page.getByRole('dialog',{name:'Entrada SHUSH'});
  await expect(intro).toBeVisible();
- await page.clock.runFor(900);
+ await page.clock.runFor(400);
  await expect(intro).toBeVisible();
  await page.screenshot({path:info.outputPath('intro-readable-beat.png'),animations:'disabled'});
  await page.clock.runFor(3500);

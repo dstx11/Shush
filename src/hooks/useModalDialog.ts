@@ -3,13 +3,13 @@ import { useEffect, type RefObject } from 'react';
 let scrollLocks = 0;
 let restoreScroll: (() => void) | undefined;
 
-function lockPageScroll() {
+export function lockPageScroll() {
   if (scrollLocks++ === 0) {
     const body = document.body;
     const overflow = body.style.overflow;
     const padding = body.style.paddingRight;
     const scrollbar = window.innerWidth - document.documentElement.clientWidth;
-    if (scrollbar > 0) body.style.paddingRight = `${parseFloat(getComputedStyle(body).paddingRight) + scrollbar}px`;
+    if (scrollbar > 0 && !getComputedStyle(document.documentElement).scrollbarGutter.includes('stable')) body.style.paddingRight = `${parseFloat(getComputedStyle(body).paddingRight) + scrollbar}px`;
     body.style.overflow = 'hidden';
     restoreScroll = () => { body.style.overflow = overflow; body.style.paddingRight = padding; };
   }

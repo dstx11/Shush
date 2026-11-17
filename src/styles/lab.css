@@ -72,7 +72,7 @@
 .lab-metrics dt{color:var(--muted);font:.68rem var(--font-mono)}
 .lab-metrics dd{margin:0;font:800 clamp(2rem,4.5vw,4rem)/1 var(--font-heading);letter-spacing:-.07em}
 .lab-foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;padding:.9rem clamp(1.2rem,3vw,2rem);border-top:1px solid var(--line);color:var(--muted);font:550 .57rem/1.5 var(--font-mono);letter-spacing:.06em}
-@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .lab-season-choice,html:not([data-motion="reduce"]) .lab-command-list button{transition:transform .35s cubic-bezier(.16,1,.3,1),background-color .2s,border-color .2s}html:not([data-motion="reduce"]) .lab-season-choice:hover,html:not([data-motion="reduce"]) .lab-command-list button:hover{transform:translateY(-3px)}}
+@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .lab-season-choice,html:not([data-motion="reduce"]) .lab-command-list button{transition:background-color .2s,border-color .2s}html:not([data-motion="reduce"]) .lab-season-choice:hover,html:not([data-motion="reduce"]) .lab-command-list button:hover{border-color:var(--signal)}}
 @media(prefers-reduced-motion:reduce){.lab-demo-object{animation:none}}
 html[data-motion="reduce"] .lab-demo-object{animation:none}
 @media(max-width:920px){.lab-season-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-component-grid{grid-template-columns:1fr}.lab-motion-layout{grid-template-columns:1fr}.lab-demo{min-height:260px}}

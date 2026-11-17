@@ -1,3 +1,4 @@
+import {lockPageScroll} from '../../hooks/useModalDialog';
 import { MotionControl } from '../ui/MotionControl';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
@@ -36,8 +37,7 @@ export function Header() {
   useEffect(() => {
     if (!isOpen) return;
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const unlock=lockPageScroll();
     const background = [document.getElementById('main-content'), document.querySelector('footer')];
     const inertStates = background.map((element) => element?.inert ?? false);
     background.forEach((element) => { if (element) element.inert = true; });
@@ -61,6 +61,7 @@ export function Header() {
     const onPointerDown = (event: PointerEvent) => {
       if (event.target instanceof Node && !navRef.current?.contains(event.target)) {
         setIsOpen(false);
+        menuButtonRef.current?.focus({preventScroll:true});
       }
     };
 
@@ -68,7 +69,7 @@ export function Header() {
     document.addEventListener('pointerdown', onPointerDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      unlock();
       background.forEach((element, index) => { if (element) element.inert = inertStates[index]; });
       window.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);

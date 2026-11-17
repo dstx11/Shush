@@ -80,7 +80,7 @@ expect(index, 'rel="canonical" href="https://shush.pt"', 'root canonical URL');
 if (/rel="preload" as="image" href="\/assets\/avatars\//.test(index)) failures.push('Home must not preload a fixed roster member');
 
 expect(notFound, '<meta name="robots" content="noindex,nofollow"', '404 noindex');
-expect(notFound, '<title>Shush</title>', '404 title');
+expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
@@ -90,7 +90,7 @@ for (const [path, canonical, title] of routeFiles) {
     expect(html, 'href="/'+css+'"', `${path} static route CSS`);
   }
   expectAbsent(html, 'shush-loading', `${path} unfinished loading shell`);
-  expect(html, '<title>Shush</title>', `${path} browser tab title`);
+  expect(html, `<title>${title}</title>`, `${path} browser tab title`);
   expect(html, `rel="canonical" href="${canonical}"`, `${path} canonical`);
   expect(html, `property="og:url" content="${canonical}"`, `${path} OG URL`);
   expect(html, `property="og:image:alt" content="${title}"`, `${path} OG image alt`);
@@ -148,7 +148,7 @@ for (const file of ['index.html', ...routeFiles.map(([path]) => path)]) {
   const title = html.match(/<title>(.*?)<\/title>/)?.[1];
   const description = html.match(/name="description" content="([^"]+)"/)?.[1];
   const canonical = html.match(/rel="canonical" href="([^"]+)"/)?.[1];
-  if (title !== 'Shush') failures.push(`${file}: browser title must be Shush`);
+  if (!title || !title.includes('SHUSH')) failures.push(`${file}: missing SHUSH route title`);
   if (!description || seenDescriptions.has(description)) failures.push(`${file}: missing/duplicate description`);
   seenDescriptions.add(description);
   if ([...html.matchAll(/<h1[\s>]/g)].length !== 1) failures.push(`${file}: expected one H1`);

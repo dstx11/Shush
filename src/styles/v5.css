@@ -20,8 +20,8 @@
 .map-performance-row meter { width: 100%; height: .5rem; accent-color: #c4afe9; }
 .match-poster-dialog { width: min(58rem,calc(100% - 2rem)); max-height: calc(100svh - 2rem); margin: auto; padding: 1.5rem; border: 1px solid var(--line); border-radius: 1rem; background: var(--bg); color: var(--text); overflow: auto; }
 .match-poster-dialog::backdrop { background: #08060be6; }
-.poster-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-.poster-heading h2 { font-size: 1.1rem; }
+.poster-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.poster-heading h2 { font-size: 1.1rem; max-width:100%; overflow-wrap:anywhere; }
 .poster-layout { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 1.5rem; }
 .poster-preview { min-height: 15rem; }
 .poster-preview canvas { width: 100%; height: auto; border: 1px solid var(--line); }
@@ -33,8 +33,6 @@
 .about-brand-panel { position: relative; }
 .about-brand-panel::before { content: ''; display: block; position: absolute; inset: 1rem; border: 1px solid #ffffff09; border-radius: 50%; pointer-events: none; }
 .drop-gallery-label { border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
-.drop-view-control { justify-content: center; }
-.drop-view-control button { min-width: 7rem; }
 .shush-header.is-scrolled { border-color: #645572; box-shadow: 0 8px 24px #0002; }
 @media (prefers-reduced-motion: no-preference) {
  .team-cover-player img { transition: translate .35s ease-out, transform .35s; }
