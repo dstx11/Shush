@@ -28,20 +28,14 @@ Positioning:
 Do not make SHUSH look like a meme site, a fake major org, or a corporate template.
 
 ## Technical Stack
-Use only:
+Keep the existing foundation:
 - Vite
 - React
 - TypeScript
 - Tailwind CSS
 - React Router
 
-Do not add:
-- Next.js
-- backend services
-- Supabase
-- UI libraries
-- external particle libraries
-- fake checkout/ecommerce flows
+Do not add Next.js, backend services, Supabase, fake checkout/ecommerce flows, or an entire UI kit merely for styling. For an explicitly approved major design/UX overhaul, individual licensed components from React Bits, Uiverse or similar sources may be copied and **adapted** locally if they preserve semantics, accessibility, source notices and bundle budgets. A new runtime animation or particle dependency needs a documented use case, bundle/performance assessment and an alternative comparison. For ordinary maintenance, do not install UI libraries or external particle packages.
 
 ## Assets
 Final public assets live under `public/assets/`.
@@ -99,3 +93,12 @@ pnpm run validate:dist
 pnpm run check:bundle
 pnpm run preview
 ```
+
+
+## Research-driven design work
+
+For substantial visual identity, UX, motion, player-select, homepage or full-remodel tasks, consult:
+- [Living design intelligence](docs/SHUSH-DESIGN-INTELLIGENCE.md) — documented research, sources, licensing, decisions, rejected patterns, performance and reusable lessons.
+- [Full remodel execution prompt](docs/SHUSH-MASTER-DESIGN-PROMPT.md) — use when explicitly tasked with a comprehensive redesign.
+
+In significant design work, verify relevant research against current sources and append dated, source-linked findings and implementation evidence to the living document. Distinguish researched, prototyped and shipped work; do not claim that reading a document retrains the AI model. For trivial bugfixes, do not load these large documents. Maintain existing verified data, test behavior and pt-PT public copy. Work on a branch and do not publish to production without authorization.
