@@ -152,7 +152,7 @@ export function RosterSection() {
                 }}>
                   <span className="strip-avatar">
                     <span className="player-card-number" aria-hidden="true">#{player.number}</span>
-                    <PlayerPortrait player={player} decorative thumbnail sizes="(max-width: 1050px) 92px, 13vw" />
+                    <PlayerPortrait player={player} decorative thumbnail sizes="(max-width: 767px) 72px, 55px" />
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong><span aria-hidden="true">{String(index+1).padStart(2,'0')}</span></span>
                 </button>

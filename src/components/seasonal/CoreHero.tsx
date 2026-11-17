@@ -23,7 +23,7 @@ export function CoreHero() {
       <div data-home-roster className="lux-hero-gallery" aria-label="Jogadores da SHUSH">
         <span className="lux-hero-orbit" aria-hidden="true" />
         <div className="lux-hero-gallery-label"><span>THE PEOPLE BEHIND THE TAG</span><span>01 — 07</span></div>
-        {featured.map((player,index) => <AppLink className={`lux-portrait lux-portrait-${index}`} key={player.id} data-home-player data-player={player.id} href={`/esports/valorant/roster?player=${player.id}`} aria-label={`Conhecer ${player.displayName}`}><PlayerPortrait player={player} decorative eager sizes="(max-width: 767px) 40vw, 23vw" /><span><small>#{player.number} / SHUSH</small><strong>{player.displayName}</strong><i aria-hidden="true"><ArrowIcon /></i></span></AppLink>)}
+        {featured.map((player,index) => <AppLink className={`lux-portrait lux-portrait-${index}`} key={player.id} data-home-player data-player={player.id} href={`/esports/valorant/roster?player=${player.id}`} aria-label={`Conhecer ${player.displayName}`}><PlayerPortrait player={player} decorative eager sizes={index === 1 ? '(max-width: 767px) 280px, (max-width: 1000px) 350px, 420px' : '(max-width: 767px) 225px, (max-width: 1000px) 270px, 320px'} /><span><small>#{player.number} / SHUSH</small><strong>{player.displayName}</strong><i aria-hidden="true"><ArrowIcon /></i></span></AppLink>)}
         <span className="lux-gallery-footer">NO NOISE. ALL GAME.</span>
       </div>
     </div>

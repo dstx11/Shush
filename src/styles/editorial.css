@@ -14,11 +14,6 @@ body { background: var(--ink); overflow-wrap:anywhere; }
 .button-secondary{background:#17111f;color:#eee6f4;border-color:#706079;box-shadow:inset 0 1px #ffffff0a}.button-secondary:hover{background:#2b2037;border-color:#c5a1df}
 .editorial-link { min-height: 2.75rem; font-size: .875rem; }
 
-/* A quiet introduction with the people of SHUSH in the foreground. */
-.opening { --paper: var(--text); padding-top: var(--page-top); background: radial-gradient(ellipse at 75% 15%, #302637 0, transparent 60%), var(--bg); color: var(--text); }
-
-.opening .button-secondary { border-color: var(--control-line); color: var(--text); }
-.opening .button-secondary:hover { background: var(--surface-2); }
 .view-control { display: flex; gap: .25rem; }
 .view-control button { min-width: 4rem; min-height: 2.75rem; padding-inline: .65rem; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font: .8rem var(--font-mono); }
 .view-control button[aria-pressed='true'] { border-color: var(--control-line); color: var(--text); background: var(--surface-2); }
@@ -32,74 +27,16 @@ body { background: var(--ink); overflow-wrap:anywhere; }
 .page-heading h1 span { color: var(--signal); }
 .page-heading > p { max-width: 28rem; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 
-@media (max-width: 1180px) { .competition-signal { display: none; } .shush-navigation { gap: 1rem; }  }
-@container navigation (width <= 24rem) or (48rem <= width <= 56.25rem) {
-  .shush-navigation .brand-mark span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-}
 @media (max-width: 767px) {
   .shell { width: min(calc(100% - 2.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)), var(--page-width)); }
-  .desktop-navigation, .competition-signal { display: none; }
-  .shush-navigation { grid-template-columns: minmax(0, 1fr) auto; }
-  .navigation-toggle { display: flex; justify-self: end; }
-  .opening { padding-top: var(--page-top); }
-
-  .opening .action-row { gap: .5rem; }
-  .opening .site-button { gap: .8rem; padding-inline: .8rem; font-size: .8rem; }
-
   .section-index { margin-bottom: 1.75rem; }
   .section-index .mono { font-size: .7rem; }
-  .section-heading { flex-wrap: wrap; gap: .75rem; margin-bottom: 1.75rem; } .page-heading { grid-template-columns: 1fr; }
-  .page-heading { gap: 1.25rem; padding-bottom: 1.75rem; }
+  .section-heading { flex-wrap: wrap; gap: .75rem; margin-bottom: 1.75rem; }
+  .page-heading { grid-template-columns: 1fr; gap: 1.25rem; padding-bottom: 1.75rem; }
   .page-heading h1 { font-size: var(--title-size); }
 }
-/* Three real portraits form one team cover; no product competes with the players. */
-
-.hero-wordmark { display: block; font: 700 .8rem var(--font-heading); letter-spacing: .3em; color: var(--signal); margin-bottom: 1.25rem; }
-
-.team-cover { position: relative; display: grid; grid-template-columns: .8fr 1fr .8fr; align-items: center; gap: .6rem; min-width: 0; padding-block: 1.5rem 3rem; }
-.team-cover-player { position: relative; min-width: 0; height: 22rem; transform: translateY(2rem); overflow: hidden; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface-2); color: var(--text); text-decoration: none; }
-.team-cover-player.cover-1 { height: 29rem; transform: translateY(-1rem); }
-.team-cover-player.cover-2 { transform: translateY(-3rem); }
-.team-cover-player img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
-.team-cover-player > span { position: absolute; inset: 35% 0 0; display: flex; flex-direction: column; justify-content: end; padding: 1rem; background: linear-gradient(transparent, #15131af5); }
-.team-cover-player small { font: .6rem/1.6 var(--font-mono); color: #ddd2e7; }
-.team-cover-player strong { font: 600 clamp(1.25rem, 2.2vw, 2.2rem)/1.3 var(--font-heading); letter-spacing: -.03em; }
-.team-cover-player i { font-style: normal; color: var(--signal); margin-top: .5rem; }
-@media (max-width: 1000px) {  .team-cover-player { height: 20rem; } .team-cover-player.cover-1 { height: 26rem; } .team-cover-player > span { padding: .65rem; } }
-@media (max-width: 767px) {
-
- .team-cover { gap: .45rem; padding-top: .5rem; }
- .team-cover-player { height: 15rem; border-radius: .8rem; }
- .team-cover-player.cover-1 { height: 19rem; }
- .team-cover-player small { font-size: .5rem; }
- .team-cover-player strong { font-size: clamp(1.1rem, 5vw, 1.8rem); }
-}
-@media (prefers-reduced-motion: no-preference) { .team-cover { animation: shush-reveal .5s ease-out both; } }
-
-/* Staggered photo contact sheet; pointer and keyboard reveal the same details. */
-
-.team-cover-player:focus-visible { outline-offset: 4px; }
-.team-cover-player:is(:hover, :focus-visible) { border-color: var(--signal); }
 .footer-top { display: grid; place-items: center; width: 3rem; height: 3rem; border: 1px solid var(--control-line); border-radius: 50%; color: var(--text); text-decoration: none; font-size: 1.5rem; }
 @media (prefers-reduced-motion: no-preference) {
- .reveal-arrive { animation: section-arrive .65s cubic-bezier(.16,1,.3,1) both; }
- .team-cover-player { transition: transform .45s cubic-bezier(.16,1,.3,1), border-color .2s; }
-
-
-
- .verified-match { transition: border-color .2s, transform .2s; }
- .verified-match:focus-within, .verified-match:hover { border-color: var(--signal); }
- @keyframes section-arrive { from { opacity: .25; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  .verified-match { transition: border-color .2s, transform .2s; }
+  .verified-match:focus-within, .verified-match:hover { border-color: var(--signal); }
 }
-@media (max-width: 767px) {
- .team-cover { margin-top: 1rem; padding-bottom: 2rem; }
- .team-cover-player { transform: translateY(1rem); }
- .team-cover-player.cover-1 { transform: none; }
- .team-cover-player.cover-2 { transform: translateY(-1rem); }
-}
-
-/* Container rem units follow text enlargement as well as viewport changes. */
-@container navigation (max-width:75rem){.header-utilities .competition-signal{display:none}}
-@container navigation (max-width:47.99rem){.shush-header :is(.desktop-navigation,.header-utilities){display:none}.shush-navigation{grid-template-columns:minmax(0,1fr) auto}.navigation-toggle{display:flex;justify-self:end}}
-
-@container navigation (width<=24rem){.shush-navigation{gap:.5rem}.shush-navigation .brand-mark{min-width:0;max-width:100%}.shush-navigation .brand-mark img{max-width:100%}.overlay-link{grid-template-columns:1rem minmax(0,1fr) auto;overflow-wrap:anywhere}}
