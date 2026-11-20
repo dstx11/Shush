@@ -11,7 +11,6 @@ import {
   loadRouteWithRecovery,
   loadAboutPage,
   loadContentPage,
-  loadDropPage,
   loadHomePage,
   loadNotFoundPage,
   loadPremierPage,
@@ -22,7 +21,6 @@ const HomePage = lazy(() => loadRouteWithRecovery(loadHomePage));
 const PremierPage = lazy(() => loadRouteWithRecovery(loadPremierPage));
 const RosterPage = lazy(() => loadRouteWithRecovery(loadRosterPage));
 const ContentPage = lazy(() => loadRouteWithRecovery(loadContentPage));
-const DropPage = lazy(() => loadRouteWithRecovery(loadDropPage));
 const AboutPage = lazy(() => loadRouteWithRecovery(loadAboutPage));
 const NotFoundPage = lazy(() => loadRouteWithRecovery(loadNotFoundPage));
 
@@ -59,7 +57,6 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
                 <Route path="/esports/valorant/premier" element={page('/esports/valorant/premier', PremierPage)} />
                 <Route path="/esports/valorant/roster" element={page('/esports/valorant/roster', RosterPage)} />
                 <Route path="/content" element={page('/content', ContentPage)} />
-                <Route path="/products/jersey" element={page('/products/jersey', DropPage)} />
                 <Route path="/company" element={page('/company', AboutPage)} />
 
                 <Route path="/esports" element={<Navigate to="/esports/valorant/premier" replace />} />
@@ -68,8 +65,6 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
                 <Route path="/esports/valorant/tournaments" element={<Navigate to="/esports/valorant/premier#verified-results" replace />} />
                 <Route path="/content/more" element={<Navigate to="/content" replace />} />
                 <Route path="/content/th0maz7" element={<Navigate to="/content" replace />} />
-                <Route path="/products" element={<Navigate to="/products/jersey" replace />} />
-                <Route path="/products/jersey/custom" element={<Navigate to="/products/jersey#customizacao" replace />} />
                 <Route path="/company/partners" element={<Navigate to="/company#partners" replace />} />
                 <Route path="/company/contact" element={<Navigate to="/company" replace />} />
 

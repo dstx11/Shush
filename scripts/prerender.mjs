@@ -20,7 +20,7 @@ try {
   const routeEntries = {
     '/': 'HomePage', '/esports/valorant/premier': 'PremierPage',
     '/esports/valorant/roster': 'RosterPage', '/content': 'ContentPage',
-    '/products/jersey': 'DropPage', '/company': 'AboutPage',
+    '/company': 'AboutPage',
   };
   function routeStyles(route) {
     const styles = new Set();

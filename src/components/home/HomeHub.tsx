@@ -80,6 +80,6 @@ export function HomeHub() {
         })}
       </div>
     </section>
-    <div className="lux-closing"><AppLink href="/company"><span className="section-kicker">Sobre a SHUSH</span><strong>Começámos com<br />uma piada.</strong><span>Ler a nossa história <ArrowIcon /></span></AppLink><AppLink href="/products/jersey" className="closing-product"><img src="/assets/jersey/frontjersey.webp" alt="" width="1254" height="1254" loading="lazy" /><span className="section-kicker">Drop 01</span><strong>A nossa camisola.<br />O teu nick.</strong><span>Personalizar <ArrowIcon /></span></AppLink></div>
+    <div className="lux-closing"><AppLink href="/company"><span className="section-kicker">Sobre a SHUSH</span><strong>Começámos com<br />uma piada.</strong><span>Ler a nossa história <ArrowIcon /></span></AppLink></div>
   </div>;
 }

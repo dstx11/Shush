@@ -1,6 +1,6 @@
 import {useEffect,useRef} from 'react';
 import {useModalDialog} from '../../hooks/useModalDialog';
-import {players,playerDropUrl,type Player} from '../../data/players';
+import {players,type Player} from '../../data/players';
 import {getCompetitiveProfile} from '../../data/competitive-profiles';
 import {PlayerPortrait} from '../ui/PlayerPortrait';
 import {AppLink} from '../ui/AppLink';
@@ -32,7 +32,7 @@ export function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;
      {player.sensitivity?<div><dt>Sensibilidade</dt><dd>{player.sensitivity}</dd></div>:null}
      {player.equipment?<div><dt>Equipamento</dt><dd>{player.equipment}</dd></div>:null}
     </dl>
-    <p className="dossier-context">{player.creatorUrl ? `Encontra ${player.displayName} também ${player.creatorType==='twitch'?'na Twitch':'no YouTube'}.` : `Leva a identidade de ${player.displayName} para a tua versão da camisola.`}</p><div className="dossier-actions"><ShareCardAction kind="player" player={player}/><AppLink className="site-button button-primary" href={playerDropUrl(player)}>Personalizar camisola <ArrowIcon/></AppLink>
+    <p className="dossier-context">{player.creatorUrl ? `Encontra ${player.displayName} também ${player.creatorType==='twitch'?'na Twitch':'no YouTube'}.` : ''}</p><div className="dossier-actions"><ShareCardAction kind="player" player={player}/>
      {profile&&<TrackerButton href={profile.trackerUrl} playerName={player.displayName}/>}
      {player.creatorUrl&&<AppLink className="editorial-link" href={player.creatorUrl} target="_blank">{player.creatorType==='twitch'?'Ver na Twitch':'Ver no YouTube'} <ArrowIcon/></AppLink>}
     </div>

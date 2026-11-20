@@ -1,5 +1,4 @@
 import {lockPageScroll} from '../../hooks/useModalDialog';
-import { MotionControl } from '../ui/MotionControl';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -106,7 +105,7 @@ export function Header() {
           ))}
         </div>
 
-        <div className="lux-utilities"><MotionControl compact /><AppLink href="/esports/valorant/premier" className="lux-competition" aria-label="Premier: partidas verificadas">
+        <div className="lux-utilities"><AppLink href="/esports/valorant/premier" className="lux-competition" aria-label="Premier: partidas verificadas">
           <span>Premier / Arquivo</span>
           <strong>Ver partidas ↗</strong>
         </AppLink></div>
@@ -145,7 +144,7 @@ export function Header() {
                 </AppLink>
               ))}
             </div>
-            <div className="lux-menu-foot"><MotionControl compact /><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
+            <div className="lux-menu-foot"><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
           </div>
         ) : null}
       </nav>

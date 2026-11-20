@@ -4,7 +4,7 @@ import {TrackerButton} from './TrackerButton';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { players, playerDropUrl, type Player } from '../../data/players';
+import { players, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { AppLink } from '../ui/AppLink';
@@ -194,7 +194,7 @@ export function RosterSection() {
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
 
               <button type="button" className="utility-button player-dossier-control" onClick={()=>setDossierOpen(true)}>Abrir dossier de {selectedPlayer.displayName} <ArrowIcon/></button>
-              <AppLink className="editorial-link player-drop-link" href={playerDropUrl(selectedPlayer)}>Ver camisola {selectedPlayer.displayName} <span aria-hidden="true"><ArrowIcon /></span></AppLink>
+
 
               {selectedPlayer.creatorUrl ? (
                 <AppLink href={selectedPlayer.creatorUrl} target="_blank" rel="noreferrer" className="editorial-link">

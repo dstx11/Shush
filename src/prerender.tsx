@@ -7,7 +7,6 @@ import { HomePage } from './pages/HomePage';
 import { PremierPage } from './pages/PremierPage';
 import { RosterPage } from './pages/RosterPage';
 import { ContentPage } from './pages/ContentPage';
-import { DropPage } from './pages/DropPage';
 import { AboutPage } from './pages/AboutPage';
 
 const pages = {
@@ -15,7 +14,6 @@ const pages = {
   '/esports/valorant/premier': PremierPage,
   '/esports/valorant/roster': RosterPage,
   '/content': ContentPage,
-  '/products/jersey': DropPage,
   '/company': AboutPage,
 };
 export function staticPage(path: keyof typeof pages) {
