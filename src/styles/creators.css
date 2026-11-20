@@ -24,3 +24,17 @@
   .creator-page { padding-top: 6.3rem; }
   .creator-features { grid-template-columns: 1fr; gap: 1.5rem; }
 }
+
+.creator-channel .button-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  color: #f7ecff;
+  background: #36223f;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .creator-channel .button-arrow { transition: transform .18s ease-out; }
+  .creator-channel:is(:hover, :focus-visible) .button-arrow { transform: translateX(3px); }
+}

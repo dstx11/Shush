@@ -8,6 +8,14 @@ import { formatDate } from '../../lib/premier';
 import { filterMatches, mapPerformance, type Outcome } from '../../lib/match-explorer';
 import { MatchPoster } from './MatchPoster';
 
+function positionMatchLight(event: React.PointerEvent<HTMLElement>) {
+  if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const card = event.currentTarget;
+  const bounds = card.getBoundingClientRect();
+  card.style.setProperty('--light-x', `${event.clientX - bounds.left}px`);
+  card.style.setProperty('--light-y', `${event.clientY - bounds.top}px`);
+}
+
 export function VerifiedMatches() {
   const {hash}=useLocation();
   const selected=verifiedMatches.find(match=>`#match-${match.id}`===hash)?.id;
@@ -34,7 +42,7 @@ function MatchExplorer({selected}:{selected?:string}) {
       <p className="mono" role="status">{matches.length} de {verifiedMatches.length} partidas</p>
     </div>
     {matches.length===0&&<p className="matchday-empty">Não há partidas com estes filtros. <button type="button" className="utility-button" onClick={clearFilters}>Mostrar todas as partidas</button></p>}
-    <div className="verified-match-list">{matches.map(match => <article key={match.id} id={`match-${match.id}`} tabIndex={-1} aria-label={`SHUSH vs ${match.opponent}, ${formatDate(match.date)}`} className={`verified-match ${match.shushScore > match.opponentScore ? 'is-win' : 'is-loss'}${selected===match.id?' is-linked':''}`}>
+    <div className="verified-match-list">{matches.map(match => <article onPointerMove={positionMatchLight} key={match.id} id={`match-${match.id}`} tabIndex={-1} aria-label={`SHUSH vs ${match.opponent}, ${formatDate(match.date)}`} className={`verified-match ${match.shushScore > match.opponentScore ? 'is-win' : 'is-loss'}${selected===match.id?' is-linked':''}`}>
       <div className="verified-match-meta"><span className="result-mark">{match.shushScore > match.opponentScore ? 'Vitória' : 'Derrota'}</span><time dateTime={match.date}>{formatDate(match.date)}</time><span>{match.map}</span></div>
       <div className="verified-match-score"><strong>SHUSH</strong><span aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}`}>{match.shushScore}<small>:</small>{match.opponentScore}</span><strong>{match.opponent}</strong></div>
       <details className="match-detail" open={selected===match.id?true:undefined}><summary>Detalhes da partida <span aria-hidden="true">+</span></summary><div className="verified-match-source"><span>Verificado em <time dateTime={match.verifiedAt}>{formatDate(match.verifiedAt)}</time></span><a href={match.source} target="_blank" rel="noopener noreferrer" aria-label={`Ver SHUSH vs ${match.opponent} no Tracker.gg (nova janela)`}>Fonte · Tracker.gg <ArrowIcon /></a></div><div className="action-row" style={{alignItems:'flex-start'}}><button className="utility-button" type="button" onClick={event => { event.currentTarget.focus(); setPoster(match); }}>Criar cartaz <ArrowIcon /></button><MatchLink match={match}/></div></details>

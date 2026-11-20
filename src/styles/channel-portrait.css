@@ -34,3 +34,21 @@
   html:not([data-motion=reduce]) [data-channel]:is(:hover, :focus-within) .channel-photo img { transform: scale(1.025); }
 }
 [data-channel]:is(:hover, :focus-within) .channel-photo::before { opacity: 1; }
+
+.channel-photo::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(116deg, transparent 42%, #f6e5ff29 50%, transparent 58%);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-channel]:is(:hover, :focus-within) .channel-photo::after { animation: channel-reflection .55s ease-out; }
+  @keyframes channel-reflection {
+    from { transform: translateX(-45%); opacity: 0; }
+    45% { opacity: 1; }
+    to { transform: translateX(45%); opacity: 0; }
+  }
+}
