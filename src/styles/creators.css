@@ -6,14 +6,21 @@
 .creator-heading-foot nav,.creator-channel-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .creator-heading-foot nav a{display:flex;align-items:center;gap:.5rem;min-height:44px;color:#e8d3f5;font-size:.82rem}
 .creator-features{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,3rem)}
-.creator-feature{display:grid;grid-template:1fr / 1fr;isolation:isolate;position:relative;border-top:1px solid #ba9dcc}
-.creator-art,.creator-feature-copy{grid-area:1/1;min-width:0}
-.creator-art{position:absolute;inset:0;z-index:-1;overflow:hidden}
-.creator-art img,.creator-art>.portrait-placeholder{width:100%;height:100%;object-fit:cover;object-position:50% 0!important}
-.creator-art::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#100c17 1%,#100c17e8 17%,#100c1788 39%,transparent 73%)}
-.creator-feature-copy{align-self:end;padding:clamp(1.25rem,2.5vw,2.5rem);padding-top:clamp(18rem,28vw,28rem)}
-.creator-file-label{display:flex;justify-content:space-between;color:#eee0fa;font:.68rem var(--font-mono)}
-.creator-feature h2{font:550 clamp(3rem,6vw,6rem)/1 'SHUSH Hearth',Georgia,serif;letter-spacing:-.075em;margin:.55rem 0}
-.creator-handle{font:.75rem var(--font-mono);color:#ead8f4}
-.creator-description{max-width:39ch;font-size:.86rem;line-height:1.65;color:#e5dce9;margin:1rem 0}
-@media(max-width:767px){.creator-page{padding-top:6.3rem}.creator-features{grid-template-columns:1fr;gap:2.5rem}.creator-feature-copy{padding-top:clamp(13rem,60vw,23rem)}}
+.creator-feature {
+  min-width: 0;
+  padding: clamp(.85rem, 2vw, 1.65rem);
+  border: var(--surface-stroke) solid #55435d;
+  border-radius: var(--radius-md);
+  background: #19131f;
+  scroll-margin-top: 6rem;
+}
+.creator-art { overflow: hidden; border-radius: calc(var(--radius-md) - .45rem); }
+.creator-art .channel-photo { height: clamp(13rem, 22vw, 21rem); }
+.creator-feature-copy { padding: clamp(1rem, 2vw, 1.65rem) .25rem .25rem; }
+.creator-file-label { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; color: var(--channel-type); font: .73rem var(--font-mono); }
+.creator-feature h2 { font: 500 clamp(3rem, 5vw, 5rem)/1 'SHUSH Hearth',Georgia,serif; letter-spacing: -.06em; margin: .55rem 0; }
+.creator-description { max-width: 45ch; font-size: .9rem; line-height: 1.65; color: #e5dce9; margin: .75rem 0 1.25rem; }
+@media (max-width:767px) {
+  .creator-page { padding-top: 6.3rem; }
+  .creator-features { grid-template-columns: 1fr; gap: 1.5rem; }
+}

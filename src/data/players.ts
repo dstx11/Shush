@@ -11,6 +11,7 @@ export type Player = {
   isCreator?: boolean;
   creatorType?: 'twitch' | 'youtube';
   creatorUrl?: string;
+  creatorHandle?: string;
   agents?: string[];
   sensitivity?: string;
   equipment?: string;
@@ -38,6 +39,7 @@ export const players: Player[] = [
     roles: ['Sentinela', 'Iniciador'],
     isCreator: true,
     creatorType: 'twitch',
+    creatorHandle: 'kandimba13',
     creatorUrl: 'https://www.twitch.tv/kandimba13',
   },
   {
@@ -50,6 +52,7 @@ export const players: Player[] = [
     roles: ['Iniciador', 'Controlador'],
     isCreator: true,
     creatorType: 'youtube',
+    creatorHandle: '@Th0maaz_7',
     creatorUrl: 'https://www.youtube.com/@Th0maaz_7',
     avatar: '/assets/avatars/th0maz-jersey.webp',
   },

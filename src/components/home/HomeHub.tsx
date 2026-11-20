@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from 'react';
 import '../../styles/luxury-discovery.css';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { AppLink } from '../ui/AppLink';
+import { ChannelPortrait } from '../ui/ChannelPortrait';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { creators, players } from '../../data/players';
 import { verifiedMatches, verifiedMatchHref } from '../../data/verified-matches';
@@ -57,7 +58,28 @@ export function HomeHub() {
       <div className="lux-ledger-list">{verifiedMatches.slice(0,3).map(match => <AppLink key={match.id} className="lux-score" href={verifiedMatchHref(match)} aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}; ${formatDate(match.date)}`}><span className="lux-score-meta"><time dateTime={match.date}>{formatDate(match.date)}</time><span>{match.map}</span></span><span className="lux-score-teams"><strong>SHUSH <span>vs {match.opponent}</span></strong><b>{match.shushScore}<small>:</small>{match.opponentScore}</b></span></AppLink>)}</div></div>
     </section>
     <TeamSheet />
-    <section className="lux-people" aria-labelledby="home-creators-title"><div><span className="section-kicker">Creators</span><h2 id="home-creators-title">Do outro lado<br /> do microfone.</h2><AppLink className="editorial-link" href="/content">Conhecer os canais <ArrowIcon /></AppLink></div><div className="lux-creator-links">{creators.map(player => <AppLink key={player.id} href={player.creatorUrl!} target="_blank" rel="noopener noreferrer"><PlayerPortrait player={player} decorative thumbnail sizes="80px" /><span><strong>{player.displayName}</strong><small>{player.creatorType === 'twitch' ? 'Twitch' : 'YouTube'}</small></span><span aria-hidden="true"><ArrowIcon /></span></AppLink>)}</div></section>
+    <section id="canais" className="lux-people" aria-labelledby="home-creators-title">
+      <header className="channels-heading">
+        <h2 id="home-creators-title">Do outro lado <em>do microfone.</em></h2>
+        <AppLink className="editorial-link" href="/content">Conhecer os canais <ArrowIcon /></AppLink>
+      </header>
+      <div className="lux-creator-links">
+        {creators.map(player => {
+          const platform = player.creatorType === 'twitch' ? 'Twitch' : 'YouTube';
+          return (
+            <AppLink key={player.id} data-channel={player.creatorType} href={player.creatorUrl!}
+              target="_blank" aria-label={`${platform} de ${player.displayName}, ${player.creatorHandle}`}>
+              <span className="channel-caption">
+                <small>{platform}</small>
+                <strong>{player.displayName}</strong>
+                <span>{player.creatorHandle} <ArrowIcon /></span>
+              </span>
+              <ChannelPortrait player={player} sizes="(max-width: 700px) 46vw, 25vw" />
+            </AppLink>
+          );
+        })}
+      </div>
+    </section>
     <div className="lux-closing"><AppLink href="/company"><span className="section-kicker">Sobre a SHUSH</span><strong>Começámos com<br />uma piada.</strong><span>Ler a nossa história <ArrowIcon /></span></AppLink><AppLink href="/products/jersey" className="closing-product"><img src="/assets/jersey/frontjersey.webp" alt="" width="1254" height="1254" loading="lazy" /><span className="section-kicker">Drop 01</span><strong>A nossa camisola.<br />O teu nick.</strong><span>Personalizar <ArrowIcon /></span></AppLink></div>
   </div>;
 }

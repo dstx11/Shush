@@ -28,7 +28,13 @@ for (const [name, path] of routes) {
       await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
-    if (name === 'home') await page.locator('#plantel').screenshot({ path: testInfo.outputPath('plantel.png') });
+    if (name === 'home') {
+      await page.locator('#plantel').screenshot({ path: testInfo.outputPath('plantel.png') });
+      const channels = page.locator('#canais');
+      await expect(channels.getByRole('link', { name: 'Twitch de More, kandimba13' })).toHaveAttribute('href', 'https://www.twitch.tv/kandimba13');
+      await expect(channels.getByRole('link', { name: 'YouTube de Th0maz, @Th0maaz_7' })).toHaveAttribute('href', 'https://www.youtube.com/@Th0maaz_7');
+      await channels.screenshot({ path: testInfo.outputPath('canais.png') });
+    }
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });

@@ -511,3 +511,9 @@ A experiência [Animated Image Columns, de Manoela Ilic](https://tympanus.net/co
 A revisão do utilizador substitui a escolha de papel lilás e dorsais sobre as cabeças da secção 20. Na Home, a fotografia volta ao violeta escuro; os dorsais passam para a legenda. No roster, o desenho geométrico e o clarão que atravessavam o rosto foram retirados, bem como o número gigante do cenário. O nome, as funções e o dorsal ficam sob o retrato.
 
 A [documentação de drop-shadow no MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/filter-function/drop-shadow) descreve a sombra baseada na transparência da imagem. Aplicamos duas sombras curtas ao contentor do recorte, sobre a máscara de cada pessoa. O brilho continua visível com movimento reduzido. Os botões partilham um raio de 1 rem e os principais contornos interativos passam de 1 a 2 px em cores discretas.
+
+## 22. Canais dos jogadores · 20 de novembro de 2026
+
+Na Home, duas miniaturas de 70 × 85 px indicavam a plataforma, mas o identificador só aparecia na página seguinte. Os convites passam a mostrar nome, plataforma e identificador ao lado da fotografia. A ficha de cada canal mantém uma área separada para a leitura e duas ações distintas para visitar o canal ou abrir o perfil do jogador.
+
+O [estudo de menus fotográficos da Codrops](https://tympanus.net/codrops/2020/07/01/creating-a-menu-image-animation-on-hover/) relaciona um item com uma reação da imagem ao apontador. Nesta aplicação o retrato já está visível por toque. A luz de estúdio reage por trás do recorte, a fotografia aproxima-se 2,5% com movimento ativo e o foco de teclado recebe o mesmo destaque. As fotografias e máscaras são as originais da SHUSH.
