@@ -25,7 +25,7 @@ export function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;
   <header className="dossier-heading"><span className="section-kicker">SHUSH / DOSSIER</span><button type="button" className="utility-button" onClick={onClose}>Voltar ao lobby</button></header>
   <div className="dossier-body" tabIndex={0} role="region" aria-label="Informação do jogador">
    <figure className="dossier-portrait"><PlayerPortrait player={player} eager sizes="(max-width:600px) 85vw, 380px"/><figcaption>Camisola <strong>#{player.number}</strong></figcaption></figure>
-   <div className="dossier-information"><span className="section-kicker">VALORANT / ROSTER</span><h2 id="dossier-name">{player.displayName}</h2>
+   <div className="dossier-information"><span className="section-kicker">VALORANT / ROSTER</span><h2 key={player.id} id="dossier-name">{player.displayName}</h2>
     <dl className="dossier-facts"><div><dt>Funções</dt><dd>{player.roles.join(' / ')}</dd></div>
      {profile&&<div><dt>Riot ID</dt><dd>{profile.riotId}</dd></div>}
      {player.agents?.length?<div><dt>Agentes favoritos</dt><dd>{player.agents.join(' / ')}</dd></div>:null}

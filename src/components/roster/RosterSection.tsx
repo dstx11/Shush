@@ -9,7 +9,6 @@ import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { AppLink } from '../ui/AppLink';
 import { useCinematicPointer } from '../../hooks/useCinematicPointer';
-import { useSelectCue } from '../../hooks/useSelectCue';
 
 export function RosterSection() {
   const [params, setParams] = useSearchParams();
@@ -17,23 +16,15 @@ export function RosterSection() {
   const selectedPlayer = players[selectedIndex] ?? players[0];
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
   const camera = useCinematicPointer<HTMLDivElement>();
-  const { enabled: soundEnabled, setEnabled: setSoundEnabled, play: playCue } = useSelectCue();
   const [dossierOpen,setDossierOpen]=useState(false);
   const [replayCycle, setReplayCycle] = useState(0);
   const [stageVisible, setStageVisible] = useState(true);
   const previous = useRef(selectedPlayer);
   const [leaving, setLeaving] = useState<Player | null>(null);
   useEffect(() => {
-    if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') setLeaving(previous.current);
+    if (previous.current.id !== selectedPlayer.id) setLeaving(previous.current);
     previous.current = selectedPlayer;
   }, [selectedPlayer]);
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const stop = () => { if (media.matches || document.documentElement.dataset.motion === 'reduce') setLeaving(null); };
-    media.addEventListener('change', stop);
-    document.addEventListener('shush:reduce-motion', stop);
-    return () => { media.removeEventListener('change', stop); document.removeEventListener('shush:reduce-motion', stop); };
-  }, []);
   useEffect(() => {
     const element = camera.ref.current;
     if (!element || !('IntersectionObserver' in window)) return;
@@ -60,14 +51,13 @@ export function RosterSection() {
   }, [selectedIndex, allPlayersVisible]);
   const selectPlayer = useCallback((index: number) => {
     if (index < 0 || index >= players.length) return;
-    playCue();
     if(index===selectedIndex&&params.get("player")===players[index].id)return;
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('player', players[index].id);
       return next;
     }, { replace: true, preventScrollReset: true });
-  }, [setParams, selectedIndex, playCue, params]);
+  }, [setParams, selectedIndex, params]);
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!/^[1-7]$/.test(event.key) || event.altKey || event.ctrlKey || event.metaKey || event.repeat ||
@@ -162,8 +152,7 @@ export function RosterSection() {
           })}
         </div></div>
 
-          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Escolhe um jogador <span aria-hidden="true">· ← →</span></span>
-            <button type="button" className="selector-sound" onClick={() => setSoundEnabled(value => !value)} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Desativar som de seleção' : 'Ativar som de seleção'}>{soundEnabled ? 'SOM ON' : 'SOM OFF'}</button>
+          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><details className="roster-shortcuts"><summary>Atalhos</summary><p><kbd>1–7</kbd> selecionar jogador<br /><kbd>← →</kbd> percorrer as opções em foco<br />Desliza sobre a fotografia no telemóvel.</p></details>
             <button type="button" className="selector-replay" onClick={() => setReplayCycle(cycle => cycle + 1)} aria-label="Rever entrada do jogador">Rever entrada</button>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
               <span aria-hidden="true">←</span>
@@ -208,7 +197,7 @@ export function RosterSection() {
 
 
         </div>
-        <p className="player-selection-footer"><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span className="strip-explore">Explora os 7 jogadores <span aria-hidden="true">↔</span></span></p>
+        <p className="player-selection-footer"><span className="strip-explore">Explora os 7 jogadores <span aria-hidden="true">↔</span></span></p>
         </div>
       </div>
       {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>{setDossierOpen(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>(".player-dossier-control")?.focus({preventScroll:true}));}} onPrevious={selectPrevious} onNext={selectNext}/>}

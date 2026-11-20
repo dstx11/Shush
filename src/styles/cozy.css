@@ -26,7 +26,7 @@
 .shush-root :is(.editorial-link:hover>span,a:hover .arrow-icon){transform:none;translate:none}
 .shush-root .motion-section{transform:none!important;translate:none!important}
 .shush-root :is(.shush-hero-portraits,.shush-hero-camera,.shush-hero-visual .season-art){translate:none!important}
-@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .route-enter{animation:cozy-appear .25s ease-out both}@keyframes cozy-appear{from{opacity:.8}to{opacity:1}}}
+html .route-enter{animation:cozy-appear .25s ease-out both}@keyframes cozy-appear{from{opacity:.8}to{opacity:1}}
 @media(max-width:767px){.shush-root .character-strip{padding:.75rem}.shush-root :is(.character-spotlight,.creator-feature,.audit-drop-gallery){border-radius:var(--radius-md)}}
 
 .shush-root button:is([aria-label="Copiar Riot ID"],[aria-label="Copiar resumo"]){inline-size:100%;min-inline-size:0}

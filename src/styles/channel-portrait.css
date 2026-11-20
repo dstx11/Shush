@@ -28,11 +28,9 @@
   mask: var(--cutout) center bottom / contain no-repeat;
 }
 .channel-photo .portrait-placeholder { align-self: stretch; }
-@media (prefers-reduced-motion: no-preference) {
-  html:not([data-motion=reduce]) .channel-photo::before { transition: opacity .32s ease-out; }
-  html:not([data-motion=reduce]) .channel-photo img { transition: transform .36s var(--ease-out); transform-origin: center bottom; }
-  html:not([data-motion=reduce]) [data-channel]:is(:hover, :focus-within) .channel-photo img { transform: scale(1.025); }
-}
+html .channel-photo::before { transition: opacity .32s ease-out; }
+  html .channel-photo img { transition: transform .36s var(--ease-out); transform-origin: center bottom; }
+  html [data-channel]:is(:hover, :focus-within) .channel-photo img { transform: scale(1.025); }
 [data-channel]:is(:hover, :focus-within) .channel-photo::before { opacity: 1; }
 
 .channel-photo::after {
@@ -44,11 +42,9 @@
   background: linear-gradient(116deg, transparent 42%, #f6e5ff29 50%, transparent 58%);
   opacity: 0;
 }
-@media (prefers-reduced-motion: no-preference) {
-  [data-channel]:is(:hover, :focus-within) .channel-photo::after { animation: channel-reflection .55s ease-out; }
+[data-channel]:is(:hover, :focus-within) .channel-photo::after { animation: channel-reflection .55s ease-out; }
   @keyframes channel-reflection {
     from { transform: translateX(-45%); opacity: 0; }
     45% { opacity: 1; }
     to { transform: translateX(45%); opacity: 0; }
   }
-}

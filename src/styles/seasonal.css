@@ -62,8 +62,7 @@
 .season-duo-output{overflow-wrap:anywhere;font-size:1rem!important;line-height:1.6!important;color:var(--season-accent)}
 .season-duo button{justify-self:start;padding:.75rem 1rem;border:var(--surface-stroke) solid var(--season-accent);color:var(--season-accent);border-radius:var(--control-radius);background:transparent}
 .season-duo-status{font:.72rem var(--font-mono);color:var(--muted);min-height:1em}
-@media (prefers-reduced-motion:no-preference){
- .shush-hero-copy>*{animation:shush-hero-enter .7s cubic-bezier(.16,1,.3,1) both}
+.shush-hero-copy>*{animation:shush-hero-enter .7s cubic-bezier(.16,1,.3,1) both}
  .shush-hero-copy>*:nth-child(2){animation-delay:.08s}.shush-hero-copy>*:nth-child(3){animation-delay:.13s}.shush-hero-copy>*:nth-child(4){animation-delay:.19s}.shush-hero-copy>*:nth-child(5){animation-delay:.24s}
  .shush-hero-player{transition:border-color .25s}
  .shush-hero-player:is(:hover,:focus-visible){border-color:var(--season-accent)}
@@ -76,10 +75,9 @@
  @keyframes shush-hero-enter{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
  @keyframes season-art-breathe{from{transform:scale(.975);opacity:.6}to{transform:scale(1.025);opacity:1}}
  @keyframes season-art-rotate{to{transform:rotate(360deg)}}
-}
 @media (max-width:950px){.shush-hero-layout{grid-template-columns:minmax(0,1fr);min-height:auto}.shush-hero-copy{padding-block:3rem 1rem}.shush-hero h1{font-size:clamp(3rem,9vw,6rem);max-width:16ch}.shush-hero-visual{height:clamp(310px,55vw,540px);min-height:0;max-width:700px;width:100%;margin-inline:auto}.shush-hero-portraits{height:100%}.season-feature{grid-template-columns:1fr}}
 @media (max-width:767px){.shush-hero{min-height:0}.shush-hero-copy{padding-block:1.25rem 0}.shush-hero-overline{margin-top:1.4rem}.shush-hero h1{font-size:clamp(2.7rem,11vw,4.6rem);letter-spacing:-.07em}.shush-hero-lead{margin:1.3rem 0;font-size:.89rem;line-height:1.75}.shush-hero-lower{margin-top:1.2rem;padding-top:.8rem}.shush-hero-visual{height:clamp(275px,83vw,450px);margin-bottom:1rem}.shush-hero-player-tag{padding:.7rem .4rem}.shush-hero-player-tag small{font-size:.47rem}.shush-hero-player-tag strong{font-size:clamp(.7rem,3vw,1.1rem)}.season-feature-stage{min-height:300px;padding:1.25rem}.season-duo-fields{grid-template-columns:1fr}.season-duo-fields>span{display:none}.season-feature{padding-block:3rem}}
-@media (prefers-reduced-motion:reduce){.season-art *,.shush-hero-copy>*{animation:none!important}.shush-hero-player,.season-feature-stage{transition:none!important}}
+
 
 /* Brand origin: the old semicolon is a historical mark, not a new logo. */
 .about-origin{display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);gap:clamp(2rem,8vw,8rem);padding-block:clamp(3rem,8vw,7rem);border-top:1px solid var(--line)}
@@ -104,12 +102,10 @@
 .shush-season-intro>.intro-signature{font:.58rem var(--font-mono);color:var(--season-accent)}
 .shush-season-intro>.intro-skip{border-color:var(--season-accent);color:var(--text);border-radius:.7rem;min-width:7rem}
 .shush-season-intro>.intro-skip:hover{background:var(--season-accent);color:var(--on-accent)}
-@media(prefers-reduced-motion:no-preference){
- .shush-season-intro>.intro-kicker,.shush-season-intro>strong,.shush-season-intro>p{animation:shush-hero-enter .55s cubic-bezier(.16,1,.3,1) both}
+.shush-season-intro>.intro-kicker,.shush-season-intro>strong,.shush-season-intro>p{animation:shush-hero-enter .55s cubic-bezier(.16,1,.3,1) both}
  .shush-season-intro>strong{animation-delay:.1s}
  .shush-season-intro .season-art-motif{animation:none;stroke-dasharray:1800;stroke-dashoffset:1800;animation:shush-intro-draw 1.15s cubic-bezier(.2,.7,.2,1) forwards}
  @keyframes shush-intro-draw{to{stroke-dashoffset:0}}
-}
 
 /* Preserve long-lived team-cover hooks while the editorial presentation evolves. */
 .shush-hero-portraits.team-cover{width:100%;margin:0;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;align-items:end;padding:1.5rem 0 0}
@@ -117,9 +113,7 @@
 .shush-hero-player-1.team-cover-player{height:100%;transform:translateY(-2%)}
 .shush-hero-player-2.team-cover-player{height:80%;transform:translateY(4%)}
 .shush-hero-player>.shush-hero-player-tag{inset:auto 0 0;display:grid;gap:.3rem;flex-direction:initial;padding:1.1rem .7rem .8rem}
-@media(prefers-reduced-motion:no-preference){
- .shush-hero-player.team-cover-player:is(:hover,:focus-visible){border-color:var(--season-accent)}
-}
+.shush-hero-player.team-cover-player:is(:hover,:focus-visible){border-color:var(--season-accent)}
 @media(max-width:767px){.shush-hero-portraits.team-cover{margin-top:0;padding-top:1.5rem}.shush-hero-player>.shush-hero-player-tag{padding:.7rem .4rem}}
 
 /* Purpose-built edition scenes: small DOM, vector art, composited state changes. */
@@ -162,7 +156,7 @@
 .season-dead-silence.is-lit .season-dead-sign{opacity:1;transform:scale(1.05)}
 .season-dead-silence strong{font:700 clamp(1.2rem,2vw,2rem) var(--font-heading);color:#f9e5d4}
 @media(max-width:767px){.season-hidden-grid{gap:.4rem}.season-hidden-grid button{padding:1rem .35rem;min-height:200px}.season-hidden-grid strong{font-size:.65rem}.season-hidden-grid svg{height:80px}.season-counter-readout{gap:.45rem}}
-@media(prefers-reduced-motion:reduce){.season-incognito-art img,.season-incognito-mask,.season-hidden-grid svg,.season-afterhours,.season-afterhours-orb,.season-dead-silence,.season-dead-sign{transition:none!important}}
+
 
 /* Prevent decorative vector motion when offscreen or the tab is hidden. */
 .season-art.is-idle .season-art-motif,.season-art.is-idle .season-art-outline{animation-play-state:paused}

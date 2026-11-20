@@ -91,8 +91,7 @@ function DeadSilenceScene(){
  const frame=useRef(0);
  useEffect(()=>()=>cancelAnimationFrame(frame.current),[]);
  const illuminate=(event:PointerEvent<HTMLDivElement>)=>{
-  if(event.pointerType!=='mouse'||lights||document.documentElement.dataset.motion==='reduce'||
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  if(event.pointerType!=='mouse'||lights)return;
   const rect=event.currentTarget.getBoundingClientRect();
   const x=Math.max(0,Math.min(100,(event.clientX-rect.left)/rect.width*100));
   const y=Math.max(0,Math.min(100,(event.clientY-rect.top)/rect.height*100));

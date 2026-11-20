@@ -1,10 +1,8 @@
 /* Shared navigation, loading, recovery and lightweight motion. */
 .editorial-link { display: inline-flex; width: fit-content; min-height: 2.75rem; align-items: center; gap: .65rem; color: var(--text); font-size: .8rem; font-weight: 700; text-decoration: none; text-underline-offset: .3em; }
 .editorial-link:is(:hover,:focus-visible) { text-decoration: underline; }
-@media(prefers-reduced-motion:no-preference){
- html:not([data-motion=reduce]) .editorial-link .arrow-icon{transition:transform .18s}
- html:not([data-motion=reduce]) .editorial-link:is(:hover,:focus-visible) .arrow-icon{transform:translate(2px,-2px)}
-}
+html .editorial-link .arrow-icon{transition:transform .18s}
+ html .editorial-link:is(:hover,:focus-visible) .arrow-icon{transform:translate(2px,-2px)}
 .skip-link { position: fixed; left: 1rem; top: 1rem; z-index: 1000; transform: translateY(-180%); background: var(--text); padding: .75rem 1rem; color: var(--bg); font-size: .8rem; font-weight: 800; }
 .skip-link:focus { transform: translateY(0); }
 .menu-glyph { font-size: 1.25rem; font-weight: 500; line-height: 1; }

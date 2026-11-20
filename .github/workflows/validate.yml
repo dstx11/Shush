@@ -90,13 +90,13 @@ jobs:
           test -f dist/esports/valorant/premier.html
           test -f dist/esports/valorant/roster.html
           test -f dist/content.html
-          test -f dist/products/jersey.html
+          test ! -f dist/products/jersey.html
           test -f dist/company.html
           grep -q 'lang="pt-PT"' dist/index.html
           grep -q 'Content-Security-Policy' dist/_headers
           grep -Fq '<title>VALORANT Premier: partidas e resultados — SHUSH</title>' dist/esports/valorant/premier.html
           grep -Fq 'https://shush.pt/esports/valorant/premier' dist/esports/valorant/premier.html
-          grep -Fq '<title>Camisola SHUSH Drop 01 — Personalização</title>' dist/products/jersey.html
+          test -f dist/content.html
           ! grep -Fq '/* /index.html 200' dist/_redirects
 
   browser:
@@ -118,6 +118,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm run build
+      - name: Verify silent player selection and site motion
+        if: matrix.shard == 1
+        run: pnpm exec playwright test brand-assets.spec.ts --project=desktop-1366 --project=mobile-390
       - name: Capture representative design evidence
         if: matrix.shard == 1
         continue-on-error: true

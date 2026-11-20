@@ -4,10 +4,8 @@ import { useSeason } from '../../seasonal/SeasonProvider';
 import { lisbonDate, type SeasonId } from '../../seasonal/calendar.mjs';
 
 const INTRO_SEEN = (id: SeasonId) => 'shush:intro:v2:' + id + ':' + lisbonDate().year;
-const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  || document.documentElement.dataset.motion === 'reduce' || (() => { try { return localStorage.getItem('shush:motion:v1') === 'reduce'; } catch { return false; } })();
 function shouldPlay(id: SeasonId) {
-  if (typeof window === 'undefined' || reduceMotion()) return false;
+  if (typeof window === 'undefined') return false;
   try { return sessionStorage.getItem(INTRO_SEEN(id)) !== '1' && localStorage.getItem(INTRO_SEEN(id)) !== '1'; }
   catch { return false; } // A restricted browser must never be trapped behind an overlay.
 }
@@ -63,15 +61,9 @@ export function BrandIntro({ onComplete }: { onComplete: () => void }) {
     later(finish, 1800);
     const images = Array.from(document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')).slice(0, 7);
     Promise.allSettled([document.fonts.ready, ...images.map(image => image.decode())]).then(()=>{ready=true;if(minimumElapsed)finish();});
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const onChange = () => { if (reduceMotion()) setVisible(false); };
-    media.addEventListener('change', onChange);
-    document.addEventListener('shush:reduce-motion', onChange);
     return () => {
       active = false;
       timeouts.forEach(timer => window.clearTimeout(timer));
-      media.removeEventListener('change', onChange);
-      document.removeEventListener('shush:reduce-motion', onChange);
     };
   }, [visible]);
 

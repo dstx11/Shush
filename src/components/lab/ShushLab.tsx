@@ -46,7 +46,6 @@ function MotionStudio(){
  const [cycle,setCycle]=useState(0);
  const [paused,setPaused]=useState(false);
  const style={'--demo-duration':duration+'ms','--demo-distance':distance+'px','--demo-ease':easing} as CSSProperties;
- const reduced=typeof window!=='undefined'&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  return <div className="lab-panel" id="lab-motion" aria-labelledby="lab-tab-motion">
   <div className="lab-panel-intro"><span className="lab-eyebrow">MOTION PLAYGROUND / 02</span><h3>Movimento com intenção.</h3><p>Altera uma sequência real, compara a resposta e reinicia quando quiseres. As definições só afetam este ensaio local.</p></div>
   <div className="lab-motion-layout"><div className="lab-demo" style={style} aria-label="Pré-visualização da animação">
@@ -62,7 +61,6 @@ function MotionStudio(){
     <option value="ease-in-out">Simétrico / constante</option>
    </select></label>
    <div className="lab-actions"><button className="lab-primary" type="button" onClick={()=>{setCycle(n=>n+1);setPaused(false);}}>Reproduzir</button><button type="button" onClick={()=>setPaused(x=>!x)} aria-pressed={paused}>{paused?'Retomar':'Pausar'}</button></div>
-   {reduced&&<p className="lab-note">O sistema pediu movimento reduzido: a pré-visualização respeita essa preferência.</p>}
   </div></div>
  </div>;
 }

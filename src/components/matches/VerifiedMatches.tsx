@@ -9,7 +9,7 @@ import { filterMatches, mapPerformance, type Outcome } from '../../lib/match-exp
 import { MatchPoster } from './MatchPoster';
 
 function positionMatchLight(event: React.PointerEvent<HTMLElement>) {
-  if (event.pointerType !== 'mouse' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (event.pointerType !== 'mouse') return;
   const card = event.currentTarget;
   const bounds = card.getBoundingClientRect();
   card.style.setProperty('--light-x', `${event.clientX - bounds.left}px`);

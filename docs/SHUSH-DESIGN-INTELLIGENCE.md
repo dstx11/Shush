@@ -523,3 +523,32 @@ O [estudo de menus fotográficos da Codrops](https://tympanus.net/codrops/2020/0
 Seleção Uiverse: [seta de Li-Deheng](https://uiverse.io/Li-Deheng/shy-moth-10), [pílula com seta](https://uiverse.io/uiverse-astronaut/good-treefrog-19), [seta em disco](https://uiverse.io/uiverse-astronaut/horrible-bulldog-87), [ícone rotativo](https://uiverse.io/uiverse-astronaut/polite-impala-83), [tooltip com atalho](https://uiverse.io/uiverse-astronaut/giant-moose-23) e [tooltip de informação](https://uiverse.io/uiverse-astronaut/dry-bat-25). O botão de canal adapta o disco e a deslocação curta da seta.
 
 Seleção React Bits: [Spotlight Card](https://reactbits.dev/components/spotlight-card), [Glare Hover](https://reactbits.dev/animations/glare-hover), [Fade Content](https://reactbits.dev/animations/fade-content), [Animated Content](https://reactbits.dev/animations/animated-content), [Click Spark](https://reactbits.dev/animations/click-spark) e [Magnet](https://reactbits.dev/animations/magnet). Aplicações com código próprio: luz localizada nas partidas, reflexo atrás dos retratos e entrada curta da fonte quando se abre um resultado. As ações continuam acessíveis por toque e teclado.
+
+## 24. Vinte novas adaptações em uso · 20 de novembro de 2026
+
+A identidade visual mantém o movimento quando o sistema operativo pede animações reduzidas. A aplicação não gera som. As pausas por invisibilidade, a opção de saltar a apresentação e a pausa explícita da árvore mantêm a sua função. Os quatro tratamentos da secção 23 são anteriores e estão fora desta contagem.
+
+Cada entrada identifica uma adaptação original do padrão visual. Não foram importados pacotes, fotografias ou implementações de terceiros.
+
+| Nº | Referência | Aplicação |
+|---|---|---|
+| 1 | [Uiverse · Shy Emu](https://uiverse.io/vinodjangid07/shy-emu-7) | Os dois traços do menu móvel formam uma cruz quando o painel abre. |
+| 2 | [Uiverse · Back to top](https://uiverse.io/absent452/horrible-grasshopper-98) | A seta do rodapé sobe ao receber foco ou hover. |
+| 3 | [Uiverse · Dry Turtle](https://uiverse.io/ashish-yadv/dry-turtle-69) | Três pontos alternados acompanham o carregamento de uma rota. |
+| 4 | [Uiverse · Copy-to-Clipboard](https://uiverse.io/blog/10-ui-elements-you-can-copy-paste-in-30-seconds) | O visto desenha-se após a cópia confirmada. |
+| 5 | [Uiverse · Pill Segmented Tabs](https://uiverse.io/uiverse-astronaut/odd-bobcat-3) | Os três filtros de resultado partilham uma calha; o filtro ativo ganha um rebordo interior. |
+| 6 | [Uiverse · Command palette input](https://uiverse.io/uiverse-astronaut/orange-starfish-84) | A pesquisa por adversário ganha um anel de luz ao receber foco. |
+| 7 | [Uiverse · Shortcut tooltip](https://uiverse.io/uiverse-astronaut/giant-moose-23) | Painel «Atalhos» acionável por teclado e toque, com teclas identificadas no roster. |
+| 8 | [Uiverse · Polite Impala](https://uiverse.io/uiverse-astronaut/polite-impala-83) | O indicador dos detalhes roda quando o resultado abre. |
+| 9 | [Uiverse · Good Treefrog](https://uiverse.io/uiverse-astronaut/good-treefrog-19) | As setas do índice da história descem para indicar o destino na página. |
+| 10 | [Uiverse · Smart Donkey](https://uiverse.io/uiverse-astronaut/smart-donkey-53) | Um ponto luminoso identifica a miniatura do jogador ativo. |
+| 11 | [React Bits · Animated List](https://reactbits.dev/components/animated-list) | Os destinos do menu móvel entram em sequência e já aceitam interação. |
+| 12 | [React Bits · Shiny Text](https://reactbits.dev/text-animations/shiny-text) | Um reflexo curto atravessa a legenda do título do roster. |
+| 13 | [React Bits · Gradient Text](https://reactbits.dev/text-animations/gradient-text) | Tinta violeta e rosa percorre a frase em itálico da página Sobre. |
+| 14 | [React Bits · Split Text](https://reactbits.dev/text-animations/split-text) | As duas partes de «O servidor fecha. O grupo fica.» entram em dois tempos. |
+| 15 | [React Bits · Blur Text](https://reactbits.dev/text-animations/blur-text) | O nome ganha nitidez na abertura do dossier e na mudança de jogador. |
+| 16 | [React Bits · Dot Grid](https://reactbits.dev/backgrounds/dot-grid) | Uma trama de pontos enquadra o símbolo da equipa na página Sobre. |
+| 17 | [React Bits · Tilted Card](https://reactbits.dev/components/tilted-card) | O símbolo inclina-se ligeiramente quando recebe o apontador. |
+| 18 | [React Bits · Scroll Reveal](https://reactbits.dev/text-animations/scroll-reveal) | O título da origem revela-se quando entra no enquadramento. |
+| 19 | [React Bits · Click Spark](https://reactbits.dev/animations/click-spark) | Pequenas faíscas assinalam a seleção de um filtro de resultados. |
+| 20 | [React Bits · True Focus](https://reactbits.dev/text-animations/true-focus) | Marcas de foco nos cantos identificam o retrato explorado no índice da Home. |

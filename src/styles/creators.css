@@ -34,7 +34,5 @@
   color: #f7ecff;
   background: #36223f;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .creator-channel .button-arrow { transition: transform .18s ease-out; }
+.creator-channel .button-arrow { transition: transform .18s ease-out; }
   .creator-channel:is(:hover, :focus-visible) .button-arrow { transform: translateX(3px); }
-}

@@ -56,18 +56,17 @@
 .season-dead-tracks i:nth-child(1){--track-x:10%;--track-y:45%;--track-r:-22deg}
 .season-dead-tracks i:nth-child(2){--track-x:65%;--track-y:25%;--track-r:15deg}
 .season-dead-tracks i:nth-child(3){--track-x:83%;--track-y:70%;--track-r:-9deg}
-@media(prefers-reduced-motion:no-preference){
- html:not([data-motion="reduce"]) .season-feature-environment i{animation:season-particle-wander 9s ease-in-out infinite alternate}
- html:not([data-motion="reduce"]) .season-feature-environment i:nth-child(even){animation-duration:12s;animation-direction:alternate-reverse}
- html:not([data-motion="reduce"]) .season-feature-valentines .season-duo-link.is-complete svg path{animation:season-duo-signal 2s linear infinite}
- html:not([data-motion="reduce"]) .season-counter-orbit span:nth-child(2){animation:season-ring-turn 20s linear infinite}
- html:not([data-motion="reduce"]) .season-counter-orbit span:nth-child(3){animation:season-ring-turn 30s linear infinite reverse}
- html:not([data-motion="reduce"]) .season-incognito-art.is-revealed .season-incognito-confetti i{animation:season-confetti .9s ease-out both}
- html:not([data-motion="reduce"]) .season-incognito-art.is-revealed .season-incognito-confetti i:nth-child(even){animation-delay:.1s}
- html:not([data-motion="reduce"]) .season-afterhours.is-night .season-afterhours-stars i{animation:season-twinkle 4s ease-in-out infinite alternate}
- html:not([data-motion="reduce"]) .season-afterhours.is-night .season-afterhours-stars i:nth-child(even){animation-duration:6s;animation-direction:alternate-reverse}
- html:not([data-motion="reduce"]) .season-afterhours-waves{animation:season-wave-drift 9s ease-in-out infinite alternate}
- html:not([data-motion="reduce"]) .season-dead-tracks i{animation:season-tracks-shift 6s ease-in-out infinite alternate}
+html .season-feature-environment i{animation:season-particle-wander 9s ease-in-out infinite alternate}
+ html .season-feature-environment i:nth-child(even){animation-duration:12s;animation-direction:alternate-reverse}
+ html .season-feature-valentines .season-duo-link.is-complete svg path{animation:season-duo-signal 2s linear infinite}
+ html .season-counter-orbit span:nth-child(2){animation:season-ring-turn 20s linear infinite}
+ html .season-counter-orbit span:nth-child(3){animation:season-ring-turn 30s linear infinite reverse}
+ html .season-incognito-art.is-revealed .season-incognito-confetti i{animation:season-confetti .9s ease-out both}
+ html .season-incognito-art.is-revealed .season-incognito-confetti i:nth-child(even){animation-delay:.1s}
+ html .season-afterhours.is-night .season-afterhours-stars i{animation:season-twinkle 4s ease-in-out infinite alternate}
+ html .season-afterhours.is-night .season-afterhours-stars i:nth-child(even){animation-duration:6s;animation-direction:alternate-reverse}
+ html .season-afterhours-waves{animation:season-wave-drift 9s ease-in-out infinite alternate}
+ html .season-dead-tracks i{animation:season-tracks-shift 6s ease-in-out infinite alternate}
  @keyframes season-particle-wander{to{transform:translate(12px,-18px);opacity:.18}}
  @keyframes season-duo-signal{to{stroke-dashoffset:-24}}
  @keyframes season-ring-turn{to{transform:rotate(360deg)}}
@@ -75,7 +74,4 @@
  @keyframes season-twinkle{to{opacity:.2;transform:scale(.7)}}
  @keyframes season-wave-drift{to{transform:translateX(5%)}}
  @keyframes season-tracks-shift{to{opacity:.3;transform:translateX(10px) rotate(var(--track-r))}}
-}
 @media(max-width:767px){.season-duo-link{grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr);padding:.7rem .5rem}.season-duo-link>span{font-size:.6rem}.season-feature-mark{font-size:.48rem}.season-hidden-progress{font-size:.58rem}}
-@media(prefers-reduced-motion:reduce){.season-feature-environment i,.season-counter-orbit span,.season-afterhours-waves,.season-afterhours-stars i,.season-dead-tracks i{animation:none!important}}
-html[data-motion="reduce"] .season-feature-environment i,html[data-motion="reduce"] .season-counter-orbit span,html[data-motion="reduce"] .season-afterhours-waves{animation:none!important}

@@ -2,11 +2,9 @@
 .shush-hero-aura{translate:var(--lens-x,0px) var(--lens-y,0px)}
 .shush-hero-player::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(110deg,transparent 24%,rgba(var(--season-rgb),.15) 50%,transparent 76%);background-size:250% 100%;background-position:100% 0;opacity:0}
 .shush-hero-visual::after{content:none;position:absolute;top:3%;right:3%;font:600 .58rem var(--font-mono);color:var(--season-accent);letter-spacing:.11em;pointer-events:none}
-@media(prefers-reduced-motion:no-preference){
- html:not([data-motion="reduce"]) .shush-hero-aura{transition:translate .52s var(--ease-out)}
- html:not([data-motion="reduce"]) .shush-hero-player::after{transition:opacity .3s,background-position .75s}
- html:not([data-motion="reduce"]) .shush-hero-player:is(:hover,:focus-visible)::after{opacity:1;background-position:0 0}
- html:not([data-motion="reduce"]) .shush-hero-visual:is(:hover,:focus-within)::after{content:"SIGNAL / SHUSH"}
-}
+html .shush-hero-aura{transition:translate .52s var(--ease-out)}
+ html .shush-hero-player::after{transition:opacity .3s,background-position .75s}
+ html .shush-hero-player:is(:hover,:focus-visible)::after{opacity:1;background-position:0 0}
+ html .shush-hero-visual:is(:hover,:focus-within)::after{content:"SIGNAL / SHUSH"}
 @media(max-width:767px){.shush-hero-visual::after{font-size:.48rem}}
 .shush-hero-visual:has(.season-art.is-idle) .shush-hero-aura{animation-play-state:paused}

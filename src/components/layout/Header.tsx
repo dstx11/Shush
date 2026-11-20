@@ -119,7 +119,7 @@ export function Header() {
           aria-controls="mobile-navigation"
           onClick={() => setIsOpen((value) => !value)}
         >
-          <span aria-hidden="true">{isOpen ? 'Fechar' : 'Menu'}</span><span aria-hidden="true" className="menu-glyph">{isOpen ? '×' : '+'}</span>
+          <span aria-hidden="true">{isOpen ? 'Fechar' : 'Menu'}</span><span aria-hidden="true" className="menu-bars" />
         </button>
 
         {isOpen ? (

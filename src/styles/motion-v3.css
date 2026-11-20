@@ -9,14 +9,11 @@
 .shush-motion-toggle[aria-pressed="true"] .motion-toggle-indicator>span{transform:translateX(13px)}
 .shush-reading-progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--season-accent);box-shadow:0 0 12px #b45cff;z-index:70;transform:scaleX(0);transform-origin:left;pointer-events:none}
 @supports(animation-timeline:scroll(root block)){.shush-reading-progress{animation:shush-scroll-progress linear both;animation-timeline:scroll(root block)}@keyframes shush-scroll-progress{to{transform:scaleX(1)}}}
-@media(prefers-reduced-motion:no-preference){
- html:not([data-motion="reduce"]) .motion-in{opacity:.55;transform:translateY(22px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out);transition-delay:var(--motion-delay,0ms)}
- html:not([data-motion="reduce"]) .motion-in.motion-visible{opacity:1;transform:none}
+html .motion-in{opacity:.55;transform:translateY(22px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out);transition-delay:var(--motion-delay,0ms)}
+ html .motion-in.motion-visible{opacity:1;transform:none}
 
-}
-html[data-motion="reduce"] *,html[data-motion="reduce"] *::before,html[data-motion="reduce"] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-html[data-motion="reduce"] .motion-in{opacity:1!important;transform:none!important}
-html[data-motion="reduce"] .shush-reading-progress{display:none}
+
+
 .motion-compact{font-size:.68rem;gap:.5rem}
 
 /* LUMEN: light belongs to selected actions and expressive headlines. */
@@ -27,10 +24,8 @@ html[data-motion="reduce"] .shush-reading-progress{display:none}
 .motion-in:focus-within{opacity:1!important;transform:none!important;transition:none!important}
 .shush-root :is(.creator-art,.audit-drop-gallery){border-color:#a26ecb99;box-shadow:0 0 44px #9135db2e,inset 0 1px #eed5ff22}
 .verified-match:is(:hover,:focus-within){box-shadow:0 0 28px #a14ee62b}
-@media(prefers-reduced-motion:no-preference){
- html:not([data-motion=reduce]) .shush-root[data-entering=false] :is(.creator-editorial-heading,.premier-cover,.story-cover,.drop-heading){animation:chapter-enter .7s var(--ease-out) both}
+html .shush-root[data-entering=false] :is(.creator-editorial-heading,.premier-cover,.story-cover,.drop-heading){animation:chapter-enter .7s var(--ease-out) both}
  @keyframes chapter-enter{from{opacity:.6;transform:translateY(16px)}to{opacity:1;transform:none}}
-}
 
 .verified-match { position: relative; isolation: isolate; }
 .verified-match::before {
@@ -45,8 +40,6 @@ html[data-motion="reduce"] .shush-reading-progress{display:none}
 }
 .verified-match:focus-within::before { opacity: 1; background-position: center; }
 @media (hover: hover) { .verified-match:hover::before { opacity: 1; } }
-@media (prefers-reduced-motion: no-preference) {
-  .verified-match::before { transition: opacity .16s ease-out; }
+.verified-match::before { transition: opacity .16s ease-out; }
   .verified-match details[open] .verified-match-source { animation: source-arrival .18s ease-out; }
   @keyframes source-arrival { from { opacity: .35; transform: translateY(-3px); } }
-}

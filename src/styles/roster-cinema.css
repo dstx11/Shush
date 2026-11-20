@@ -5,9 +5,7 @@
   background: radial-gradient(ellipse at 50% 68%, var(--player-wash), transparent 68%);
   translate: var(--lens-x, 0px) var(--lens-y, 0px);
 }
-@media (prefers-reduced-motion: no-preference) {
-  html:not([data-motion=reduce]) .character-backlight { transition: translate .5s var(--ease-out); }
-}
+html .character-backlight { transition: translate .5s var(--ease-out); }
 
 /* The frame keeps navigation in reach while long player details scroll. */
 .player-dossier[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;max-height:calc(100svh - 2rem);padding:0;overflow:hidden}

@@ -85,7 +85,7 @@ function RouteFallback() {
       <div className="loading-emblem"><span className="loading-orbit" aria-hidden="true" /><img src="/assets/brand/shush-logo-small.webp" width="1167" height="647" alt="SHUSH" /><span className="loading-shutter" aria-hidden="true" /></div>
       <strong>O silêncio antes do round.</strong>
       <span className="loading-line" aria-hidden="true" />
-      <p>A carregar SHUSH<span aria-hidden="true">…</span></p>
+      <p>A carregar SHUSH<span className="loading-dots" aria-hidden="true"><i /><i /><i /></span></p>
     </div>
   );
 }

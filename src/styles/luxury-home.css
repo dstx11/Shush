@@ -84,10 +84,8 @@
   .campaign-frame>img{width:clamp(1.7rem,7vw,3rem);height:2.55rem}.campaign-frame small{font-size:.55rem}
   .campaign-frame strong{font-size:clamp(.69rem,2.7vw,.95rem)}
 }
-@media(prefers-reduced-motion:no-preference){
-  html:not([data-motion=reduce]) .shush-root[data-entering=false] .lux-hero::before{animation:fabric-light 16s ease-in-out infinite alternate;animation-play-state:paused}
-  html:not([data-motion=reduce]) .shush-root[data-entering=false] .lux-hero[data-scene-visible=true]::before{animation-play-state:running}
-  html:not([data-motion=reduce]) .shush-root[data-entering=false] .campaign-sitter{animation:photographic-cut .42s ease-out}
+html .shush-root[data-entering=false] .lux-hero::before{animation:fabric-light 16s ease-in-out infinite alternate;animation-play-state:paused}
+  html .shush-root[data-entering=false] .lux-hero[data-scene-visible=true]::before{animation-play-state:running}
+  html .shush-root[data-entering=false] .campaign-sitter{animation:photographic-cut .42s ease-out}
   @keyframes photographic-cut{from{opacity:.6;clip-path:inset(0 4%)}to{opacity:1;clip-path:inset(0)}}
   @keyframes fabric-light{from{transform:translate3d(-1%,0,0) scale(1.02)}to{transform:translate3d(1%,.5%,0) scale(1.06)}}
-}

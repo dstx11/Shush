@@ -29,10 +29,6 @@ export const loadContentPage = once<PageModule>(() =>
   import('../pages/ContentPage').then((module) => ({ default: module.ContentPage })),
 );
 
-export const loadDropPage = once<PageModule>(() =>
-  import('../pages/DropPage').then((module) => ({ default: module.DropPage })),
-);
-
 export const loadAboutPage = once<PageModule>(() =>
   import('../pages/AboutPage').then((module) => ({ default: module.AboutPage })),
 );

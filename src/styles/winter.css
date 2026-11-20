@@ -97,7 +97,7 @@
   .shush-root[data-season="christmas"] .winter-card-download{ min-height: 3.1rem; }
   .shush-root[data-season="christmas"] .winter-card-trigger{ font-size: .75rem; }
 }
-@media (prefers-reduced-motion: reduce) { .shush-root[data-season="christmas"] .winter-card-trigger{ transition: none; } }
+
 
 /* The existing postcard editor keeps its layout and native dialog behaviour. */
 .shush-root[data-season="christmas"] .winter-postcard-inner{ border-radius: 2rem; border-color: #b9a67566; background: radial-gradient(ellipse at 80% 40%,#69734c33,transparent 50%),linear-gradient(135deg,#30203d,#170e20); }

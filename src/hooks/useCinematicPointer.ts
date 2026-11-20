@@ -11,8 +11,7 @@ export function useCinematicPointer<T extends HTMLElement>(){
   for(const name of ['--lens-x','--lens-y'])node?.style.removeProperty(name);
  },[]);
  const onPointerMove=useCallback((event:PointerEvent<T>)=>{
-  if(event.pointerType!=='mouse'||window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ||document.documentElement.dataset.motion==='reduce')return;
+  if(event.pointerType!=='mouse')return;
   const node=ref.current;
   if(!node)return;
   const rect=node.getBoundingClientRect();
@@ -27,12 +26,8 @@ export function useCinematicPointer<T extends HTMLElement>(){
  },[]);
  useEffect(()=>{
   const onVisibility=()=>{if(document.hidden)clear();};
-  const onPreference=()=>clear();
-  const media=window.matchMedia('(prefers-reduced-motion: reduce)');
-  media.addEventListener('change',onPreference);
   document.addEventListener('visibilitychange',onVisibility);
-  document.addEventListener('shush:reduce-motion',onPreference);
-  return ()=>{media.removeEventListener('change',onPreference);clear();document.removeEventListener('visibilitychange',onVisibility);document.removeEventListener('shush:reduce-motion',onPreference);};
+  return ()=>{clear();document.removeEventListener('visibilitychange',onVisibility);};
  },[clear]);
  return {ref,onPointerMove,onPointerLeave:clear};
 }

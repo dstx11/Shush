@@ -8,13 +8,11 @@ export function SeasonArtwork({id}:{id:SeasonId}){
  useEffect(()=>{
   if(!ref.current||typeof IntersectionObserver==='undefined')return;
   let inView=false;
-  const media=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const update=()=>setActive(inView&&!document.hidden&&!media.matches);
+  const update=()=>setActive(inView&&!document.hidden);
   const observer=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting&&entries[0].intersectionRatio>0.1;update();},{threshold:[0,.1]});
   observer.observe(ref.current);
-  media.addEventListener('change',update);
   document.addEventListener('visibilitychange',update);
-  return ()=>{observer.disconnect();media.removeEventListener('change',update);document.removeEventListener('visibilitychange',update);};
+  return ()=>{observer.disconnect();document.removeEventListener('visibilitychange',update);};
  },[id]);
  const motif=(()=>{
   switch(id){
