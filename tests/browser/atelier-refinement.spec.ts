@@ -44,8 +44,10 @@ test('mobile jersey preview opens at the form and returns without losing the edi
   expect(phraseHeight).toBeLessThan(miniatureHeight * .08);
   const trigger = page.getByRole('button', { name: 'Ampliar a minha personalização', exact: true });
   await trigger.scrollIntoViewIfNeeded();
+  const box = (await trigger.boundingBox())!;
   const before = await page.evaluate(() => ({ scroll: window.scrollY, hash: location.hash }));
-  await trigger.click();
+  // A real tap does not run the locator click's second scroll alignment on this sticky control.
+  await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
   const preview = page.getByRole('dialog', { name: 'A camisola, ao detalhe.' });
   await expect(preview.getByLabel('Pré-visualização: SHUSH 愛 13', { exact: true })).toBeVisible();
   await expect(preview.getByText('Só rounds.', { exact: true })).toBeVisible();
