@@ -46,10 +46,9 @@ test('cinematic motion proof records the actual interface', async ({ browser }, 
     await page.waitForTimeout(700);
     await page.locator('.campaign-frame').first().hover();
     await page.waitForTimeout(700);
-    await page.locator('.lux-roster-gallery').scrollIntoViewIfNeeded();
-    await page.waitForTimeout(800);
-    await page.locator('.lux-desktop').getByRole('link', { name: 'Roster', exact: true }).click();
-    await page.getByRole('group', { name: 'Selecionar jogador' }).getByRole('button', { name: 'More', exact: true }).click();
+    await page.getByRole('link', { name: 'Conhecer o roster', exact: true }).click();
+    await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
+    await page.keyboard.press('2');
     await page.waitForTimeout(800);
     await expect(page.locator('#selected-player-name')).toHaveText('More');
     await page.screenshot({ path: info.outputPath('glow-roster.png') });
