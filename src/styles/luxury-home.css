@@ -25,10 +25,10 @@
 }
 .campaign-sitter>img,.campaign-sitter>.portrait-placeholder {
   width:auto; height:min(100%,72vw); max-width:none; aspect-ratio:1;
-  object-fit:contain; filter:drop-shadow(0 2px 8px #0003);
+  object-fit:contain;
 }
 .campaign-sitter>img {mask:var(--silhouette) center / 100% 100% no-repeat}
-.campaign-sitter {mask-image:linear-gradient(to top,transparent 0,black 13%)}
+.campaign-sitter {filter:var(--portrait-rim);mask-image:linear-gradient(to top,transparent 0,black 13%)}
 .campaign-sitter>.portrait-placeholder {display:grid;place-items:center;font:700 5rem var(--font-ui)}
 .campaign-caption {
   display:flex; justify-content:space-between; align-items:end; gap:2rem;

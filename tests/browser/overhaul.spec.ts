@@ -81,7 +81,7 @@ test('fast player selection has one current portrait and a stable stage',async({
  for(const key of ['7','2','6','3','1'])await page.keyboard.press(key);
  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
  await expect(page.locator('.player-card-select[aria-pressed="true"]')).toHaveCount(1);
- await expect(page.locator('.character-media>img')).toHaveCount(1);
+ await expect(page.locator('.roster-portrait>img')).toHaveCount(1);
  await expect(page.locator('.portrait-depart')).toHaveCount(0,{timeout:2000});
  expect((await stage.boundingBox())!.width).toBe(width);
 });

@@ -18,7 +18,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.character-role-tape')).toContainText('Iniciador / Flex');
   await expect(page.locator('.character-number')).toHaveText('16');
   await expect(page.locator('.character-copy')).not.toContainText('XXL');
-  await expect(page.locator('.character-media > img')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.roster-portrait > img')).toHaveCSS('animation-name', 'none');
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   expect(axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
   await page.locator('#selected-player').screenshot({ path: testInfo.outputPath('character-select.png') });
@@ -121,7 +121,7 @@ test('Character Select: swipe intent, cancellation and player jersey link', asyn
 test('Motion: portrait arrival completes and reduced motion can be enabled at runtime', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/esports/valorant/roster?player=catty');
-  const portrait = page.locator('.character-media > img');
+  const portrait = page.locator('.roster-portrait > img');
   await expect(portrait).not.toHaveCSS('animation-name', 'none');
   await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
   await expect(portrait).toHaveCSS('opacity', '1');

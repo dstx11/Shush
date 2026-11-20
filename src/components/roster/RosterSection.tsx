@@ -8,7 +8,6 @@ import { players, playerDropUrl, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { AppLink } from '../ui/AppLink';
-import { PlayerSignature } from './PlayerSignature';
 import { useCinematicPointer } from '../../hooks/useCinematicPointer';
 import { useSelectCue } from '../../hooks/useSelectCue';
 
@@ -113,14 +112,13 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" className="character-spotlight" aria-labelledby="selected-player-name">
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
-              <span className="section-kicker">SHUSH / IDENTIDADE</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
               <span className="character-role-tape">{selectedPlayer.roles.join(' / ')}</span>
 
               <span className="sr-only">Camisola #{selectedPlayer.number}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
-            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" data-number={selectedPlayer.number} style={{ '--silhouette': `url("/assets/campaign/${selectedPlayer.id}-mask.svg")` } as CSSProperties} data-stage-visible={stageVisible}
+            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" style={{ '--silhouette': `url("/assets/campaign/${selectedPlayer.id}-mask.svg")` } as CSSProperties} data-stage-visible={stageVisible}
               ref={camera.ref} onPointerMove={camera.onPointerMove} onPointerLeave={camera.onPointerLeave}
               onPointerDown={(event) => { if (event.pointerType === 'touch') gesture.current = { x: event.clientX, y: event.clientY }; }}
               onPointerCancel={() => { gesture.current = null; }}
@@ -134,10 +132,11 @@ export function RosterSection() {
                   if (dx < 0) selectNext(); else selectPrevious();
                 }
               }}>
-              <PlayerSignature player={selectedPlayer} index={selectedIndex} />
-              <span className="character-signal-flare" key={`flare-${selectedPlayer.id}-${replayCycle}`} aria-hidden="true" />
+              <span className="character-backlight" aria-hidden="true" />
               {leaving?.avatar && <div className="portrait-depart" style={{ '--silhouette': `url("/assets/campaign/${leaving.id}-mask.svg")` } as CSSProperties} key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
-              <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
+              <div className="roster-portrait">
+                <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
+              </div>
             </div>
 
                     <div className="player-selector"><div className="player-selector-heading"><span>{allPlayersVisible ? 'Todos à vista' : 'Desliza para explorar'}</span><button className="utility-button" type="button" aria-label="Ver os 7 jogadores" aria-pressed={allPlayersVisible} aria-controls="player-options" onClick={() => setAllPlayersVisible(value => !value)}>Ver os 7 <span aria-hidden="true">{allPlayersVisible ? '-' : '+'}</span></button></div><div ref={stripRef} id="player-options" className={`character-strip${allPlayersVisible ? ' is-expanded' : ''}`} role="group" aria-label="Selecionar jogador">

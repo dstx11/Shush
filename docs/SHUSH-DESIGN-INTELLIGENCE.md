@@ -505,3 +505,9 @@ A [comparação antes/depois](evidence/shush-campaign-comparison.jpg) usa a mesm
 A captura da Home mostrava sete molduras independentes em desktop e quatro filas em telemóvel. Recuperámos a estampa coletiva do terceiro estudo para este ponto da página. Um único fundo lilás claro faz a transição entre o arquivo e os criadores. Cada dorsal fica atrás da silhueta original; os nomes e as ligações têm posição fixa. Em ecrãs estreitos, quatro jogadores formam a primeira fila e três a segunda.
 
 A experiência [Animated Image Columns, de Manoela Ilic](https://tympanus.net/codrops/2019/05/16/animated-image-columns/) serviu para estudar a relação entre um índice e a imagem que responde ao foco. Aqui a luz muda junto da figura selecionada. O movimento reduzido mantém o realce estático. A função ativa é aplicada a todas as funções confirmadas do jogador, incluindo as secundárias.
+
+## 21. Luz de recorte e retrato livre · 20 de novembro de 2026
+
+A revisão do utilizador substitui a escolha de papel lilás e dorsais sobre as cabeças da secção 20. Na Home, a fotografia volta ao violeta escuro; os dorsais passam para a legenda. No roster, o desenho geométrico e o clarão que atravessavam o rosto foram retirados, bem como o número gigante do cenário. O nome, as funções e o dorsal ficam sob o retrato.
+
+A [documentação de drop-shadow no MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/filter-function/drop-shadow) descreve a sombra baseada na transparência da imagem. Aplicamos duas sombras curtas ao contentor do recorte, sobre a máscara de cada pessoa. O brilho continua visível com movimento reduzido. Os botões partilham um raio de 1 rem e os principais contornos interativos passam de 1 a 2 px em cores discretas.

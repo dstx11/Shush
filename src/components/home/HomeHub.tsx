@@ -34,9 +34,9 @@ function TeamSheet() {
           <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`}
             aria-label={`Conhecer ${player.displayName}, número ${player.number}, ${player.roles.join(' e ')}`}>
             <span className="sheet-portrait" style={{ '--cutout': `url("/assets/campaign/${player.id}-mask.svg")` } as CSSProperties}>
-              <span className="sheet-number" aria-hidden="true">{player.number}</span>
               <PlayerPortrait player={player} decorative sizes="(max-width: 700px) 25vw, 190px" />
             </span>
+            <span className="sheet-number" aria-hidden="true">#{player.number}</span>
             <strong>{player.displayName}</strong>
             <small>{role || player.roles[0]}</small>
           </AppLink>

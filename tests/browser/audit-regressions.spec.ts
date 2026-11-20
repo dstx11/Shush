@@ -8,8 +8,8 @@ test('Unavailable portrait retains identity and selection recovers', async ({ pa
   await expect(page.locator('.competitive-identity')).toContainText('xyz#off');
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('TZ');
-  await expect(page.locator('.character-media > img')).toHaveJSProperty('complete', true);
-  await expect(page.locator('.character-media > img')).not.toHaveJSProperty('naturalWidth', 0);
+  await expect(page.locator('.roster-portrait > img')).toHaveJSProperty('complete', true);
+  await expect(page.locator('.roster-portrait > img')).not.toHaveJSProperty('naturalWidth', 0);
 });
 
 test('Back restores the reading position instead of returning to the hero', async ({ page }) => {

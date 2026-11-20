@@ -42,7 +42,7 @@ test('pointer and button feedback leave the content geometry stable',async ({pag
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto('/esports/valorant/roster');
  await expect(page.getByRole('dialog',{name:'Entrada SHUSH'})).toHaveCount(0,{timeout:6500});
- const image=page.locator('.character-media>img');
+ const image=page.locator('.roster-portrait>img');
  await image.scrollIntoViewIfNeeded();
  const position=()=>image.evaluate(node=>{const r=node.getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY};});
  const before=await position();
