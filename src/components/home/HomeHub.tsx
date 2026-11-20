@@ -53,7 +53,8 @@ function TeamSheet() {
 
 export function HomeHub() {
   return <div className="lux-discover shell" id="discover">
-    <section className="lux-records" aria-labelledby="lux-records-title"><div className="lux-chapter">Premier / Arquivo</div><div className="lux-ledger">
+    <nav className="discovery-nav" aria-label="Nesta página"><a href="#arquivo">Partidas</a><a href="#plantel">Plantel</a><a href="#canais">Canais</a></nav>
+    <section id="arquivo" className="lux-records" aria-labelledby="lux-records-title"><div className="lux-chapter">Premier / Arquivo</div><div className="lux-ledger">
       <div className="lux-ledger-intro"><span className="section-kicker">Premier / abril–junho 2026</span><h2 id="lux-records-title">Últimas<br />partidas.</h2><p>Partidas documentadas. Última verificação: {lastChecked}.</p><AppLink className="editorial-link" href="/esports/valorant/premier#verified-results">Ver todas as partidas <ArrowIcon /></AppLink></div>
       <div className="lux-ledger-list">{verifiedMatches.slice(0,3).map(match => <AppLink key={match.id} className="lux-score" href={verifiedMatchHref(match)} aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}; ${formatDate(match.date)}`}><span className="lux-score-meta"><time dateTime={match.date}>{formatDate(match.date)}</time><span>{match.map}</span></span><span className="lux-score-teams"><strong>SHUSH <span>vs {match.opponent}</span></strong><b>{match.shushScore}<small>:</small>{match.opponentScore}</b></span></AppLink>)}</div></div>
     </section>

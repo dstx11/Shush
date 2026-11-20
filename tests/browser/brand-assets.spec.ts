@@ -26,3 +26,20 @@ test('site motion and silent player selection work with the system set to reduce
   await expect(page.locator('.selector-sound, audio, video')).toHaveCount(0);
   await expect(page.locator('html')).not.toHaveAttribute('data-sound-attempt', 'true');
 });
+
+test('reading controls remain usable at narrow widths and enlarged text', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 780 });
+  await page.goto('/esports/valorant/premier#verified-results');
+  await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+  const map = page.getByLabel('Mapa', { exact: true });
+  await map.selectOption({ index: 1 });
+  const chosen = await map.inputValue();
+  await page.getByRole('button', { name: 'Vitórias', exact: true }).click();
+  await expect(map).toHaveValue(chosen);
+  await expect(page.getByRole('searchbox')).toHaveCSS('font-size', '32px');
+  await expect(page.getByRole('navigation', { name: 'Navegação de rodapé' })
+    .getByRole('link', { name: 'Premier' })).toHaveAttribute('aria-current', 'page');
+  await page.goto('/#discover');
+  await page.getByRole('navigation', { name: 'Nesta página' }).getByRole('link', { name: 'Canais' }).click();
+  await expect(page).toHaveURL(/#canais$/);
+});

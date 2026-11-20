@@ -552,3 +552,58 @@ Cada entrada identifica uma adaptação original do padrão visual. Não foram i
 | 18 | [React Bits · Scroll Reveal](https://reactbits.dev/text-animations/scroll-reveal) | O título da origem revela-se quando entra no enquadramento. |
 | 19 | [React Bits · Click Spark](https://reactbits.dev/animations/click-spark) | Pequenas faíscas assinalam a seleção de um filtro de resultados. |
 | 20 | [React Bits · True Focus](https://reactbits.dev/text-animations/true-focus) | Marcas de foco nos cantos identificam o retrato explorado no índice da Home. |
+
+## 25. Revisão de leitura e navegação
+
+1. **luxury-navigation** — Navegação principal a 15 px nominais, escalável com o browser.
+2. **luxury-navigation** — Rótulo Menu/Fechar de 16 px.
+3. **luxury-navigation** — Legenda do menu móvel ampliada e com entrelinha.
+4. **luxury-navigation** — Título do atalho Premier legível no cabeçalho.
+5. **luxury-navigation** — Folga ao focar o último destino no menu móvel.
+6. **footer** — Destinos do rodapé maiores, com área de toque de 44 px nominais.
+7. **footer** — Títulos de coluna maiores e com menos espacejamento.
+8. **footer** — Créditos dimensionados em rem.
+9. **footer** — Assinatura Portugal legível também no telemóvel.
+10. **footer** — Página atual sublinhada na navegação do rodapé.
+11. **luxury-discovery** — Separadores editoriais com letra maior.
+12. **luxury-discovery** — Descrição do arquivo com medida e entrelinha de leitura.
+13. **luxury-discovery** — Data e mapa podem mudar de linha sem colidir.
+14. **luxury-discovery** — Algarismos dos resultados alinhados entre partidas.
+15. **luxury-discovery** — Dorsais da folha de equipa ampliados.
+16. **luxury-discovery** — Funções dos jogadores legíveis nas duas filas móveis.
+17. **luxury-discovery** — Filtro de função com texto à escala dos campos de formulário.
+18. **luxury-discovery** — Contagem e ligação do plantel ficam próximas quando quebram de linha.
+19. **luxury-discovery** — Plataformas e identificadores maiores e quebráveis.
+20. **luxury-discovery** — Fecho Sobre ganha espaço vertical e uma ação mais evidente.
+21. **premier** — Estado, data e mapa reorganizam-se com texto ampliado.
+22. **premier** — Marcador de cada encontro usa números tabulares.
+23. **premier** — Fonte e data de verificação legíveis em colunas estreitas.
+24. **premier** — Detalhes com alvo de toque de pelo menos 44 px nominais.
+25. **premier** — Pesquisa por adversário com texto de 16 px e largura limitada.
+26. **premier** — Seletores de mapa e ordem acompanham o texto do browser.
+27. **premier** — Rótulos dos filtros podem encolher dentro da barra.
+28. **premier** — Designações das estatísticas com espaço para duas linhas.
+29. **premier** — Data do resultado principal mantém-se inteira.
+30. **premier** — Estado de pesquisa sem resultados com mais espaço entre linhas.
+31. **players** — Legenda do roster ampliada e menos condensada.
+32. **players** — Funções no perfil podem ocupar a largura disponível.
+33. **players** — Cabeçalho do perfil competitivo mais legível.
+34. **players** — Rótulo do Riot ID ampliado.
+35. **players** — Riot ID completo pode ser selecionado e cabe em ecrãs estreitos.
+36. **players** — Nomes das miniaturas ampliados com quebra de segurança.
+37. **players** — Ações de cópia e partilha com rótulos maiores.
+38. **players** — Ação para abrir o dossier ganha hierarquia.
+39. **players** — Confirmação de cópia e erros tornam-se mais fáceis de ler.
+40. **players** — Instrução de exploração do plantel ampliada.
+41. **creators** — Descrições dos canais a 16 px nominais com largura de leitura limitada.
+42. **creators** — Identificadores de canal maiores e com quebra.
+43. **creators** — Introdução da página de canais com corpo de leitura.
+44. **creators** — Índice dos dois criadores reconhecível como navegação.
+45. **creators** — Ações externas e perfis com separação horizontal e vertical própria.
+46. **about** — Ano de fundação ampliado no selo.
+47. **about** — Abertura da história com largura confortável.
+48. **about** — Texto dos capítulos com ritmo uniforme.
+49. **about** — Índice de jogadores com áreas de toque maiores.
+50. **about** — Atalhos para capítulos da história mais legíveis e fáceis de tocar.
+51. **Premier** — Mudar entre vitórias e derrotas conserva o mapa escolhido.
+52. **Home** — Índice local para saltar diretamente para partidas, plantel ou canais.

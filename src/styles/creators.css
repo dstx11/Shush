@@ -2,9 +2,9 @@
 .creator-editorial-heading{display:flex;align-items:end;justify-content:space-between;gap:1.25rem;flex-wrap:wrap;margin-bottom:2rem}
 .creator-editorial-heading>.section-kicker{flex-basis:100%}
 .creator-editorial-heading h1{font:750 clamp(3.6rem,8vw,8rem)/.95 var(--font-ui);letter-spacing:-.095em}
-.creator-heading-foot p{font-size:.86rem;color:var(--muted)}
+.creator-heading-foot p{color:var(--muted);font-size:1rem;line-height:1.6}
 .creator-heading-foot nav,.creator-channel-actions{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
-.creator-heading-foot nav a{display:flex;align-items:center;gap:.5rem;min-height:44px;color:#e8d3f5;font-size:.82rem}
+.creator-heading-foot nav a{display:flex;align-items:center;gap:.5rem;min-height:44px;color:#e8d3f5;font-size:.9375rem;text-decoration:underline;text-underline-offset:.22em}
 .creator-features{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,3rem)}
 .creator-feature {
   min-width: 0;
@@ -17,9 +17,9 @@
 .creator-art { overflow: hidden; border-radius: calc(var(--radius-md) - .45rem); }
 .creator-art .channel-photo { height: clamp(13rem, 22vw, 21rem); }
 .creator-feature-copy { padding: clamp(1rem, 2vw, 1.65rem) .25rem .25rem; }
-.creator-file-label { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; color: var(--channel-type); font: .73rem var(--font-mono); }
+.creator-file-label{display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; color: var(--channel-type); font: .73rem var(--font-mono);font-size:.875rem;overflow-wrap:anywhere}
 .creator-feature h2 { font: 500 clamp(3rem, 5vw, 5rem)/1 'SHUSH Hearth',Georgia,serif; letter-spacing: -.06em; margin: .55rem 0; }
-.creator-description { max-width: 45ch; font-size: .9rem; line-height: 1.65; color: #e5dce9; margin: .75rem 0 1.25rem; }
+.creator-description{ line-height: 1.65; color: #e5dce9; margin: .75rem 0 1.25rem;font-size:1rem;max-width:48ch}
 @media (max-width:767px) {
   .creator-page { padding-top: 6.3rem; }
   .creator-features { grid-template-columns: 1fr; gap: 1.5rem; }
@@ -36,3 +36,5 @@
 }
 .creator-channel .button-arrow { transition: transform .18s ease-out; }
   .creator-channel:is(:hover, :focus-visible) .button-arrow { transform: translateX(3px); }
+
+.creator-channel-actions{gap:.65rem 1.25rem}
