@@ -15,7 +15,7 @@ body { background: var(--ink); overflow-wrap:anywhere; }
 .editorial-link { min-height: 2.75rem; font-size: .875rem; }
 
 .view-control { display: flex; gap: .25rem; }
-.view-control button { min-width: 4rem; min-height: 2.75rem; padding-inline: .65rem; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font: .8rem var(--font-mono); }
+.view-control button { min-width: 4rem; min-height: 2.75rem; padding-inline: .65rem; border:var(--surface-stroke) solid transparent; border-radius:var(--control-radius); background: transparent; color: var(--muted); font: .8rem var(--font-mono); }
 .view-control button[aria-pressed='true'] { border-color: var(--control-line); color: var(--text); background: var(--surface-2); }
 .view-control button:hover { background: var(--surface-2); color: white; }
 

@@ -1,9 +1,9 @@
 /* Native modal gallery: real assets, bounded zoom, keyboard and touch. */
 .jersey-zoom-surface { display: block; position: relative; width: 100%; padding: 0; border: 0; border-radius: var(--radius-md); background: transparent; color: #fff; cursor: zoom-in; }
-.jersey-zoom-label { position: absolute; z-index: 2; right: .75rem; bottom: .75rem; display: inline-flex; align-items: center; gap: .65rem; min-height: 2.75rem; border: 1px solid var(--control-line); border-radius: var(--radius-sm); padding: .6rem .8rem; background: #130d1ced; color: var(--text); font: 600 .75rem var(--font-ui); pointer-events: none; }
+.jersey-zoom-label { position: absolute; z-index: 2; right: .75rem; bottom: .75rem; display: inline-flex; align-items: center; gap: .65rem; min-height: 2.75rem; border:var(--surface-stroke) solid var(--control-line); border-radius:var(--control-radius); padding: .6rem .8rem; background: #130d1ced; color: var(--text); font: 600 .75rem var(--font-ui); pointer-events: none; }
 .jersey-zoom-surface:hover .jersey-zoom-label { background: var(--surface-2); border-color: var(--signal); }
 .drop-gallery-image-button { margin-inline: auto; }
-.jersey-lightbox { --paper: var(--text); width: min(94vw, 76rem); height: min(92svh, 68rem); max-width: none; max-height: none; margin: auto; padding: 0; overflow: hidden; border: 1px solid var(--control-line); border-radius: var(--radius-lg); background: var(--bg); color: var(--text); box-shadow: 0 2rem 6rem #0009; }
+.jersey-lightbox { --paper: var(--text); width: min(94vw, 76rem); height: min(92svh, 68rem); max-width: none; max-height: none; margin: auto; padding: 0; overflow: hidden; border:var(--surface-stroke) solid var(--control-line); border-radius: var(--radius-lg); background: var(--bg); color: var(--text); box-shadow: 0 2rem 6rem #0009; }
 .jersey-lightbox[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
 .jersey-lightbox::backdrop { background: #050308e8; }
 .jersey-lightbox-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.25rem; }
