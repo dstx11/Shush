@@ -349,7 +349,7 @@ test('Drop: small-height form reflow and reduced motion remain usable', async ({
   await nick.scrollIntoViewIfNeeded();
   await expect(nick).toBeFocused();
   const field = (await nick.boundingBox())!;
-  const header = (await page.locator('header').boundingBox())!;
+  const header = (await page.getByRole('banner').boundingBox())!;
   expect(field.y).toBeGreaterThanOrEqual(header.y + header.height);
   expect(field.y + field.height).toBeLessThanOrEqual(320);
   await expect(page.locator('.drop-mobile-preview')).toHaveCSS('position', 'static');
@@ -364,7 +364,7 @@ test('Drop: desktop preview follows the form without an overflow scroll containe
   const initial = (await gallery.boundingBox())!;
   await page.evaluate((top) => window.scrollTo(0, top), initial.y - 96 + 20);
   const sticky = (await gallery.boundingBox())!;
-  const header = (await page.locator('header').boundingBox())!;
+  const header = (await page.getByRole('banner').boundingBox())!;
   expect(sticky.y).toBeGreaterThanOrEqual(header.y + header.height);
   expect(sticky.y + sticky.height).toBeLessThanOrEqual(page.viewportSize()!.height);
 });

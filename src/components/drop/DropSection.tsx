@@ -9,15 +9,15 @@ import { copyText, downloadText, shareUrl } from '../../lib/browser-transfer';
 import { buildDropUrl, defaultDropConfig, dropDraftKey, dropSummary, graphemes, readDropConfig, readDropDraft, sanitizeDropText, type DropConfig } from '../../lib/drop-config';
 
 const views = {
-  front: { label: 'Frente', src: '/assets/jersey/frontjersey.webp', alt: 'Jersey SHUSH Drop 01 vista de frente' },
-  back: { label: 'Verso', src: '/assets/jersey/backjersey.webp', alt: 'Jersey SHUSH Drop 01 vista de costas' },
+  front: { label: 'Frente', src: '/assets/jersey/frontjersey.webp', mask: '/assets/campaign/jersey-front-mask.svg', alt: 'Jersey SHUSH Drop 01 vista de frente' },
+  back: { label: 'Verso', src: '/assets/jersey/backjersey.webp', mask: '/assets/campaign/jersey-back-mask.svg', alt: 'Jersey SHUSH Drop 01 vista de costas' },
 } as const;
 type View = keyof typeof views;
 
 function JerseyPreview({ config, view, compact = false }: { config: DropConfig; view: View; compact?: boolean }) {
   const name = config.nick || 'SHUSH';
   const number = config.number || '00';
-  const style = { '--print-name-size': `${Math.min(6, 42 / Math.max(graphemes(name).length, 1))}cqi` } as CSSProperties;
+  const style = { '--jersey-mask': `url(${views[view].mask})`, '--print-name-size': `${Math.min(6, 42 / Math.max(graphemes(name).length, 1))}cqi` } as CSSProperties;
   return <div className={compact ? 'drop-mini-image' : 'audit-drop-image'} style={style}>
     <img src={views[view].src} width="1254" height="1254" alt={compact ? '' : views[view].alt} fetchPriority={compact ? 'auto' : 'high'} decoding="async" />
     {view === 'back' ? <div className="audit-live-print" aria-label={compact ? undefined : `Pré-visualização: ${name} ${number}`}><span>{name}</span><strong>{number}</strong>{config.phrase ? <small>{config.phrase}</small> : null}</div> : null}
