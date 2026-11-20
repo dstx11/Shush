@@ -22,7 +22,7 @@ html[data-motion="reduce"] .shush-reading-progress{display:none}
 /* LUMEN: light belongs to selected actions and expressive headlines. */
 :is(.story-cover,.creator-editorial-heading,.premier-cover,.drop-heading) h1 em{text-shadow:0 0 32px #b869f64d,0 0 80px #8540d629}
 .utility-button:is(:hover,:focus-visible){box-shadow:0 0 22px #a24bea38}
-.lux-lineup a:is(:hover,:focus-visible)>div,.creator-feature:focus-within .creator-art{box-shadow:0 0 32px #a647ed3d;border-color:#d09aef}
+.creator-feature:focus-within .creator-art{box-shadow:0 0 32px #a647ed3d;border-color:#d09aef}
 .shush-motion-toggle[aria-pressed=true]{box-shadow:0 0 20px #ab55e533}
 .motion-in:focus-within{opacity:1!important;transform:none!important;transition:none!important}
 .shush-root :is(.creator-art,.audit-drop-gallery){border-color:#a26ecb99;box-shadow:0 0 44px #9135db2e,inset 0 1px #eed5ff22}

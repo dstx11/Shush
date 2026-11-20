@@ -67,3 +67,24 @@ test('Premier opponent search combines with map and outcome and sorting preserve
   await expect(page.getByRole('combobox', { name: 'Ordenar', exact: true })).toHaveValue('newest');
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(page.viewportSize()!.width);
 });
+
+test('team sheet includes secondary roles and links to the matching player', async ({ page }, info) => {
+  test.skip(!['mobile-320', 'mobile-390', 'desktop-1366', 'mobile-webkit'].includes(info.project.name), 'Team sheet layouts');
+  await page.goto('/#plantel');
+  const sheet = page.locator('#plantel');
+  const portraits = sheet.getByRole('link', { name: /^Conhecer / });
+  const filter = sheet.getByRole('combobox', { name: 'Filtrar por função' });
+  await expect(portraits).toHaveCount(7);
+  const rows = await portraits.evaluateAll(links => new Set(links.map(link => Math.round(link.getBoundingClientRect().top))).size);
+  expect(rows).toBe(page.viewportSize()!.width > 700 ? 1 : 2);
+  await filter.selectOption('Iniciador');
+  await expect(portraits.locator('strong')).toHaveText(['More', 'Th0maz', 'Lyel']);
+  await expect(sheet.getByRole('status')).toHaveText('3 de 7 jogadores');
+  await filter.selectOption('');
+  await expect(portraits).toHaveCount(7);
+  await filter.selectOption('Sentinela');
+  await expect(portraits).toHaveCount(1);
+  await portraits.click();
+  await expect(page).toHaveURL(/roster\?player=more$/);
+  await expect(page.locator('#selected-player-name')).toHaveText('More');
+});

@@ -28,7 +28,7 @@ for (const [name, path] of routes) {
       await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
-    if (name === 'home') await page.locator('.lux-lineup').evaluate((element) => { element.scrollLeft = 0; });
+    if (name === 'home') await page.locator('#plantel').screenshot({ path: testInfo.outputPath('plantel.png') });
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });

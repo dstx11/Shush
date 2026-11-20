@@ -499,3 +499,9 @@ A capa usa uma silhueta por jogador sobre a palavra SHUSH e um cenário abstrato
 ### Revisão da composição no browser · 20 de novembro de 2026
 
 A [comparação antes/depois](evidence/shush-campaign-comparison.jpg) usa a mesma rotação da equipa e a mesma janela de desktop. O [vídeo de interação](evidence/shush-campaign-motion.mp4) foi captado pelo Playwright no site e mostra a entrada da capa, a resposta do botão e a mudança de retrato ao passar sobre o índice. A revisão a 1366 e 390 px também revelou o quadrado preto da imagem original da camisola. As duas máscaras independentes seguem a frente e o verso no estúdio, na miniatura e na ampliação. A impressão continua posicionada sobre a fotografia quadrada original. A verificação da pré-visualização passou nas seis rotas. A build do código do estúdio utiliza 134,06 kB de JavaScript e 43,29 kB de CSS totais em gzip.
+
+## 20. Retrato coletivo do plantel · 20 de novembro de 2026
+
+A captura da Home mostrava sete molduras independentes em desktop e quatro filas em telemóvel. Recuperámos a estampa coletiva do terceiro estudo para este ponto da página. Um único fundo lilás claro faz a transição entre o arquivo e os criadores. Cada dorsal fica atrás da silhueta original; os nomes e as ligações têm posição fixa. Em ecrãs estreitos, quatro jogadores formam a primeira fila e três a segunda.
+
+A experiência [Animated Image Columns, de Manoela Ilic](https://tympanus.net/codrops/2019/05/16/animated-image-columns/) serviu para estudar a relação entre um índice e a imagem que responde ao foco. Aqui a luz muda junto da figura selecionada. O movimento reduzido mantém o realce estático. A função ativa é aplicada a todas as funções confirmadas do jogador, incluindo as secundárias.
