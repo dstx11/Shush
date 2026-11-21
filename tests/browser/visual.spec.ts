@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-// Cozy winter references reviewed in desktop/mobile after the intentional art
+// Editorial references reviewed in desktop/mobile after the intentional art
 // direction change. Keep pixel comparisons active and captures available for review.
 const regions = [
-  ['home-hero', '/', '.opening'],
+  ['home-hero', '/', '.lux-hero'],
   ['player-profile', '/esports/valorant/roster?player=more', '#selected-player'],
   ['drop-preview', '/products/jersey?drop=1&nick=SHUSH&number=07&size=L&phrase=S%C3%B3+rounds.', '.audit-drop-gallery'],
-  ['about-intro', '/company', '.about-opening'],
+  ['about-intro', '/company', '.story-cover'],
 ] as const;
 
 for (const [name, path, selector] of regions) {

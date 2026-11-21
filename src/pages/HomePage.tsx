@@ -9,5 +9,5 @@ export function HomePage(){
  const {id}=useSeason();
  return id==='christmas'
   ? <Suspense fallback={<><CoreHero/><SignalSection/><HomeHub/></>}><ChristmasLanding/></Suspense>
-  : <><CoreHero/><SeasonFeature/><SignalSection/><HomeHub/></>;
+  : <><CoreHero/><SeasonFeature/><HomeHub/><SignalSection/></>;
 }

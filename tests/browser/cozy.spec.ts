@@ -42,7 +42,7 @@ test('pointer and button feedback leave the content geometry stable',async ({pag
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto('/esports/valorant/roster');
  await expect(page.getByRole('dialog',{name:'Entrada SHUSH'})).toHaveCount(0,{timeout:6500});
- const image=page.locator('.character-media>img');
+ const image=page.locator('.roster-portrait>img');
  await image.scrollIntoViewIfNeeded();
  const position=()=>image.evaluate(node=>{const r=node.getBoundingClientRect();return {x:r.x+scrollX,y:r.y+scrollY};});
  const before=await position();
@@ -60,16 +60,17 @@ test('pointer and button feedback leave the content geometry stable',async ({pag
  expect(Math.abs(initial!.y-hovered!.y)).toBeLessThan(1);
 });
 
-test('layout: navigation is centred and player actions share an alignment',async ({page})=>{
+test('layout: navigation does not overlap and player actions share an alignment',async ({page})=>{
  await page.goto('/esports/valorant/roster');
  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
  await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
- const navigation=page.locator('.desktop-navigation');
+ const navigation=page.locator('.lux-desktop');
  if(await navigation.isVisible()){
   const menu=await navigation.boundingBox();
-  expect(Math.abs(menu!.x+menu!.width/2-(await page.evaluate(()=>document.body.getBoundingClientRect().width))/2)).toBeLessThan(1);
-  const brand=await page.locator('header .brand-mark').boundingBox();
-  const utilities=await page.locator('.header-utilities').boundingBox();
+  expect(menu!.x).toBeGreaterThan(0);
+  expect(menu!.x+menu!.width).toBeLessThan(page.viewportSize()!.width);
+  const brand=await page.locator('header .lux-brand').boundingBox();
+  const utilities=await page.locator('.lux-utilities').boundingBox();
   expect(menu!.x-brand!.x-brand!.width).toBeGreaterThan(8);
   expect(utilities!.x-menu!.x-menu!.width).toBeGreaterThan(8);
  }
@@ -131,7 +132,7 @@ test('home result opens the actual match and gives it keyboard focus',async ({pa
  test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative contextual navigation engines');
  await page.goto('/');
  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
- await page.locator('.home-score').first().click();
+ await page.locator('.lux-score').first().click();
  await expect(page).toHaveURL(/premier#match-2026-06-06-enlitro$/);
  const match=page.locator('#match-2026-06-06-enlitro');
  await expect(match).toBeFocused();

@@ -22,18 +22,22 @@ export function lockPageScroll() {
 }
 
 /** Native focus containment, balanced scroll locking and focus restoration. */
-export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open = true) {
+export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open = true, restorePosition = false) {
   useEffect(() => {
     const dialog = ref.current;
     if (!open || !dialog) return;
     const origin = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const position = restorePosition ? { left: window.scrollX, top: window.scrollY } : null;
     const unlock = lockPageScroll();
     try { if (!dialog.open) dialog.showModal(); }
     catch (error) { unlock(); throw error; }
     return () => {
       dialog.close();
       unlock();
-      if (origin?.isConnected) origin.focus({ preventScroll: true });
+      if (origin?.isConnected) {
+        origin.focus({ preventScroll: true });
+        if (position) window.scrollTo({ ...position, behavior: 'instant' });
+      }
     };
-  }, [ref, open]);
+  }, [ref, open, restorePosition]);
 }

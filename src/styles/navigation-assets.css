@@ -1,0 +1,13 @@
+/* The menu morph retains the same target in both states. */
+.menu-bars { display: grid; align-content: center; gap: 5px; width: 18px; height: 22px; }
+.menu-bars::before, .menu-bars::after { content: ''; height: 2px; border-radius: 2px; background: currentColor; transition: transform .18s; }
+[aria-expanded=true] .menu-bars::before { transform: translateY(3.5px) rotate(45deg); }
+[aria-expanded=true] .menu-bars::after { transform: translateY(-3.5px) rotate(-45deg); }
+
+.footer-colophon a > span { display: inline-block; transition: transform .18s; }
+.footer-colophon a:is(:hover,:focus-visible) > span { transform: translateY(-3px); }
+.lux-menu-link { animation: menu-arrival .24s ease-out backwards; }
+.lux-menu-link:nth-child(2) { animation-delay: .035s; }
+.lux-menu-link:nth-child(3) { animation-delay: .07s; }
+.lux-menu-link:nth-child(n+4) { animation-delay: .1s; }
+@keyframes menu-arrival { from { opacity: .35; transform: translateY(6px); } }

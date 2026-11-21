@@ -1,15 +1,13 @@
 import {lockPageScroll} from '../../hooks/useModalDialog';
-import { MotionControl } from '../ui/MotionControl';
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
-import { StatusBadge } from '../ui/VisualPrimitives';
+import '../../styles/luxury-navigation.css';
 import { AppLink } from '../ui/AppLink';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const activePath = normalizePath(location.pathname);
   const navRef = useRef<HTMLElement>(null);
@@ -25,13 +23,6 @@ export function Header() {
     const closeOnDesktop = () => { if (desktop.matches) setIsOpen(false); };
     desktop.addEventListener('change', closeOnDesktop);
     return () => desktop.removeEventListener('change', closeOnDesktop);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -83,53 +74,53 @@ export function Header() {
   };
 
   return (
-    <header className={`site-header shush-header ${isScrolled ? 'is-scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
-      <nav ref={navRef} className="shush-navigation shell" aria-label="Navegação principal"
+    <header className={`lux-header ${isOpen ? 'menu-open' : ''}`}>
+      <nav ref={navRef} className="lux-navigation shell" aria-label="Navegação principal"
         onBlur={(event) => {
           if (isOpen && !event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
         }}>
-        <AppLink href="/" className="brand-mark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-shush-purpleGlow">
+        <AppLink href="/" className="lux-brand">
           <img src="/assets/brand/shush-logo-small.webp" alt="" width="1167" height="647" className="h-8 w-auto" />
           <span>SHUSH</span>
         </AppLink>
 
-        <div className="desktop-navigation" id="primary-navigation">
+        <div className="lux-desktop" id="primary-navigation">
           {navItems.map((item) => (
             <AppLink
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? 'page' : undefined}
-              className="desktop-nav-link"
+              className="lux-nav-link"
             >
               {item.label}
             </AppLink>
           ))}
         </div>
 
-        <div className="header-utilities"><MotionControl compact /><AppLink href="/esports/valorant/premier" className="competition-signal" aria-label="Premier: partidas verificadas">
-          <StatusBadge >Premier</StatusBadge>
-          <strong>Partidas verificadas</strong>
+        <div className="lux-utilities"><AppLink href="/esports/valorant/premier" className="lux-competition" aria-label="Premier: partidas verificadas">
+          <span>Premier / Arquivo</span>
+          <strong>Ver partidas ↗</strong>
         </AppLink></div>
 
         <button
           ref={menuButtonRef}
-          className="navigation-toggle"
+          className="lux-menu-toggle"
           type="button"
           aria-label={isOpen ? 'Fechar navegação' : 'Abrir navegação'}
           aria-expanded={isOpen}
           aria-controls="mobile-navigation"
           onClick={() => setIsOpen((value) => !value)}
         >
-          <span aria-hidden="true">{isOpen ? 'Fechar' : 'Menu'}</span><span aria-hidden="true" className="menu-glyph">{isOpen ? '×' : '+'}</span>
+          <span aria-hidden="true">{isOpen ? 'Fechar' : 'Menu'}</span><span aria-hidden="true" className="menu-bars" />
         </button>
 
         {isOpen ? (
           <div
             ref={mobilePanelRef}
             id="mobile-navigation"
-            className="navigation-overlay mobile-panel-enter"
+            className="lux-menu-panel"
           >
-            <div className="overlay-links">
+            <div className="lux-menu-links">
               {navItems.map((item, index) => (
                 <AppLink
                   key={item.href}
@@ -139,13 +130,14 @@ export function Header() {
                     setIsOpen(false);
                     document.getElementById('main-content')?.focus({ preventScroll: true });
                   }}
-                  className="overlay-link"
+                  className="lux-menu-link"
+                  style={{ '--menu-order': index } as CSSProperties}
                 >
                   <span className="mono" aria-hidden="true">0{index + 1}</span><span>{item.label}</span><span aria-hidden="true"><ArrowIcon /></span>
                 </AppLink>
               ))}
             </div>
-            <div className="overlay-foot"><MotionControl compact /><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
+            <div className="lux-menu-foot"><span>Sem barulho. Só rounds.</span><small>SHUSH / Gaming + Creators</small></div>
           </div>
         ) : null}
       </nav>

@@ -23,14 +23,7 @@ const destinations = [
     theme: 'winter-gift-competition',
   },
   {
-    id: 'drop', sequence: '02', label: 'THE JERSEY',
-    title: 'O teu nick nas costas.',
-    body: 'A camisola SHUSH Drop 01, com o teu nick e o teu número.',
-    href: '/products/jersey', action: 'Descobrir Drop 01',
-    theme: 'winter-gift-jersey',
-  },
-  {
-    id: 'creators', sequence: '03', label: 'THE STORIES',
+    id: 'creators', sequence: '02', label: 'THE STORIES',
     title: 'Nem tudo fica no Discord.',
     body: 'Os nossos creators e tudo o que acontece do outro lado do ecrã.',
     href: '/content', action: 'Conhecer creators',

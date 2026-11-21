@@ -1,0 +1,42 @@
+.lux-header{position:fixed;inset:0 0 auto;z-index:50;padding-top:env(safe-area-inset-top);background:#100c15f7;border-bottom:1px solid #bca9c733}
+.lux-navigation{display:flex;align-items:center;gap:clamp(1rem,3vw,3rem);min-height:72px;justify-content:space-between}
+.lux-brand{display:flex;align-items:center;gap:12px;min-height:44px;color:#f9f3fb;text-decoration:none}
+.lux-brand img{width:52px;height:32px;object-fit:contain}.lux-brand span{border-left:1px solid #74627f;padding-left:13px;font:800 .85rem var(--font-ui);letter-spacing:.12em}
+.lux-desktop{display:flex;align-self:stretch;gap:clamp(.5rem,1.8vw,1.7rem);margin-left:auto}
+.lux-nav-link{position:relative;display:grid;align-items:center;padding:0 3px;font:650 .8rem var(--font-ui);color:#c8bdce;text-decoration:none;font-size:.9375rem}
+.lux-nav-link::after{content:"";position:absolute;inset:auto 2px 0;height:3px;background:#d3a8f3;transform:scaleX(0);transition:transform .22s var(--ease-out)}
+.lux-nav-link:is(:hover,:focus-visible,[aria-current=page])::after{transform:scaleX(1)}
+.lux-nav-link[aria-current=page]{color:white}.lux-nav-link[aria-current=page]::after{box-shadow:0 -3px 15px #c989fd66}
+.lux-utilities{display:flex;align-items:center;gap:1rem}.lux-competition{display:grid;gap:3px;color:#b9aebf;text-decoration:none;font:9px/1.5 var(--font-mono);border-left:1px solid #4b3b55;padding-left:1rem}.lux-competition strong{color:#d1b6e1;font-weight:500;font-size:.8125rem}
+.lux-menu-toggle{display:none;align-items:center;justify-content:space-between;gap:1.5rem;min-height:44px;min-width:88px;padding:8px 12px;border:var(--surface-stroke) solid #675372;border-radius:var(--control-radius);background:#201527;box-shadow:inset 0 1px #ebcfff24;color:#eee5f3;font-size:1rem}
+.lux-menu-panel{position:fixed;inset:calc(72px + env(safe-area-inset-top)) 0 0;overflow:auto;overscroll-behavior:contain;padding:1.5rem max(1.25rem,env(safe-area-inset-right)) 2rem max(1.25rem,env(safe-area-inset-left));background:#100d13;scroll-padding-block:1rem 2rem}
+.lux-menu-links{display:grid}.lux-menu-link{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:1rem;align-items:center;padding:1.15rem 0;border-bottom:1px solid #493852;color:#f5f0f4;text-decoration:none;font:500 clamp(1.6rem,6vw,2.5rem) var(--font-heading);letter-spacing:-.04em}.lux-menu-link>.mono{font:10px var(--font-mono);color:#b8a2c6;letter-spacing:0}.lux-menu-link[aria-current=page]{color:#d9b9f1}.lux-menu-link>span:last-child{font-size:18px}.lux-menu-foot{display:grid;gap:1rem;padding-top:2rem;color:#ccb6da;font-size:13px}.lux-menu-foot small{font:10px var(--font-mono);color:#b9aebf;font-size:.8125rem;line-height:1.55}
+@media(max-width:1100px){.lux-competition{display:none}.lux-desktop{gap:0}.lux-nav-link{padding-inline:10px;font-size:.9375rem}.lux-navigation{gap:1rem}}
+@media(max-width:767px){.lux-navigation{min-height:72px}.lux-desktop,.lux-utilities{display:none}.lux-menu-toggle{display:flex;font-size:1rem}.lux-brand img{width:40px;height:24px}}
+@media(max-width:360px){.lux-brand span{font-size:11px}.lux-navigation{gap:.5rem}}
+/* Container units respond to enlarged root text as well as viewport width. */
+.lux-header{container:navigation/inline-size}
+@container navigation (max-width:48rem){.lux-navigation{min-height:72px}.lux-desktop,.lux-utilities{display:none}.lux-menu-toggle{display:flex;font-size:1rem}}
+
+.lux-menu-panel { isolation: isolate; animation: menu-open .3s var(--ease-out); }
+.lux-menu-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #38273f;
+  animation: menu-underlay .38s var(--ease-out) both;
+}
+.lux-menu-link > span:nth-child(2) {
+  animation: menu-item .32s var(--ease-out) both;
+  animation-delay: calc(var(--menu-order) * 35ms);
+}
+@keyframes menu-open { from { clip-path: inset(0 0 96% 0); } }
+@keyframes menu-underlay { to { transform: scaleY(0); transform-origin: bottom; opacity: 0; } }
+@keyframes menu-item { from { opacity: .35; transform: translateY(.6em); } }
+/* A brief signature on entry leaves the navigation available from first paint. */
+.lux-brand img { animation: brand-light .64s ease-out; }
+@keyframes brand-light {
+  35% { filter: drop-shadow(0 0 5px #ca96ed80); }
+}

@@ -24,7 +24,7 @@ function mount({ reduced = false, paused = false, manual = false } = {}) {
     return () => {};
   } });
   const canvas = { dataset: {}, getContext: () => ctx };
-  const frame = { getBoundingClientRect: () => ({ width: 550, height: 635 }) };
+  const frame = { getBoundingClientRect: () => ({ width: 550, height: 635, top: 0 }), querySelector: () => ({ getBoundingClientRect: () => ({ bottom: 120 }) }) };
   const media = { matches: reduced, addEventListener: (_, fn) => { motion = fn; }, removeEventListener: () => { motion = undefined; } };
   const document = { documentElement: { dataset: { motion: manual ? "reduce" : "system" } }, hidden: false, addEventListener: (_, fn) => { visibility = fn; }, removeEventListener: () => { visibility = undefined; } };
   const exports = {};
@@ -62,7 +62,7 @@ active.tick(40);
 assert.equal(active.frames.size, 1, 'only one loop');
 active.tick(10_000);
 assert.equal(active.revealed, true, 'a delayed frame completes the reveal by real elapsed time');
-for (const state of ['hidden', 'reduced', 'manual']) {
+for (const state of ['hidden']) {
   active[state](true);
   assert.equal(active.frames.size, 0, `${state}: cancel pending frame`);
   active[state](false);
@@ -76,7 +76,7 @@ active.visible(true);
 active.cleanup();
 assert.equal(active.frames.size, 0, 'unmount: cancel');
 
-for (const settings of [{ reduced: true }, { paused: true }, { manual: true }]) {
+for (const settings of [{ paused: true }]) {
   const idle = mount(settings);
   idle.visible(true);
   assert.equal(idle.frames.size, 0, 'static mode never schedules frames');
@@ -86,4 +86,10 @@ for (const settings of [{ reduced: true }, { paused: true }, { manual: true }]) 
   assert.equal(idle.frames.size, 0);
   idle.cleanup();
 }
-console.log('Tree lifecycle passed: visibility, pause, reduced motion, resume, manual redraw and cleanup.');
+for (const settings of [{ reduced: true }, { manual: true }]) {
+  const tree = mount(settings);
+  tree.visible(true);
+  assert.equal(tree.frames.size, 1, 'visible trees animate regardless of system or legacy preference');
+  tree.cleanup();
+}
+console.log('Tree lifecycle passed: site motion, visibility, pause, redraw and cleanup.');

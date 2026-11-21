@@ -7,31 +7,31 @@
 .shush-root .character-strip{padding:1rem;border-bottom:1px solid var(--cozy-line);background:linear-gradient(180deg,#ffffff04,transparent)}
 .shush-root :is(.desktop-navigation,.shush-lab,.match-poster-dialog,.winter-card-dialog){border-color:var(--cozy-line);box-shadow:var(--cozy-light),var(--cozy-shadow)}
 /* Menu feedback stays inside the control: light moves, geometry does not. */
-.shush-root :is(.site-button,.utility-button,.tracker-button,.shush-motion-toggle,.view-control button,.calendar-filters button,.lab-actions button){border-radius:var(--radius-sm);box-shadow:var(--cozy-light)}
-.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.calendar-filters button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button){--control-accent:var(--player-accent,var(--season-accent));position:relative;isolation:isolate;transition:background-color .22s,color .16s,border-color .16s,box-shadow .22s}
+.shush-root :is(.site-button,.utility-button,.tracker-button,.shush-motion-toggle,.view-control button,.lab-actions button){border-radius:var(--control-radius);border-width:var(--surface-stroke);box-shadow:var(--cozy-light)}
+.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button){--control-accent:var(--player-accent,var(--season-accent));position:relative;isolation:isolate;transition:background-color .22s,color .16s,border-color .16s,box-shadow .22s}
 .shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact))::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(110deg,transparent 15%,#ffffff24 48%,transparent 80%);opacity:0;transform:scaleX(.15);transform-origin:left;transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .2s}
 .shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact)):not(:disabled):not([aria-disabled="true"]):focus-visible::before{opacity:1;transform:scaleX(1)}
-.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.calendar-filters button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button):not(:disabled):not([aria-disabled="true"]):focus-visible{border-color:var(--control-accent);box-shadow:inset 0 0 0 1px var(--control-accent),var(--cozy-light)}
-.shush-root :is(.button-secondary,.utility-button,.view-control button,.calendar-filters button):not(:disabled):not([aria-disabled="true"]):focus-visible{background:var(--control-accent);color:var(--on-accent)}
+.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button):not(:disabled):not([aria-disabled="true"]):focus-visible{border-color:var(--control-accent);box-shadow:inset 0 0 0 1px var(--control-accent),var(--cozy-light)}
+.shush-root :is(.button-secondary,.utility-button,.view-control button):not(:disabled):not([aria-disabled="true"]):focus-visible{background:var(--control-accent);color:var(--on-accent)}
 @media(hover:hover){
 .shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact)):not(:disabled):not([aria-disabled="true"]):hover::before{opacity:1;transform:scaleX(1)}
-.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.calendar-filters button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button):not(:disabled):not([aria-disabled="true"]):hover{border-color:var(--control-accent);box-shadow:inset 0 0 0 1px var(--control-accent),var(--cozy-light)}
-.shush-root :is(.button-secondary,.utility-button,.view-control button,.calendar-filters button):not(:disabled):not([aria-disabled="true"]):hover{background:var(--control-accent);color:var(--on-accent)}
+.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button):not(:disabled):not([aria-disabled="true"]):hover{border-color:var(--control-accent);box-shadow:inset 0 0 0 1px var(--control-accent),var(--cozy-light)}
+.shush-root :is(.button-secondary,.utility-button,.view-control button):not(:disabled):not([aria-disabled="true"]):hover{background:var(--control-accent);color:var(--on-accent)}
 }
-.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.calendar-filters button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button):not(:disabled):not([aria-disabled="true"]):active{box-shadow:inset 0 0 0 2px var(--control-accent),inset 0 3px 12px #0006;transition-duration:60ms}
+.shush-root :is(.site-button,.utility-button,.tracker-button:not(.tracker-button-compact),.shush-motion-toggle,.view-control button,.lab-actions button,.desktop-nav-link,.navigation-toggle,.character-controls button):not(:disabled):not([aria-disabled="true"]):active{box-shadow:inset 0 0 0 2px var(--control-accent),inset 0 3px 12px #0006;transition-duration:60ms}
 .shush-root :is(button:disabled,[aria-disabled="true"]){cursor:not-allowed}
 .shush-root :is(input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),select,textarea){border-radius:var(--radius-sm);box-shadow:inset 0 2px 6px #0002;transition:border-color .2s,box-shadow .2s}
 .shush-root :is(input,select,textarea):focus-visible{border-color:var(--season-accent)}
 .shush-root [data-transfer="success"]{border-color:#9bc8ae;box-shadow:inset 0 0 0 1px #9bc8ae22}
 .shush-root :is(.editorial-link:hover>span,a:hover .arrow-icon){transform:none;translate:none}
 .shush-root .motion-section{transform:none!important;translate:none!important}
-.shush-root :is(.character-media>img,.character-geometry,.shush-hero-portraits,.shush-hero-camera,.shush-hero-visual .season-art){translate:none!important}
-@media(prefers-reduced-motion:no-preference){html:not([data-motion="reduce"]) .route-enter{animation:cozy-appear .25s ease-out both}@keyframes cozy-appear{from{opacity:.8}to{opacity:1}}}
+.shush-root :is(.shush-hero-portraits,.shush-hero-camera,.shush-hero-visual .season-art){translate:none!important}
+html .route-enter{animation:cozy-appear .25s ease-out both}@keyframes cozy-appear{from{opacity:.8}to{opacity:1}}
 @media(max-width:767px){.shush-root .character-strip{padding:.75rem}.shush-root :is(.character-spotlight,.creator-feature,.audit-drop-gallery){border-radius:var(--radius-md)}}
 
 .shush-root button:is([aria-label="Copiar Riot ID"],[aria-label="Copiar resumo"]){inline-size:100%;min-inline-size:0}
 
-.shush-root :is(.calendar-filters,.view-control) button[aria-pressed="true"]{background:var(--surface-selected);color:var(--on-accent);border-color:var(--action)}
+.shush-root .view-control button[aria-pressed="true"]{background:var(--surface-selected);color:var(--on-accent);border-color:var(--action)}
 .shush-root :is(.utility-button,.site-button,.tracker-button):disabled{opacity:.55}
 .shush-root :is(.utility-button,.site-button,.tracker-button)>svg,.shush-root .editorial-link>svg{flex-shrink:0;align-self:center}
 .shush-root [data-transfer="error"]{border-color:var(--error)}

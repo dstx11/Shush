@@ -16,6 +16,7 @@ for (const [name, path] of routes) {
     // Hidden lazy images belong to disclosures; exercise those UI states first.
     if (name === 'premier') {
       await page.locator('.legacy-archive > summary').click();
+      await expect(page.locator('.match-week')).toHaveCount(7);
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     // Render lazy images before recording the full-page visual evidence.
@@ -28,7 +29,13 @@ for (const [name, path] of routes) {
       await page.locator('.match-week').first().screenshot({ path: testInfo.outputPath('premier-week-open.png') });
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
-    if (name === 'home') await page.locator('.home-lineup').evaluate((element) => { element.scrollLeft = 0; });
+    if (name === 'home') {
+      await page.locator('#plantel').screenshot({ path: testInfo.outputPath('plantel.png') });
+      const channels = page.locator('#canais');
+      await expect(channels.getByRole('link', { name: 'Twitch de More, kandimba13' })).toHaveAttribute('href', 'https://www.twitch.tv/kandimba13');
+      await expect(channels.getByRole('link', { name: 'YouTube de Th0maz, @Th0maaz_7' })).toHaveAttribute('href', 'https://www.youtube.com/@Th0maaz_7');
+      await channels.screenshot({ path: testInfo.outputPath('canais.png') });
+    }
     if (name === 'roster') await page.locator('.character-strip').evaluate((element) => { element.scrollLeft = 0; });
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({ path: testInfo.outputPath(`${name}.png`), fullPage: true });
@@ -107,7 +114,7 @@ test('mobile navigation: Escape, scroll restoration and SPA focus', async ({ pag
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
   await open.click();
   await page.locator('#mobile-navigation').getByRole('link', { name: 'Roster', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Escolhe o teu lado. Roster / 07');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Roster. VALORANT / SETE JOGADORES');
   await expect(page.locator('#main-content')).toBeFocused();
   await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden');
 });
@@ -122,9 +129,9 @@ test('slow initial Home enables the menu and preserves focus after closing', asy
   });
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.navigation-toggle')).toBeDisabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeDisabled();
   release();
-  await expect(page.locator('.navigation-toggle')).toBeEnabled();
+  await expect(page.locator('.lux-menu-toggle')).toBeEnabled();
   const open = page.getByRole('button', { name: 'Abrir navegação' });
   await open.click();
   await expect(page.locator('#mobile-navigation').getByRole('link', { name: 'Home', exact: true })).toBeFocused();
@@ -349,7 +356,7 @@ test('Drop: small-height form reflow and reduced motion remain usable', async ({
   await nick.scrollIntoViewIfNeeded();
   await expect(nick).toBeFocused();
   const field = (await nick.boundingBox())!;
-  const header = (await page.locator('header').boundingBox())!;
+  const header = (await page.getByRole('banner').boundingBox())!;
   expect(field.y).toBeGreaterThanOrEqual(header.y + header.height);
   expect(field.y + field.height).toBeLessThanOrEqual(320);
   await expect(page.locator('.drop-mobile-preview')).toHaveCSS('position', 'static');
@@ -364,7 +371,7 @@ test('Drop: desktop preview follows the form without an overflow scroll containe
   const initial = (await gallery.boundingBox())!;
   await page.evaluate((top) => window.scrollTo(0, top), initial.y - 96 + 20);
   const sticky = (await gallery.boundingBox())!;
-  const header = (await page.locator('header').boundingBox())!;
+  const header = (await page.getByRole('banner').boundingBox())!;
   expect(sticky.y).toBeGreaterThanOrEqual(header.y + header.height);
   expect(sticky.y + sticky.height).toBeLessThanOrEqual(page.viewportSize()!.height);
 });

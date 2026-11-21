@@ -1,57 +1,40 @@
-/* The startup fallback, route fallback and first-visit entrance share one atmosphere. */
-html, body { margin: 0; background: #15131a; }
-.shush-loading { min-height: 78svh; display: grid; place-content: center; justify-items: center; gap: 1.4rem; padding: 2rem; box-sizing: border-box; color: #f6efdf; background: radial-gradient(ellipse at 50% 45%,#62477945,transparent 58%),#15131a; text-align: center; font-family: Manrope,system-ui,sans-serif; }
-.loading-emblem { position: relative; display: grid; place-items: center; width: clamp(10rem,35vw,15rem); aspect-ratio: 1; }
-.loading-emblem::before,.loading-emblem::after { content: ''; position: absolute; inset: 6%; border: 1px solid #d9bb7b33; border-radius: 50%; }
-.loading-emblem::after { inset: 20%; border-style: dashed; transform: rotate(30deg); }
-.loading-emblem img { width: 60%; height: auto; z-index: 1; }
-.loading-orbit { position: absolute; inset: 5%; border-radius: 50%; }
-.loading-orbit::after { content: ''; position: absolute; width: .4rem; height: .4rem; border-radius: 50%; background: #f1ce8e; box-shadow: 0 0 18px #e9bc75; left: 50%; top: 0; }
-.shush-loading p { margin: 0; color: #b6c4b9; font-size: .75rem; letter-spacing: .08em; }
-.shush-loading strong { max-width: 22ch; font-size: clamp(1.4rem,5vw,2.2rem); line-height: 1.25; }
-.loading-line { width: 4rem; height: 1px; background: #eac788; }
-.shush-loading a { color: #e7ce9e; padding: .75rem; font-size: .8rem; }
-.brand-intro { position: fixed; inset: 0; margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; box-sizing: border-box; border: 0; padding: 2rem; z-index: 100; display: grid; place-content: center; justify-items: center; gap: 1.2rem; overflow: hidden; background: radial-gradient(ellipse at 50% 40%,#3b49333d,transparent 50%),#0b1518; color: #f6efdf; text-align: center; transition: opacity .36s ease,transform .5s ease; }
-.brand-intro::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .2; background-image: radial-gradient(#f7e5bc 1px,transparent 1px); background-size: 87px 113px; mask-image: radial-gradient(ellipse,#000,transparent 75%); }
-.brand-intro.is-leaving { opacity: 0; transform: scale(1.025); }
-.intro-kicker,.intro-signature { font: 500 .62rem/1.7 Manrope,sans-serif; letter-spacing: .22em; color: #d9bd89; }
-.brand-intro > strong { font: 500 clamp(2.8rem,7vw,5.6rem)/1.1 "SHUSH Hearth",Georgia,serif; letter-spacing: -.045em; }
-.brand-intro em { font-weight: 400; color: #ebc88e; }
-.brand-intro > p { color: #b6c5b9; font: .85rem/1.7 Manrope,sans-serif; margin: .25rem 0 1rem; }
-.intro-signature { position: absolute; bottom: 2rem; inset-inline: 0; }
-.intro-skip { min-height: 44px; padding: .75rem 1.5rem; border: 1px solid #b9a47e; border-radius: 999px; background: transparent; color: #f6efdf; font: .8rem Manrope,sans-serif; cursor: pointer; }
-.intro-skip:hover { background: #e3bd7d; color: #14201d; }
-.intro-skip:focus-visible { outline: 2px solid #f1d197; outline-offset: 5px; }
-.intro-constellation { position: relative; width: 8rem; height: 8rem; margin-bottom: 1rem; }
-.intro-constellation i { position: absolute; border: 1px solid #eac99077; border-radius: 50%; left: 50%; transform: translateX(-50%) rotate(-15deg); height: .75rem; box-shadow: 0 0 16px #e9b75f15; }
-.intro-constellation i:nth-child(1) { bottom: 0; width: 7.5rem; }
-.intro-constellation i:nth-child(2) { bottom: 1.3rem; width: 6rem; }
-.intro-constellation i:nth-child(3) { bottom: 2.6rem; width: 4.5rem; }
-.intro-constellation i:nth-child(4) { bottom: 3.9rem; width: 3rem; }
-.intro-constellation i:nth-child(5) { bottom: 5.2rem; width: 1.4rem; }
-.intro-constellation > span { position: absolute; top: -.5rem; left: calc(50% - .5rem); color: #f6d593; text-shadow: 0 0 22px #f2c47f; }
-@media (prefers-reduced-motion: no-preference) {
- .loading-orbit { animation: loading-turn 6s linear infinite; }
- .brand-intro > strong,.intro-kicker { animation: intro-rise .6s ease both; }
- .intro-constellation i { animation: constellation-rise .85s cubic-bezier(.2,.7,.2,1) both; }
- .intro-constellation i:nth-child(2) { animation-delay: .08s; }
- .intro-constellation i:nth-child(3) { animation-delay: .16s; }
- .intro-constellation i:nth-child(4) { animation-delay: .24s; }
- .intro-constellation i:nth-child(5) { animation-delay: .32s; }
- @keyframes loading-turn { to { transform: rotate(360deg); } }
- @keyframes intro-rise { from { transform: translateY(6px); } }
- @keyframes constellation-rise { from { opacity: 0; translate: 0 25px; scale: .6; } }
+html, body { margin: 0; background: #100d14; }
+.boot-rail, .loading-line {
+  overflow: hidden;
+  pointer-events: none;
+  background: #a279bf25;
 }
-@media (prefers-reduced-motion: reduce) { .brand-intro { display: none; } }
-
-/* First paint, before React or the active seasonal stylesheet has loaded. */
-.shush-boot-stage{position:fixed;inset:0;z-index:2147483600;display:grid;place-content:center;justify-items:center;gap:1rem;overflow:hidden;background:radial-gradient(ellipse at 50% 46%,#46325d66 0%,transparent 60%),#100d18;color:#f0eaf5;font-family:Manrope,system-ui,sans-serif;animation:shush-boot-failsafe .5s linear 8s both}
-
-.shush-boot-stage>img{position:relative;width:140px;height:auto;max-height:90px;object-fit:contain;filter:none}
-.shush-boot-wordmark{position:relative;font-size:clamp(4.5rem,12vw,8rem);font-weight:650;letter-spacing:-.07em;line-height:1}
-.shush-boot-wordmark>span{color:#c4afe9}
-.shush-boot-caption{font:.66rem/1.5 "IBM Plex Mono",monospace;letter-spacing:.22em;color:#b8a4cf}
-.shush-boot-rule{width:min(50vw,180px);height:1px;background:linear-gradient(90deg,transparent,#ceb9ef,transparent)}
-@keyframes shush-boot-failsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
-
-@media(prefers-reduced-motion:reduce){.shush-boot-stage{display:none}}
+.boot-rail {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: 2px;
+  animation: rail-expire .25s ease 8s forwards;
+}
+.boot-rail::after, .loading-line::after {
+  content: "";
+  display: block;
+  width: 52%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, #b590cf 48%, #ecdcfa 68%, transparent);
+  animation: rail-sweep 1.15s ease-in-out infinite;
+}
+@keyframes rail-sweep { from { transform: translateX(-100%); } to { transform: translateX(200%); } }
+@keyframes rail-expire { to { opacity: 0; visibility: hidden; } }
+.shush-loading {
+  min-height: 78svh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1.25rem;
+  padding: 2rem;
+  color: #e4d8ec;
+  background: radial-gradient(ellipse at center, #34233f77, transparent 56%), #100d14;
+  text-align: center;
+  font: 1rem/1.5 Manrope, system-ui, sans-serif;
+}
+.shush-loading img { width: 6rem; height: auto; }
+.loading-line { width: 6.5rem; height: 2px; border-radius: 2px; }
+.shush-loading p { margin: 0; }
+.shush-loading a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; }

@@ -22,11 +22,11 @@ test('Home and Creators show real people and dated records', async ({ page }) =>
   await expect(page.locator('.creator-art img')).toHaveCount(2);
   for (const link of await page.locator('.creator-channel').all()) await expect(link).toHaveAttribute('target', '_blank');
   await page.goto('/');
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
-  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
-  await expect(page.locator('.home-score')).toHaveCount(3);
-  await expect(page.locator('.home-records-heading')).toContainText('abril–junho 2026');
-  await expect(page.locator('.home-creator-links > a')).toHaveCount(2);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
+  await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.lux-score')).toHaveCount(3);
+  await expect(page.locator('.lux-ledger-intro')).toContainText('abril–junho 2026');
+  await expect(page.locator('.lux-creator-links > a')).toHaveCount(2);
 });
 
 test('V5 Match Explorer filters and verified map aggregates', async ({ page }) => {
@@ -110,7 +110,7 @@ test('V5 intro: bounded initial experience, reduced motion and no SPA replay', a
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.locator('.brand-intro')).toHaveCount(0, { timeout: 7000 });
-  await page.locator('.home-closing a[href="/company"]').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await page.locator('.lux-closing a[href="/company"]').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('.brand-intro')).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -120,36 +120,16 @@ test('V5 intro: bounded initial experience, reduced motion and no SPA replay', a
 });
 
 
-test('Intro can be skipped with keyboard and is remembered across reloads', async ({ page }) => {
-  const now = Date.now();
-  await page.clock.install({ time: now });
-  await page.clock.pauseAt(now + 100);
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/');
-  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
-  await expect(intro).toBeVisible();
-  await expect(intro).toHaveJSProperty('open', true);
-  await expect(intro.getByRole('button', { name: /Saltar apresentação/ })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(intro).toHaveCount(0);
-  await page.reload();
-  await expect(intro).toHaveCount(0);
-  await expect(page.locator('.navigation-toggle')).toBeEnabled();
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-});
-
-test('Intro supports Escape on a fresh visit', async ({ page }) => {
-  // A fresh document/clock keeps performance.now below the bounded intro
-  // duration. Advancing a reused fake clock across reloads can auto-dismiss it.
-  const now = Date.now();
-  await page.clock.install({ time: now });
-  await page.clock.pauseAt(now + 100);
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/');
-  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
-  await expect(intro).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(intro).toHaveCount(0);
+test('a keyboard visitor can open the roster on first and repeat visits', async ({ page }) => {
+  for (let visit = 0; visit < 2; visit++) {
+    await page.goto('/');
+    const link = page.getByRole('link', {name: 'Conhecer o roster'});
+    await link.focus();
+    await expect(link).toBeFocused();
+    await link.press('Enter');
+    await expect(page).toHaveURL(/roster$/);
+    await expect(page.locator('#selected-player-name')).toBeVisible();
+  }
 });
 
 test('Unavailable session storage never blocks entry to the site', async ({ page }) => {

@@ -20,7 +20,7 @@ try {
   const routeEntries = {
     '/': 'HomePage', '/esports/valorant/premier': 'PremierPage',
     '/esports/valorant/roster': 'RosterPage', '/content': 'ContentPage',
-    '/products/jersey': 'DropPage', '/company': 'AboutPage',
+    '/company': 'AboutPage',
   };
   function routeStyles(route) {
     const styles = new Set();
@@ -57,10 +57,16 @@ try {
     html = html.slice(0, start) + `<div id="root">${content}</div>\n    ` + html.slice(end);
     html = html.replace('Ativa o JavaScript para explorar a equipa, os jogos e personalizar a camisola SHUSH.', 'Podes consultar as páginas e os canais. Ativa o JavaScript para selecionar jogadores e personalizar a camisola.');
     const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...identity, ...pageSchema(route)] }).replace(/</g, '\\u003c');
+    if (route === '/esports/valorant/premier') {
+      const styles = manifest['src/components/matches/SeasonArchive.tsx'].css;
+      const links = styles.map(css => `<link rel="stylesheet" href="/${css}" />`).join('');
+      html = html.replace('</head>', `<noscript>${links}</noscript></head>`);
+    }
     {
       const links = [...routeStyles(route)].filter(css => !html.includes(`href="/${css}"`))
         .map(css => `<link rel="stylesheet" crossorigin href="/${css}" />`).join('\n');
-      html = html.replace('</head>', `${links}\n</head>`);
+      const routeModule = manifest[`src/pages/${routeEntries[route]}.tsx`].file;
+      html = html.replace('</head>', `${links}\n<link rel="modulepreload" crossorigin href="/${routeModule}" />\n</head>`);
     }
     html = html.replace('</head>', `<script id="shush-schema" type="application/ld+json">${json}</script>\n</head>`);
     await writeFile(path, html);

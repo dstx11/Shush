@@ -1,0 +1,13 @@
+.poster-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.poster-heading h2 { font-size: 1.1rem; max-width:100%; overflow-wrap:anywhere; }
+.poster-layout { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 1.5rem; }
+.poster-preview { min-height: 15rem; }
+.poster-preview canvas { width: 100%; height: auto; border: 1px solid var(--line); }
+.poster-options { display: flex; flex-direction: column; gap: 1.5rem; align-items: start; }
+.poster-options p { font-size: .9rem; line-height: 1.7; }
+.poster-options .view-control { flex-wrap: wrap; }
+.poster-options .site-button:disabled { opacity: .5; }
+@media (max-width: 767px) {
+ .poster-layout { grid-template-columns: 1fr; }
+ .poster-options { gap: 1rem; }
+}

@@ -1,72 +1,9 @@
-/* SHUSH · Um inverno nosso. One seasonal system, shared by all public routes. */
-
-
-
-
-
-
-
-.shush-root[data-season="christmas"]{
- --bg: #0e1919; --surface: #182b29; --surface-2: #223a34; --field: #112220;
- --text: #f6efdf; --muted: #b4c5bb; --purple: #eac58b; --purple-text: #f0cf97;
- --signal: #edcb94; --line: #405448; --solid-border: #405448; --control-line: #899e8a;
- --accent-hover: #f8ddb1; --on-accent: #17241d; --paper: #f6efdf; --ink: #0e1919;
- --color-shush-bg: #0e1919; --color-shush-surface: #182b29; --color-shush-surface2: #223a34;
- --color-shush-border: #405448; --color-shush-purple: #eac58b; --color-shush-purpleDark: #293b30;
- --color-shush-purpleGlow: #f0d5a4; --color-shush-text: #f6efdf; --color-shush-muted: #b4c5bb;
- --font-heading: "SHUSH Hearth",Georgia,serif; --ease-winter: cubic-bezier(.2,.7,.2,1);
- --radius-sm: .8rem; --radius-md: 1.35rem; --radius-lg: 2rem;
-}
-html:has(.shush-root[data-season="christmas"]), body:has(.shush-root[data-season="christmas"]){ background: var(--bg); }
-.shush-root[data-season="christmas"] .arrow-icon{ display: inline-block; flex: none; vertical-align: -.12em; }
-.shush-root[data-season="christmas"] ::selection{ background: #edcb94; color: #17241d; }
-.shush-root[data-season="christmas"] :focus-visible{ outline-color: #f5d699; }
-.shush-root[data-season="christmas"] .section-kicker{ color: #edcb94; letter-spacing: .09em; }
-/* Keep real identities and competitive data direct and easy to scan. */
-.shush-root[data-season="christmas"] .character-identity h2, .shush-root[data-season="christmas"] .character-number, .shush-root[data-season="christmas"] .team-cover-player strong, .shush-root[data-season="christmas"] .creator-persona h2, .shush-root[data-season="christmas"] .audit-live-print{ font-family: var(--font-ui); }
-.shush-root[data-season="christmas"] .site-button{ border-radius: 999px; background: #edcb94; border-color: #edcb94; color: #17241d; box-shadow: 0 4px 18px #d2a86412; }
-.shush-root[data-season="christmas"] .site-button:hover{ background: #f8ddb1; }
-.shush-root[data-season="christmas"] .button-secondary{ background: #182925b3; border-color: #8a9a81; color: #f6efdf; box-shadow: none; }
-.shush-root[data-season="christmas"] .button-secondary:hover{ background: #294034; }
-.shush-root[data-season="christmas"] .site-button, .shush-root[data-season="christmas"] .editorial-link, .shush-root[data-season="christmas"] .winter-card-trigger{ transition: background-color .22s,color .22s,border-color .22s,transform .35s var(--ease-winter); }
-.shush-root[data-season="christmas"] .site-button:active, .shush-root[data-season="christmas"] .winter-card-trigger:active{ transform: translateY(1px); }
-.shush-root[data-season="christmas"] .shush-header{ background: #0e1c1ae8; border-bottom: 1px solid #d4bd7c26; backdrop-filter: blur(18px); }
-.shush-root[data-season="christmas"] .shush-header.is-scrolled{ border-color: #d4bd7c55; box-shadow: 0 8px 35px #0003; }
-.shush-root[data-season="christmas"] .desktop-navigation{ background: #122520ad; border-color: #8a9a813b; border-radius: 999px; }
-.shush-root[data-season="christmas"] .desktop-nav-link{ border-radius: 999px; }
-.shush-root[data-season="christmas"] .desktop-nav-link[aria-current='page']{ background: #edcb94; color: #17241d; }
-.shush-root[data-season="christmas"] .shush-header::after{ content: ''; position: absolute; inset: auto 0 -5px; height: 8px; background: radial-gradient(circle at 9px 2px,#f4d491 0 1.5px,#f4d49122 4px,transparent 7px); background-size: 78px 8px; pointer-events: none; opacity: .8; }
-.shush-root[data-season="christmas"] .navigation-overlay{ background: radial-gradient(ellipse at 90% 10%,#4e58353b,transparent 60%),#10211d; }
-.shush-root[data-season="christmas"] .overlay-link{ font-weight: 500; letter-spacing: -.025em; }
-.shush-root[data-season="christmas"] .overlay-link[aria-current='page'], .shush-root[data-season="christmas"] .overlay-link:hover{ color: #f3d59e; }
-.shush-root[data-season="christmas"] .navigation-toggle{ border-radius: 999px; }
-/* One restrained snowfall layer; no full-screen filters or JavaScript loop. */
-body:has(.shush-root[data-season="christmas"])::before{ content: ''; position: fixed; inset: -100vh 0 0; pointer-events: none; z-index: 5; opacity: .15; background-image: radial-gradient(1px 1px at 18px 34px,#fff1cc 98%,transparent),radial-gradient(1px 1px at 147px 113px,#d4e8dc 98%,transparent); background-size: 263px 217px; }
-body:has(.shush-root[data-season="christmas"])::after{ content: none; }
-@media (prefers-reduced-motion: no-preference) { .shush-root[data-season="christmas"] body::before{ animation: winter-snowfall 42s linear infinite; } @keyframes winter-snowfall { to { transform: translateY(100vh); } } }
-/* The hero is an intimate window into a lit winter garden. */
-.shush-root[data-season="christmas"] .winter-opening{ position: relative; isolation: isolate; overflow: clip; padding-top: var(--page-top); background: radial-gradient(ellipse at 81% 45%,#4c654333,transparent 47%),radial-gradient(ellipse at 8% 35%,#72533224,transparent 46%),linear-gradient(155deg,#12231f,#0b161a 72%); }
-.shush-root[data-season="christmas"] .winter-opening::before{ content: ''; position: absolute; inset: 0; opacity: .16; pointer-events: none; background-image: radial-gradient(#e5c992 .6px,transparent 1px); background-size: 47px 59px; mask-image: linear-gradient(#000,transparent 85%); }
-.shush-root[data-season="christmas"] .winter-opening::after{ content: ''; position: absolute; inset: auto 0 0; height: 1px; background: linear-gradient(90deg,transparent,#b9a67566,transparent); }
-.shush-root[data-season="christmas"] .winter-hero-grid{ display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap: 0 clamp(1.2rem,4vw,4.5rem); align-items: center; }
-.shush-root[data-season="christmas"] .winter-hero-copy{ position: relative; min-width: 0; padding: 3rem 0 1.25rem; z-index: 2; grid-column: 1; grid-row: 1; align-self: end; }
-.shush-root[data-season="christmas"] .winter-hero-story{ grid-column: 1; grid-row: 2; align-self: start; min-width: 0; padding-bottom: 3rem; }
-.shush-root[data-season="christmas"] .winter-eyebrow{ display: flex; align-items: center; gap: .7rem; font: 500 .6rem/1.8 var(--font-ui); letter-spacing: .14em; color: #dfc496; }
-.shush-root[data-season="christmas"] .winter-live-dot{ width: .35rem; height: .35rem; background: #edcb94; border-radius: 50%; box-shadow: 0 0 10px #edcb9455; flex: none; }
-.shush-root[data-season="christmas"] .winter-eyebrow-line{ width: 1.7rem; height: 1px; background: #edcb9455; }
-.shush-root[data-season="christmas"] .winter-oversized{ display: block; font: italic 400 clamp(1rem,1.4vw,1.4rem)/1.5 var(--font-heading); color: #a3b5a5; margin: 2.5rem 0 1.25rem; }
-.shush-root[data-season="christmas"] .winter-hero-copy h1{ font: 500 clamp(3.3rem,5.3vw,6.1rem)/1.08 var(--font-heading); letter-spacing: -.055em; margin: 0; }
-.shush-root[data-season="christmas"] .winter-hero-copy h1 em{ color: #efcd95; font-weight: 400; text-shadow: 0 4px 35px #ce9f4b12; }
-.shush-root[data-season="christmas"] .winter-hero-story > p{ color: #bccbbf; max-width: 30rem; font-size: clamp(.9rem,1.05vw,1rem); line-height: 1.95; margin: 0; }
-.shush-root[data-season="christmas"] .winter-actions{ margin-top: 1.8rem; gap: .7rem; }
-.shush-root[data-season="christmas"] .winter-actions .site-button{ min-height: 3.25rem; padding-inline: 1.25rem; font-size: .76rem; }
-.shush-root[data-season="christmas"] .winter-hero-note{ display: flex; align-items: center; gap: .8rem; color: #adbbab; font: 500 .57rem/1.8 var(--font-ui); letter-spacing: .12em; margin-top: 2.7rem; }
-.shush-root[data-season="christmas"] .winter-hero-note span:first-child{ color: #e5c08a; font-size: 1rem; }
-.shush-root[data-season="christmas"] .winter-hero-bottom{ grid-column: 1/-1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.4rem 0; border-top: 1px solid #d2ba803b; margin-top: 2rem; }
-.shush-root[data-season="christmas"] .winter-hero-bottom .mono{ font-size: .62rem; letter-spacing: .06em; }
-.shush-root[data-season="christmas"] .winter-hero-bottom .editorial-link{ color: #ead4ae; font-size: .75rem; }
+/* Solstice: midnight plum, warm silver and exactly one interactive tree. */
+.shush-root[data-season="christmas"]{--bg:#100b17;--surface:#1e1429;--surface-2:#2d1f3b;--field:#181020;--text:#f5edf3;--muted:#c0b1c7;--signal:#e4cbaa;--line:#594263;--control-line:#8c7696;--accent-hover:#f1dfc9;--on-accent:#251a2e;--paper:#f5edf3;--ink:#100b17;--season-accent:#e4cbaa;--season-haze:#493350;--season-rgb:228,203,170;--font-heading:"SHUSH Hearth",Georgia,serif;--ease-winter:cubic-bezier(.2,.7,.2,1)}
+.shush-root[data-season="christmas"] :focus-visible{outline-color:#eddbbf}
+.solstice-hero{padding-top:8rem;background:radial-gradient(ellipse at 70% 45%,#4b2f5155,transparent 60%),#100b17}.solstice-heading{border-bottom:1px solid #594263;padding-block:1.5rem 2rem}.solstice-heading>.section-kicker{font:10px var(--font-mono);letter-spacing:.15em}.solstice-heading h1{font:500 clamp(3.5rem,6.5vw,6.5rem)/1.05 "Helvetica Neue",Arial,sans-serif;letter-spacing:-.06em;margin-top:1.5rem;color:#f5edf3}.solstice-heading h1 em{font:italic 400 1.1em 'SHUSH Hearth',Georgia,serif;color:#e1c9b0}.solstice-grid{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:4rem;align-items:center;padding-block:3rem}.solstice-story{min-width:0}.solstice-index,.solstice-note{font:9px/1.7 var(--font-mono);letter-spacing:.12em;color:#d0b994}.solstice-story p{max-width:30ch;font-size:15px;line-height:1.9;color:#d0c0d6;margin-block:1.5rem}.solstice-story .action-row{gap:.75rem;margin-top:2rem}.solstice-story .editorial-link{font-size:12px;margin-top:1rem}.solstice-note{display:block;margin-top:2rem}.solstice-window{min-width:0}.solstice-people{padding-block:3rem 4rem}.solstice-section-heading{display:flex;align-items:end;justify-content:space-between;gap:2rem;border-top:1px solid #594263;padding-top:2rem}.solstice-section-heading h2{font:500 clamp(2.5rem,4vw,4rem)/1.1 "Helvetica Neue",Arial,sans-serif;letter-spacing:-.05em;margin-top:1rem}.solstice-section-heading h2 em{font:italic 400 1.05em 'SHUSH Hearth',Georgia,serif;color:#dcc7ae}.solstice-section-heading .editorial-link{font-size:12px}.solstice-portraits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem;margin-top:2rem}.solstice-portraits>a{position:relative;height:320px;overflow:hidden;border:1px solid #705578;border-radius:5px;background:#24182e;text-decoration:none;color:#fff}.solstice-portraits img{width:100%;height:100%;object-fit:cover}.solstice-portraits a>span{position:absolute;inset:50% 0 0;display:flex;align-items:end;gap:1rem;padding:1.5rem;background:linear-gradient(transparent,#100b17ee)}.solstice-portraits strong{font:500 2rem "Helvetica Neue",Arial,sans-serif;letter-spacing:-.05em}.solstice-portraits small{font:10px var(--font-mono);color:#ddc7ad}.solstice-portraits svg{margin-left:auto}.solstice-portraits a:hover{border-color:#e4cbaa}
 /* The frame and canvas keep fixed dimensions during selection and formation. */
-.shush-root[data-season="christmas"] .winter-tree-stage{ position: relative; width: 100%; height: clamp(550px,48vw,715px); isolation: isolate; align-self: center; grid-column: 2; grid-row: 1 / span 2; overflow: hidden; border: 1px solid #c2b08355; border-radius: 48% 48% 1.5rem 1.5rem / 22% 22% 1.5rem 1.5rem; background: #101c20; box-shadow: 0 28px 80px #0006,0 0 85px #b6b77412,inset 0 0 0 6px #dbd0a507; }
+.shush-root[data-season="christmas"] .winter-tree-stage{ position: relative; width: 100%; height: clamp(550px,48vw,715px); isolation: isolate; align-self: center; grid-column: 2; grid-row: 1 / span 2; overflow: hidden; border: 1px solid #c2b08355; border-radius: 12px; background: #101c20; box-shadow: inset 0 1px #ffffff12; }
 .shush-root[data-season="christmas"] .winter-tree-stage::before{ content: ''; position: absolute; z-index: 2; inset: 8px; border: 1px solid #dec9951a; border-radius: inherit; pointer-events: none; }
 .shush-root[data-season="christmas"] .winter-tree-stage::after{ content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(#09161944,transparent 25%,transparent 76%,#091619b3); pointer-events: none; }
 .shush-root[data-season="christmas"] .winter-tree-canvas{ display: block; width: 100%; height: 100%; position: absolute; inset: 0; cursor: grab; touch-action: pan-y; }
@@ -85,104 +22,13 @@ body:has(.shush-root[data-season="christmas"])::after{ content: none; }
 .shush-root[data-season="christmas"] .winter-motion-toggle:is(:hover,:focus-visible){ background: #2c4034; color: #fff2ce; }
 .shush-root[data-season="christmas"] .winter-motion-toggle svg{ flex: none; }
 .shush-root[data-season="christmas"] .winter-stage-caption{ display: none; }
-/* A gentler rhythm connects the existing people, stories and products. */
-.shush-root[data-season="christmas"] .winter-team-section{ padding-block: clamp(4rem,8vw,8rem) 2rem; }
-.shush-root[data-season="christmas"] .winter-section-heading{ display: grid; grid-template-columns: 1.2fr .6fr; gap: 2rem; align-items: end; border-top: 1px solid #bda77955; padding-top: 2rem; }
-.shush-root[data-season="christmas"] .winter-section-heading h2{ font: 500 clamp(2.6rem,4.5vw,4.8rem)/1.12 var(--font-heading); letter-spacing: -.045em; margin-top: .8rem; }
-.shush-root[data-season="christmas"] .winter-section-heading h2 em{ color: #e8c793; font-weight: 400; }
-.shush-root[data-season="christmas"] .winter-section-heading p{ color: var(--muted); max-width: 25rem; font-size: .88rem; line-height: 1.9; margin-left: auto; }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover{ max-width: 70rem; margin-inline: auto; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(.65rem,2vw,2rem); padding: 3.7rem 0 1.75rem; }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player{ height: clamp(17rem,29vw,27rem); transform: none; border-radius: 7rem 7rem 1rem 1rem; border-color: #b9a67b55; background: #1b2d29; box-shadow: 0 15px 40px #0003; }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player.cover-1{ height: clamp(19rem,34vw,32rem); transform: translateY(-1.7rem); }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player.cover-2{ transform: translateY(.75rem); }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player > span{ inset: 45% 0 0; background: linear-gradient(transparent,#0d1918f5); }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player small{ color: #e3d1a9; }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player i{ color: #edcb94; }
-.shush-root[data-season="christmas"] .winter-team-section .team-cover-player:is(:hover,:focus-visible){ border-color: #edcb94; }
-.shush-root[data-season="christmas"] .winter-team-footer{ display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-top: 1px solid var(--line); padding-top: 1.3rem; }
-.shush-root[data-season="christmas"] .home-discover{ padding-top: 2rem; }
-.shush-root[data-season="christmas"] .home-discover h2{ letter-spacing: -.04em; font-weight: 500; }
-.shush-root[data-season="christmas"] .home-lineup > a > div{ border: 1px solid #c4b17e3b; border-radius: 1.2rem; transition: border-color .25s; }
-.shush-root[data-season="christmas"] .home-lineup > a:is(:hover,:focus-visible) > div{ border-color: #edcb94; }
-.shush-root[data-season="christmas"] .home-records{ margin-top: 5.5rem; }
-.shush-root[data-season="christmas"] .home-score{ border-radius: 1rem; padding: 1.4rem 1rem; }
-.shush-root[data-season="christmas"] .home-score-teams b{ font-variant-numeric: tabular-nums; }
-.shush-root[data-season="christmas"] .home-closing{ gap: 1rem; }
-.shush-root[data-season="christmas"] .home-closing > a{ min-height: 16rem; padding: 2rem; border: 1px solid #a8976b66; border-radius: 1.5rem; background: radial-gradient(ellipse at 85% 10%,#6e58332e,transparent 55%),linear-gradient(145deg,#213b31,#142321); transition: border-color .25s,transform .4s var(--ease-winter); }
-.shush-root[data-season="christmas"] .home-closing > a:is(:hover,:focus-visible){ border-color: #e8c88c; transform: translateY(-3px); }
-.shush-root[data-season="christmas"] .home-closing a > span:last-child{ color: #e8c88c; }
-.shush-root[data-season="christmas"] .route-esports > main, .shush-root[data-season="christmas"] .route-company > main, .shush-root[data-season="christmas"] .route-content > main, .shush-root[data-season="christmas"] .route-products > main{ background: radial-gradient(ellipse at 85% 0,#526d4324,transparent 40%),radial-gradient(ellipse at 0 40%,#8d6a3710,transparent 45%); }
-.shush-root[data-season="christmas"] .page-heading{ position: relative; border-bottom-color: #b5a27655; }
-.shush-root[data-season="christmas"] .page-heading h1{ font-weight: 500; letter-spacing: -.045em; }
-.shush-root[data-season="christmas"] .page-heading h1 span{ color: #edcb94; }
-.shush-root[data-season="christmas"] .audit-drop-gallery, .shush-root[data-season="christmas"] .creator-art, .shush-root[data-season="christmas"] .character-spotlight, .shush-root[data-season="christmas"] .about-opening > div{ border-radius: 1.5rem; }
-.shush-root[data-season="christmas"] .character-media{ border-color: #b5a27655; }
-.shush-root[data-season="christmas"] .shush-footer{ position: relative; background: linear-gradient(#1b3028,#10201e); border-top-color: #c8ae7944; }
-.shush-root[data-season="christmas"] .shush-footer::before{ content: '✦  BOAS FESTAS, SHUSH COMMUNITY  ✦'; display: block; margin-top: -1.8rem; margin-bottom: 2.5rem; padding: .8rem 1rem; border-block: 1px solid #bda47433; background: #24392d; text-align: center; font: 500 .62rem/1.7 var(--font-ui); letter-spacing: .15em; color: #e9c995; }
-.shush-root[data-season="christmas"] .footer-top{ border-color: #c8ae7955; }
-@media (prefers-reduced-motion: no-preference) {
- .shush-root[data-season="christmas"] .winter-hero-copy > *{ animation: winter-arrive .75s var(--ease-winter) both; }
- .shush-root[data-season="christmas"] .winter-hero-copy > :nth-child(3){ animation-delay: .07s; }
- .shush-root[data-season="christmas"] .winter-hero-copy > :nth-child(4){ animation-delay: .12s; }
- .shush-root[data-season="christmas"] .winter-hero-copy > :nth-child(5){ animation-delay: .17s; }
- .shush-root[data-season="christmas"] .route-frame.route-enter{ animation: winter-arrive .45s var(--ease-winter) both; }
- @keyframes winter-arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-}
-@media (max-width: 1050px) { .shush-root[data-season="christmas"] .winter-hero-grid{ gap: 1.5rem; } .shush-root[data-season="christmas"] .winter-actions{ flex-wrap: wrap; } .shush-root[data-season="christmas"] .winter-actions .site-button{ padding-inline: 1rem; } }
-@media (max-width: 900px) {
- .shush-root[data-season="christmas"] .winter-hero-grid{ grid-template-columns: 1fr; }
- .shush-root[data-season="christmas"] .winter-hero-copy{ padding: 1.5rem 0 1.5rem; max-width: 40rem; grid-row: auto; }
- .shush-root[data-season="christmas"] .winter-hero-story{ grid-row: auto; padding: 1.5rem 0 0; }
- .shush-root[data-season="christmas"] .winter-tree-stage{ width: min(100%,640px); margin-inline: auto; height: 660px; grid-column: 1; grid-row: auto; }
- .shush-root[data-season="christmas"] .winter-oversized{ margin-top: 1.8rem; }
- .shush-root[data-season="christmas"] .winter-hero-copy h1{ font-size: clamp(3.2rem,7vw,5rem); }
- .shush-root[data-season="christmas"] .winter-hero-copy h1 em br{ display: none; }
- .shush-root[data-season="christmas"] .winter-section-heading{ gap: 1.25rem; }
-}
-@media (max-width: 767px) {
- .shush-root[data-season="christmas"] .shush-header{ backdrop-filter: none; }
- .shush-root[data-season="christmas"] .winter-hero-copy{ padding-top: .75rem; padding-bottom: .5rem; }
- .shush-root[data-season="christmas"] .winter-eyebrow{ font-size: .49rem; letter-spacing: .08em; gap: .5rem; }
- .shush-root[data-season="christmas"] .winter-eyebrow-line{ width: 1rem; }
- .shush-root[data-season="christmas"] .winter-oversized{ display: none; }
- .shush-root[data-season="christmas"] .winter-hero-copy h1{ margin-top: .9rem; font-size: clamp(2.75rem,10.7vw,4.5rem); line-height: 1.1; }
- .shush-root[data-season="christmas"] .winter-hero-story > p{ font-size: .86rem; margin-top: 0; }
- .shush-root[data-season="christmas"] .winter-actions{ margin-top: 1.4rem; gap: .5rem; }
- .shush-root[data-season="christmas"] .winter-actions .site-button{ min-height: 3rem; font-size: .68rem; padding-inline: 1rem; }
- .shush-root[data-season="christmas"] .winter-hero-note{ margin-top: 1.7rem; font-size: .5rem; }
- .shush-root[data-season="christmas"] .winter-tree-stage{ height: clamp(460px,129vw,610px); border-radius: 46% 46% 1rem 1rem / 17% 17% 1rem 1rem; }
- .shush-root[data-season="christmas"] .winter-stage-top{ top: 1.2rem; font-size: .43rem; gap: .4rem; left: .6rem; right: .6rem; }
- .shush-root[data-season="christmas"] .winter-tree-title{ top: 3rem; }
- .shush-root[data-season="christmas"] .winter-tree-title strong{ font-size: 1.25rem; }
- .shush-root[data-season="christmas"] .winter-stage-bottom{ left: 1rem; right: 1rem; bottom: 1rem; }
- .shush-root[data-season="christmas"] .winter-scene-note{ font-size: .66rem; }
- .shush-root[data-season="christmas"] .winter-motion-toggle{ min-height: 2.6rem; padding-inline: .65rem; font-size: .58rem; }
- .shush-root[data-season="christmas"] .winter-hero-bottom{ margin-top: 1.5rem; align-items: start; }
- .shush-root[data-season="christmas"] .winter-hero-bottom .mono{ max-width: 16ch; font-size: .5rem; }
- .shush-root[data-season="christmas"] .winter-hero-bottom .editorial-link{ font-size: .65rem; }
- .shush-root[data-season="christmas"] .winter-team-section{ padding-block: 3.5rem 1rem; }
- .shush-root[data-season="christmas"] .winter-section-heading{ grid-template-columns: 1fr; gap: .7rem; padding-top: 1.5rem; }
- .shush-root[data-season="christmas"] .winter-section-heading h2{ font-size: clamp(2rem,8vw,3.5rem); }
- .shush-root[data-season="christmas"] .winter-section-heading p{ margin: 0; font-size: .82rem; }
- .shush-root[data-season="christmas"] .winter-team-section .team-cover{ gap: .5rem; padding-top: 2.8rem; }
- .shush-root[data-season="christmas"] .winter-team-section .team-cover-player{ height: 12rem; border-radius: 3rem 3rem .8rem .8rem; }
- .shush-root[data-season="christmas"] .winter-team-section .team-cover-player.cover-1{ height: 14rem; transform: translateY(-.7rem); }
- .shush-root[data-season="christmas"] .winter-team-section .team-cover-player.cover-2{ transform: translateY(.4rem); }
- .shush-root[data-season="christmas"] .winter-team-section .team-cover-player > span{ padding: .6rem; }
- .shush-root[data-season="christmas"] .winter-team-section .team-cover-player strong{ font-size: 1rem; }
- .shush-root[data-season="christmas"] .winter-team-footer .mono{ display: none; }
- .shush-root[data-season="christmas"] .home-lineup{ margin-inline: -.3rem; }
- .shush-root[data-season="christmas"] .home-lineup > a{ flex-basis: 40%; }
- .shush-root[data-season="christmas"] .home-records{ margin-top: 3rem; }
- .shush-root[data-season="christmas"] .home-closing{ grid-template-columns: 1fr; }
- .shush-root[data-season="christmas"] .home-closing > a{ min-height: 13rem; padding: 1.5rem; }
- .shush-root[data-season="christmas"] .shush-footer::before{ font-size: .5rem; letter-spacing: .08em; }
-}
-@media (max-width: 360px) { .shush-root[data-season="christmas"] .winter-stage-serial{ display: none; } .shush-root[data-season="christmas"] .winter-stage-bottom{ gap: .4rem; left: .7rem; right: .7rem; } .shush-root[data-season="christmas"] .winter-scene-note{ max-width: 9ch; } .shush-root[data-season="christmas"] .winter-team-section .team-cover-player{ height: 10rem; } .shush-root[data-season="christmas"] .winter-team-section .team-cover-player.cover-1{ height: 12rem; } }
-@media (prefers-reduced-motion: reduce) { .shush-root[data-season="christmas"] body::before{ animation: none; transform: none; } }
+
+@media(max-width:900px){.solstice-grid{grid-template-columns:1fr;gap:2rem}.solstice-window{order:-1}.solstice-story p{max-width:55ch}.solstice-story .action-row{margin-top:1.5rem}.shush-root[data-season="christmas"] .winter-tree-stage{height:580px}.solstice-note{margin-top:1.5rem}}
+@media(max-width:767px){.solstice-hero{padding-top:5rem}.solstice-heading h1{font-size:clamp(2rem,11vw,4rem)}.solstice-grid{padding-block:2rem}.solstice-heading{padding-bottom:1.5rem}.solstice-story p{font-size:13px}.solstice-section-heading{align-items:start;flex-direction:column;gap:1rem}.solstice-section-heading h2{font-size:2.5rem}.solstice-portraits{gap:8px}.solstice-portraits>a{height:220px}.solstice-portraits a>span{padding:8px;gap:4px;flex-direction:column;align-items:start}.solstice-portraits strong{font-size:1.15rem}.solstice-portraits small{font-size:8px}.solstice-portraits svg{display:none}.shush-root[data-season="christmas"] .winter-tree-stage{height:clamp(460px,130vw,580px);border-radius:8px}.shush-root[data-season="christmas"] .winter-stage-top{top:1rem;left:.75rem;right:.75rem;font-size:8px}.shush-root[data-season="christmas"] .winter-tree-title{top:3rem}.shush-root[data-season="christmas"] .winter-tree-title strong{font-size:1.25rem}.shush-root[data-season="christmas"] .winter-stage-bottom{left:.75rem;right:.75rem;bottom:.75rem}.shush-root[data-season="christmas"] .winter-scene-note{font-size:10px}.shush-root[data-season="christmas"] .winter-motion-toggle{min-height:44px;padding-inline:.6rem;font-size:10px}}
+@media(max-width:360px){.shush-root[data-season="christmas"] .winter-stage-serial{display:none}.shush-root[data-season="christmas"] .winter-scene-note{max-width:8ch}.solstice-portraits>a{height:180px}}
 /* An illustrated holiday card replaces generic seasonal marketing noise. */
 .shush-root[data-season="christmas"] .winter-postcard{ padding: 1.5rem 0 clamp(5rem,9vw,9rem); }
-.shush-root[data-season="christmas"] .winter-postcard-inner{ display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); min-height: 32rem; border-radius: 1.3rem; overflow: hidden; border: 1px solid #d7bb8870; background: radial-gradient(ellipse at 78% 54%,#59633b52,transparent 46%),linear-gradient(120deg,#193b36,#112321 72%); box-shadow: 0 26px 80px #0005; position: relative; }
+.shush-root[data-season="christmas"] .winter-postcard-inner{ display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); min-height: 32rem; border-radius: 1.3rem; overflow: hidden; border: 1px solid #d7bb8870; background: radial-gradient(ellipse at 78% 54%,#59633b52,transparent 46%),linear-gradient(120deg,#2d1d3b,#140d1d 72%); box-shadow: 0 26px 80px #0005; position: relative; }
 .shush-root[data-season="christmas"] .winter-postcard-inner::before{ content: ''; position: absolute; inset: .7rem; border: 1px solid #e6c99130; border-radius: .9rem; pointer-events: none; }
 .shush-root[data-season="christmas"] .winter-postcard-content{ position: relative; z-index: 1; padding: clamp(2rem,5vw,5.5rem); display: flex; flex-direction: column; align-items: start; }
 .shush-root[data-season="christmas"] .winter-postcard-eyebrow{ color: #e9c98b; font: 600 .68rem var(--font-mono); letter-spacing: .1em; }
@@ -213,7 +59,7 @@ body:has(.shush-root[data-season="christmas"])::after{ content: none; }
 .shush-root[data-season="christmas"] .winter-card-trigger{ display: inline-flex; align-items: center; justify-content: space-between; gap: 1.4rem; min-height: 3.3rem; margin: .35rem 0 1rem; padding: .85rem 1.2rem; border: 1px solid #f4d89c; border-radius: .45rem; background: #f3d49b; color: #152720; font: 800 .83rem/1.4 var(--font-ui); transition: background-color .18s, transform .18s; }
 .shush-root[data-season="christmas"] .winter-card-trigger:hover{ background: #fff1c5; transform: translateY(-2px); }
 .shush-root[data-season="christmas"] .winter-card-trigger > span{ font-size: 1.15rem; }
-.shush-root[data-season="christmas"] .winter-card-dialog{ position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(1150px,calc(100vw - 2rem)); max-height: min(92dvh,900px); margin: 0; padding: clamp(1.1rem,3vw,2.2rem); border: 1px solid #b69c6b; border-radius: 1.1rem; background: #101b1e; color: #f7f3e9; box-shadow: 0 35px 95px #000c; overflow-y: auto; overscroll-behavior: contain; }
+.shush-root[data-season="christmas"] .winter-card-dialog{ position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); width: min(1150px,calc(100vw - 2rem)); max-height: min(92dvh,900px); margin: 0; padding: clamp(1.1rem,3vw,2.2rem); border: 1px solid #b69c6b; border-radius: 1.1rem; background: #17101f; color: #f7f3e9; box-shadow: 0 35px 95px #000c; overflow-y: auto; overscroll-behavior: contain; }
 .shush-root[data-season="christmas"] .winter-card-dialog::backdrop{ background: #050b0dd9; backdrop-filter: blur(12px); }
 .shush-root[data-season="christmas"] .winter-card-dialog-header{ display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
 .shush-root[data-season="christmas"] .winter-card-dialog-header h2{ margin: .2rem 0 0; font: 700 clamp(1.65rem,3.5vw,2.9rem)/1.12 var(--font-heading); letter-spacing: -.055em; }
@@ -228,11 +74,11 @@ body:has(.shush-root[data-season="christmas"])::after{ content: none; }
 .shush-root[data-season="christmas"] .winter-card-editions{ display: grid; grid-template-columns: 1fr; gap: .4rem; border: 0; margin: 0; padding: 0; }
 .shush-root[data-season="christmas"] .winter-card-editions legend, .shush-root[data-season="christmas"] .winter-card-field{ color: #f7ecd2; font-size: .8rem; font-weight: 700; }
 .shush-root[data-season="christmas"] .winter-card-editions legend{ margin-bottom: .55rem; }
-.shush-root[data-season="christmas"] .winter-card-editions label{ display: flex; min-height: 2.6rem; align-items: center; gap: .7rem; padding: .55rem .75rem; border: 1px solid #6b8073; border-radius: .45rem; cursor: pointer; color: #e5e8dd; background: #1a2929; font-size: .77rem; }
+.shush-root[data-season="christmas"] .winter-card-editions label{ display: flex; min-height: 2.6rem; align-items: center; gap: .7rem; padding: .55rem .75rem; border: 1px solid #6b8073; border-radius: .45rem; cursor: pointer; color: #e5e8dd; background: #24182f; font-size: .77rem; }
 .shush-root[data-season="christmas"] .winter-card-editions label:has(input:checked){ background: #324036; border-color: #f2d399; color: #fff4dd; }
 .shush-root[data-season="christmas"] .winter-card-editions input{ accent-color: #efd399; width: 1rem; height: 1rem; }
 .shush-root[data-season="christmas"] .winter-card-field{ display: grid; gap: .4rem; }
-.shush-root[data-season="christmas"] .winter-card-field textarea, .shush-root[data-season="christmas"] .winter-card-field input{ width: 100%; min-width: 0; padding: .75rem; border: 1px solid #7d8e82; border-radius: .45rem; background: #182526; color: #fff; font: 500 .9rem/1.5 var(--font-ui); }
+.shush-root[data-season="christmas"] .winter-card-field textarea, .shush-root[data-season="christmas"] .winter-card-field input{ width: 100%; min-width: 0; padding: .75rem; border: 1px solid #7d8e82; border-radius: .45rem; background: #22172e; color: #fff; font: 500 .9rem/1.5 var(--font-ui); }
 .shush-root[data-season="christmas"] .winter-card-field textarea{ resize: vertical; min-height: 5.75rem; max-height: 12rem; }
 .shush-root[data-season="christmas"] .winter-card-field small{ justify-self: end; color: #adbcaf; font-size: .68rem; }
 .shush-root[data-season="christmas"] .winter-card-download{ width: 100%; border: 1px solid #efd399; justify-content: space-between; background: #efd399; }
@@ -251,10 +97,10 @@ body:has(.shush-root[data-season="christmas"])::after{ content: none; }
   .shush-root[data-season="christmas"] .winter-card-download{ min-height: 3.1rem; }
   .shush-root[data-season="christmas"] .winter-card-trigger{ font-size: .75rem; }
 }
-@media (prefers-reduced-motion: reduce) { .shush-root[data-season="christmas"] .winter-card-trigger{ transition: none; } }
+
 
 /* The existing postcard editor keeps its layout and native dialog behaviour. */
-.shush-root[data-season="christmas"] .winter-postcard-inner{ border-radius: 2rem; border-color: #b9a67566; background: radial-gradient(ellipse at 80% 40%,#69734c33,transparent 50%),linear-gradient(135deg,#244135,#112420); }
+.shush-root[data-season="christmas"] .winter-postcard-inner{ border-radius: 2rem; border-color: #b9a67566; background: radial-gradient(ellipse at 80% 40%,#69734c33,transparent 50%),linear-gradient(135deg,#30203d,#170e20); }
 .shush-root[data-season="christmas"] .winter-postcard-content h2{ font-weight: 500; letter-spacing: -.04em; line-height: 1.12; }
 .shush-root[data-season="christmas"] .winter-postcard-content h2 em{ font-weight: 400; }
 .shush-root[data-season="christmas"] .winter-card-trigger, .shush-root[data-season="christmas"] .winter-card-download, .shush-root[data-season="christmas"] .winter-card-close{ border-radius: 999px; }
@@ -274,19 +120,19 @@ body:has(.shush-root[data-season="christmas"])::after{ content: none; }
  .shush-root[data-season="christmas"] .winter-postcard-eyebrow{ font-size: .53rem; }
  .shush-root[data-season="christmas"] .winter-postcard-signature{ padding-top: 2rem; }
 }
-@media (max-width: 500px) { .shush-root[data-season="christmas"] .winter-card-dialog-header{ position: sticky; top: -1rem; z-index: 5; padding: .4rem 0 .75rem; border-bottom: 1px solid #9b8c6659; background: #101b1efa; } }
+@media (max-width: 500px) { .shush-root[data-season="christmas"] .winter-card-dialog-header{ position: sticky; top: -1rem; z-index: 5; padding: .4rem 0 .75rem; border-bottom: 1px solid #9b8c6659; background: #17101ffa; } }
 
 /* Studio recovery stays legible without shifting the preview or hiding close. */
 .shush-root[data-season="christmas"] .winter-card-recovery{ display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--control-line); border-radius: .75rem; background: var(--surface); color: var(--text); font-size: .8rem; }
 .shush-root[data-season="christmas"] .winter-card-download:disabled{ transform: none; }
 .shush-root[data-season="christmas"] .winter-card-dialog{ overscroll-behavior: contain; }
-@media (max-height: 550px) { .shush-root[data-season="christmas"] .winter-card-dialog-header{ position: sticky; top: -1.5rem; z-index: 5; padding-block: .5rem; background: #101b1efa; border-bottom: 1px solid #9b8c6659; } }
+@media (max-height: 550px) { .shush-root[data-season="christmas"] .winter-card-dialog-header{ position: sticky; top: -1.5rem; z-index: 5; padding-block: .5rem; background: #17101ffa; border-bottom: 1px solid #9b8c6659; } }
 
 .shush-root[data-season="christmas"] .winter-card-preview{ position: relative; }
-.shush-root[data-season="christmas"] .winter-card-loading{ position: absolute; top: .75rem; left: .75rem; right: .75rem; z-index: 2; margin: 0; padding: .6rem .75rem; border-radius: .6rem; background: #101b1ef2; color: var(--text); font-size: .75rem; pointer-events: none; }
+.shush-root[data-season="christmas"] .winter-card-loading{ position: absolute; top: .75rem; left: .75rem; right: .75rem; z-index: 2; margin: 0; padding: .6rem .75rem; border-radius: .6rem; background: #17101ff2; color: var(--text); font-size: .75rem; pointer-events: none; }
 
 /* Reflow follows available text space, including enlarged browser text. */
-.shush-root[data-season="christmas"] .shell:not(.shush-navigation){ container-type: inline-size; }
+.shush-root[data-season="christmas"] .shell:not(.lux-navigation){ container-type: inline-size; }
 @container (max-width: 16rem) {
  .shush-root[data-season="christmas"] .winter-stage-bottom{ flex-direction: column; align-items: stretch; }
  .shush-root[data-season="christmas"] .winter-scene-note{ max-width: none; }
