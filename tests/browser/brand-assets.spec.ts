@@ -13,8 +13,14 @@ test('site motion and silent player selection work with the system set to reduce
   const hero = page.locator('.lux-hero');
   await expect(hero).toBeVisible();
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
-  await expect.poll(() => hero.evaluate(el => getComputedStyle(el, '::before').animationPlayState)).toBe('running');
-  await expect.poll(() => hero.evaluate(el => getComputedStyle(el, '::before').animationName)).toBe('fabric-light');
+  const silk = hero.locator('.scene-silk');
+  await expect(silk).toHaveAttribute('data-active', 'true');
+  if (await silk.getAttribute('data-fallback') === 'true') {
+    await expect(silk).toHaveCSS('animation-name', 'silk-drift');
+    await expect(silk).toHaveCSS('animation-play-state', 'running');
+  } else {
+    await expect.poll(() => silk.evaluate(el => (el as HTMLCanvasElement).width)).not.toBe(300);
+  }
 
   await page.goto('/esports/valorant/roster?player=more');
   await expect(page.locator('#selected-player-name')).toHaveText('More');

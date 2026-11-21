@@ -16,6 +16,7 @@ for (const [name, path] of routes) {
     // Hidden lazy images belong to disclosures; exercise those UI states first.
     if (name === 'premier') {
       await page.locator('.legacy-archive > summary').click();
+      await expect(page.locator('.match-week')).toHaveCount(7);
       for (const week of await page.locator('.match-week').all()) await week.locator('summary').click();
     }
     // Render lazy images before recording the full-page visual evidence.

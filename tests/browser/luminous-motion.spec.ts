@@ -1,33 +1,38 @@
 import { test, expect } from '@playwright/test';
 
 // These checks run with motion enabled: static pixel references cannot prove motion.
-test('luminous atmosphere moves, pauses offscreen and respects reduced motion', async ({ page }, info) => {
+test('luminous atmosphere moves, pauses offscreen and keeps the silk fallback animated', async ({ page }, info) => {
   test.skip(!['desktop-1366', 'mobile-390', 'mobile-webkit'].includes(info.project.name), 'Representative motion engines');
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.clock.install({ time: Date.UTC(2026, 9, 8, 12) });
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, ...args: Parameters<typeof original>) {
+      return args[0] === 'webgl' ? null : Reflect.apply(original, this, args);
+    } as typeof original;
+  });
   await page.goto('/');
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
   const hero = page.locator('.lux-hero');
-  await expect(hero).toHaveAttribute('data-scene-visible', 'true');
-  const aura = () => hero.evaluate(node => ({ transform: getComputedStyle(node, '::before').transform, animation: getComputedStyle(node, '::before').animationName, state: getComputedStyle(node, '::before').animationPlayState }));
-  expect((await aura()).animation).toBe('fabric-light');
-  const first = (await aura()).transform;
-  await expect.poll(async () => (await aura()).transform).not.toBe(first);
+  const silk = hero.locator('.scene-silk');
+  await expect(silk).toHaveAttribute('data-fallback', 'true');
+  await expect(silk).toHaveCSS('animation-name', 'silk-drift');
+  await expect(silk).toHaveCSS('animation-play-state', 'running');
+  const transform = () => silk.evaluate(node => getComputedStyle(node).transform);
+  const first = await transform();
+  await expect.poll(transform).not.toBe(first);
   await page.locator('.lux-people').scrollIntoViewIfNeeded();
-  await expect(hero).toHaveAttribute('data-scene-visible', 'false');
-  expect((await aura()).state).toBe('paused');
+  await expect(silk).toHaveCSS('animation-play-state', 'paused');
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-  await expect(hero).toHaveAttribute('data-scene-visible', 'true');
+  await expect(silk).toHaveCSS('animation-play-state', 'running');
   const action = hero.getByRole('link', { name: 'Conhecer o roster', exact: true });
   if (info.project.name === 'desktop-1366') {
     const reflection = await action.evaluate(node => getComputedStyle(node, '::before').transform);
     await action.hover();
     await expect.poll(() => action.evaluate(node => getComputedStyle(node, '::before').transform)).not.toBe(reflection);
-    await page.locator('.lux-header .shush-motion-toggle').click();
-  } else {
-    await page.emulateMedia({ reducedMotion: 'reduce' });
   }
-  await expect.poll(async () => (await aura()).animation).toBe('none');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(silk).toHaveCSS('animation-play-state', 'running');
   await expect(hero.getByRole('heading', { level: 1 })).toBeVisible();
   expect(await hero.locator('h1 em').evaluate(node => getComputedStyle(node).textShadow)).not.toBe('none');
   await page.screenshot({ path: info.outputPath('glow-static-accessible.png') });
