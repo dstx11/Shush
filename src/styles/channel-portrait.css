@@ -18,6 +18,12 @@
   background: radial-gradient(ellipse at 75% 40%, #fff1ed35, transparent 62%);
   opacity: .35;
 }
+.channel-silhouette {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  filter: var(--portrait-rim);
+}
 .channel-photo img {
   position: relative;
   width: 100%;

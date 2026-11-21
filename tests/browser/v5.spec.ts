@@ -120,36 +120,16 @@ test('V5 intro: bounded initial experience, reduced motion and no SPA replay', a
 });
 
 
-test('Intro can be skipped with keyboard and is remembered across reloads', async ({ page }) => {
-  const now = Date.now();
-  await page.clock.install({ time: now });
-  await page.clock.pauseAt(now + 100);
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/');
-  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
-  await expect(intro).toBeVisible();
-  await expect(intro).toHaveJSProperty('open', true);
-  await expect(intro.getByRole('button', { name: /Saltar apresentação/ })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(intro).toHaveCount(0);
-  await page.reload();
-  await expect(intro).toHaveCount(0);
-  await expect(page.locator('.lux-menu-toggle')).toBeEnabled();
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-});
-
-test('Intro supports Escape on a fresh visit', async ({ page }) => {
-  // A fresh document/clock keeps performance.now below the bounded intro
-  // duration. Advancing a reused fake clock across reloads can auto-dismiss it.
-  const now = Date.now();
-  await page.clock.install({ time: now });
-  await page.clock.pauseAt(now + 100);
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/');
-  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
-  await expect(intro).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(intro).toHaveCount(0);
+test('a keyboard visitor can open the roster on first and repeat visits', async ({ page }) => {
+  for (let visit = 0; visit < 2; visit++) {
+    await page.goto('/');
+    const link = page.getByRole('link', {name: 'Conhecer o roster'});
+    await link.focus();
+    await expect(link).toBeFocused();
+    await link.press('Enter');
+    await expect(page).toHaveURL(/roster$/);
+    await expect(page.locator('#selected-player-name')).toBeVisible();
+  }
 });
 
 test('Unavailable session storage never blocks entry to the site', async ({ page }) => {

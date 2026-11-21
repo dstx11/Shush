@@ -6,11 +6,6 @@
 
 .footer-colophon a > span { display: inline-block; transition: transform .18s; }
 .footer-colophon a:is(:hover,:focus-visible) > span { transform: translateY(-3px); }
-.loading-dots { display: inline-flex; gap: 3px; margin-inline-start: .25em; }
-.loading-dots i { background: currentColor; width: 3px; height: 3px; border-radius: 50%; animation: dot-rise .8s ease-in-out infinite alternate; }
-.loading-dots i:nth-child(2) { animation-delay: .12s; }
-.loading-dots i:nth-child(3) { animation-delay: .24s; }
-@keyframes dot-rise { to { transform: translateY(-3px); opacity: .4; } }
 .lux-menu-link { animation: menu-arrival .24s ease-out backwards; }
 .lux-menu-link:nth-child(2) { animation-delay: .035s; }
 .lux-menu-link:nth-child(3) { animation-delay: .07s; }

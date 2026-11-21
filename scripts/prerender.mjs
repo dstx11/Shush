@@ -65,7 +65,8 @@ try {
     {
       const links = [...routeStyles(route)].filter(css => !html.includes(`href="/${css}"`))
         .map(css => `<link rel="stylesheet" crossorigin href="/${css}" />`).join('\n');
-      html = html.replace('</head>', `${links}\n</head>`);
+      const routeModule = manifest[`src/pages/${routeEntries[route]}.tsx`].file;
+      html = html.replace('</head>', `${links}\n<link rel="modulepreload" crossorigin href="/${routeModule}" />\n</head>`);
     }
     html = html.replace('</head>', `<script id="shush-schema" type="application/ld+json">${json}</script>\n</head>`);
     await writeFile(path, html);

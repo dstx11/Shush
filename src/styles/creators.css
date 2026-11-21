@@ -46,7 +46,6 @@
   height: 100%;
   pointer-events: none;
 }
-.creator-art img { filter: var(--portrait-rim); }
 
 .scene-rays[data-fallback=true] {
   background: repeating-conic-gradient(from 131deg at 12% -25%, transparent 0 9deg, #eddbff22 12deg, transparent 17deg 23deg);

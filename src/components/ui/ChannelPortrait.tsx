@@ -8,7 +8,9 @@ export function ChannelPortrait({ player, sizes, eager, children }: { player: Pl
     <span className="channel-photo" aria-hidden="true"
       style={{ '--cutout': `url("/assets/campaign/${player.id}-mask.svg")` } as CSSProperties}>
       {children}
-      <PlayerPortrait player={player} decorative sizes={sizes} eager={eager} />
+      <span className="channel-silhouette">
+        <PlayerPortrait player={player} decorative sizes={sizes} eager={eager} />
+      </span>
     </span>
   );
 }

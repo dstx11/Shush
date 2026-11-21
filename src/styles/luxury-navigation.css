@@ -35,3 +35,8 @@
 @keyframes menu-open { from { clip-path: inset(0 0 96% 0); } }
 @keyframes menu-underlay { to { transform: scaleY(0); transform-origin: bottom; opacity: 0; } }
 @keyframes menu-item { from { opacity: .35; transform: translateY(.6em); } }
+/* A brief signature on entry leaves the navigation available from first paint. */
+.lux-brand img { animation: brand-light .64s ease-out; }
+@keyframes brand-light {
+  35% { filter: drop-shadow(0 0 5px #ca96ed80); }
+}
