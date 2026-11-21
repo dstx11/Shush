@@ -1,3 +1,4 @@
+import { SignatureIntro } from './components/ui/SignatureIntro';
 import { useRouteMetadata } from './hooks/useRouteMetadata';
 import { SeasonProvider, useSeason } from './seasonal/SeasonProvider';
 import { lazy, Suspense, useLayoutEffect, useRef, type ComponentType } from 'react';
@@ -45,6 +46,7 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
     <div data-entering="false" data-season={seasonId} className={`shush-root min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <div className="shush-reading-progress" aria-hidden="true" />
+      <SignatureIntro />
       <Header />
       <main id="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>

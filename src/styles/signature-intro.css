@@ -1,0 +1,75 @@
+.signature-intro {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: clamp(1.15rem, 3.5vw, 3.5rem);
+  border: 0;
+  overflow: hidden;
+  color: #f5eee9;
+  background: #100b14;
+  isolation: isolate;
+}
+.signature-intro[open] {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  animation: signature-exit .48s cubic-bezier(.65,0,.32,1) calc(var(--pen-finish) + 1150ms) both;
+}
+.signature-intro::backdrop { background: transparent; }
+.signature-silk {
+  position: absolute;
+  z-index: -1;
+  inset: -5%;
+  background: radial-gradient(ellipse at 50% 45%, #160e1b40 0%, #100c14ad 56%, #0c0810eb 91%),
+    linear-gradient(110deg, #100c14d9, #24122b6b 57%, #120d16a1),
+    url('/assets/campaign/tension.webp') 56% 40% / cover;
+  animation: silk-opening 4.1s ease-out both;
+}
+.signature-head { display: flex; align-items: center; justify-content: space-between; }
+.signature-head img { width: clamp(3rem, 5vw, 5rem); height: auto; }
+.signature-head button {
+  min-height: 44px;
+  padding: .5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  border: 1.5px solid #aa91b465;
+  border-radius: 2rem;
+  background: #19121cd9;
+  color: #ebe2ee;
+  font: .9rem var(--font-ui);
+}
+.signature-head button:is(:hover,:focus-visible) { border-color: #e7c9f6; }
+.signature-title { align-self: center; justify-self: center; width: min(91%, 57rem); padding-bottom: 4vh; }
+.signature-script { position: relative; z-index: 1; display: block; width: 75%; overflow: visible; margin: 0 0 -2% 5%; filter: drop-shadow(0 0 5px #cea7d83b); }
+.signature-script path {
+  stroke-dasharray: 1 1;
+  animation: signature-write var(--ink-time) linear var(--ink-start) both;
+}
+.signature-impact {
+  text-align: center;
+  font: 800 clamp(3.2rem, 10.3vw, 10.3rem)/1.07 var(--font-ui);
+  letter-spacing: -.083em;
+  white-space: nowrap;
+}
+.signature-impact span {
+  display: inline-block;
+  animation: signature-impact .62s cubic-bezier(.18,.72,.24,1) var(--pen-finish) both;
+}
+.signature-impact span + span { animation-delay: calc(var(--pen-finish) + 75ms); }
+.signature-impact i { font-style: normal; color: #cba7dc; }
+.signature-foot { display: flex; align-items: center; justify-content: center; gap: .9rem; color: #c7b6cb; font: .75rem var(--font-mono); letter-spacing: .13em; }
+.signature-foot span { width: clamp(2rem, 5vw, 5rem); height: 1px; background: #a38baa65; }
+@keyframes signature-write { 0% { opacity: 0; stroke-dashoffset: 1; } 1% { opacity: 1; } 100% { opacity: 1; stroke-dashoffset: 0; } }
+@keyframes signature-impact { from { clip-path: inset(0 0 100%); transform: translateY(.15em); } to { clip-path: inset(-8%); transform: none; } }
+@keyframes silk-opening { from { transform: scale(1.09) translateX(1%); } to { transform: scale(1); } }
+@keyframes signature-exit { from { opacity: 1; } to { opacity: 0; } }
+@media (max-width: 600px) {
+  .signature-title { width: 100%; }
+  .signature-script { width: 92%; margin-left: 1%; }
+  .signature-impact { font-size: clamp(3rem, 15vw, 5.3rem); }
+}

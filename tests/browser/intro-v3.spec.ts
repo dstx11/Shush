@@ -14,7 +14,12 @@ test('prerendered pages remain readable and linked while the entry module is del
     await expect(hero).toBeFocused();
   } finally { resume(); }
   await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
-  await expect(page.getByRole('dialog')).toHaveCount(0);
+  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
+  await expect(intro).toBeVisible();
+  await expect(intro.locator('svg path')).toHaveCount(7);
+  await intro.getByRole('button', { name: 'Saltar apresentação' }).click();
+  await expect(intro).toHaveCount(0);
+  await expect(page.locator('#main-content')).toBeFocused();
 });
 
 test('The content panels use real records and the origin no longer lists personal nick references',async ({page})=>{
@@ -36,4 +41,18 @@ test('Non-JavaScript visits remain usable without the intro overlay',async ({bro
   await expect(page.getByRole('heading',{level:1})).toBeVisible();
   await expect(page.locator('.lux-lineup>a')).toHaveCount(7);
  }finally{await context.close();}
+});
+
+test('the signature finishes, remembers the session and can be replayed', async ({page}) => {
+  const intro = page.getByRole('dialog', {name: 'Entrada SHUSH'});
+  await page.goto('/', {waitUntil: 'domcontentloaded'});
+  await expect(intro).toBeVisible();
+  await expect(intro).toHaveCount(0, {timeout: 7000});
+  await page.reload();
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+  await expect(intro).toHaveCount(0);
+  await page.goto('/?intro=1', {waitUntil: 'domcontentloaded'});
+  await expect(intro).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#main-content')).toBeFocused();
 });
