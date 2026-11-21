@@ -1,6 +1,6 @@
 import {lockPageScroll} from '../../hooks/useModalDialog';
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navItems } from '../../data/nav';
 import '../../styles/luxury-navigation.css';
@@ -8,7 +8,6 @@ import { AppLink } from '../ui/AppLink';
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const activePath = normalizePath(location.pathname);
   const navRef = useRef<HTMLElement>(null);
@@ -24,13 +23,6 @@ export function Header() {
     const closeOnDesktop = () => { if (desktop.matches) setIsOpen(false); };
     desktop.addEventListener('change', closeOnDesktop);
     return () => desktop.removeEventListener('change', closeOnDesktop);
-  }, []);
-
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 20);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
@@ -82,7 +74,7 @@ export function Header() {
   };
 
   return (
-    <header className={`lux-header ${isScrolled ? 'is-scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
+    <header className={`lux-header ${isOpen ? 'menu-open' : ''}`}>
       <nav ref={navRef} className="lux-navigation shell" aria-label="Navegação principal"
         onBlur={(event) => {
           if (isOpen && !event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
@@ -126,7 +118,7 @@ export function Header() {
           <div
             ref={mobilePanelRef}
             id="mobile-navigation"
-            className="lux-menu-panel mobile-panel-enter"
+            className="lux-menu-panel"
           >
             <div className="lux-menu-links">
               {navItems.map((item, index) => (
@@ -139,6 +131,7 @@ export function Header() {
                     document.getElementById('main-content')?.focus({ preventScroll: true });
                   }}
                   className="lux-menu-link"
+                  style={{ '--menu-order': index } as CSSProperties}
                 >
                   <span className="mono" aria-hidden="true">0{index + 1}</span><span>{item.label}</span><span aria-hidden="true"><ArrowIcon /></span>
                 </AppLink>

@@ -607,3 +607,13 @@ Cada entrada identifica uma adaptação original do padrão visual. Não foram i
 50. **about** — Atalhos para capítulos da história mais legíveis e fáceis de tocar.
 51. **Premier** — Mudar entre vitórias e derrotas conserva o mapa escolhido.
 52. **Home** — Índice local para saltar diretamente para partidas, plantel ou canais.
+
+## 2026-11-21 · Sete componentes para a SHUSH
+
+A Home usa o campo de dobras de [Silk](https://reactbits.dev/backgrounds/silk) e os Creators usam as funções de fase de [Light Rays](https://reactbits.dev/backgrounds/light-rays). Os dois shaders foram adaptados do registo oficial de React Bits, partilham um único renderer e a licença acompanha a distribuição em `/licenses/react-bits.txt`. A animação usa uma passagem, resolução limitada, até 24 fotogramas por segundo e suspensão fora do ecrã ou com o separador em segundo plano. A composição em CSS anima também quando o navegador não consegue criar um contexto WebGL.
+
+O [Flex Carousel](https://reactbits.dev/components/flex-carousel) mostra fotografias numa faixa com refração lateral. A adaptação usa scroll nativo, extremos translúcidos, navegação circular pelos botões, links de perfil e filtro de função. A refração fica limitada às extremidades. [Staggered Menu](https://reactbits.dev/components/staggered-menu) orientou a entrada sequencial dos cinco destinos do menu móvel. [Masked Heading](https://reactbits.dev/text-animations/masked-heading) orientou o recorte de seda nas letras de SHUSH no Sobre. Estes três comportamentos foram implementados com HTML e CSS para dispensar OGL e GSAP.
+
+[Split Flap Text](https://reactbits.dev/text-animations/split-flap-text) inspirou as placas do marcador. Os comandos percorrem partidas verificadas e só animam os algarismos que mudam. O leitor de ecrã recebe o resultado completo. A aparência dos filtros segue [Bone Pill Segmented Tabs](https://uiverse.io/uiverse-astronaut/strong-chicken-73) de uiverse-astronaut (referência MIT, implementação própria). Usam os dados de resultado e jornadas existentes. Nenhum componente reproduz áudio.
+
+Validação na pré-visualização: navegação principal, abertura e fecho do menu, passagem ao retrato seguinte, filtragem de duelistas, perfil de Levi, seleção de VallhallaWolves e abertura dos detalhes e calendário. Testados frames de 320 e 390 px e navegador de secretária. O browser de revisão usou o fallback CSS dos efeitos gráficos. Foi corrigido o transbordo causado pela largura mínima fixa. O calendário e exportação interna carregam ao abrir o arquivo; os dados continuam presentes no HTML pré-renderizado. O teste Playwright local não chegou a arrancar o Chromium devido à restrição de sockets do ambiente.

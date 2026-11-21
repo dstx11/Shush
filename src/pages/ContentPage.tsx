@@ -1,3 +1,4 @@
+import { SceneLight } from '../components/motion/SceneLight';
 import '../styles/creators.css';
 import { ArrowIcon } from '../components/ui/ArrowIcon';
 import { creators } from '../data/players';
@@ -17,7 +18,7 @@ export function ContentPage() {
         const twitch = creator.creatorType === 'twitch';
         const platform = twitch ? 'Twitch' : 'YouTube';
         return <article key={creator.id} className="creator-feature" data-channel={creator.creatorType} id={`creator-${creator.id}`} aria-labelledby={`creator-title-${creator.id}`}>
-          <div className="creator-art"><ChannelPortrait player={creator} eager={index === 0} sizes="(max-width: 767px) 100vw, 48vw" /></div>
+          <div className="creator-art"><ChannelPortrait player={creator} eager={index === 0} sizes="(max-width: 767px) 100vw, 48vw"><SceneLight material="rays" /></ChannelPortrait></div>
           <div className="creator-feature-copy">
             <div className="creator-file-label"><span>{platform}</span><span>{creator.creatorHandle}</span></div>
             <h2 id={`creator-title-${creator.id}`}>{creator.displayName}</h2>

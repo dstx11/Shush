@@ -1,3 +1,4 @@
+import SeasonArchive from './components/matches/SeasonArchive';
 import { StaticRouter } from 'react-router-dom';
 import { SeasonProvider } from './seasonal/SeasonProvider';
 import { seasonForDate } from './seasonal/calendar.mjs';
@@ -11,7 +12,7 @@ import { AboutPage } from './pages/AboutPage';
 
 const pages = {
   '/': HomePage,
-  '/esports/valorant/premier': PremierPage,
+  '/esports/valorant/premier': () => <PremierPage staticArchive={<SeasonArchive />} />,
   '/esports/valorant/roster': RosterPage,
   '/content': ContentPage,
   '/company': AboutPage,

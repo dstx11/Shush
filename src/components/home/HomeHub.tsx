@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from 'react';
+import { useState, useRef, useEffect, type CSSProperties } from 'react';
 import '../../styles/luxury-discovery.css';
 import { ArrowIcon } from '../ui/ArrowIcon';
 import { AppLink } from '../ui/AppLink';
@@ -15,6 +15,33 @@ function TeamSheet() {
   const [role, setRole] = useState('');
   const lineup = role ? players.filter(player => player.roles.includes(role)) : players;
 
+  const strip = useRef<HTMLDivElement>(null);
+  const [canScroll, setCanScroll] = useState(false);
+  useEffect(() => {
+    const node = strip.current;
+    if (!node) return;
+    node.scrollLeft = 0;
+    const measure = () => setCanScroll(node.scrollWidth > node.clientWidth + 2);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [role]);
+
+  function step(direction: number) {
+    const node = strip.current;
+    if (!node) return;
+    const origin = node.firstElementChild as HTMLElement | null;
+    if (!origin) return;
+    const cards = Array.from(node.children, item => (item as HTMLElement).offsetLeft - origin.offsetLeft);
+    const current = node.scrollLeft;
+    const end = node.scrollWidth - node.clientWidth;
+    const target = direction > 0
+      ? current >= end - 2 ? 0 : cards.find(left => left > current + 2) ?? end
+      : current <= 2 ? end : cards.reverse().find(left => left < current - 2) ?? 0;
+    node.scrollTo({ left: target, behavior: 'smooth' });
+  }
+
   return (
     <section id="plantel" className="lux-roster-gallery" aria-labelledby="discover-title">
       <header className="lux-roster-heading">
@@ -30,12 +57,13 @@ function TeamSheet() {
           </select>
         </label>
       </header>
-      <div className="lux-lineup">
+      <div className="sheet-lens">
+      <div ref={strip} className="lux-lineup" id="lineup-strip">
         {lineup.map(player => (
           <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`}
             aria-label={`Conhecer ${player.displayName}, número ${player.number}, ${player.roles.join(' e ')}`}>
             <span className="sheet-portrait" style={{ '--cutout': `url("/assets/campaign/${player.id}-mask.svg")` } as CSSProperties}>
-              <PlayerPortrait player={player} decorative sizes="(max-width: 700px) 25vw, 190px" />
+              <PlayerPortrait player={player} decorative sizes="(max-width: 700px) 52vw, 240px" />
             </span>
             <span className="sheet-number" aria-hidden="true">#{player.number}</span>
             <strong>{player.displayName}</strong>
@@ -43,7 +71,12 @@ function TeamSheet() {
           </AppLink>
         ))}
       </div>
+      </div>
       <footer className="sheet-footer">
+        {canScroll && <div className="sheet-paging" role="group" aria-label="Percorrer o plantel">
+          <button type="button" aria-controls="lineup-strip" aria-label="Jogador anterior" onClick={() => step(-1)}>‹</button>
+          <button type="button" aria-controls="lineup-strip" aria-label="Jogador seguinte" onClick={() => step(1)}>›</button>
+        </div>}
         <span role="status">{role ? `${lineup.length} de ${players.length} jogadores` : `${players.length} jogadores`}</span>
         <AppLink href="/esports/valorant/roster">Explorar o plantel <ArrowIcon /></AppLink>
       </footer>

@@ -16,10 +16,8 @@ html .editorial-link .arrow-icon{transition:transform .18s}
 .fatal-fallback-actions button:hover, .fatal-fallback-actions a:hover { background: var(--surface-2); }
 @keyframes shush-reveal { from { opacity: .4; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes shush-route-in { from { transform: translateY(7px); } to { transform: translateY(0); } }
-@keyframes shush-panel-in { from { opacity: .4; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes shush-pulse { 0%, 100% { opacity: .76; } 50% { opacity: 1; } }
 .route-enter { animation: shush-route-in .28s both; }
-.mobile-panel-enter { animation: shush-panel-in .22s both; }
 .status-badge.is-pulse { animation: shush-pulse 2.2s ease-in-out infinite; }
 
 /* Shared contextual actions and transfer feedback. */

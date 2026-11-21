@@ -7,7 +7,7 @@
 @media(max-width:767px){.lux-discover{padding-top:3rem}.lux-ledger{grid-template-columns:1fr}.lux-score-teams{align-items:start}.lux-score-teams strong span{display:block;margin:6px 0 0;font-size:12px}.lux-score-teams b{font-size:1.7rem;font-variant-numeric:tabular-nums}.lux-discover h2{font-size:2.5rem}.lux-closing{grid-template-columns:1fr;gap:1rem;padding-top:3rem}.lux-closing>a{padding:1.5rem;min-height:10rem;justify-content:center}.lux-chapter{font-size:.8125rem}}
 
 
-.closing-product img{position:absolute;inset:0 0 0 auto;height:100%;width:44%;object-fit:contain;mask:url(/assets/campaign/jersey-front-mask.svg) center/contain no-repeat;opacity:.94}.closing-product>span,.closing-product>strong{position:relative}.lux-closing .closing-product{padding-right:40%;background:#211828}.lux-closing>a:first-child{background:linear-gradient(90deg,#160d1bed,#140e1aa8),url(/assets/campaign/tension.webp) center/cover}
+.lux-closing>a:first-child{background:linear-gradient(90deg,#160d1bed,#140e1aa8),url(/assets/campaign/tension.webp) center/cover}
 
 /* The seven portraits share one photographic surface and one baseline. */
 .lux-roster-gallery {
@@ -46,20 +46,52 @@
   border: var(--surface-stroke) solid #776185;
   border-radius: var(--control-radius);
   color-scheme: dark;font-size:1rem}
+.sheet-lens {
+  position: relative;
+  margin-block: clamp(1.25rem, 3vw, 2.75rem) 1rem;
+}
+.sheet-lens::before, .sheet-lens::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block: .35rem;
+  width: .55rem;
+  pointer-events: none;
+  background: linear-gradient(90deg, #211827bd, #eee1ff16, transparent);
+  backdrop-filter: blur(1.5px);
+}
+.sheet-lens::before { left: 0; }
+.sheet-lens::after { right: 0; transform: scaleX(-1); }
 .lux-lineup {
+  position: relative;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  row-gap: 1rem;
-  margin: clamp(1.25rem, 3vw, 2.75rem) 0 1.25rem;
+  gap: clamp(.5rem, 1.5vw, 1.4rem);
+  overflow-x: auto;
+  padding: .35rem .65rem .75rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: #675273 transparent;
 }
 .lux-lineup > a {
-  flex: 0 0 calc(100% / 7 - .1px);
+  flex: 0 0 clamp(8.5rem, 18vw, 15rem);
   min-width: 0;
   text-align: center;
   color: inherit;
   text-decoration: none;
+  scroll-snap-align: start;
+  scroll-margin-inline: .65rem;
 }
+.sheet-paging { display: flex; gap: .35rem; }
+.sheet-paging button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: var(--surface-stroke) solid #735b80;
+  border-radius: 50%;
+  color: #ece2f4;
+  background: #261b2d;
+  font: 1.5rem/1 var(--font-ui);
+}
+.sheet-paging button:hover { background: #392940; }
 .sheet-portrait {
   position: relative;
   display: block;
@@ -110,10 +142,10 @@ html .sheet-portrait img { transition: transform .42s var(--move-spring), filter
   html .lux-lineup a:is(:hover, :focus-visible) img { transform: translateY(-2%) scale(1.045); filter: saturate(1); }
 @media (max-width: 700px) {
   .lux-roster-gallery { margin-top: 3.5rem; }
-  .lux-lineup > a { flex-basis: 25%; }
+  .lux-lineup > a { flex-basis: clamp(8.5rem, 45vw, 13rem); }
 
 
-  .lux-lineup small { font-size: .64rem; }
+
 }
 
 .lux-people { margin-top: clamp(3.5rem, 7vw, 6rem); scroll-margin-top: 6rem; }

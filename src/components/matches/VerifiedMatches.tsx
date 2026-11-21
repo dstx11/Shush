@@ -1,12 +1,15 @@
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { copyText } from '../../lib/browser-transfer';
 import { CopyIcon } from '../ui/CopyIcon';
 import { verifiedMatches, verifiedMatchHref, type VerifiedMatch } from '../../data/verified-matches';
 import { formatDate } from '../../lib/premier';
 import { filterMatches, mapPerformance, type Outcome } from '../../lib/match-explorer';
-import { MatchPoster } from './MatchPoster';
+const MatchPoster = lazy(() => import('./MatchPoster').then(module => ({ default: module.MatchPoster })));
+
+const maps = [...new Set(verifiedMatches.map(match => match.map))];
+const performanceByMap = mapPerformance(verifiedMatches);
 
 function positionMatchLight(event: React.PointerEvent<HTMLElement>) {
   if (event.pointerType !== 'mouse') return;
@@ -30,7 +33,6 @@ function MatchExplorer({selected}:{selected?:string}) {
   const [order, setOrder] = useState('newest');
   const [poster, setPoster] = useState<VerifiedMatch | null>(null);
   const matches = filterMatches(verifiedMatches, outcome, map, query).sort((a, b) => order === 'oldest' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date));
-  const maps = [...new Set(filterMatches(verifiedMatches, outcome, 'all').map(match => match.map))];
   const clearFilters=()=>{setOutcome('all');setMap('all');setQuery('');setOrder('newest');requestAnimationFrame(()=>allControl.current?.focus({preventScroll:true}));};
   return <>
     <div className="match-explorer-filters">
@@ -47,8 +49,8 @@ function MatchExplorer({selected}:{selected?:string}) {
       <div className="verified-match-score"><strong>SHUSH</strong><span aria-label={`SHUSH ${match.shushScore}, ${match.opponent} ${match.opponentScore}`}>{match.shushScore}<small>:</small>{match.opponentScore}</span><strong>{match.opponent}</strong></div>
       <details className="match-detail" open={selected===match.id?true:undefined}><summary>Detalhes da partida <span aria-hidden="true">+</span></summary><div className="verified-match-source"><span>Verificado em <time dateTime={match.verifiedAt}>{formatDate(match.verifiedAt)}</time></span><a href={match.source} target="_blank" rel="noopener noreferrer" aria-label={`Ver SHUSH vs ${match.opponent} no Tracker.gg (nova janela)`}>Fonte · Tracker.gg <ArrowIcon /></a></div><div className="action-row" style={{alignItems:'flex-start'}}><button className="utility-button" type="button" onClick={event => { event.currentTarget.focus(); setPoster(match); }}>Criar cartaz <ArrowIcon /></button><MatchLink match={match}/></div></details>
     </article>)}</div>
-    <section className="map-performance" aria-labelledby="maps-title"><div><h3 id="maps-title">Mapa a mapa.</h3><p>{verifiedMatches.length} partidas verificadas. Uma amostra, não uma classificação.</p></div><div className="map-performance-list">{mapPerformance(verifiedMatches).map(item => <div className="map-performance-row" key={item.map}><strong>{item.map}</strong><span>{item.played} {item.played === 1 ? 'partida' : 'partidas'} · {item.wins} V / {item.losses} D</span><meter min={0} max={100} value={item.rate} aria-label={`Taxa de vitória em ${item.map}`}>{item.rate}%</meter><b>{item.wins}/{item.played}</b></div>)}</div></section>
-    {poster && <MatchPoster match={poster} onClose={() => setPoster(null)} />}
+    <section className="map-performance" aria-labelledby="maps-title"><div><h3 id="maps-title">Mapa a mapa.</h3><p>{verifiedMatches.length} partidas verificadas. Uma amostra, não uma classificação.</p></div><div className="map-performance-list">{performanceByMap.map(item => <div className="map-performance-row" key={item.map}><strong>{item.map}</strong><span>{item.played} {item.played === 1 ? 'partida' : 'partidas'} · {item.wins} V / {item.losses} D</span><meter min={0} max={100} value={item.rate} aria-label={`Taxa de vitória em ${item.map}`}>{item.rate}%</meter><b>{item.wins}/{item.played}</b></div>)}</div></section>
+    {poster && <Suspense fallback={<p role="status">A preparar o cartaz…</p>}><MatchPoster match={poster} onClose={() => setPoster(null)} /></Suspense>}
   </>;
 }
 

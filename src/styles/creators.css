@@ -38,3 +38,20 @@
   .creator-channel:is(:hover, :focus-visible) .button-arrow { transform: translateX(3px); }
 
 .creator-channel-actions{gap:.65rem 1.25rem}
+
+.scene-rays {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.creator-art img { filter: var(--portrait-rim); }
+
+.scene-rays[data-fallback=true] {
+  background: repeating-conic-gradient(from 131deg at 12% -25%, transparent 0 9deg, #eddbff22 12deg, transparent 17deg 23deg);
+  transform-origin: 12% 0;
+  animation: studio-rays 7s ease-in-out infinite alternate paused;
+}
+.scene-rays[data-fallback=true][data-active=true] { animation-play-state: running; }
+@keyframes studio-rays { to { transform: rotate(4deg) scale(1.08); } }

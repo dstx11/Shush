@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { SceneLight } from '../motion/SceneLight';
+import { useState, type CSSProperties } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
 import { ArrowIcon } from '../ui/ArrowIcon';
@@ -13,19 +14,9 @@ export function CoreHero() {
   const featured = getHomePlayers();
   const [active, setActive] = useState(1);
   const cover = featured[active];
-  const atmosphere = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const node = atmosphere.current;
-    if (!node || !('IntersectionObserver' in window)) return;
-    let visible = false;
-    const sync = () => { node.dataset.sceneVisible = String(visible && !document.hidden); };
-    const observer = new IntersectionObserver(entries => { visible = entries[0]?.isIntersecting ?? false; sync(); });
-    observer.observe(node);
-    document.addEventListener('visibilitychange', sync);
-    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
-  }, []);
-  return <section ref={atmosphere} data-scene-visible="false" id="top" className="lux-hero" aria-labelledby="hero-title">
+  return <section id="top" className="lux-hero" aria-labelledby="hero-title">
     <div className="campaign-stage">
+      <SceneLight material="silk" />
       <div className="campaign-masthead" aria-hidden="true">SHUSH</div>
       <div className="campaign-sitter" key={cover.id} style={{ '--silhouette': `url("/assets/campaign/${cover.id}-mask.svg")` } as CSSProperties} aria-hidden="true">
         <PlayerPortrait player={cover} eager decorative sizes="768px" />

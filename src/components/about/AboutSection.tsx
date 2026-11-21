@@ -6,7 +6,7 @@ import { Button } from '../ui/Button';
 export function AboutSection() {
   return <section id="about" className="about-page" aria-labelledby="about-title"><div className="shell">
     <div className="story-cover">
-      <div className="story-seal"><img src="/assets/brand/shush-logo.webp" width="1167" height="647" alt="Logótipo SHUSH" /><span>Desde 2022</span></div>
+      <div className="story-seal"><strong className="masked-word">SHUSH</strong><span>Desde 2022</span></div>
       <div className="story-letter"><span className="section-kicker">A ORIGEM DA SHUSH</span><h1 id="about-title">Um nome.<br /><em>A nossa maneira.</em></h1><p>Entre amigos, chamadas e partidas. A mesma tag, dentro e fora do servidor.</p></div>
     </div>
     <nav className="story-index" aria-label="Nesta história"><a href="#origin-title">01 / A origem <span aria-hidden="true">↓</span></a><a href="#about-perspective-title">02 / A equipa <span aria-hidden="true">↓</span></a><a href="#partners">03 / Quem ajuda <span aria-hidden="true">↓</span></a></nav>

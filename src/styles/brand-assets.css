@@ -1,8 +1,6 @@
 /* Actions */
 .copy-check { stroke-dasharray: 1; animation: check-draw .24s ease-out; }
 @keyframes check-draw { from { stroke-dashoffset: 1; } }
-.calendar-filters { width: fit-content; padding: 3px; border-radius: var(--control-radius); background: #231b2b; }
-.calendar-filters button[aria-pressed=true] { box-shadow: inset 0 -2px #c79bdc; }
 .match-search input:focus { border-color: #d6b7ed; box-shadow: 0 0 0 3px #ab75cc38; }
 .match-search input { transition: box-shadow .18s, border-color .18s; }
 .roster-shortcuts { position: relative; font: .78rem var(--font-ui); color: #e6d6ef; }
@@ -30,23 +28,5 @@
 @keyframes phrase-entry { from { transform: translateY(.22em); opacity: .45; } }
 #dossier-name { animation: dossier-focus .26s ease-out; }
 @keyframes dossier-focus { from { filter: blur(2px); opacity: .5; } }
-.story-seal { background-image: radial-gradient(#ccb5dd38 1px, transparent 1px); background-size: 13px 13px; }
-.story-seal img { transition: transform .32s ease-out; }
-@media (hover:hover) { .story-seal:hover img { transform: perspective(35rem) rotateY(-7deg) rotateX(3deg); } }
 .story-origin.motion-visible .story-origin-copy h2 { animation: origin-reveal .6s ease-out; }
 @keyframes origin-reveal { from { clip-path: inset(0 0 30%); opacity: .55; } to { clip-path: inset(0); } }
-
-.calendar-filters button { position: relative; }
-.calendar-filters button[aria-pressed=true]:focus::after {
-  content: ''; position: absolute; top: 0; right: 5px; width: 12px; height: 12px;
-  pointer-events: none; background: radial-gradient(circle,#ebcbff 1px,transparent 2px) 0 0 / 6px 6px;
-  animation: filter-spark .28s ease-out both;
-}
-@keyframes filter-spark { from { transform: scale(.4); opacity: .8; } to { transform: translateY(-5px) scale(1.25); opacity: 0; } }
-.sheet-portrait::after {
-  content: ''; position: absolute; inset: 3px; pointer-events: none; opacity: 0;
-  background: linear-gradient(#e0c3f1 0 0) left top/12px 2px, linear-gradient(#e0c3f1 0 0) left top/2px 12px,
-    linear-gradient(#e0c3f1 0 0) right bottom/12px 2px, linear-gradient(#e0c3f1 0 0) right bottom/2px 12px;
-  background-repeat: no-repeat; transition: opacity .16s;
-}
-.lux-lineup a:is(:hover,:focus-visible) .sheet-portrait::after { opacity: .72; }
