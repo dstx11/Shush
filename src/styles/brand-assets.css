@@ -1,0 +1,32 @@
+/* Actions */
+.copy-check { stroke-dasharray: 1; animation: check-draw .24s ease-out; }
+@keyframes check-draw { from { stroke-dashoffset: 1; } }
+.match-search input:focus { border-color: #d6b7ed; box-shadow: 0 0 0 3px #ab75cc38; }
+.match-search input { transition: box-shadow .18s, border-color .18s; }
+.roster-shortcuts { position: relative; font: .78rem var(--font-ui); color: #e6d6ef; }
+.roster-shortcuts summary { cursor: pointer; min-height: 44px; align-content: center; padding-inline: .5rem; }
+.roster-shortcuts p { position: absolute; z-index: 8; bottom: 100%; left: 0; width: min(14rem, 65vw); padding: .8rem; border: 2px solid #665175; border-radius: .8rem; background: #201826; line-height: 1.65; }
+.roster-shortcuts kbd { font: .76rem var(--font-mono); color: #f0cfff; }
+.match-detail summary span { display: inline-block; transition: transform .18s; }
+.match-detail[open] summary span { transform: rotate(45deg); }
+.story-index a span { display: inline-block; transition: transform .2s; }
+.story-index a:is(:hover,:focus-visible) span { transform: translateY(3px); }
+.player-select-card.is-active .player-card-name::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--player-accent); box-shadow: 0 0 7px var(--player-accent); flex: none; }
+.player-card-name { position: relative; }
+.player-select-card.is-active .player-card-name::before { position: absolute; right: 0; bottom: 0; }
+
+ /* Typography and surfaces */
+@supports (background-clip: text) {
+  .roster-count, .story-letter h1 em { color: transparent; background-clip: text; }
+  .roster-count { background-image: linear-gradient(105deg,#c8afda 30%,#fff 48%,#bca2ce 62%); background-size: 210% 100%; animation: type-shine 2.8s ease-out 1; }
+  .story-letter h1 em { background-image: linear-gradient(105deg,#f6dfef,#c9a9dc,#ebbcc9,#f6dfef); background-size: 180% 100%; animation: type-shine 5s ease-in-out alternate 2; }
+}
+@keyframes type-shine { from { background-position: 100% center; } to { background-position: 0 center; } }
+.shush-signals-heading h2 > :is(span,em) { display: inline-block; }
+.motion-visible .shush-signals-heading h2 > :is(span,em) { animation: phrase-entry .38s ease-out backwards; }
+.motion-visible .shush-signals-heading h2 em { animation-delay: .09s; }
+@keyframes phrase-entry { from { transform: translateY(.22em); opacity: .45; } }
+#dossier-name { animation: dossier-focus .26s ease-out; }
+@keyframes dossier-focus { from { filter: blur(2px); opacity: .5; } }
+.story-origin.motion-visible .story-origin-copy h2 { animation: origin-reveal .6s ease-out; }
+@keyframes origin-reveal { from { clip-path: inset(0 0 30%); opacity: .55; } to { clip-path: inset(0); } }

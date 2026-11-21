@@ -57,7 +57,7 @@ test('cinematic entrance is resource-driven, bounded and never replays during SP
   await expect(canvas).toHaveAttribute('data-ready', 'true');
   await canvas.scrollIntoViewIfNeeded();
   await expect(canvas).toHaveAttribute('data-revealed', 'true', { timeout: 4000 });
-  await page.locator('.home-closing a[href="/company"]').click();
+  await page.locator('.lux-closing a[href="/company"]').click();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.getByRole('dialog', { name: /Entrada SHUSH/ })).toHaveCount(0);
 });

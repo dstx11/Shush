@@ -1,3 +1,4 @@
+import './poster-layout.css';
 import type {VerifiedMatch} from '../../data/verified-matches';
 import type {Player} from '../../data/players';
 import type {DropConfig} from '../../lib/drop-config';

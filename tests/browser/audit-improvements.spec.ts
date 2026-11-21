@@ -1,29 +1,15 @@
 import { test, expect } from '@playwright/test';
 
 const representative = (name: string) => ['desktop-1366', 'mobile-390', 'mobile-webkit'].includes(name);
-test('ready resources preserve the readable entrance then resume page animations', async ({ page }, info) => {
+test('the first route becomes interactive without waiting for image decoding', async ({ page }, info) => {
   test.skip(!representative(info.project.name), 'Representative entrance engines');
-  const now = Date.parse('2026-11-13T12:00:00Z');
-  await page.clock.install({ time: now });
-  await page.clock.pauseAt(now + 100);
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.addInitScript(() => { HTMLImageElement.prototype.decode = () => new Promise<void>(() => {}); });
   await page.goto('/');
-  await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'true');
-  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'paused');
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    await Promise.allSettled([...document.querySelectorAll<HTMLImageElement>('.route-frame img:not([loading="lazy"])')].map(img => img.decode()));
-  });
-  await page.clock.runFor(500);
-  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toBeVisible();
-  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'paused');
-  await page.clock.runFor(1600);
-  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
-  await expect(page.locator('.shush-hero h1')).toHaveCSS('animation-play-state', 'running');
-  await page.reload();
-  await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
-  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+  await page.getByRole('link', {name: 'Conhecer o roster'}).click();
+  await expect(page).toHaveURL(/roster$/);
+  await expect(page.locator('#selected-player-name')).toBeVisible();
 });
 
 test('header and footer motion preferences stay in sync', async ({ page }, info) => {

@@ -10,7 +10,6 @@ const routeFiles = [
   ['esports/valorant/premier.html', 'https://shush.pt/esports/valorant/premier', 'VALORANT Premier: partidas e resultados — SHUSH'],
   ['esports/valorant/roster.html', 'https://shush.pt/esports/valorant/roster', 'Jogadores de VALORANT — SHUSH'],
   ['content.html', 'https://shush.pt/content', 'Creators: More e Th0maz — SHUSH'],
-  ['products/jersey.html', 'https://shush.pt/products/jersey', 'Camisola SHUSH Drop 01 — Personalização'],
   ['company.html', 'https://shush.pt/company', 'Sobre a SHUSH — A equipa e a nossa história'],
 ];
 
@@ -69,7 +68,7 @@ const robots = await readText('robots.txt');
 const sitemap = await readText('sitemap.xml');
 
 expect(index, '<h1', 'prerendered Home heading');
-if (!['O nome é SHUSH.','O lobby ainda','Mudou o ano.','Hoje ninguém joga','Há duos','Deixámos pistas.','Só mais uma.','Há passos.'].some(value => index.includes(value))) failures.push('Missing seasonal Home content');
+if (!['Sem barulho.','O nome é SHUSH.','O lobby ainda','Mudou o ano.','Hoje ninguém joga','Há duos','Deixámos pistas.','Só mais uma.','Há passos.'].some(value => index.includes(value))) failures.push('Missing seasonal Home content');
 expect(index, '<html lang="pt-PT">', 'index.html lang');
 expect(index, '<meta name="robots" content="index,follow,max-image-preview:large"', 'index.html robots');
 expect(index, 'property="og:image" content="https://shush.pt/og-shush.png"', 'absolute OG image');
@@ -85,7 +84,7 @@ expect(notFound, '<title>404 — SHUSH</title>', '404 title');
 for (const [path, canonical, title] of routeFiles) {
   const html = await readText(path);
   expect(html, '<h1', `${path} prerendered heading`);
-  const pageEntry = ({'content.html':'ContentPage','company.html':'AboutPage','products/jersey.html':'DropPage','esports/valorant/roster.html':'RosterPage','esports/valorant/premier.html':'PremierPage'})[path];
+  const pageEntry = ({'content.html':'ContentPage','company.html':'AboutPage','esports/valorant/roster.html':'RosterPage','esports/valorant/premier.html':'PremierPage'})[path];
   for (const css of manifest['src/pages/'+pageEntry+'.tsx']?.css ?? []) {
     expect(html, 'href="/'+css+'"', `${path} static route CSS`);
   }
@@ -110,7 +109,6 @@ for (const [path, canonical, title] of routeFiles) {
 
 for (const route of [
   '/esports /esports/valorant/premier 301',
-  '/products /products/jersey 301',
   '/company/partners /company#partners 301',
 ]) {
   expect(redirects, route, `canonical redirect ${route.split(' ')[0]}`);
@@ -135,7 +133,6 @@ for (const url of [
   'https://shush.pt/esports/valorant/premier',
   'https://shush.pt/esports/valorant/roster',
   'https://shush.pt/content',
-  'https://shush.pt/products/jersey',
   'https://shush.pt/company',
 ]) {
   expect(sitemap, `<loc>${url}</loc>`, `sitemap route ${url}`);

@@ -25,7 +25,7 @@ export function LabGate(){
    setOpen(value=>!value);
   };
   const logo=(event:MouseEvent)=>{
-   if(!(event.target instanceof Element)||!event.target.closest('a.brand-mark'))return;
+   if(!(event.target instanceof Element)||!event.target.closest('a.brand-mark,a.lux-brand'))return;
    const now=performance.now();
    count=now-previous<850?count+1:1;
    previous=now;

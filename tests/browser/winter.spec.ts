@@ -7,9 +7,9 @@ test('Winter scene is available without compromising the team content', async ({
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('O lobby ainda');
   await expect(page.locator('.winter-tree-stage canvas')).toBeVisible();
-  await expect(page.locator('.team-cover-player')).toHaveCount(3);
-  await expect(page.locator('.home-lineup > a')).toHaveCount(7);
-  await expect(page.locator('.home-score')).toHaveCount(3);
+  await expect(page.locator('[data-home-player]')).toHaveCount(3);
+  await expect(page.locator('.lux-lineup > a')).toHaveCount(7);
+  await expect(page.locator('.lux-score')).toHaveCount(3);
   await expect(page.locator('.winter-palette')).toHaveCount(0);
   const variant = await page.locator('.winter-tree-stage').getAttribute('data-tree-variant');
   expect(['christmas', 'ice', 'shush']).toContain(variant);

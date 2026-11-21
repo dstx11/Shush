@@ -1,17 +1,19 @@
 import {test,expect} from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-test('Seven real players have individual signatures and respond to precise navigation',async ({page},info)=>{
+test('Seven real players keep their portraits unobstructed during keyboard navigation',async ({page},info)=>{
  test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative selectors');
  await page.emulateMedia({reducedMotion:'reduce'});
  await page.goto('/esports/valorant/roster?player=dstx');
  const scene=page.locator('.character-media');
- await expect(page.locator('.character-geometry-mark path')).toHaveCount(3);
- await expect(page.locator('.character-signature-scene')).toHaveCount(1);
+ await expect(scene.locator('.character-geometry, .character-signal-flare')).toHaveCount(0);
+ await expect(scene.locator('.roster-portrait')).toHaveCSS('filter', /drop-shadow/);
  await expect(page.getByRole('button',{name:'Ativar som de seleção'})).toHaveAttribute('aria-pressed','false');
  await page.keyboard.press('7');
  await expect(page.locator('#selected-player-name')).toHaveText('Catty');
- await expect(page.locator('.character-geometry-mark path')).toHaveCount(3);
+ const caption = await page.locator('.character-identity').boundingBox();
+ const photo = await scene.boundingBox();
+ expect(caption!.y).toBeGreaterThanOrEqual(photo!.y + photo!.height - 1);
  await expect(page).toHaveURL(/player=catty/);
  await page.getByRole('button',{name:'Jogador seguinte'}).click();
  await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
@@ -40,7 +42,7 @@ test('Cinema pointer is composited; replay and optional audio are explicitly con
  await expect.poll(()=>scene.evaluate(node=>(node as HTMLElement).style.getPropertyValue('--lens-x'))).toBe('');
  const before=await scene.getAttribute('data-stage-visible');
  await page.getByRole('button',{name:'Rever entrada do jogador'}).click();
- await expect(page.locator('.character-geometry-mark')).toBeVisible();
+ await expect(scene.getByRole('img', {name:'Retrato de More'})).toBeVisible();
  await page.getByRole('button',{name:'Ativar som de seleção'}).click();
  await expect(page.getByRole('button',{name:'Desativar som de seleção'})).toHaveAttribute('aria-pressed','true');
  await page.getByRole('button',{name:'Desativar som de seleção'}).click();

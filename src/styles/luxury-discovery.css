@@ -1,0 +1,178 @@
+/* Editorial chapters: a contact sheet, a results ledger and a product spread. */
+.lux-discover{padding-block:5rem 3rem}.lux-chapter{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;font:10px var(--font-mono);letter-spacing:.12em;color:#bba6ca;font-size:.8125rem}.lux-chapter:after{content:'';height:1px;background:linear-gradient(90deg,#a17cbb66,#45324f33);flex:1}.lux-chapter b{font:italic 400 1.8rem 'SHUSH Hearth',Georgia,serif;color:#d4b6e6}
+.lux-discover h2{font:500 clamp(2.4rem,4.5vw,4.5rem)/1.05 var(--font-heading);letter-spacing:-.055em;color:#f5f0f4}.lux-discover h2 em{font:italic 400 1.12em 'SHUSH Hearth',Georgia,serif;color:#cfb5df}
+.lux-ledger{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:4rem}.lux-ledger-intro p{color:#b9aebf;margin:1.5rem 0;font-size:1rem;line-height:1.6;max-width:40ch}.lux-ledger-list{min-width:0}.lux-score{display:block;padding:1.5rem 0;border-bottom:1px solid #45324f;text-decoration:none;color:#eee3f5}.lux-score:first-child{border-top:1px solid #45324f}.lux-score-meta{display:flex;justify-content:space-between;color:#b9aebf;font:9px var(--font-mono);margin-bottom:1rem;font-size:.8125rem;gap:.65rem;flex-wrap:wrap}.lux-score-teams{display:flex;justify-content:space-between;gap:1rem;align-items:center}.lux-score-teams strong{font:600 15px var(--font-ui)}.lux-score-teams strong span{font-weight:500;color:#b9aebf;margin-left:8px}.lux-score-teams b{font:500 2rem var(--font-heading);white-space:nowrap;font-variant-numeric:tabular-nums}.lux-score-teams b small{font-size:1.4rem;padding:0 8px;color:#a78bb9}.lux-score:is(:hover,:focus-visible) .lux-score-teams strong{color:#d4b0eb}
+.lux-closing{display:grid;grid-template-columns:1fr;gap:1.5rem;padding-top:5rem}.lux-closing>a{position:relative;overflow:hidden;padding:2rem;display:flex;flex-direction:column;gap:1rem;color:#f5f0f4;text-decoration:none;border:var(--surface-stroke) solid #b18cc855;border-radius:var(--radius-md);background:#1b1420;box-shadow:inset 0 1px #e4c9f71a;min-height:10rem;justify-content:center}.lux-closing .section-kicker{font:9px var(--font-mono)}.lux-closing strong{font:500 clamp(1.8rem,3.2vw,3.2rem)/1.1 var(--font-heading);letter-spacing:-.04em}.lux-closing>a>span:last-child{display:flex;align-items:center;gap:1rem;font-size:12px;color:#d1b5e3;min-height:44px}.lux-closing>a:is(:hover,:focus-visible){border-color:#dbc0ed;box-shadow:inset 0 1px #f4dfff33,0 0 32px #ad55e522}
+@media(max-width:1050px){.lux-ledger{gap:2rem}}
+@media(max-width:767px){.lux-discover{padding-top:3rem}.lux-ledger{grid-template-columns:1fr}.lux-score-teams{align-items:start}.lux-score-teams strong span{display:block;margin:6px 0 0;font-size:12px}.lux-score-teams b{font-size:1.7rem;font-variant-numeric:tabular-nums}.lux-discover h2{font-size:2.5rem}.lux-closing{grid-template-columns:1fr;gap:1rem;padding-top:3rem}.lux-closing>a{padding:1.5rem;min-height:10rem;justify-content:center}.lux-chapter{font-size:.8125rem}}
+
+
+.lux-closing>a:first-child{background:linear-gradient(90deg,#160d1bed,#140e1aa8),url(/assets/campaign/tension.webp) center/cover}
+
+/* The seven portraits share one photographic surface and one baseline. */
+.lux-roster-gallery {
+  margin-top: 5rem;
+  padding: clamp(1rem, 3.2vw, 3rem);
+  scroll-margin-top: 6rem;
+  color: #f5eef9;
+  border: var(--surface-stroke) solid #4d3c59;
+  border-radius: var(--radius-md);
+  background: radial-gradient(ellipse at 50% 40%, #281d30, transparent 70%), #151019;
+}
+.lux-roster-heading, .sheet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+}
+.sheet-edition, .sheet-filter, .sheet-footer {
+  font: 500 .69rem/1.5 var(--font-mono);
+}
+.sheet-edition { letter-spacing: .12em; }
+.lux-roster-gallery h2 {
+  margin: .25rem 0 0;
+  color: inherit;
+  font-size: clamp(2.9rem, 6vw, 6rem);
+}
+.lux-roster-gallery h2 i { font: italic 400 1.05em/1 'SHUSH Hearth', Georgia, serif; }
+.sheet-filter { display: grid; gap: .25rem; }
+.sheet-filter select{min-height: 44px;
+  max-width: 100%;
+  padding: .3rem .6rem;
+  font: 600 .85rem var(--font-ui);
+  color: inherit;
+  background: #251c2c;
+  border: var(--surface-stroke) solid #776185;
+  border-radius: var(--control-radius);
+  color-scheme: dark;font-size:1rem}
+.sheet-lens {
+  position: relative;
+  margin-block: clamp(1.25rem, 3vw, 2.75rem) 1rem;
+}
+.sheet-lens::before, .sheet-lens::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset-block: .35rem;
+  width: .55rem;
+  pointer-events: none;
+  background: linear-gradient(90deg, #211827bd, #eee1ff16, transparent);
+  backdrop-filter: blur(1.5px);
+}
+.sheet-lens::before { left: 0; }
+.sheet-lens::after { right: 0; transform: scaleX(-1); }
+.lux-lineup {
+  position: relative;
+  display: flex;
+  gap: clamp(.5rem, 1.5vw, 1.4rem);
+  overflow-x: auto;
+  padding: .35rem .65rem .75rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: #675273 transparent;
+}
+.lux-lineup > a {
+  flex: 0 0 clamp(8.5rem, 18vw, 15rem);
+  min-width: 0;
+  text-align: center;
+  color: inherit;
+  text-decoration: none;
+  scroll-snap-align: start;
+  scroll-margin-inline: .65rem;
+}
+.sheet-paging { display: flex; gap: .35rem; }
+.sheet-paging button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: var(--surface-stroke) solid #735b80;
+  border-radius: 50%;
+  color: #ece2f4;
+  background: #261b2d;
+  font: 1.5rem/1 var(--font-ui);
+}
+.sheet-paging button:hover { background: #392940; }
+.sheet-portrait {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: clip;
+  isolation: isolate;
+  filter: var(--portrait-rim);
+  mask-image: linear-gradient(#000 84%, transparent);
+}
+.sheet-number{display: block;
+  margin-top: .5rem;
+  color: #c9abd9;
+  font: .67rem/1.3 var(--font-mono);font-size:.8125rem}
+.sheet-portrait img {
+  position: absolute;
+  bottom: -6%;
+  left: -2%;
+  width: 104%;
+  max-width: none;
+  height: auto;
+  mask: var(--cutout) center / 100% 100% no-repeat;
+  filter: saturate(.72);
+}
+.sheet-portrait .portrait-placeholder { position: absolute; inset: 30% 0 0; }
+.lux-lineup strong {
+  display: block;
+  margin: .4rem 0 .1rem;
+  font: 500 clamp(1rem, 2vw, 1.8rem)/1.2 var(--font-heading);
+  letter-spacing: -.04em;
+}
+.lux-lineup small{display: block; color: #c4b8cd; font: .7rem/1.4 var(--font-ui); overflow-wrap: anywhere;font-size:.8125rem;line-height:1.5}
+.sheet-footer{align-items: center; border-top: 1px solid #514057; padding-top: .55rem;row-gap:.35rem}
+.sheet-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 44px;
+  color: inherit;
+  font: 650 .82rem var(--font-ui);
+}
+.sheet-footer svg { width: 1em; }
+.lux-roster-gallery :focus-visible { outline: 2px solid #e8c6ff; outline-offset: 2px; }
+.lux-lineup a:is(:hover, :focus-visible) .sheet-portrait {
+  filter: var(--portrait-rim-active);
+}
+.lux-lineup a:is(:hover, :focus-visible) strong { text-decoration: underline; text-underline-offset: .15em; }
+html .sheet-portrait img { transition: transform .42s var(--move-spring), filter .32s; }
+  html .lux-lineup a:is(:hover, :focus-visible) img { transform: translateY(-2%) scale(1.045); filter: saturate(1); }
+@media (max-width: 700px) {
+  .lux-roster-gallery { margin-top: 3.5rem; }
+  .lux-lineup > a { flex-basis: clamp(8.5rem, 45vw, 13rem); }
+
+
+
+}
+
+.lux-people { margin-top: clamp(3.5rem, 7vw, 6rem); scroll-margin-top: 6rem; }
+.channels-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: .65rem 2rem; margin-bottom: 1.25rem; }
+.channels-heading h2 em { white-space: normal; }
+.lux-creator-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.lux-creator-links > a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  color: #faf3fc;
+  text-decoration: none;
+  overflow: hidden;
+  border: var(--surface-stroke) solid #56455d;
+  border-radius: var(--radius-md);
+  background: var(--channel-ink);
+}
+.lux-creator-links > a:is(:hover, :focus-visible) { border-color: var(--channel-type); }
+.lux-creator-links .channel-photo { height: clamp(10rem, 15vw, 14rem); align-self: end; }
+.channel-caption { display: flex; min-width: 0; flex-direction: column; justify-content: center; gap: .5rem; padding: clamp(.8rem, 2vw, 1.8rem); }
+.channel-caption small, .channel-caption > span{color: var(--channel-type); font: .74rem/1.4 var(--font-mono);font-size:.8125rem;overflow-wrap:anywhere}
+.channel-caption strong { font: 500 clamp(2.2rem, 4vw, 4.5rem)/1 'SHUSH Hearth', Georgia, serif; letter-spacing: -.065em; }
+.channel-caption svg { width: .75rem; display: inline-block; vertical-align: middle; }
+@media (max-width:700px) {
+  .lux-creator-links { grid-template-columns: 1fr; gap: .75rem; }
+  .lux-creator-links .channel-photo { height: clamp(9rem, 37vw, 12rem); }
+}
+
+.discovery-nav { display:flex; flex-wrap:wrap; gap:.3rem 1.25rem; padding-bottom:1rem; }
+.discovery-nav a { display:inline-flex; align-items:center; min-height:2.75rem; color:#e4d3ee; text-decoration:underline; text-underline-offset:.24em; font-size:.9375rem; }
+#arquivo { scroll-margin-top:6rem; }

@@ -102,7 +102,7 @@ test('navigation reconstructs metadata even when the previous schema is malforme
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/');
   await page.evaluate(() => { document.getElementById('shush-schema')!.textContent = '{broken'; });
-  await page.locator('.home-closing a[href="/company"]').click();
+  await page.locator('.lux-closing a[href="/company"]').click();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   const graph = await page.locator('#shush-schema').textContent();
   expect(JSON.parse(graph!)['@graph'].some((item: { '@type': string }) => item['@type'] === 'AboutPage')).toBe(true);
@@ -188,17 +188,17 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
     const viewportWidth=page.viewportSize()!.width;
     await expect.poll(()=>page.evaluate(()=>Math.max(document.documentElement.scrollWidth,innerWidth))).toBeLessThanOrEqual(viewportWidth+1);
-    const desktopNav=page.locator('.desktop-navigation');
+    const desktopNav=page.locator('.lux-desktop');
     if(await desktopNav.isVisible()){
-      const menu=await desktopNav.boundingBox(),brand=await page.locator('header .brand-mark').boundingBox();
+      const menu=await desktopNav.boundingBox(),brand=await page.locator('header .lux-brand').boundingBox();
       expect(menu!.x).toBeGreaterThanOrEqual(brand!.x+brand!.width);
-      const utilities=page.locator('.header-utilities');
+      const utilities=page.locator('.lux-utilities');
       if(await utilities.isVisible())expect((await utilities.boundingBox())!.x).toBeGreaterThanOrEqual(menu!.x+menu!.width);
     }else{
       const toggle=page.getByRole('button',{name:'Abrir navegação',exact:true});
-      await expect(page.locator('.header-utilities')).toBeHidden();
+      await expect(page.locator('.lux-utilities')).toBeHidden();
       await expect(toggle).toBeVisible();
-      const brand=await page.locator('header .brand-mark').boundingBox(),button=await toggle.boundingBox();
+      const brand=await page.locator('header .lux-brand').boundingBox(),button=await toggle.boundingBox();
       expect(brand!.x+brand!.width).toBeLessThanOrEqual(button!.x+1);
       await toggle.click();
       await expect(page.locator('#mobile-navigation').getByRole('link',{name:'Home',exact:true})).toBeVisible();
@@ -211,7 +211,7 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     }
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     const clipped = await page.evaluate(() => [...document.querySelectorAll('a,button,input,select,textarea')].filter(element => {
-      if (!element.checkVisibility() || element.closest('.character-strip,.home-lineup')) return false;
+      if (!element.checkVisibility() || element.closest('.character-strip,.lux-lineup')) return false;
       const bounds = element.getBoundingClientRect();
       return bounds.width > 0 && bounds.height > 0 && (bounds.left < -1 || bounds.right > innerWidth + 1);
     }).map(element => element.getAttribute('aria-label') || element.textContent?.trim().slice(0, 50)));

@@ -9,15 +9,15 @@ import { copyText, downloadText, shareUrl } from '../../lib/browser-transfer';
 import { buildDropUrl, defaultDropConfig, dropDraftKey, dropSummary, graphemes, readDropConfig, readDropDraft, sanitizeDropText, type DropConfig } from '../../lib/drop-config';
 
 const views = {
-  front: { label: 'Frente', src: '/assets/jersey/frontjersey.webp', alt: 'Jersey SHUSH Drop 01 vista de frente' },
-  back: { label: 'Verso', src: '/assets/jersey/backjersey.webp', alt: 'Jersey SHUSH Drop 01 vista de costas' },
+  front: { label: 'Frente', src: '/assets/jersey/frontjersey.webp', mask: '/assets/campaign/jersey-front-mask.svg', alt: 'Jersey SHUSH Drop 01 vista de frente' },
+  back: { label: 'Verso', src: '/assets/jersey/backjersey.webp', mask: '/assets/campaign/jersey-back-mask.svg', alt: 'Jersey SHUSH Drop 01 vista de costas' },
 } as const;
 type View = keyof typeof views;
 
 function JerseyPreview({ config, view, compact = false }: { config: DropConfig; view: View; compact?: boolean }) {
   const name = config.nick || 'SHUSH';
   const number = config.number || '00';
-  const style = { '--print-name-size': `${Math.min(6, 42 / Math.max(graphemes(name).length, 1))}cqi` } as CSSProperties;
+  const style = { '--jersey-mask': `url(${views[view].mask})`, '--print-name-size': `${Math.min(6, 42 / Math.max(graphemes(name).length, 1))}cqi` } as CSSProperties;
   return <div className={compact ? 'drop-mini-image' : 'audit-drop-image'} style={style}>
     <img src={views[view].src} width="1254" height="1254" alt={compact ? '' : views[view].alt} fetchPriority={compact ? 'auto' : 'high'} decoding="async" />
     {view === 'back' ? <div className="audit-live-print" aria-label={compact ? undefined : `Pré-visualização: ${name} ${number}`}><span>{name}</span><strong>{number}</strong>{config.phrase ? <small>{config.phrase}</small> : null}</div> : null}
@@ -162,8 +162,7 @@ export function DropSection() {
   return (
     <section id="products" className="drop-page" aria-labelledby="drop-title">
       <div className="shell">
-        <div className="page-heading drop-heading"><div><span className="section-kicker">SHUSH / Jersey / Drop 01</span><h1 id="drop-title">A tua<br /><span>versão.</span></h1></div><p>Experimenta o teu nick e número.<br />Guarda ou partilha a tua versão.</p></div>
-        <p className="drop-availability"><span className="section-kicker">PRÉ-VISUALIZAÇÃO</span> O Drop 01 ainda não está disponível para encomenda. Podes experimentar, guardar e partilhar a tua personalização.</p>
+        <header className="drop-heading"><div><span className="section-kicker">SHUSH / ESTÚDIO DA CAMISOLA</span><h1 id="drop-title">Drop 01.</h1></div><a className="editorial-link" href="#customizacao">Personalizar ↓</a></header>
         <div className="drop-layout">
           <div id="product-preview" className="audit-drop-gallery">
             <div className="drop-gallery-label"><span className="mono">SHS / Drop 01</span><span className="mono">{views[view].label}</span></div>
@@ -177,7 +176,8 @@ export function DropSection() {
                 event.target.scrollIntoView({ block: 'center', behavior: 'instant' });
               }
             }}>
-            <div className="drop-mobile-preview"><div aria-hidden="true"><JerseyPreview config={config} view="back" compact /></div><div><span className="mono">A tua versão</span><strong>{config.nick || 'SHUSH'} / {config.number || '00'}</strong><small>Tamanho {config.size}</small></div><a className="editorial-link" href="#product-preview" onClick={() => setView('back')} aria-label="Ver pré-visualização completa"><span aria-hidden="true"><ArrowIcon /></span></a></div>
+            <div className="drop-mobile-preview"><div aria-hidden="true"><JerseyPreview config={config} view="back" compact /></div><div className="drop-mobile-summary"><span className="mono">A tua versão</span><strong>{config.nick || 'SHUSH'} / {config.number || '00'}</strong><small>Tamanho {config.size}</small></div><button className="utility-button" type="button" aria-label="Ampliar a minha personalização" aria-haspopup="dialog" onClick={event => { event.currentTarget.focus({ preventScroll: true }); setView('back'); setExpanded(true); }}>Ampliar <ArrowIcon /></button></div>
+            <p className="drop-availability">Pré-visualização. A camisola ainda não está disponível para encomenda.</p>
             <JerseyCustomizer config={config} message={message} onChange={(next) => edit({ ...next, nick: sanitizeDropText(next.nick, 14), phrase: sanitizeDropText(next.phrase, 44) })} />
             <ShareCardAction kind="jersey" config={config}/><div className="drop-transfer-actions" aria-busy={pending}><button className="site-button button-primary" type="button" aria-label="Copiar resumo" aria-busy={pending} data-transfer={feedback==='Resumo copiado.'?'success':undefined} onClick={copy} disabled={pending}>{feedback==='Resumo copiado.'?'Copiado':pending?'A aguardar…':'Copiar resumo'} <CopyIcon done={feedback==='Resumo copiado.'}/></button><button className="utility-button" type="button" onClick={download}>Descarregar TXT <span aria-hidden="true">↓</span></button><button className="utility-button" type="button" onClick={share} disabled={pending}>Partilhar personalização <span aria-hidden="true"><ArrowIcon /></span></button><button className="utility-button" type="button" ref={resetControl} onClick={reset}>Repor <span aria-hidden="true">↺</span></button>{undo&&<button className="utility-button" type="button" onClick={undoReset}>{undo.kind==='draft'?'Desfazer recuperação':'Desfazer reposição'}</button>}</div>
             <p className="action-feedback" role="status">{feedback}</p>

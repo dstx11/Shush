@@ -29,10 +29,6 @@ export const loadContentPage = once<PageModule>(() =>
   import('../pages/ContentPage').then((module) => ({ default: module.ContentPage })),
 );
 
-export const loadDropPage = once<PageModule>(() =>
-  import('../pages/DropPage').then((module) => ({ default: module.DropPage })),
-);
-
 export const loadAboutPage = once<PageModule>(() =>
   import('../pages/AboutPage').then((module) => ({ default: module.AboutPage })),
 );
@@ -52,9 +48,6 @@ const routeLoaders = new Map<string, () => Promise<PageModule>>([
   ['/content', loadContentPage],
   ['/content/more', loadContentPage],
   ['/content/th0maz7', loadContentPage],
-  ['/products', loadDropPage],
-  ['/products/jersey', loadDropPage],
-  ['/products/jersey/custom', loadDropPage],
   ['/company', loadAboutPage],
   ['/company/partners', loadAboutPage],
   ['/company/contact', loadAboutPage],

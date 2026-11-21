@@ -1,3 +1,4 @@
+import SeasonArchive from './components/matches/SeasonArchive';
 import { StaticRouter } from 'react-router-dom';
 import { SeasonProvider } from './seasonal/SeasonProvider';
 import { seasonForDate } from './seasonal/calendar.mjs';
@@ -7,15 +8,13 @@ import { HomePage } from './pages/HomePage';
 import { PremierPage } from './pages/PremierPage';
 import { RosterPage } from './pages/RosterPage';
 import { ContentPage } from './pages/ContentPage';
-import { DropPage } from './pages/DropPage';
 import { AboutPage } from './pages/AboutPage';
 
 const pages = {
   '/': HomePage,
-  '/esports/valorant/premier': PremierPage,
+  '/esports/valorant/premier': () => <PremierPage staticArchive={<SeasonArchive />} />,
   '/esports/valorant/roster': RosterPage,
   '/content': ContentPage,
-  '/products/jersey': DropPage,
   '/company': AboutPage,
 };
 export function staticPage(path: keyof typeof pages) {

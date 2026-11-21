@@ -14,7 +14,7 @@ export function JerseyLightbox({ view, onViewChange, onClose, children }: {
   const titleId = useId();
   const [zoomed, setZoomed] = useState(false);
 
-  useModalDialog(dialog);
+  useModalDialog(dialog, true, true);
 
   useEffect(() => {
     const element = stage.current;

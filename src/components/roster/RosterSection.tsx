@@ -2,15 +2,13 @@ import {PlayerActions} from './PlayerActions';
 import {PlayerDossier} from './PlayerDossier';
 import {TrackerButton} from './TrackerButton';
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { players, playerDropUrl, type Player } from '../../data/players';
+import { players, type Player } from '../../data/players';
 import { getCompetitiveProfile } from '../../data/competitive-profiles';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { AppLink } from '../ui/AppLink';
-import { PlayerSignature } from './PlayerSignature';
 import { useCinematicPointer } from '../../hooks/useCinematicPointer';
-import { useSelectCue } from '../../hooks/useSelectCue';
 
 export function RosterSection() {
   const [params, setParams] = useSearchParams();
@@ -18,23 +16,15 @@ export function RosterSection() {
   const selectedPlayer = players[selectedIndex] ?? players[0];
   const competitiveProfile = getCompetitiveProfile(selectedPlayer.id);
   const camera = useCinematicPointer<HTMLDivElement>();
-  const { enabled: soundEnabled, setEnabled: setSoundEnabled, play: playCue } = useSelectCue();
   const [dossierOpen,setDossierOpen]=useState(false);
   const [replayCycle, setReplayCycle] = useState(0);
   const [stageVisible, setStageVisible] = useState(true);
   const previous = useRef(selectedPlayer);
   const [leaving, setLeaving] = useState<Player | null>(null);
   useEffect(() => {
-    if (previous.current.id !== selectedPlayer.id && !window.matchMedia('(prefers-reduced-motion: reduce)').matches && document.documentElement.dataset.motion !== 'reduce') setLeaving(previous.current);
+    if (previous.current.id !== selectedPlayer.id) setLeaving(previous.current);
     previous.current = selectedPlayer;
   }, [selectedPlayer]);
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const stop = () => { if (media.matches || document.documentElement.dataset.motion === 'reduce') setLeaving(null); };
-    media.addEventListener('change', stop);
-    document.addEventListener('shush:reduce-motion', stop);
-    return () => { media.removeEventListener('change', stop); document.removeEventListener('shush:reduce-motion', stop); };
-  }, []);
   useEffect(() => {
     const element = camera.ref.current;
     if (!element || !('IntersectionObserver' in window)) return;
@@ -49,6 +39,7 @@ export function RosterSection() {
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
   }, [selectedPlayer.id, replayCycle]);
 
+  const [allPlayersVisible, setAllPlayersVisible] = useState(false);
   const stripRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<{ x: number; y: number } | null>(null);
   useEffect(() => {
@@ -57,17 +48,16 @@ export function RosterSection() {
     if (!strip || !card || strip.scrollWidth <= strip.clientWidth) return;
     const target = strip.scrollLeft + card.getBoundingClientRect().left - strip.getBoundingClientRect().left - (strip.clientWidth - card.offsetWidth) / 2;
     strip.scrollTo({ left: Math.max(0, target), behavior: 'instant' });
-  }, [selectedIndex]);
+  }, [selectedIndex, allPlayersVisible]);
   const selectPlayer = useCallback((index: number) => {
     if (index < 0 || index >= players.length) return;
-    playCue();
     if(index===selectedIndex&&params.get("player")===players[index].id)return;
     setParams((current) => {
       const next = new URLSearchParams(current);
       next.set('player', players[index].id);
       return next;
     }, { replace: true, preventScrollReset: true });
-  }, [setParams, selectedIndex, playCue, params]);
+  }, [setParams, selectedIndex, params]);
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (!/^[1-7]$/.test(event.key) || event.altKey || event.ctrlKey || event.metaKey || event.repeat ||
@@ -101,8 +91,8 @@ export function RosterSection() {
     <section id="roster" className="player-page" data-player={selectedPlayer.id} aria-labelledby="roster-title">
       <div className="shell">
         <div className="player-heading">
-          <h1 id="roster-title">Escolhe o teu lado.<span className="roster-count"> Roster / 07</span></h1>
-          <span className="mono">Sete pessoas. A mesma tag.</span>
+          <h1 id="roster-title">Roster.<span className="roster-count"> VALORANT / SETE JOGADORES</span></h1>
+          <span className="mono">SILENCE BEFORE IMPACT</span>
         </div>
 
         <div className="player-stage">
@@ -112,14 +102,13 @@ export function RosterSection() {
           <p className="sr-only" role="status">Jogador selecionado: {selectedPlayer.displayName}.</p>
           <article id="selected-player" className="character-spotlight" aria-labelledby="selected-player-name">
             <div key={`identity-${selectedPlayer.id}`} className="character-identity">
-              <span className="section-kicker">SHUSH / PLAYER SELECT</span>
               <h2 id="selected-player-name">{selectedPlayer.displayName}</h2>
               <span className="character-role-tape">{selectedPlayer.roles.join(' / ')}</span>
 
               <span className="sr-only">Camisola #{selectedPlayer.number}</span>
               <span className="character-number" aria-hidden="true">{selectedPlayer.number}</span>
             </div>
-            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" data-stage-visible={stageVisible}
+            <div key={`media-${selectedPlayer.id}-${replayCycle}`} className="character-media" style={{ '--silhouette': `url("/assets/campaign/${selectedPlayer.id}-mask.svg")` } as CSSProperties} data-stage-visible={stageVisible}
               ref={camera.ref} onPointerMove={camera.onPointerMove} onPointerLeave={camera.onPointerLeave}
               onPointerDown={(event) => { if (event.pointerType === 'touch') gesture.current = { x: event.clientX, y: event.clientY }; }}
               onPointerCancel={() => { gesture.current = null; }}
@@ -133,13 +122,14 @@ export function RosterSection() {
                   if (dx < 0) selectNext(); else selectPrevious();
                 }
               }}>
-              <PlayerSignature player={selectedPlayer} index={selectedIndex} />
-              <span className="character-signal-flare" key={`flare-${selectedPlayer.id}-${replayCycle}`} aria-hidden="true" />
-              {leaving?.avatar && <div className="portrait-depart" key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
-              <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
+              <span className="character-backlight" aria-hidden="true" />
+              {leaving?.avatar && <div className="portrait-depart" style={{ '--silhouette': `url("/assets/campaign/${leaving.id}-mask.svg")` } as CSSProperties} key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
+              <div className="roster-portrait">
+                <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
+              </div>
             </div>
 
-                    <div ref={stripRef} className="character-strip" role="group" aria-label="Selecionar jogador">
+                    <div className="player-selector"><div className="player-selector-heading"><span>{allPlayersVisible ? 'Todos à vista' : 'Desliza para explorar'}</span><button className="utility-button" type="button" aria-label="Ver os 7 jogadores" aria-pressed={allPlayersVisible} aria-controls="player-options" onClick={() => setAllPlayersVisible(value => !value)}>Ver os 7 <span aria-hidden="true">{allPlayersVisible ? '-' : '+'}</span></button></div><div ref={stripRef} id="player-options" className={`character-strip${allPlayersVisible ? ' is-expanded' : ''}`} role="group" aria-label="Selecionar jogador">
           {players.map((player, index) => {
             return (
               <div key={player.id} className={`player-select-card${index === selectedIndex ? ' is-active' : ''}`}>
@@ -152,7 +142,7 @@ export function RosterSection() {
                 }}>
                   <span className="strip-avatar">
                     <span className="player-card-number" aria-hidden="true">#{player.number}</span>
-                    <PlayerPortrait player={player} decorative thumbnail sizes="(max-width: 1050px) 92px, 13vw" />
+                    <PlayerPortrait player={player} decorative thumbnail sizes={allPlayersVisible ? '(max-width: 767px) calc((100vw - 56px) / 3), 55px' : '(max-width: 767px) 72px, 55px'} />
                   </span>
                   <span className="player-card-name"><strong>{player.displayName}</strong><span aria-hidden="true">{String(index+1).padStart(2,'0')}</span></span>
                 </button>
@@ -160,10 +150,9 @@ export function RosterSection() {
               </div>
             );
           })}
-        </div>
+        </div></div>
 
-          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><span className="selection-help">Escolhe um jogador <span aria-hidden="true">· ← →</span></span>
-            <button type="button" className="selector-sound" onClick={() => setSoundEnabled(value => !value)} aria-pressed={soundEnabled} aria-label={soundEnabled ? 'Desativar som de seleção' : 'Ativar som de seleção'}>{soundEnabled ? 'SOM ON' : 'SOM OFF'}</button>
+          <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><details className="roster-shortcuts"><summary>Atalhos</summary><p><kbd>1–7</kbd> selecionar jogador<br /><kbd>← →</kbd> percorrer as opções em foco<br />Desliza sobre a fotografia no telemóvel.</p></details>
             <button type="button" className="selector-replay" onClick={() => setReplayCycle(cycle => cycle + 1)} aria-label="Rever entrada do jogador">Rever entrada</button>
             <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
               <span aria-hidden="true">←</span>
@@ -174,7 +163,7 @@ export function RosterSection() {
           </div>
 
             <div key={`copy-${selectedPlayer.id}`} className="character-copy">
-              <div className="player-file-heading"><span className="section-kicker">Ficheiro do jogador</span><span className="mono">#{selectedPlayer.number}</span></div><h3>{selectedPlayer.displayName}</h3><p className="player-file-caption">Uma tag partilhada. Uma maneira própria de jogar.</p>
+              <div className="player-file-heading"><span className="section-kicker">Ficheiro do jogador</span><span className="mono">#{selectedPlayer.number}</span></div><h3>Perfil competitivo</h3>
 
 
               {competitiveProfile ? (
@@ -194,7 +183,7 @@ export function RosterSection() {
               ) : <p className="competitive-note">Perfil competitivo ainda não publicado.</p>}
 
               <button type="button" className="utility-button player-dossier-control" onClick={()=>setDossierOpen(true)}>Abrir dossier de {selectedPlayer.displayName} <ArrowIcon/></button>
-              <AppLink className="editorial-link player-drop-link" href={playerDropUrl(selectedPlayer)}>Ver camisola {selectedPlayer.displayName} <span aria-hidden="true"><ArrowIcon /></span></AppLink>
+
 
               {selectedPlayer.creatorUrl ? (
                 <AppLink href={selectedPlayer.creatorUrl} target="_blank" rel="noreferrer" className="editorial-link">
@@ -208,7 +197,7 @@ export function RosterSection() {
 
 
         </div>
-        <p className="player-selection-footer"><span>Setas · Teclas 1–7 · Deslizar no telemóvel</span><span className="strip-explore">Explora os 7 jogadores <span aria-hidden="true">↔</span></span></p>
+        <p className="player-selection-footer"><span className="strip-explore">Explora os 7 jogadores <span aria-hidden="true">↔</span></span></p>
         </div>
       </div>
       {dossierOpen&&<PlayerDossier player={selectedPlayer} onClose={()=>{setDossierOpen(false);requestAnimationFrame(()=>document.querySelector<HTMLButtonElement>(".player-dossier-control")?.focus({preventScroll:true}));}} onPrevious={selectPrevious} onNext={selectNext}/>}

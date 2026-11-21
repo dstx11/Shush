@@ -109,11 +109,9 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
 
   useEffect(() => {
     const frame = frameRef.current;
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!frame || !('IntersectionObserver' in window) || media.matches ||
-        document.documentElement.dataset.motion === 'reduce') return;
+    if (!frame || !('IntersectionObserver' in window)) return;
     const items = frame.querySelectorAll<HTMLElement>(
-      '.motion-section, .section-index, .home-records, .home-people, .home-closing, .verified-match, .creator-feature, .about-chapters article, .about-origin-story, .drop-layout, .signal-panel'
+      '.motion-section, .section-index, .lux-roster-gallery, .lux-records, .lux-people, .lux-closing, .verified-match, .creator-feature, .story-origin, .story-team, .story-chapters article, .story-paths, .story-partner, .story-download, .drop-layout, .signal-panel'
     );
     const revealFocused = (event: FocusEvent) => {
       if (!(event.target instanceof Element)) return;
@@ -132,18 +130,9 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
       element.style.setProperty('--motion-delay', `${Math.min(index % 4, 3) * 65}ms`);
       observer.observe(element);
     });
-    const stop = () => {
-      if (!media.matches && document.documentElement.dataset.motion !== 'reduce') return;
-      observer.disconnect();
-      items.forEach(element => { element.classList.remove('motion-in'); element.classList.add('motion-visible'); });
-    };
-    media.addEventListener('change', stop);
-    document.addEventListener('shush:reduce-motion', stop);
     return () => {
       observer.disconnect();
       frame.removeEventListener("focusin", revealFocused);
-      media.removeEventListener('change', stop);
-      document.removeEventListener('shush:reduce-motion', stop);
       items.forEach(element => element.classList.remove('motion-in'));
     };
   }, [pathname]);

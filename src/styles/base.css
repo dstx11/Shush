@@ -1,22 +1,29 @@
 @import "tailwindcss" source("../");
 
 @theme {
-  --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Helvetica Neue", Arial, ui-sans-serif, sans-serif;
   --font-body: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --color-shush-bg: #15131a;
-  --color-shush-surface: #201d28;
-  --color-shush-surface2: #292431;
-  --color-shush-border: #403849;
+  --color-shush-bg: #0c0a10;
+  --color-shush-surface: #17121e;
+  --color-shush-surface2: #251c30;
+  --color-shush-border: #3f324c;
   --color-shush-purple: #c4afe9;
   --color-shush-purpleDark: #231044;
   --color-shush-purpleGlow: #c4afe9;
-  --color-shush-text: #f3eef4;
-  --color-shush-muted: #b9b0c3;
+  --color-shush-text: #f5f0f4;
+  --color-shush-muted: #b9aebf;
 }
 
 :root {
+  --control-radius: 1rem;
+  --surface-stroke: 2px;
+  --portrait-rim: drop-shadow(0 0 2px #dec6f47a) drop-shadow(0 0 6px #ad78d755);
+  --portrait-rim-active: drop-shadow(0 0 2px #e6cff691) drop-shadow(0 0 7px #b786e379);
   --control-height: 2.75rem;
+  --cozy-line: #45324f;
+  --cozy-light: inset 0 1px 0 #ffffff08;
+  --cozy-shadow: 0 12px 36px #0002;
   --focus: #c4afe9;
   --success: #9bc8ae;
   --error: #efb7c3;
@@ -42,20 +49,20 @@
   --section-size: clamp(2rem, 3.5vw, 3.25rem);
   --page-top: max(8rem, calc(7rem + env(safe-area-inset-top)));
   --section-space: clamp(3rem, 6vw, 5rem);
-  --bg: #15131a;
-  --surface: #201d28;
-  --surface-2: #292431;
-  --text: #f3eef4;
-  --muted: #b9b0c3;
+  --bg: #0c0a10;
+  --surface: #17121e;
+  --surface-2: #251c30;
+  --text: #f5f0f4;
+  --muted: #b9aebf;
   --purple: #c4afe9;
   --purple-text: #c4afe9;
-  --solid-border: #403849;
-  --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --solid-border: #3f324c;
+  --font-heading: "Helvetica Neue", Arial, ui-sans-serif, sans-serif;
   --font-ui: "Manrope", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 html { scrollbar-gutter: stable; background: var(--bg); scroll-behavior: smooth; scroll-padding-top: 6rem; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-ui); font-weight: 500; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+body { margin: 0; min-width: 0; min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--font-ui); font-weight: 500; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
@@ -67,10 +74,7 @@ button { cursor: pointer; }
 .status-badge { display: inline-flex; width: fit-content; align-items: center; gap: .4rem; }
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 #main-content:focus { outline: none; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-}
+
 
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }

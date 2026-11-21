@@ -108,9 +108,7 @@
   .winter-ornament-ball { width: 2.45rem; }
   .winter-ornament-scene-label { left: .75rem; font-size: .53rem; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .winter-player-ornament .winter-ornament-ball,.winter-gift-card,.winter-gift-box { transition: none !important; }
-}
+
 
 /* One tree only: the canvas in HeroShowcase. These seven lights are a constellation. */
 .winter-ornament-constellation{background:radial-gradient(ellipse at 52% 45%,#4266553f,transparent 60%),linear-gradient(160deg,#142926,#0b1a20 85%);isolation:isolate}
@@ -120,10 +118,8 @@
 .winter-ornament-constellation-art>span i{font-style:normal;font-size:.7em}
 .winter-ornament-constellation .winter-player-ornament{z-index:2}
 .winter-ornament-constellation .winter-ornament-light{inset:15% 18%}
-@media(prefers-reduced-motion:no-preference){
- html:not([data-motion="reduce"]) .winter-ornament-constellation-art svg{animation:winter-constellation-drift 20s ease-in-out infinite alternate}
- html:not([data-motion="reduce"]) .winter-ornament-constellation-art>span{animation:winter-constellation-pulse 7s ease-in-out infinite alternate}
+html .winter-ornament-constellation-art svg{animation:winter-constellation-drift 20s ease-in-out infinite alternate}
+ html .winter-ornament-constellation-art>span{animation:winter-constellation-pulse 7s ease-in-out infinite alternate}
  @keyframes winter-constellation-drift{to{transform:scale(1.04) rotate(1.5deg);opacity:.67}}
  @keyframes winter-constellation-pulse{to{opacity:.48}}
-}
 @media(max-width:767px){.winter-ornament-constellation-art>span{font-size:1.15rem}.winter-ornament-constellation .winter-player-ornament{min-width:3rem;min-height:3rem;padding:.25rem}}
