@@ -49,3 +49,25 @@ test('reading controls remain usable at narrow widths and enlarged text', async 
   await page.getByRole('navigation', { name: 'Nesta página' }).getByRole('link', { name: 'Canais' }).click();
   await expect(page).toHaveURL(/#canais$/);
 });
+
+test('the intro defers the shader and the photographic fallback resumes after dismissal', async ({page}) => {
+  await page.clock.setFixedTime(new Date('2026-11-21T12:00:00Z'));
+  // An unavailable shader service must leave the photographic and CSS layers usable.
+  let rendererRequests = 0;
+  await page.route('**/assets/sceneRenderer-*.js', async route => {
+    rendererRequests++;
+    await route.abort();
+  });
+  await page.goto('/?intro=1', {waitUntil:'domcontentloaded'});
+  const intro = page.getByRole('dialog', {name:'Entrada SHUSH'});
+  await expect(intro).toBeVisible();
+  const silk = page.locator('.scene-silk');
+  await expect(silk).toHaveAttribute('data-active', 'false');
+  expect(rendererRequests).toBe(0);
+  await intro.getByRole('button', {name:'Saltar apresentação'}).click();
+  await expect(silk).toHaveAttribute('data-fallback', 'true');
+  await expect(silk).toHaveCSS('animation-play-state', 'running');
+  expect(rendererRequests).toBe(1);
+  await page.locator('.shush-footer').scrollIntoViewIfNeeded();
+  await expect(silk).toHaveCSS('animation-play-state', 'paused');
+});

@@ -28,7 +28,7 @@ body { background: var(--ink); overflow-wrap:anywhere; }
 .page-heading > p { max-width: 28rem; color: var(--muted); font-size: 1rem; line-height: 1.8; }
 
 @media (max-width: 767px) {
-  .shell { width: min(calc(100% - 2.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)), var(--page-width)); }
+  .shell { width: min(calc(100% - min(2.5rem, 10vw) - env(safe-area-inset-left) - env(safe-area-inset-right)), var(--page-width)); }
   .section-index { margin-bottom: 1.75rem; }
   .section-index .mono { font-size: .7rem; }
   .section-heading { flex-wrap: wrap; gap: .75rem; margin-bottom: 1.75rem; }

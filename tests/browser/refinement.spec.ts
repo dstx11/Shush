@@ -166,7 +166,16 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     await page.evaluate(() => document.fonts.ready);
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
     const viewportWidth=page.viewportSize()!.width;
-    await expect.poll(()=>page.evaluate(()=>Math.max(document.documentElement.scrollWidth,innerWidth))).toBeLessThanOrEqual(viewportWidth+1);
+    const overflow = () => page.evaluate(expected => {
+      const actual = Math.max(document.documentElement.scrollWidth, innerWidth);
+      if (actual <= expected + 1) return [];
+      const edges = Array.from(document.querySelectorAll('main *, footer *'))
+        .filter(el => el.getBoundingClientRect().right > expected + 1 && el.checkVisibility()
+          && !el.closest('.character-strip,.lux-lineup,[aria-hidden="true"]'))
+        .map(el => el.tagName + '.' + el.getAttribute('class') + ' / ' + Math.round(el.getBoundingClientRect().right));
+      return ['viewport ' + actual, ...edges.slice(0, 30)];
+    }, viewportWidth);
+    await expect.poll(overflow).toEqual([]);
     const desktopNav=page.locator('.lux-desktop');
     if(await desktopNav.isVisible()){
       const menu=await desktopNav.boundingBox(),brand=await page.locator('header .lux-brand').boundingBox();

@@ -1,5 +1,5 @@
 import { ArrowIcon } from '../ui/ArrowIcon';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { copyText } from '../../lib/browser-transfer';
 import { CopyIcon } from '../ui/CopyIcon';
@@ -27,6 +27,19 @@ export function VerifiedMatches() {
 
 function MatchExplorer({selected}:{selected?:string}) {
   const allControl=useRef<HTMLButtonElement>(null);
+  // The static document is already interactive before React replaces its DOM.
+  // Carry disclosures opened by the visitor across that first commit.
+  const [initiallyOpen] = useState(() => {
+    if (typeof document === 'undefined' || !document.getElementById('shush-boot-stage')) return [];
+    return Array.from(document.querySelectorAll('.verified-match:has(.match-detail[open])'), card => card.id);
+  });
+  useLayoutEffect(() => {
+    for (const id of initiallyOpen) {
+      const details = document.getElementById(id)?.querySelector('details');
+      if (details) details.open = true;
+    }
+  }, [initiallyOpen]);
+
   const [outcome, setOutcome] = useState<Outcome>('all');
   const [map, setMap] = useState('all');
   const [query, setQuery] = useState('');

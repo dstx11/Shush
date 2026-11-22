@@ -20,7 +20,7 @@ html .motion-in{opacity:.91;transform:translateY(22px);transition:opacity .65s v
 .shush-root :is(.creator-art,.audit-drop-gallery){border-color:#a26ecb99;box-shadow:0 0 44px #9135db2e,inset 0 1px #eed5ff22}
 .verified-match:is(:hover,:focus-within){box-shadow:0 0 28px #a14ee62b}
 html .shush-root[data-entering=false] :is(.creator-editorial-heading,.premier-cover,.story-cover,.drop-heading){animation:chapter-enter .7s var(--ease-out) both}
- @keyframes chapter-enter{from{opacity:.6;transform:translateY(16px)}to{opacity:1;transform:none}}
+ @keyframes chapter-enter{from{transform:translateY(16px)}to{transform:none}}
 
 .verified-match { position: relative; isolation: isolate; }
 .verified-match::before {

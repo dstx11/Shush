@@ -12,9 +12,7 @@
 .match-detail[open] summary span { transform: rotate(45deg); }
 .story-index a span { display: inline-block; transition: transform .2s; }
 .story-index a:is(:hover,:focus-visible) span { transform: translateY(3px); }
-.player-select-card.is-active .player-card-name::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--player-accent); box-shadow: 0 0 7px var(--player-accent); flex: none; }
 .player-card-name { position: relative; }
-.player-select-card.is-active .player-card-name::before { position: absolute; right: 0; bottom: 0; }
 
  /* Typography and surfaces */
 @supports (background-clip: text) {

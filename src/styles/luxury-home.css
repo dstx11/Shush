@@ -31,11 +31,15 @@
   object-fit:contain;
 }
 .campaign-sitter>img {mask:var(--silhouette) center / 100% 100% no-repeat}
-.campaign-sitter {filter:var(--portrait-rim);mask-image:linear-gradient(to top,transparent 0,black 13%)}
+.campaign-sitter {filter:var(--portrait-rim);mask-image:linear-gradient(to top,transparent,rgba(0,0,0,.8) 8%,black 18%)}
 .campaign-sitter>.portrait-placeholder {display:grid;place-items:center;font:700 5rem var(--font-ui)}
 .campaign-caption {
   display:flex; justify-content:space-between; align-items:end; gap:2rem;
   position:relative; z-index:2; padding-block:4% 2.25rem; pointer-events:none;
+}
+.campaign-caption::before {
+  content:""; position:absolute; z-index:-1; inset:5% -5vw 0; pointer-events:none;
+  background:linear-gradient(to top,#100b167d,transparent 85%);
 }
 .campaign-caption a {pointer-events:auto}
 .campaign-title {max-width:min(42%,35rem)}

@@ -21,7 +21,7 @@ function TeamSheet() {
   useEffect(() => {
     const node = strip.current;
     if (!node) return;
-    node.scrollLeft = 0;
+    node.scrollTo({ left: 0, behavior: 'instant' });
     const measure = () => setCanScroll(node.scrollWidth > node.clientWidth + 2);
     measure();
     const observer = new ResizeObserver(measure);

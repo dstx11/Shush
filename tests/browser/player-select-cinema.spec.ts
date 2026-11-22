@@ -8,7 +8,8 @@ test('Seven real players keep their portraits unobstructed during keyboard navig
  const scene=page.locator('.character-media');
  await expect(scene.locator('.character-geometry, .character-signal-flare')).toHaveCount(0);
  await expect(scene.locator('.roster-portrait')).toHaveCSS('filter', /drop-shadow/);
- await expect(page.getByRole('button',{name:'Ativar som de seleção'})).toHaveAttribute('aria-pressed','false');
+ await expect(page.getByRole('button',{name:/som de seleção/i})).toHaveCount(0);
+ await expect(page.locator('audio,video:not([muted])')).toHaveCount(0);
  await page.keyboard.press('7');
  await expect(page.locator('#selected-player-name')).toHaveText('Catty');
  const caption = await page.locator('.character-identity').boundingBox();

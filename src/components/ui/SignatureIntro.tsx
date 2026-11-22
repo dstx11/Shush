@@ -55,25 +55,26 @@ export function SignatureIntro() {
     <div className="signature-silk" aria-hidden="true" />
     <header className="signature-head">
       <img src="/assets/brand/shush-logo-small.webp" alt="SHUSH" width="1167" height="647" />
-      <button type="button" onClick={finish} aria-label="Saltar apresentação">Saltar <span aria-hidden="true">↗</span></button>
+      <button type="button" onClick={finish} aria-label="Saltar apresentação">Saltar <span className="signature-skip-mark" aria-hidden="true" /></button>
     </header>
     <div className="signature-title" role="img" aria-label="Sem barulho. Só rounds.">
       <svg viewBox="-5 8 380 106" aria-hidden="true" className="signature-script">
         <defs>
-          <linearGradient id="signature-ink" x1="0" x2="1" y1="0" y2=".16">
+          <linearGradient id="signature-ink" gradientUnits="userSpaceOnUse" x1="8" x2="350" y1="30" y2="84">
             <stop stopColor="#b89ac8"/><stop offset=".34" stopColor="#fff5eb"/><stop offset=".69" stopColor="#e9d8e8"/><stop offset="1" stopColor="#b491c5"/>
           </linearGradient>
         </defs>
-        <g fill="none" stroke="url(#signature-ink)" strokeWidth="1.85" strokeLinecap="round" strokeLinejoin="round">
+        <g id="signature-hand" fill="none" stroke="url(#signature-ink)" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
           {strokes.map(({d, ms}) => {
             const start = delay;
             delay += ms;
             return <path key={d} d={d} pathLength="1" style={{ '--ink-start': `${start}ms`, '--ink-time': `${ms}ms` } as CSSProperties} />;
           })}
         </g>
+        <use href="#signature-hand" transform="translate(.65 -.45)" />
       </svg>
-      <div className="signature-impact" aria-hidden="true"><span>Só</span> <span>rounds<i>.</i></span></div>
+      <div className="signature-impact" aria-hidden="true"><span className="signature-accent">Só</span>{' '}<span>rounds<i>.</i></span></div>
     </div>
-    <div aria-hidden="true" className="signature-foot"><span/>SHUSH / PORTUGAL<span/></div>
+    <div aria-hidden="true" className="signature-foot"><span>VALORANT</span><i/><span>PORTUGAL</span></div>
   </dialog>;
 }

@@ -10,4 +10,4 @@
 .lux-menu-link:nth-child(2) { animation-delay: .035s; }
 .lux-menu-link:nth-child(3) { animation-delay: .07s; }
 .lux-menu-link:nth-child(n+4) { animation-delay: .1s; }
-@keyframes menu-arrival { from { opacity: .35; transform: translateY(6px); } }
+@keyframes menu-arrival { from { transform: translateY(6px); } }

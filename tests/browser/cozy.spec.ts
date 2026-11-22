@@ -135,7 +135,7 @@ test('match filters reset with focus and direct navigation reveals a previously 
  await expect(filters.getByRole('button',{name:'Todas',exact:true})).toHaveAttribute('aria-pressed','true');
 });
 
-test('menu controls show keyboard selection without moving and respect reduced motion',async ({page},info)=>{
+test('menu controls keep keyboard selection visible and honour the chosen motion setting',async ({page},info)=>{
  test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative keyboard and touch engines');
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto('/esports/valorant/roster');
@@ -152,9 +152,23 @@ test('menu controls show keyboard selection without moving and respect reduced m
  expect(selected.rect).toEqual(idle.rect);
  expect(selected.outline).not.toBe('none');
  await expect.poll(()=>share.evaluate(el=>getComputedStyle(el,'::before').opacity)).toBe('1');
- await page.emulateMedia({reducedMotion:'reduce'});
+ const transitionMs = () => share.evaluate(el => parseFloat(getComputedStyle(el,'::before').transitionDuration) * 1000);
+ expect(await transitionMs()).toBeGreaterThan(1);
+
+ const motion = page.getByRole('button', {name:'Movimento suave', exact:true});
+ await expect(motion).toHaveAttribute('aria-pressed', 'false');
+ await motion.focus();
+ await page.keyboard.press('Space');
+ await expect(motion).toHaveAttribute('aria-pressed', 'true');
+ await copy.focus();
+ await page.keyboard.press('Tab');
  await expect(share).toBeFocused();
- expect(await share.evaluate(el=>getComputedStyle(el,'::before').transitionDuration)).toBe('0s');
- await share.press('Tab');
+ await expect.poll(transitionMs).toBeLessThanOrEqual(.1);
+ await expect.poll(()=>share.evaluate(el=>getComputedStyle(el,'::before').opacity)).toBe('1');
+ await page.keyboard.press('Tab');
  await expect(share).not.toBeFocused();
+ await motion.focus();
+ await page.keyboard.press('Space');
+ await expect(motion).toHaveAttribute('aria-pressed', 'false');
+ await expect.poll(transitionMs).toBeGreaterThan(1);
 });

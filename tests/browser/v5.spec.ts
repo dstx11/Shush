@@ -28,10 +28,14 @@ test('V5 Match Explorer filters and verified map aggregates', async ({ page }) =
   await page.goto('/esports/valorant/premier');
   await page.getByRole('button', { name: 'Vitórias', exact: true }).click();
   await expect(page.locator('.verified-match')).toHaveCount(5);
-  await expect(page.getByLabel('Mapa', { exact: true }).locator('option')).toHaveText(['Todos os mapas', 'Ascent', 'Haven', 'Breeze']);
+  const map = page.getByLabel('Mapa', { exact: true });
+  await expect(map.locator('option')).toHaveText(['Todos os mapas', 'Haven', 'Lotus', 'Ascent', 'Breeze', 'Bind', 'Split']);
+  await map.selectOption('Lotus');
+  await expect(page.locator('.verified-match')).toHaveCount(0);
   await page.getByRole('button', { name: 'Derrotas', exact: true }).click();
-  await expect(page.locator('.verified-match')).toHaveCount(5);
-  await page.getByLabel('Mapa', { exact: true }).selectOption('Haven');
+  await expect(map).toHaveValue('Lotus');
+  await expect(page.locator('.verified-match')).toHaveCount(1);
+  await map.selectOption('Haven');
   await expect(page.locator('.verified-match')).toHaveCount(1);
   await expect(page.locator('.verified-match')).toContainText('EnLitro');
   await expect(page.locator('.map-performance-row').filter({ hasText: 'Ascent' })).toContainText('2 partidas · 2 V / 0 D');
@@ -138,4 +142,19 @@ test('Unavailable session storage never blocks entry to the site', async ({ page
   await expect(page.locator('.signature-intro')).toHaveCount(0);
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('TZ');
+});
+
+test('Premier keeps a match opened before the entry script has loaded', async ({page}) => {
+  let resume!: () => void;
+  const gate = new Promise<void>(resolve => { resume = resolve; });
+  await page.route('**/assets/index-*.js', async route => { await gate; await route.continue(); });
+  const first = page.locator('.verified-match').first();
+  try {
+    await page.goto('/esports/valorant/premier', {waitUntil:'commit'});
+    await first.locator('summary').click();
+    await expect(first.locator('details')).toHaveAttribute('open', '');
+  } finally { resume(); }
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+  await first.getByRole('button', {name:'Criar cartaz'}).click();
+  await expect(page.getByRole('dialog', {name:'Cartaz da partida'})).toBeVisible();
 });
