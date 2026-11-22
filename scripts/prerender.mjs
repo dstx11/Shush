@@ -76,6 +76,9 @@ try {
       const entries = season === 'christmas' ? [...modules, 'src/styles/winter.css'] : modules;
       const links = [...entryStyles(entries)].filter(css => !html.includes(`href="/${css}"`))
         .map(css => `<link rel="stylesheet" crossorigin href="/${css}" />`);
+      if ((route === '/' && season !== 'christmas') || route === '/esports/valorant/premier') {
+        links.unshift('<link rel="preload" as="image" type="image/webp" href="/assets/campaign/tension.webp" />');
+      }
       for (const entry of modules) {
         links.push(`<link rel="modulepreload" crossorigin href="/${manifest[entry].file}" />`);
       }

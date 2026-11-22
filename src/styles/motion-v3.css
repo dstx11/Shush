@@ -8,7 +8,7 @@
 .shush-motion-toggle[aria-pressed="true"] .motion-toggle-indicator>span{transform:translateX(13px)}
 .shush-reading-progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--season-accent);box-shadow:0 0 12px #b45cff;z-index:70;transform:scaleX(0);transform-origin:left;pointer-events:none}
 @supports(animation-timeline:scroll(root block)){.shush-reading-progress{animation:shush-scroll-progress linear both;animation-timeline:scroll(root block)}@keyframes shush-scroll-progress{to{transform:scaleX(1)}}}
-html .motion-in{opacity:.55;transform:translateY(22px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out);transition-delay:var(--motion-delay,0ms)}
+html .motion-in{opacity:.91;transform:translateY(22px);transition:opacity .65s var(--ease-out),transform .65s var(--ease-out);transition-delay:var(--motion-delay,0ms)}
  html .motion-in.motion-visible{opacity:1;transform:none}
 
 

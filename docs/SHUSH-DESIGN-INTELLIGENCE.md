@@ -623,3 +623,9 @@ Validação na pré-visualização: navegação principal, abertura e fecho do m
 Nos sete recortes, uma gaussiana de 1,6 unidades na máscara de 768 px suaviza a transição de alfa. Os retratos conservam o detalhe da fotografia e recebem um halo violeta difuso, aplicado ao contorno já mascarado. Nos canais, o halo tem uma camada própria para deixar a iluminação de fundo independente.
 
 A entrada de ecrã inteiro foi substituída por um traço de luz enquanto arranca a aplicação e um reflexo breve no logótipo do cabeçalho. A navegação pré-renderizada fica disponível durante o arranque. A versão anterior aguardava pelo menos 850 ms e podia esperar até 1800 ms antes da saída. Cada página indica no HTML o seu módulo inicial com [modulepreload](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/modulepreload). Assim, o navegador pode pedi-lo antes de executar o router. O tempo real depende do dispositivo e da rede.
+
+## 2026-11-22 · Auditoria ao site público
+
+O primeiro teste comparativo identificou 22 elementos da Home com contraste insuficiente durante a entrada das secções. O valor de opacidade aplicava-se ao bloco inteiro, incluindo datas e adversários. A entrada conserva o deslocamento e começa com texto mais opaco. A montagem inicial deixou de repetir a transição de rota por cima da apresentação assinada. A preferência «Movimento suave» fica no rodapé e conserva a escolha entre visitas. A identidade fotográfica, as máscaras, os glows e a versão cinematográfica continuam disponíveis por defeito.
+
+As cinco páginas são comparadas em 13 larguras, com verificações axe a 390 e 1440 px, relatórios Lighthouse mobile e capturas para revisão. A compilação local da versão anterior dava 13,52 KiB gzip de CSS inicial e a primeira candidata 10,52 KiB. Os dados laboratoriais caracterizam este ensaio. A avaliação da experiência real exige métricas de visitantes, como explica a documentação de [Web Vitals](https://web.dev/articles/vitals).

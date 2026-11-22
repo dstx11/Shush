@@ -50,6 +50,9 @@ jobs:
       - name: Viewports, console, first-party network, axe and screenshots
         id: responsive
         run: node tests/audit/responsive.mjs
+      - name: Keyboard, motion, archive and roster journeys
+        if: matrix.version == 'candidate' && !cancelled() && steps.responsive.outcome != 'skipped'
+        run: pnpm exec playwright test intro-v3.spec.ts curated-motion.spec.ts audit-regressions.spec.ts audit-improvements.spec.ts --project=desktop-1366 --project=mobile-390 --output=test-results/journeys --workers=3 --reporter=list
       - name: Lighthouse mobile on all five pages
         if: always() && steps.responsive.outcome != 'skipped'
         shell: bash

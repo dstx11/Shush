@@ -60,3 +60,24 @@ test('a delayed navigation frame preserves an active opponent search', async ({ 
   await expect(search).toHaveValue('EnLitro');
   await expect(page.locator('.verified-match')).toHaveCount(1);
 });
+
+test('resizing an open mobile menu releases the page and moves focus to the desktop navigation', async ({page}) => {
+  await page.setViewportSize({width: 390, height: 844});
+  await page.goto('/content');
+  await page.getByRole('button', {name: 'Abrir navegação'}).click();
+  await expect(page.locator('main')).toHaveJSProperty('inert', true);
+  await page.setViewportSize({width: 1280, height: 800});
+  await expect(page.locator('main')).toHaveJSProperty('inert', false);
+  await expect(page.locator('header .lux-desktop a[aria-current="page"]')).toBeFocused();
+});
+
+test('the calendar receives keyboard focus after a delayed archive download', async ({page}) => {
+  let resume!: () => void;
+  const gate = new Promise<void>(resolve => { resume = resolve; });
+  await page.route('**/assets/SeasonArchive-*.js', async route => { await gate; await route.continue(); });
+  try {
+    await page.goto('/esports/valorant/premier#calendar', {waitUntil:'domcontentloaded'});
+    await expect(page.getByText('A abrir o calendário…')).toBeVisible();
+  } finally { resume(); }
+  await expect(page.locator('#calendar')).toBeFocused();
+});

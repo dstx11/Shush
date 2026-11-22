@@ -137,5 +137,5 @@ export function PageTransition({ children, initialNavigation }: PageTransitionPr
     };
   }, [pathname]);
 
-  return <div ref={frameRef} key={pathname} className="route-frame route-enter">{children}</div>;
+  return <div ref={frameRef} key={pathname} className={initialNavigation ? 'route-frame' : 'route-frame route-enter'}>{children}</div>;
 }
