@@ -54,7 +54,6 @@ There is no authorized public Tracker VALORANT API, so the site does not fetch o
 - `/esports/valorant/premier` — Premier Match Center
 - `/esports/valorant/roster` — Roster
 - `/content` — Creators
-- `/products/jersey` — Drop 01
 - `/company` — About
 
 Legacy URLs redirect to the closest current destination.
@@ -82,4 +81,4 @@ The current greenfield design, rendered alternatives, implementation decisions a
 
 Nocturne Atelier uses a purple-black editorial identity with authentic portrait compositions, expressive serif/sans typography and tactile controls. Home, Roster, Premier, Creators, Drop and About each have a distinct layout; Solstice gives the Christmas campaign a related cover around its original single interactive tree. Three rendered alternatives live in [design explorations](docs/design-explorations/README.md). The Drop supports front/back preview, grapheme-aware personalization, shareable URLs, summary copying, TXT downloads, reset and explicitly saved local drafts. The calendar exports published Lisbon windows as tentative events, without implying confirmed fixtures or playoff participation.
 
-Fourteen committed visual baselines protect the Home viewport, active player, customized jersey, About introduction and three Christmas scenes at desktop 1366px and mobile 390px. They use the pinned CI Linux Chromium environment, fonts-ready rendering and a fixed clock; macOS/Windows rendering may differ. Snapshot updates are disabled by default. For an intentional design change, generate candidates with `pnpm exec playwright test visual.spec.ts --update-snapshots`, inspect the diffs and commit the reviewed images. All six route screenshots remain available separately at every QA width.
+Twelve active visual baselines protect the Home viewport, active player, About introduction and three Christmas scenes at desktop 1366px and mobile 390px. They use the pinned CI Linux Chromium environment, fonts-ready rendering and a fixed clock; macOS/Windows rendering may differ. Snapshot updates are disabled by default. For an intentional design change, generate candidates with `pnpm exec playwright test visual.spec.ts --update-snapshots`, inspect the diffs and commit the reviewed images. All five public route screenshots remain available separately at every QA width.

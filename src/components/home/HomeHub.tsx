@@ -21,7 +21,6 @@ function TeamSheet() {
   useEffect(() => {
     const node = strip.current;
     if (!node) return;
-    node.scrollTo({ left: 0, behavior: 'instant' });
     const measure = () => setCanScroll(node.scrollWidth > node.clientWidth + 2);
     measure();
     const observer = new ResizeObserver(measure);
@@ -59,7 +58,7 @@ function TeamSheet() {
         </label>
       </header>
       <div className="sheet-lens">
-      <div ref={strip} className="lux-lineup" id="lineup-strip">
+      <div key={role} ref={strip} className="lux-lineup" id="lineup-strip">
         {lineup.map(player => (
           <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`}
             aria-label={`Conhecer ${player.displayName}, número ${player.number}, ${player.roles.join(' e ')}`}>

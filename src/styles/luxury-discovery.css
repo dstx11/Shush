@@ -81,6 +81,7 @@
   text-decoration: none;
   scroll-snap-align: start;
 }
+.lux-lineup > a:first-child { scroll-margin-inline-start: .65rem; }
 .sheet-paging { display: flex; gap: .35rem; }
 .sheet-paging button {
   width: 2.75rem;
