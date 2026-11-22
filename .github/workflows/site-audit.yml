@@ -49,7 +49,15 @@ jobs:
           exit 1
       - name: Viewports, console, first-party network, axe and screenshots
         id: responsive
-        run: node tests/audit/responsive.mjs
+        run: |
+          status=0
+          node tests/audit/responsive.mjs || status=$?
+          if [[ "${{ matrix.version }}" == baseline ]]; then
+            # The deployed version is the comparator. Keep its known findings in the report.
+            jq -e 'length == 65 and all(.[]; has("viewportWidth"))' test-results/site-audit/responsive.json > /dev/null
+          else
+            exit "$status"
+          fi
       - name: Keyboard, motion, archive and roster journeys
         if: matrix.version == 'candidate' && !cancelled() && steps.responsive.outcome != 'skipped'
         env:

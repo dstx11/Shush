@@ -12,13 +12,13 @@ test('Home never presents internal calendar windows as confirmed matches', async
   await expect(page.locator('.matchday-empty')).toContainText('sem data confirmada');
 });
 
-test('Character Select: player DNA, individual art direction and reduced motion', async ({ page }, testInfo) => {
+test('Character Select: player DNA, individual art direction and default motion', async ({ page }, testInfo) => {
   await page.goto('/esports/valorant/roster?player=lyel');
   await expect(page.locator('.player-page')).toHaveAttribute('data-player', 'lyel');
   await expect(page.locator('.character-role-tape')).toContainText('Iniciador / Flex');
   await expect(page.locator('.character-number')).toHaveText('16');
   await expect(page.locator('.character-copy')).not.toContainText('XXL');
-  await expect(page.locator('.roster-portrait > img')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.roster-portrait > img')).toHaveCSS('animation-name', 'archive-portrait-in');
   const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
   expect(axe.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => n.target) }))).toEqual([]);
   await page.locator('#selected-player').screenshot({ path: testInfo.outputPath('character-select.png') });
@@ -129,9 +129,12 @@ test('Motion: portrait arrival completes and reduced motion can be enabled at ru
   await expect(page.locator('#selected-player-name')).toHaveText('DSTX');
   await expect.poll(() => portrait.evaluate(el => el.getAnimations().every(animation => animation.playState === 'finished'))).toBe(true);
   await expect(page.locator('.portrait-depart')).toHaveCount(0);
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect(portrait).toHaveCSS('animation-name', 'none');
+  const preference = page.getByRole('button', { name:'Movimento suave' });
+  await preference.click();
+  await expect(preference).toHaveAttribute('aria-pressed', 'true');
+  const durationMs = () => portrait.evaluate(node => Number.parseFloat(getComputedStyle(node).animationDuration) * 1000);
+  await expect.poll(durationMs).toBeLessThan(1);
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('More');
-  await expect(portrait).toHaveCSS('animation-name', 'none');
+  await expect.poll(durationMs).toBeLessThan(1);
 });

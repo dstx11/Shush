@@ -17,13 +17,17 @@ test('Back restores the reading position instead of returning to the hero', asyn
   // The prerender is replaced at boot; exercise history after the app is ready.
   await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
+  await page.getByRole('button', {name:'Saltar apresentação'}).click();
   // Measure history restoration after web fonts have settled the page geometry.
   await page.evaluate(() => document.fonts.ready);
   const link = page.locator('.lux-closing a[href="/company"]');
   await link.scrollIntoViewIfNeeded();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(300);
-  const before = await page.evaluate(() => window.scrollY);
+  // Measure the actual departure position, after native click scrolling settles.
+  await link.evaluate(node => node.addEventListener('click', () => sessionStorage.setItem('test-departure', String(scrollY)), {once:true}));
   await link.click();
+  const before = await page.evaluate(() => Number(sessionStorage.getItem('test-departure')));
+  expect(before).toBeGreaterThan(300);
   await expect(page).toHaveURL('/company');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await page.goBack();

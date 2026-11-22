@@ -35,8 +35,9 @@ for(const [season,date,headline] of cases){
  });
 }
 test('Valentine duo preview is immediately editable',async ({page})=>{
- await page.clock.install({time:new Date('2027-02-14T12:00:00Z')});
+ await page.clock.setFixedTime(new Date('2027-02-14T12:00:00Z'));
  await page.goto('/');
+ await page.getByRole('button',{name:'Saltar apresentação'}).click();
  await page.getByRole('textbox',{name:'Primeiro nick'}).fill('More');
  await page.getByRole('textbox',{name:'Segundo nick'}).fill('DSTX');
  await expect(page.locator('.season-duo-output')).toContainText('More + DSTX');

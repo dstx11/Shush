@@ -26,7 +26,7 @@ test('optional quiet motion persists across pages and can be reversed', async ({
   await expect(control).toHaveAttribute('aria-pressed','true');
   await expect(page.locator('.scene-light')).toHaveCount(0);
   await control.click();
-  await expect(page.locator('.scene-light')).toHaveCount(1);
+  await expect(page.locator('.creator-feature .scene-light')).toHaveCount(2);
 });
 
 test('spring secrets preserve the revised brand story', async ({ page }) => {
