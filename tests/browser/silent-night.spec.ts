@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 // Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
-test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(new Date('2026-12-12T12:00:00Z')); });
 
 test('Silent Night ornaments select every real player and navigate to their profile', async ({ page }) => {
   await page.goto('/');
@@ -26,11 +26,11 @@ test('Silent Night ornaments select every real player and navigate to their prof
 
 test('Silent Night presents offer direct real routes, keyboard access and no horizontal overflow', async ({ page }) => {
   await page.goto('/');
+  await page.getByRole('button', {name:'Saltar apresentação'}).click();
   const gifts = page.locator('.winter-gift-card');
-  await expect(gifts).toHaveCount(3);
+  await expect(gifts).toHaveCount(2);
   await expect(gifts.nth(0)).toHaveAttribute('href', '/esports/valorant/premier');
-  await expect(gifts.nth(1)).toHaveAttribute('href', '/products/jersey');
-  await expect(gifts.nth(2)).toHaveAttribute('href', '/content');
+  await expect(gifts.nth(1)).toHaveAttribute('href', '/content');
   await gifts.nth(1).focus();
   await expect(gifts.nth(1)).toBeFocused();
   const dimensions = await page.evaluate(() => ({

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 
-const routes = ['/', '/esports/valorant/premier', '/esports/valorant/roster', '/content', '/products/jersey', '/company'];
+const routes = ['/', '/esports/valorant/premier', '/esports/valorant/roster', '/content', '/company'];
 
 for (const path of routes) {
   test('WCAG A/AA automated checks: ' + path, async ({ page }, testInfo) => {
@@ -10,7 +10,6 @@ for (const path of routes) {
     await page.evaluate(() => document.fonts.ready);
     if (path.endsWith('/premier')) { await page.locator('.legacy-archive > summary').click(); await page.locator('.match-week').first().locator('summary').click(); }
     if (path.endsWith('/roster')) await page.getByRole('group', { name: 'Selecionar jogador' }).getByRole('button').nth(1).click();
-    if (path.endsWith('/jersey')) await page.getByRole('button', { name: /Verso/ }).click();
     const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
     await testInfo.attach('axe-report', { body: JSON.stringify(result, null, 2), contentType: 'application/json' });
     expect(result.violations.map((violation) => ({ id: violation.id, impact: violation.impact, nodes: violation.nodes.map((node) => ({ target: node.target, detail: node.failureSummary })) }))).toEqual([]);

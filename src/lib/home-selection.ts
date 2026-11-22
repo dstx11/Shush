@@ -11,11 +11,12 @@ let visit: ReturnType<typeof selectHomePlayers> | undefined;
 export function getHomePlayers() {
   if (typeof window === 'undefined') return players.slice(0, 3);
   if (!visit) {
-    let cursor = Math.floor(Math.random() * players.length);
+    // A fresh device shows the same trio as the static HTML; subsequent visits rotate.
+    let cursor = 0;
     try {
       const stored = localStorage.getItem(homeRotationKey);
       if (stored !== null && /^[0-6]$/.test(stored)) cursor = Number(stored);
-    } catch { /* No storage: keep this visit stable in module memory. */ }
+    } catch { /* The static selection also works without storage. */ }
     visit = selectHomePlayers(cursor);
     try { localStorage.setItem(homeRotationKey, String(visit.next)); } catch { /* Optional persistence. */ }
   }

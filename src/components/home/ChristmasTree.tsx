@@ -1,3 +1,4 @@
+import { useQuietMotion } from '../../hooks/useQuietMotion';
 import { useEffect, useRef, useState } from 'react';
 import { getTreeVisit, type TreeVariant } from '../../lib/tree-visit';
 
@@ -162,7 +163,9 @@ export function ChristmasTree() {
   const entryProgress = useRef(0);
   const [visit] = useState(getTreeVisit);
   const theme = visit.variant;
-  const [paused, setPaused] = useState(false);
+  const quiet = useQuietMotion();
+  const [locallyPaused, setPaused] = useState(false);
+  const paused = quiet || locallyPaused;
   const [lightsOn, setLightsOn] = useState(true);
 
   useEffect(() => {
@@ -519,7 +522,7 @@ export function ChristmasTree() {
       className={`winter-tree-stage winter-tree-premium scene-${theme}`}
       data-tree-variant={theme}
       onPointerMove={(event) => {
-        if (event.pointerType !== 'mouse') return;
+        if (paused || event.pointerType !== 'mouse') return;
         const bounds = event.currentTarget.getBoundingClientRect();
         pointer.current.targetX = (event.clientX - bounds.left) / bounds.width * 2 - 1;
         pointer.current.targetY = (event.clientY - bounds.top) / bounds.height * 2 - 1;
@@ -568,7 +571,7 @@ export function ChristmasTree() {
             {lightsOn ? 'Luzes on' : 'Luzes off'}
             <svg aria-hidden="true" focusable="false" width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="m6 0 1.6 4.4L12 6 7.6 7.6 6 12 4.4 7.6 0 6l4.4-1.6Z" /></svg>
           </button>
-          <button className="winter-motion-toggle" type="button" onClick={() => setPaused(value => !value)} aria-pressed={paused}>
+          <button className="winter-motion-toggle" type="button" disabled={quiet} onClick={() => setPaused(value => !value)} aria-pressed={paused}>
             {paused ? 'Reproduzir' : 'Pausar'}
             <svg aria-hidden="true" focusable="false" width="8" height="10" viewBox="0 0 8 10" fill="currentColor">
               {paused ? <path d="m1 0 7 5-7 5Z" /> : <path d="M0 0h2v10H0zM6 0h2v10H6z" />}

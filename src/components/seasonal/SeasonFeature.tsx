@@ -109,7 +109,7 @@ function DeadSilenceScene(){
   <button type="button" aria-pressed={lights} onClick={()=>setLights(v=>!v)}>{lights?'Apagar luzes':'Acender luzes'}</button>
  </div>;
 }
-export function SeasonFeature(){
+export default function SeasonFeature(){
  const {id,theme}=useSeason();
  if(id==='base'||id==='christmas')return null;
  const href=id==='newyear'?'/esports/valorant/premier':id==='easter'?'/company':'/esports/valorant/roster';

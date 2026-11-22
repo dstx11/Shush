@@ -51,14 +51,35 @@ test('Visitors can create a personalized Christmas card, download a real PNG and
 test('The Christmas tree supports keyboard rotation and does not trap navigation', async ({ page }, testInfo) => {
   test.skip(!['desktop-1366', 'mobile-390'].includes(testInfo.project.name), 'Representative desktop and mobile coverage');
 
-  await page.goto('/');
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  const intro = page.getByRole('dialog', { name: 'Entrada SHUSH' });
+  await expect(intro).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(intro).toHaveCount(0);
+
+  const lights = page.getByRole('button', { name: /Luzes on/ });
+  const pause = page.getByRole('button', { name: 'Pausar', exact: true });
+  await pause.click();
+  const resume = page.getByRole('button', { name: 'Reproduzir', exact: true });
+  await expect(resume).toHaveAttribute('aria-pressed', 'true');
+  await resume.press('Shift+Tab');
+  await expect(lights).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
   const tree = page.locator('.winter-tree-stage canvas');
-  await tree.focus();
   await expect(tree).toBeFocused();
+  await expect(tree).toHaveAttribute('data-ready', 'true');
+  await page.evaluate(() => document.fonts.ready.then(() => undefined));
+  const frame = () => tree.evaluate((canvas: HTMLCanvasElement) => {
+    const sample = document.createElement('canvas');
+    sample.width = sample.height = 64;
+    sample.getContext('2d')!.drawImage(canvas, 0, 0, 64, 64);
+    return sample.toDataURL();
+  });
+  const original = await frame();
   await page.keyboard.press('ArrowRight');
+  expect(await frame()).not.toBe(original);
   await page.keyboard.press('ArrowLeft');
+  expect(await frame()).toBe(original);
   await page.keyboard.press('Tab');
-  await expect(tree).not.toBeFocused();
-  await expect(page.locator('.winter-palette')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: /Luzes on/ })).toBeFocused();
+  await expect(lights).toBeFocused();
 });

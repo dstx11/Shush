@@ -61,27 +61,6 @@ test('enabling reduced motion removes a departing portrait immediately', async (
   await expect(page.locator('#selected-player-name')).toHaveText('More');
 });
 
-test('editing invalidates an old transfer without clearing a newer busy state', async ({ page }) => {
-  await page.addInitScript(() => {
-    const releases: (() => void)[] = [];
-    Object.defineProperty(navigator, 'clipboard', { value: { writeText: () => new Promise<void>(resolve => releases.push(resolve)) } });
-    (window as unknown as { releaseCopy: () => void }).releaseCopy = () => releases.shift()?.();
-  });
-  await page.goto('/products/jersey');
-  const copy = page.getByRole('button', { name: 'Copiar resumo' });
-  await copy.click();
-  await expect(copy).toBeDisabled();
-  await page.getByRole('textbox', { name: 'Nick' }).fill('NOVA');
-  await expect(copy).toBeEnabled();
-  await copy.click();
-  await page.evaluate(() => (window as unknown as { releaseCopy: () => void }).releaseCopy());
-  await expect(copy).toBeDisabled();
-  await expect(page.getByRole('status')).toContainText('A copiar o resumo');
-  await page.evaluate(() => (window as unknown as { releaseCopy: () => void }).releaseCopy());
-  await expect(copy).toBeEnabled();
-  await expect(page.getByRole('status')).toContainText('Resumo copiado.');
-});
-
 test('a pending roster transfer cannot update the newly selected player', async ({ page }) => {
   await page.addInitScript(() => {
     let release: (() => void) | undefined;
@@ -142,8 +121,8 @@ test('a failed hover prefetch never reloads the current page', async ({ page }) 
   let documents = 0;
   page.on('request', request => { if (request.isNavigationRequest() && request.frame() === page.mainFrame()) documents++; });
   await page.route('**/assets/AboutPage-*.js', route => route.abort());
-  await page.goto('/products/jersey');
-  const input = page.getByRole('textbox', { name: 'Nick' });
+  await page.goto('/esports/valorant/premier');
+  const input = page.getByRole('searchbox', { name: 'Procurar adversário' });
   await input.fill('MANTER');
   const failed = page.waitForEvent('requestfailed', request => request.url().includes('/AboutPage-'));
   await page.locator('footer a[href="/company"]').focus();
@@ -179,7 +158,7 @@ test('postcards preserve complete Unicode characters and report export failures 
   await expect(poster.getByRole('button', { name: 'Tentar novamente' })).toBeVisible();
 });
 
-for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster', '/content', '/products/jersey', '/company']) {
+for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster', '/content', '/company']) {
   test('200% text remains readable and controls fit: ' + path, async ({ page }, info) => {
     test.skip(!['desktop-1366', 'mobile-390'].includes(info.project.name), 'Representative text-resize widths');
     await page.goto(path);
@@ -187,7 +166,16 @@ for (const path of ['/', '/esports/valorant/premier', '/esports/valorant/roster'
     await page.evaluate(() => document.fonts.ready);
     await page.addStyleTag({ content: 'html { font-size: 200% !important; }' });
     const viewportWidth=page.viewportSize()!.width;
-    await expect.poll(()=>page.evaluate(()=>Math.max(document.documentElement.scrollWidth,innerWidth))).toBeLessThanOrEqual(viewportWidth+1);
+    const overflow = () => page.evaluate(expected => {
+      const actual = Math.max(document.documentElement.scrollWidth, innerWidth);
+      if (actual <= expected + 1) return [];
+      const edges = Array.from(document.querySelectorAll('main *, footer *'))
+        .filter(el => el.getBoundingClientRect().right > expected + 1 && el.checkVisibility()
+          && !el.closest('.character-strip,.lux-lineup,[aria-hidden="true"]'))
+        .map(el => el.tagName + '.' + el.getAttribute('class') + ' / ' + Math.round(el.getBoundingClientRect().right));
+      return ['viewport ' + actual, ...edges.slice(0, 30)];
+    }, viewportWidth);
+    await expect.poll(overflow).toEqual([]);
     const desktopNav=page.locator('.lux-desktop');
     if(await desktopNav.isVisible()){
       const menu=await desktopNav.boundingBox(),brand=await page.locator('header .lux-brand').boundingBox();

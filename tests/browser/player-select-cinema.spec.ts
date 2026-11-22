@@ -8,7 +8,8 @@ test('Seven real players keep their portraits unobstructed during keyboard navig
  const scene=page.locator('.character-media');
  await expect(scene.locator('.character-geometry, .character-signal-flare')).toHaveCount(0);
  await expect(scene.locator('.roster-portrait')).toHaveCSS('filter', /drop-shadow/);
- await expect(page.getByRole('button',{name:'Ativar som de seleção'})).toHaveAttribute('aria-pressed','false');
+ await expect(page.getByRole('button',{name:/som de seleção/i})).toHaveCount(0);
+ await expect(page.locator('audio,video:not([muted])')).toHaveCount(0);
  await page.keyboard.press('7');
  await expect(page.locator('#selected-player-name')).toHaveText('Catty');
  const caption = await page.locator('.character-identity').boundingBox();
@@ -30,7 +31,7 @@ test('Seven real players keep their portraits unobstructed during keyboard navig
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1)).toBe(true);
 });
 
-test('Cinema pointer is composited; replay and optional audio are explicitly controlled',async ({page},info)=>{
+test('Cinema pointer is composited; replay preserves the silent experience',async ({page},info)=>{
  test.skip(info.project.name!=='desktop-1366','Fine pointer and replay coverage');
  await page.emulateMedia({reducedMotion:'no-preference'});
  await page.goto('/esports/valorant/roster?player=more');
@@ -43,10 +44,8 @@ test('Cinema pointer is composited; replay and optional audio are explicitly con
  const before=await scene.getAttribute('data-stage-visible');
  await page.getByRole('button',{name:'Rever entrada do jogador'}).click();
  await expect(scene.getByRole('img', {name:'Retrato de More'})).toBeVisible();
- await page.getByRole('button',{name:'Ativar som de seleção'}).click();
- await expect(page.getByRole('button',{name:'Desativar som de seleção'})).toHaveAttribute('aria-pressed','true');
- await page.getByRole('button',{name:'Desativar som de seleção'}).click();
- await expect(page.getByRole('button',{name:'Ativar som de seleção'})).toHaveAttribute('aria-pressed','false');
+ await expect(page.locator('audio,video:not([muted])')).toHaveCount(0);
+ await expect(page.getByRole('button',{name:/som de seleção/})).toHaveCount(0);
  expect(before).not.toBeNull();
 });
 

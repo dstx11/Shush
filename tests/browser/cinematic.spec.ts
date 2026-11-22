@@ -13,6 +13,7 @@ for (const [variant, previous, random, title] of scenes) {
   test(`cinematic tree: ${variant} is chosen before display and has no manual selector`, async ({ page }, testInfo) => {
     test.skip(!['desktop-1366', 'mobile-390'].includes(testInfo.project.name), 'Representative visual coverage');
     await page.addInitScript(({ previous, random }) => {
+      sessionStorage.setItem('shush:signature-intro:1', 'seen');
       localStorage.setItem('shush:winter:tree:v2', previous);
       Math.random = () => random;
     }, { previous, random });
@@ -24,6 +25,12 @@ for (const [variant, previous, random, title] of scenes) {
     await expect(frame.locator('.winter-palette')).toHaveCount(0);
     await frame.scrollIntoViewIfNeeded();
     await page.evaluate(() => document.fonts.ready);
+    // Pause through the scene's own control. The paused renderer rebuilds the
+    // complete tree at time zero. Programmatic activation avoids pointer tilt.
+    const pause = frame.getByRole('button', { name: 'Pausar' });
+    await pause.evaluate(button => (button as HTMLButtonElement).click());
+    await expect(frame.getByRole('button', { name: 'Reproduzir' })).toHaveAttribute('aria-pressed', 'true');
+    await expect(frame.locator('canvas')).toHaveAttribute('data-revealed', 'true');
     await expect(frame).toHaveScreenshot(`scene-${variant}.png`, { animations: 'disabled' });
     await frame.screenshot({ path: testInfo.outputPath(`scene-${variant}.png`), animations: 'disabled' });
     const before = await frame.getAttribute('data-tree-variant');

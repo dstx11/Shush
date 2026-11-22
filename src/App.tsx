@@ -1,3 +1,4 @@
+import { useQuietMotion } from './hooks/useQuietMotion';
 import { SignatureIntro } from './components/ui/SignatureIntro';
 import { useRouteMetadata } from './hooks/useRouteMetadata';
 import { SeasonProvider, useSeason } from './seasonal/SeasonProvider';
@@ -31,6 +32,11 @@ export default function App(props: AppProps) {
 }
 function SeasonApp({ initialPage, initialPath }: AppProps) {
   const { id: seasonId } = useSeason();
+  const quiet = useQuietMotion();
+  useLayoutEffect(() => {
+    document.documentElement.toggleAttribute('data-quiet-motion', quiet);
+    return () => { document.documentElement.removeAttribute('data-quiet-motion'); };
+  }, [quiet]);
   useLayoutEffect(() => { document.getElementById('shush-boot-stage')?.remove(); }, []);
   // The startup route has already been imported. Render it directly so the
   // first client commit does not briefly replace prerendered content with Suspense.
@@ -46,7 +52,7 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
     <div data-entering="false" data-season={seasonId} className={`shush-root min-h-screen bg-shush-bg text-shush-text route-${routeArea(location.pathname)}`}>
       <a className="skip-link" href="#main-content">Saltar para o conteúdo</a>
       <div className="shush-reading-progress" aria-hidden="true" />
-      <SignatureIntro />
+      {!quiet && <SignatureIntro />}
       <Header />
       <main id="main-content" tabIndex={-1}>
         <Suspense fallback={<RouteFallback />}>
@@ -72,7 +78,7 @@ function SeasonApp({ initialPage, initialPath }: AppProps) {
           </PageTransition>
         </Suspense>
       </main>
-      <Footer />
+      <Footer interactive />
       <LabGate />
     </div>
   );

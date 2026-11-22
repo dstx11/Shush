@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 // Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
-test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(new Date('2026-12-12T12:00:00Z')); });
 
 test('Winter scene is available without compromising the team content', async ({ page }) => {
   await page.goto('/');
@@ -31,6 +31,7 @@ test('Winter scene is available without compromising the team content', async ({
 test('Winter scene remains accessible with reduced motion and keyboard controls', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
+  await page.getByRole('button', {name:'Saltar apresentação'}).press('Enter');
   const tree = page.locator('.winter-tree-stage canvas');
   await expect(tree).toHaveAttribute('role', 'img');
   await expect(tree).toHaveAttribute('aria-label', /Árvore de Natal/);

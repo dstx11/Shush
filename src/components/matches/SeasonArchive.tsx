@@ -25,7 +25,12 @@ function ResultRow({ result }: { result: MatchResult }) {
 export default function SeasonArchive() {
   useEffect(() => {
     const id = window.location.hash.slice(1);
-    if (id === 'calendar' || id === 'results') document.getElementById(id)?.scrollIntoView();
+    if (id !== 'calendar' && id !== 'results') return;
+    const target = document.getElementById(id);
+    const active = document.activeElement;
+    if (!target || (active !== document.body && active?.id !== 'main-content')) return;
+    target.scrollIntoView({ behavior: 'instant', block: 'start' });
+    target.focus({ preventScroll: true });
   }, []);
   const [filter, setFilter] = useState<Filter>('all');
   const [feedback, setFeedback] = useState('');
@@ -38,7 +43,7 @@ export default function SeasonArchive() {
   };
   return (
       <div className="match-body">
-        <section id="calendar" className="match-calendar" aria-labelledby="calendar-title">
+        <section tabIndex={-1} id="calendar" className="match-calendar" aria-labelledby="calendar-title">
           <div className="section-index"><span className="section-kicker">01 / Jornadas</span><span className="mono">Horários em Lisboa · Europe/Lisbon</span></div>
           <div className="calendar-heading"><h2 id="calendar-title">Calendário de 2026.</h2><button type="button" className="utility-button" onClick={() => exportCalendar()}>Descarregar calendário (.ics) <span aria-hidden="true">↓</span></button></div>
           <div className="calendar-filters" role="group" aria-label="Filtrar jornadas">{filters.map((item) => <button key={item.id} type="button" aria-pressed={filter === item.id} onClick={() => setFilter(item.id)}>{item.label}</button>)}</div>
@@ -57,7 +62,7 @@ export default function SeasonArchive() {
             })}
           </div>
         </section>
-        <section id="results" className="match-results" aria-labelledby="results-title"><div className="section-index"><span className="section-kicker">02 / Resultados</span><span className="mono">Dados publicados</span></div><h2 id="results-title">Resultados do arquivo.</h2><div className="result-list">{season.results.length ? season.results.map((result) => <ResultRow key={result.id} result={result} />) : <p className="body-copy">Ainda não existem resultados publicados.</p>}</div><div className="playoff-record"><span className="mono">Play-offs / <time dateTime={season.playoffsDate}>{formatDate(season.playoffsDate)}</time></span><h3>Desfecho por confirmar.</h3>{season.playoffResults.length ? season.playoffResults.map((result) => <ResultRow key={result.id} result={result} />) : <p>Não existe um resultado de play-offs publicado. O calendário encerrado não confirma qualificação, eliminação ou classificação final.</p>}</div></section>
+        <section tabIndex={-1} id="results" className="match-results" aria-labelledby="results-title"><div className="section-index"><span className="section-kicker">02 / Resultados</span><span className="mono">Dados publicados</span></div><h2 id="results-title">Resultados do arquivo.</h2><div className="result-list">{season.results.length ? season.results.map((result) => <ResultRow key={result.id} result={result} />) : <p className="body-copy">Ainda não existem resultados publicados.</p>}</div><div className="playoff-record"><span className="mono">Play-offs / <time dateTime={season.playoffsDate}>{formatDate(season.playoffsDate)}</time></span><h3>Desfecho por confirmar.</h3>{season.playoffResults.length ? season.playoffResults.map((result) => <ResultRow key={result.id} result={result} />) : <p>Não existe um resultado de play-offs publicado. O calendário encerrado não confirma qualificação, eliminação ou classificação final.</p>}</div></section>
       </div>
   );
 }

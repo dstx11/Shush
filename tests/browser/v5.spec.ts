@@ -2,18 +2,13 @@ import { test, expect } from '@playwright/test';
 import { AxeBuilder } from '@axe-core/playwright';
 
 const roster = [['dstx', 'DSTX', '11', 'M'], ['more', 'More', '13', 'M'], ['th0maz7', 'Th0maz', '07', 'M'], ['lyel', 'Lyel', '16', 'XXL'], ['tz', 'TZ', '10', 'M'], ['levi', 'Levi', '09', 'M'], ['catty', 'Catty', '20', 'M']];
-test('V5 official jerseys and independent roster indices', async ({ page }) => {
-  for (const [index, [id, name, number, size]] of roster.entries()) {
+test('The seven roster profiles retain their official numbers and independent indices', async ({ page }) => {
+  for (const [index, [id, name, number]] of roster.entries()) {
     await page.goto(`/esports/valorant/roster?player=${id}`);
     await expect(page.locator('.character-controls > .mono')).toHaveText(`${String(index + 1).padStart(2, '0')} / 07`);
     await expect(page.locator('.character-number')).toHaveText(number);
     await expect(page.locator('.player-card-number')).toHaveText(['#11', '#13', '#07', '#16', '#10', '#09', '#20']);
-    await page.getByRole('link', { name: `Ver camisola ${name}` }).click();
-    await expect(page.getByLabel('Nick', { exact: true })).toHaveValue(name);
-    await expect(page.getByLabel('Número', { exact: true })).toHaveValue(number);
-    await expect(page.getByRole('radio', { name: size, exact: true })).toBeChecked();
-    await page.getByLabel('Nick', { exact: true }).fill('EDITADO');
-    await expect(page.getByLabel(`Pré-visualização: EDITADO ${number}`)).toBeVisible();
+    await expect(page.locator('#selected-player-name')).toHaveText(name);
   }
 });
 
@@ -33,10 +28,14 @@ test('V5 Match Explorer filters and verified map aggregates', async ({ page }) =
   await page.goto('/esports/valorant/premier');
   await page.getByRole('button', { name: 'Vitórias', exact: true }).click();
   await expect(page.locator('.verified-match')).toHaveCount(5);
-  await expect(page.getByLabel('Mapa', { exact: true }).locator('option')).toHaveText(['Todos os mapas', 'Ascent', 'Haven', 'Breeze']);
+  const map = page.getByLabel('Mapa', { exact: true });
+  await expect(map.locator('option')).toHaveText(['Todos os mapas', 'Haven', 'Lotus', 'Ascent', 'Breeze', 'Bind', 'Split']);
+  await map.selectOption('Lotus');
+  await expect(page.locator('.verified-match')).toHaveCount(0);
   await page.getByRole('button', { name: 'Derrotas', exact: true }).click();
-  await expect(page.locator('.verified-match')).toHaveCount(5);
-  await page.getByLabel('Mapa', { exact: true }).selectOption('Haven');
+  await expect(map).toHaveValue('Lotus');
+  await expect(page.locator('.verified-match')).toHaveCount(1);
+  await map.selectOption('Haven');
   await expect(page.locator('.verified-match')).toHaveCount(1);
   await expect(page.locator('.verified-match')).toContainText('EnLitro');
   await expect(page.locator('.map-performance-row').filter({ hasText: 'Ascent' })).toContainText('2 partidas · 2 V / 0 D');
@@ -109,14 +108,15 @@ test('Poster loading cannot hang indefinitely when image decoding stalls', async
 test('V5 intro: bounded initial experience, reduced motion and no SPA replay', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  await expect(page.locator('.brand-intro')).toHaveCount(0, { timeout: 7000 });
+  await expect(page.locator('.signature-intro')).toBeVisible();
+  await expect(page.locator('.signature-intro')).toHaveCount(0, { timeout: 7000 });
   await page.locator('.lux-closing a[href="/company"]').click(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.brand-intro')).toHaveCount(0);
+  await expect(page.locator('.signature-intro')).toHaveCount(0);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.brand-intro')).toHaveCount(0);
+  await expect(page.locator('.signature-intro')).toHaveCount(0);
   await page.emulateMedia({ reducedMotion: 'reduce' }); await page.reload(); await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-  await expect(page.locator('.brand-intro')).toHaveCount(0);
+  await expect(page.locator('.signature-intro')).toHaveCount(0);
 });
 
 
@@ -124,6 +124,8 @@ test('a keyboard visitor can open the roster on first and repeat visits', async 
   for (let visit = 0; visit < 2; visit++) {
     await page.goto('/');
     const link = page.getByRole('link', {name: 'Conhecer o roster'});
+    await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+    if (visit === 0) await page.getByRole('button', {name:'Saltar apresentação'}).press('Enter');
     await link.focus();
     await expect(link).toBeFocused();
     await link.press('Enter');
@@ -137,7 +139,22 @@ test('Unavailable session storage never blocks entry to the site', async ({ page
   await page.addInitScript(() => Object.defineProperty(window, 'sessionStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } }));
   await page.goto('/esports/valorant/roster?player=lyel');
   await expect(page.locator('#selected-player-name')).toHaveText('Lyel');
-  await expect(page.locator('.brand-intro')).toHaveCount(0);
+  await expect(page.locator('.signature-intro')).toHaveCount(0);
   await page.getByRole('button', { name: 'Jogador seguinte' }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('TZ');
+});
+
+test('Premier keeps a match opened before the entry script has loaded', async ({page}) => {
+  let resume!: () => void;
+  const gate = new Promise<void>(resolve => { resume = resolve; });
+  await page.route('**/assets/index-*.js', async route => { await gate; await route.continue(); });
+  const first = page.locator('.verified-match').first();
+  try {
+    await page.goto('/esports/valorant/premier', {waitUntil:'commit'});
+    await first.locator('summary').click();
+    await expect(first.locator('details')).toHaveAttribute('open', '');
+  } finally { resume(); }
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
+  await first.getByRole('button', {name:'Criar cartaz'}).click();
+  await expect(page.getByRole('dialog', {name:'Cartaz da partida'})).toBeVisible();
 });

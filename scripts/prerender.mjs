@@ -1,5 +1,5 @@
 import { createServer } from 'vite';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToReadableStream } from 'react-dom/server';
 import { readFile, writeFile } from 'node:fs/promises';
 
 // Render the real React routes at build time. No server is deployed or listened on.
@@ -22,7 +22,7 @@ try {
     '/esports/valorant/roster': 'RosterPage', '/content': 'ContentPage',
     '/company': 'AboutPage',
   };
-  function routeStyles(route) {
+  function entryStyles(entries) {
     const styles = new Set();
     const visited = new Set();
     function collect(key) {
@@ -31,9 +31,10 @@ try {
       const entry = manifest[key];
       if (!entry) throw new Error(`Missing manifest entry: ${key}`);
       for (const dependency of entry.imports ?? []) collect(dependency);
+      if (entry.file.endsWith('.css')) styles.add(entry.file);
       for (const css of entry.css ?? []) styles.add(css);
     }
-    collect(`src/pages/${routeEntries[route]}.tsx`);
+    entries.forEach(collect);
     return styles;
   }
   const siteUrl = 'https://shush.pt';
@@ -43,7 +44,10 @@ try {
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     Object.keys(routeMetadata).map(route => `  <url><loc>${siteUrl}${route}</loc></url>`).join('\n') + '\n</urlset>\n');
   for (const route of Object.keys(routeMetadata)) {
-    const content = renderToStaticMarkup(staticPage(route))
+    // Wait for lazy editions at build time so the static HTML includes the actual scene.
+    const stream = await renderToReadableStream(staticPage(route));
+    await stream.allReady;
+    const content = (await new Response(stream).text())
       .replace(/<link rel="preload"[^>]*\/>/g, '')
       // These controls require React. Keep native links usable without JS.
       .replace(/<(button|input|select|textarea)(?=[\s>])([^>]*)>/g,
@@ -55,7 +59,6 @@ try {
     const end = html.indexOf('<noscript>', start);
     if (start < 0 || end < 0) throw new Error('Missing static root markers');
     html = html.slice(0, start) + `<div id="root">${content}</div>\n    ` + html.slice(end);
-    html = html.replace('Ativa o JavaScript para explorar a equipa, os jogos e personalizar a camisola SHUSH.', 'Podes consultar as páginas e os canais. Ativa o JavaScript para selecionar jogadores e personalizar a camisola.');
     const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...identity, ...pageSchema(route)] }).replace(/</g, '\\u003c');
     if (route === '/esports/valorant/premier') {
       const styles = manifest['src/components/matches/SeasonArchive.tsx'].css;
@@ -63,10 +66,23 @@ try {
       html = html.replace('</head>', `<noscript>${links}</noscript></head>`);
     }
     {
-      const links = [...routeStyles(route)].filter(css => !html.includes(`href="/${css}"`))
-        .map(css => `<link rel="stylesheet" crossorigin href="/${css}" />`).join('\n');
-      const routeModule = manifest[`src/pages/${routeEntries[route]}.tsx`].file;
-      html = html.replace('</head>', `${links}\n<link rel="modulepreload" crossorigin href="/${routeModule}" />\n</head>`);
+      const season = content.match(/data-season="([^"]+)"/)?.[1];
+      if (!season) throw new Error(`Missing prerendered season: ${route}`);
+      const modules = [`src/pages/${routeEntries[route]}.tsx`];
+      if (route === '/' && season !== 'base') {
+        const edition = season === 'christmas' ? 'ChristmasLanding' : 'SeasonFeature';
+        modules.push(`src/components/seasonal/${edition}.tsx`);
+      }
+      const entries = season === 'christmas' ? [...modules, 'src/styles/winter.css'] : modules;
+      const links = [...entryStyles(entries)].filter(css => !html.includes(`href="/${css}"`))
+        .map(css => `<link rel="stylesheet" crossorigin href="/${css}" />`);
+      if ((route === '/' && season !== 'christmas') || route === '/esports/valorant/premier') {
+        links.unshift('<link rel="preload" as="image" type="image/webp" href="/assets/campaign/tension.webp" />');
+      }
+      for (const entry of modules) {
+        links.push(`<link rel="modulepreload" crossorigin href="/${manifest[entry].file}" />`);
+      }
+      html = html.replace('</head>', links.join('\n') + '\n</head>');
     }
     html = html.replace('</head>', `<script id="shush-schema" type="application/ld+json">${json}</script>\n</head>`);
     await writeFile(path, html);

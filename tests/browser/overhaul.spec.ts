@@ -4,7 +4,7 @@ import {routeMetadata} from '../../src/data/meta';
 // Production-before evidence was captured in runs 43906611475 and 43909144607.
 // Opt in to a fresh external capture; release checks always validate the local build.
 // These evidence files never automatically approve screenshot baselines.
-for(const [name,path] of Object.entries({home:'/',roster:'/esports/valorant/roster?player=more',premier:'/esports/valorant/premier',drop:'/products/jersey',creators:'/content',about:'/company'})){
+for(const [name,path] of Object.entries({home:'/',roster:'/esports/valorant/roster?player=more',premier:'/esports/valorant/premier',creators:'/content',about:'/company'})){
  test(`review route: ${name}`,async({page},info)=>{
   test.setTimeout(60000);
   await page.addInitScript(()=>{localStorage.setItem('shush:motion:v1','reduce');localStorage.setItem('shush:season:v1','base');localStorage.setItem('shush:home:rotation:v1','3');});
@@ -24,19 +24,18 @@ for(const [name,path] of Object.entries({home:'/',roster:'/esports/valorant/rost
 }
 
 const representative=(project:string)=>['desktop-1366','mobile-390','mobile-webkit'].includes(project);
-test('identity and jersey cards export the exact preview and recover focus',async({page},info)=>{
+test('player identity cards export the exact preview and recover focus',async({page},info)=>{
  test.skip(!representative(info.project.name),'Representative image export engines');
- for(const kind of ['player','jersey']){
-  await page.goto(kind==='player'?'/esports/valorant/roster?player=more':'/products/jersey?drop=1&nick=東京%20SHUSH&number=07&size=L&phrase=S%C3%B3%20rounds.');
-  if(kind==='player')await page.getByRole('button',{name:'Abrir dossier de More',exact:true}).click();
-  const trigger=page.getByRole('button',{name:kind==='player'?'Criar cartão do jogador':'Criar cartão da camisola',exact:true});
+ await page.goto('/esports/valorant/roster?player=more');
+  await page.getByRole('button',{name:'Abrir dossier de More',exact:true}).click();
+  const trigger=page.getByRole('button',{name:'Criar cartão do jogador',exact:true});
   await trigger.click();
-  const dialog=page.getByRole('dialog',{name:kind==='player'?'Cartão do jogador':'Cartão da camisola',exact:true});
+  const dialog=page.getByRole('dialog',{name:'Cartão do jogador',exact:true});
   await expect(dialog).toBeVisible();
   const png=dialog.getByRole('button',{name:'Descarregar PNG ↓',exact:true});
   await expect(png).toBeEnabled();
   await page.keyboard.press('ArrowRight');
-  if(kind==='player')await expect(page.getByRole('dialog',{name:'More',exact:true})).toBeVisible();
+  await expect(page.getByRole('dialog',{name:'More',exact:true})).toBeVisible();
   const canvas=dialog.locator('canvas');
   expect(await canvas.evaluate(node=>[node.width,node.height])).toEqual([1080,1350]);
   await dialog.getByRole('button',{name:'Quadrado',exact:true}).click();
@@ -51,17 +50,18 @@ test('identity and jersey cards export the exact preview and recover focus',asyn
   expect(bytes.equals(Buffer.from(preview,'base64'))).toBe(true);
   await page.keyboard.press('Escape');
   await expect(trigger).toBeFocused();
-  if(kind==='player'){await expect(page.getByRole('dialog',{name:'More',exact:true})).toBeVisible();await page.keyboard.press('Escape');}
- }
+  await expect(page.getByRole('dialog',{name:'More',exact:true})).toBeVisible();
+  await page.keyboard.press('Escape');
 });
 
 test('card resource failure can retry and an export error never loses the studio',async({page},info)=>{
  test.skip(!representative(info.project.name),'Representative failures');
  let failed=true;
- await page.route('**/assets/jersey/backjersey.webp',route=>failed?route.abort():route.continue());
- await page.goto('/products/jersey');
- await page.getByRole('button',{name:'Criar cartão da camisola',exact:true}).click();
- const dialog=page.getByRole('dialog',{name:'Cartão da camisola',exact:true});
+ await page.route('**/assets/avatars/more-jersey.webp',route=>failed?route.abort():route.continue());
+ await page.goto('/esports/valorant/roster?player=more');
+ await page.getByRole('button',{name:'Abrir dossier de More',exact:true}).click();
+ await page.getByRole('button',{name:'Criar cartão do jogador',exact:true}).click();
+ const dialog=page.getByRole('dialog',{name:'Cartão do jogador',exact:true});
  await expect(dialog.getByRole('alert')).toContainText('Não foi possível preparar');
  await expect(dialog.getByRole('button',{name:'Descarregar PNG ↓'})).toBeDisabled();
  failed=false;await dialog.getByRole('button',{name:'Tentar novamente'}).click();

@@ -20,7 +20,7 @@ test('mobile roster overview reveals all seven and restores the selected compact
   await choices.getByRole('button', { name: 'Catty', exact: true }).click();
   await expect(page.locator('#selected-player-name')).toHaveText('Catty');
   await expect(page).toHaveURL(/player=catty/);
-  expect((await stage.boundingBox())!.height).toBe(originalHeight);
+  expect((await stage.boundingBox())!.height).toBeCloseTo(originalHeight, 1);
   const axe = await new AxeBuilder({ page }).include('.player-page').withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   expect(axe.violations.map(item => item.id)).toEqual([]);
   await choices.scrollIntoViewIfNeeded();
@@ -76,14 +76,24 @@ test('team sheet includes secondary roles and links to the matching player', asy
   const filter = sheet.getByRole('combobox', { name: 'Filtrar por função' });
   await expect(portraits).toHaveCount(7);
   const rows = await portraits.evaluateAll(links => new Set(links.map(link => Math.round(link.getBoundingClientRect().top))).size);
-  expect(rows).toBe(page.viewportSize()!.width > 700 ? 1 : 2);
+  expect(rows).toBe(1);
+  const strip = sheet.locator('#lineup-strip');
+  const paging = sheet.getByRole('group', { name: 'Percorrer o plantel' });
+  if (await strip.evaluate(node => node.scrollWidth > node.clientWidth + 2)) {
+    await paging.getByRole('button', { name: 'Jogador seguinte' }).click();
+    await expect.poll(() => strip.evaluate(node => node.scrollLeft)).toBeGreaterThan(2);
+  } else {
+    await expect(paging).toHaveCount(0);
+  }
   await filter.selectOption('Iniciador');
   await expect(portraits.locator('strong')).toHaveText(['More', 'Th0maz', 'Lyel']);
   await expect(sheet.getByRole('status')).toHaveText('3 de 7 jogadores');
+  await expect.poll(() => strip.evaluate(node => node.scrollLeft)).toBeLessThanOrEqual(2);
   await filter.selectOption('');
   await expect(portraits).toHaveCount(7);
   await filter.selectOption('Sentinela');
   await expect(portraits).toHaveCount(1);
+  await expect(paging).toHaveCount(0);
   await portraits.click();
   await expect(page).toHaveURL(/roster\?player=more$/);
   await expect(page.locator('#selected-player-name')).toHaveText('More');

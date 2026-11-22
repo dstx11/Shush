@@ -12,32 +12,21 @@ test('the first route becomes interactive without waiting for image decoding', a
   await expect(page.locator('#selected-player-name')).toBeVisible();
 });
 
-test('header and footer motion preferences stay in sync', async ({ page }, info) => {
+test('optional quiet motion persists across pages and can be reversed', async ({page}, info) => {
   test.skip(!representative(info.project.name), 'Representative controls');
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.goto('/');
-  await expect(page.getByRole('dialog', { name: 'Entrada SHUSH' })).toHaveCount(0);
-  if ((page.viewportSize()?.width ?? 0) < 768) await page.getByRole('button', { name: 'Abrir navegação' }).click();
-  const quick = page.getByRole('button', { name: 'Animações da página' });
-  await quick.click();
-  await expect(quick).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
-  if ((page.viewportSize()?.width ?? 0) < 768) await page.keyboard.press('Escape');
-  const footer = page.getByRole('button', { name: 'Reduzir animações', exact: true });
-  await expect(footer).toHaveAttribute('aria-pressed', 'true');
-  await footer.click();
-  await expect(page.locator('html')).toHaveAttribute('data-motion', 'system');
-  if ((page.viewportSize()?.width ?? 0) < 768) await page.getByRole('button', { name: 'Abrir navegação' }).click();
-  await expect(page.getByRole('button', { name: 'Animações da página' })).toHaveAttribute('aria-pressed', 'false');
-});
-
-test('the drop explains availability before personalisation and retains saving controls', async ({ page }) => {
-  await page.goto('/products/jersey');
-  await expect(page.locator('.drop-availability')).toContainText('ainda não está disponível para encomenda');
-  await page.getByLabel('Nick', { exact: true }).fill('A MINHA TAG');
-  await expect(page.locator('.audit-live-print').first()).toContainText('A MINHA TAG');
-  await expect(page.getByRole('button', { name: 'Descarregar TXT' })).toBeEnabled();
-  await expect(page.getByRole('button', { name: 'Partilhar personalização' })).toBeEnabled();
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  await page.goto('/?intro=1', {waitUntil:'domcontentloaded'});
+  await page.getByRole('button', {name:'Saltar apresentação'}).click();
+  const control = page.getByRole('button', {name:'Movimento suave'});
+  await expect(control).toHaveAttribute('aria-pressed','false');
+  await control.click();
+  await expect(page.locator('html')).toHaveAttribute('data-quiet-motion','');
+  await expect(page.locator('.scene-light')).toHaveCount(0);
+  await page.goto('/content');
+  await expect(control).toHaveAttribute('aria-pressed','true');
+  await expect(page.locator('.scene-light')).toHaveCount(0);
+  await control.click();
+  await expect(page.locator('.creator-feature .scene-light')).toHaveCount(2);
 });
 
 test('spring secrets preserve the revised brand story', async ({ page }) => {

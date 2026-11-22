@@ -1,11 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 // Christmas is now a dated campaign. Exercise it with a deterministic Lisbon date.
-test.beforeEach(async ({ page }) => { await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') }); });
+test.beforeEach(async ({ page }) => { await page.clock.setFixedTime(new Date('2026-12-12T12:00:00Z')); });
 
-test('tree stops scheduling frames when paused or motion is reduced and resumes once', async ({ page }) => {
+test('tree pauses on request or offscreen and keeps the selected motion preference', async ({ page }) => {
   await page.addInitScript(() => {
-    sessionStorage.setItem('shush:intro-seen', '1');
     const request = window.requestAnimationFrame.bind(window);
     const cancel = window.cancelAnimationFrame.bind(window);
     const pending = new Set<number>();
@@ -20,6 +19,7 @@ test('tree stops scheduling frames when paused or motion is reduced and resumes 
   const pending = () => page.evaluate(() => (window as unknown as { shushPendingFrames: number }).shushPendingFrames);
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
+  await page.getByRole('button', { name: 'Saltar apresentação' }).click();
   const canvas = page.locator('.winter-tree-canvas');
   await canvas.scrollIntoViewIfNeeded();
   await expect.poll(pending).toBe(1);
@@ -28,14 +28,8 @@ test('tree stops scheduling frames when paused or motion is reduced and resumes 
   await page.getByRole('button', { name: /Reproduzir/ }).click();
   await expect.poll(pending).toBe(1);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await expect.poll(pending).toBe(0);
-  await canvas.press('ArrowRight');
-  await expect(canvas).toBeFocused();
-  await expect.poll(pending).toBe(0);
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await expect.poll(pending).toBe(1);
-  // An explicit preference must also stop the canvas after it comes back onscreen.
-  const preference = page.getByRole('button', { name: 'Reduzir animações', exact: true });
+  const preference = page.getByRole('button', { name: 'Movimento suave', exact: true });
   await preference.click();
   await canvas.scrollIntoViewIfNeeded();
   await expect.poll(pending).toBe(0);

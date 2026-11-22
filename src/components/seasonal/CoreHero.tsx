@@ -19,7 +19,7 @@ export function CoreHero() {
       <SceneLight material="silk" />
       <div className="campaign-masthead" aria-hidden="true">SHUSH</div>
       <div className="campaign-sitter" key={cover.id} style={{ '--silhouette': `url("/assets/campaign/${cover.id}-mask.svg")` } as CSSProperties} aria-hidden="true">
-        <PlayerPortrait player={cover} eager decorative sizes="768px" />
+        <PlayerPortrait player={cover} eager decorative sizes="(max-width: 767px) min(132vw, clamp(423px, 61.41svh, 615px)), (max-height: 600px) min(72vw, 440px), min(72vw, clamp(550px, 73svh, 800px))" />
       </div>
       <div className="campaign-caption shell">
         <div className="campaign-title">

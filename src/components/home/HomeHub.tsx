@@ -1,3 +1,4 @@
+import { isQuietMotion } from '../../hooks/useQuietMotion';
 import { useState, useRef, useEffect, type CSSProperties } from 'react';
 import '../../styles/luxury-discovery.css';
 import { ArrowIcon } from '../ui/ArrowIcon';
@@ -20,7 +21,6 @@ function TeamSheet() {
   useEffect(() => {
     const node = strip.current;
     if (!node) return;
-    node.scrollLeft = 0;
     const measure = () => setCanScroll(node.scrollWidth > node.clientWidth + 2);
     measure();
     const observer = new ResizeObserver(measure);
@@ -39,7 +39,7 @@ function TeamSheet() {
     const target = direction > 0
       ? current >= end - 2 ? 0 : cards.find(left => left > current + 2) ?? end
       : current <= 2 ? end : cards.reverse().find(left => left < current - 2) ?? 0;
-    node.scrollTo({ left: target, behavior: 'smooth' });
+    node.scrollTo({ left: target, behavior: isQuietMotion() ? 'instant' : 'smooth' });
   }
 
   return (
@@ -58,7 +58,7 @@ function TeamSheet() {
         </label>
       </header>
       <div className="sheet-lens">
-      <div ref={strip} className="lux-lineup" id="lineup-strip">
+      <div key={role} ref={strip} className="lux-lineup" id="lineup-strip">
         {lineup.map(player => (
           <AppLink key={player.id} href={`/esports/valorant/roster?player=${player.id}`}
             aria-label={`Conhecer ${player.displayName}, número ${player.number}, ${player.roles.join(' e ')}`}>

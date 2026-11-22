@@ -103,7 +103,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -133,7 +133,7 @@ jobs:
           path: test-results/
           retention-days: 14
       - name: Responsive and interaction QA
-        run: pnpm exec playwright test --shard=${{ matrix.shard }}/3
+        run: pnpm exec playwright test --shard=${{ matrix.shard }}/8
       - name: Cloudflare preview HTTP smoke
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && matrix.shard == 1
         env:

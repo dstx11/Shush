@@ -17,13 +17,17 @@ test('Back restores the reading position instead of returning to the hero', asyn
   // The prerender is replaced at boot; exercise history after the app is ready.
   await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering', 'false');
+  await page.getByRole('button', {name:'Saltar apresentação'}).click();
   // Measure history restoration after web fonts have settled the page geometry.
   await page.evaluate(() => document.fonts.ready);
   const link = page.locator('.lux-closing a[href="/company"]');
   await link.scrollIntoViewIfNeeded();
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(300);
-  const before = await page.evaluate(() => window.scrollY);
+  // Measure the actual departure position, after native click scrolling settles.
+  await link.evaluate(node => node.addEventListener('click', () => sessionStorage.setItem('test-departure', String(scrollY)), {once:true}));
   await link.click();
+  const before = await page.evaluate(() => Number(sessionStorage.getItem('test-departure')));
+  expect(before).toBeGreaterThan(300);
   await expect(page).toHaveURL('/company');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Um nome.');
   await page.goBack();
@@ -35,31 +39,49 @@ test('Public pages include their content when JavaScript is unavailable', async 
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   try {
     const page = await context.newPage();
-    for (const path of ['/', '/esports/valorant/roster', '/esports/valorant/premier', '/content', '/company', '/products/jersey']) {
+    for (const path of ['/', '/esports/valorant/roster', '/esports/valorant/premier', '/content', '/company']) {
       await page.goto(path);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       await expect(page.locator('.shush-loading')).toHaveCount(0);
       await expect(page.locator('footer a').first()).toBeVisible();
     }
-    await expect(page.getByRole('button', { name: 'Copiar resumo' })).toBeDisabled();
+    await expect(page.locator('footer a[href^="/products/"]')).toHaveCount(0);
   } finally { await context.close(); }
 });
 
 
-test('A delayed navigation frame does not interrupt jersey editing', async ({ page }) => {
-  await page.goto('/esports/valorant/roster?player=dstx');
-  await expect(page.locator('#main-content')).toBeFocused();
+test('a delayed navigation frame preserves an active opponent search', async ({ page }) => {
+  await page.goto('/company');
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
   const now = Date.now();
   await page.clock.install({ time: now });
   await page.clock.pauseAt(now + 100);
-  const jersey = page.getByRole('link', { name: 'Ver camisola DSTX' });
-  await jersey.focus();
-  await jersey.press('Enter');
-  const nick = page.getByLabel('Nick', { exact: true });
-  await expect(nick).toHaveValue('DSTX');
-  await nick.fill('EDITADO');
+  await page.locator('footer a[href="/esports/valorant/premier"]').press('Enter');
+  const search = page.getByRole('searchbox', {name:'Procurar adversário'});
+  await search.fill('EnLitro');
   await page.clock.runFor(100);
-  await expect(nick).toBeFocused();
-  await expect(nick).toHaveValue('EDITADO');
-  await expect(page.getByLabel('Pré-visualização: EDITADO 11')).toBeVisible();
+  await expect(search).toBeFocused();
+  await expect(search).toHaveValue('EnLitro');
+  await expect(page.locator('.verified-match')).toHaveCount(1);
+});
+
+test('resizing an open mobile menu releases the page and moves focus to the desktop navigation', async ({page}) => {
+  await page.setViewportSize({width: 390, height: 844});
+  await page.goto('/content');
+  await page.getByRole('button', {name: 'Abrir navegação'}).click();
+  await expect(page.locator('main')).toHaveJSProperty('inert', true);
+  await page.setViewportSize({width: 1280, height: 800});
+  await expect(page.locator('main')).toHaveJSProperty('inert', false);
+  await expect(page.locator('header .lux-desktop a[aria-current="page"]')).toBeFocused();
+});
+
+test('the calendar receives keyboard focus after a delayed archive download', async ({page}) => {
+  let resume!: () => void;
+  const gate = new Promise<void>(resolve => { resume = resolve; });
+  await page.route('**/assets/SeasonArchive-*.js', async route => { await gate; await route.continue(); });
+  try {
+    await page.goto('/esports/valorant/premier#calendar', {waitUntil:'domcontentloaded'});
+    await expect(page.getByText('A abrir o calendário…')).toBeVisible();
+  } finally { resume(); }
+  await expect(page.locator('#calendar')).toBeFocused();
 });

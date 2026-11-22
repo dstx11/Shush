@@ -6,7 +6,7 @@ import {PlayerPortrait} from '../ui/PlayerPortrait';
 import {AppLink} from '../ui/AppLink';
 import {ArrowIcon} from '../ui/ArrowIcon';
 import {TrackerButton} from './TrackerButton';
-import {ShareCardAction} from '../studio/ShareCardAction';
+import {StudioAction} from '../studio/StudioAction';
 
 export function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;onClose:()=>void;onPrevious:()=>void;onNext:()=>void}){
  const dialog=useRef<HTMLDialogElement>(null);
@@ -32,7 +32,7 @@ export function PlayerDossier({player,onClose,onPrevious,onNext}:{player:Player;
      {player.sensitivity?<div><dt>Sensibilidade</dt><dd>{player.sensitivity}</dd></div>:null}
      {player.equipment?<div><dt>Equipamento</dt><dd>{player.equipment}</dd></div>:null}
     </dl>
-    <p className="dossier-context">{player.creatorUrl ? `Encontra ${player.displayName} também ${player.creatorType==='twitch'?'na Twitch':'no YouTube'}.` : ''}</p><div className="dossier-actions"><ShareCardAction kind="player" player={player}/>
+    <p className="dossier-context">{player.creatorUrl ? `Encontra ${player.displayName} também ${player.creatorType==='twitch'?'na Twitch':'no YouTube'}.` : ''}</p><div className="dossier-actions"><StudioAction kind="player" player={player}/>
      {profile&&<TrackerButton href={profile.trackerUrl} playerName={player.displayName}/>}
      {player.creatorUrl&&<AppLink className="editorial-link" href={player.creatorUrl} target="_blank">{player.creatorType==='twitch'?'Ver na Twitch':'Ver no YouTube'} <ArrowIcon/></AppLink>}
     </div>

@@ -2,31 +2,16 @@ import { useEffect } from 'react';
 import { identitySchema, pageSchema } from '../data/seo';
 import { defaultMetadata, routeMetadata, siteUrl } from '../data/meta';
 
-const legacyRoutes = new Set([
-  '/esports',
-  '/esports/valorant',
-  '/esports/valorant/results',
-  '/esports/valorant/tournaments',
-  '/content/more',
-  '/content/th0maz7',
-  '/products',
-  '/products/jersey/custom',
-  '/company/partners',
-  '/company/contact',
-]);
-
 export function useRouteMetadata(pathname: string) {
   useEffect(() => {
-    const isKnownRoute = Boolean(routeMetadata[pathname]) || legacyRoutes.has(pathname);
-    const metadata = isKnownRoute
-      ? routeMetadata[pathname] ?? defaultMetadata
-      : {
-          title: '404 — SHUSH',
-          description: 'Esta página não existe no site público da SHUSH.',
-          image: defaultMetadata.image,
-        };
-    const canonicalUrl = `${siteUrl}${pathname === '/' ? '' : pathname}`;
-    const image = metadata.image ?? defaultMetadata.image ?? '/assets/jersey/frontjersey.webp';
+    const path = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+    const metadata = routeMetadata[path] ?? {
+      title: '404 — SHUSH',
+      description: 'Esta página não existe no site público da SHUSH.',
+      image: defaultMetadata.image,
+    };
+    const canonicalUrl = `${siteUrl}${path === '/' ? '' : path}`;
+    const image = metadata.image ?? defaultMetadata.image ?? '/og-shush.png';
     const absoluteImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
     document.title = metadata.title;
@@ -40,11 +25,11 @@ export function useRouteMetadata(pathname: string) {
     setMeta('meta[name="twitter:description"]', metadata.description);
     setMeta('meta[name="twitter:image"]', absoluteImage);
     setMeta('meta[name="twitter:image:alt"]', metadata.title);
-    setMeta('meta[name="robots"]', isKnownRoute ? 'index,follow,max-image-preview:large' : 'noindex,nofollow');
+    setMeta('meta[name="robots"]', routeMetadata[path] ? 'index,follow,max-image-preview:large' : 'noindex,nofollow');
     setCanonical(canonicalUrl);
     const schema = document.getElementById('shush-schema');
     if (schema) {
-      schema.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...identitySchema(), ...pageSchema(pathname)] });
+      schema.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': [...identitySchema(), ...pageSchema(path)] });
     }
   }, [pathname]);
 }

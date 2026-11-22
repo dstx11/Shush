@@ -74,11 +74,6 @@ function staticRouteMetadata(): Plugin {
         html = setMeta(html, 'name', 'twitter:image', image);
         html = setMeta(html, 'name', 'twitter:image:alt', metadata.title);
 
-        // Home selects portraits at runtime. Static routes preload their default hero.
-        html = html.replace(/\s*<link rel="preload" as="image"[^>]*\/>/, '');
-        const hero = route === '/products/jersey' ? '/assets/jersey/frontjersey.webp' : null;
-        if (hero) html = html.replace('</head>', `    <link rel="preload" as="image" href="${hero}" type="image/webp" fetchpriority="high" />\n  </head>`);
-
         if (route === '/') indexAsset.source = html;
         else this.emitFile({ type: 'asset', fileName: `${route.slice(1)}.html`, source: html });
       }

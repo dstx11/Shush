@@ -7,25 +7,25 @@
   height: 100%;
   max-height: none;
   margin: 0;
-  padding: clamp(1.15rem, 3.5vw, 3.5rem);
+  padding: max(env(safe-area-inset-top), clamp(1.15rem, 3.5vw, 3.5rem)) max(env(safe-area-inset-right), clamp(1.15rem, 4vw, 4rem)) max(env(safe-area-inset-bottom), clamp(1.15rem, 3.5vw, 3.5rem)) max(env(safe-area-inset-left), clamp(1.15rem, 4vw, 4rem));
   border: 0;
-  overflow: hidden;
+  overflow: auto;
   color: #f5eee9;
   background: #100b14;
   isolation: isolate;
 }
 .signature-intro[open] {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(min-content, 1fr) auto;
   animation: signature-exit .48s cubic-bezier(.65,0,.32,1) calc(var(--pen-finish) + 1150ms) both;
 }
 .signature-intro::backdrop { background: transparent; }
+.signature-art { position: absolute; z-index: -1; inset: 0; overflow: clip; pointer-events: none; }
 .signature-silk {
   position: absolute;
-  z-index: -1;
-  inset: -5%;
-  background: radial-gradient(ellipse at 50% 45%, #160e1b40 0%, #100c14ad 56%, #0c0810eb 91%),
-    linear-gradient(110deg, #100c14d9, #24122b6b 57%, #120d16a1),
+  inset: 0;
+  background: radial-gradient(ellipse at 46% 43%, #180c2266 8%, #100a17a3 61%, #0c0810e8 100%),
+    linear-gradient(116deg, #100b14c2 6%, #20142840 47%, #120b18b5 84%),
     url('/assets/campaign/tension.webp') 56% 40% / cover;
   animation: silk-opening 4.1s ease-out both;
 }
@@ -44,32 +44,51 @@
   font: .9rem var(--font-ui);
 }
 .signature-head button:is(:hover,:focus-visible) { border-color: #e7c9f6; }
-.signature-title { align-self: center; justify-self: center; width: min(91%, 57rem); padding-bottom: 4vh; }
-.signature-script { position: relative; z-index: 1; display: block; width: 75%; overflow: visible; margin: 0 0 -2% 5%; filter: drop-shadow(0 0 5px #cea7d83b); }
+.signature-skip-mark { width: .68rem; height: .63rem; position: relative; border-right: 1.5px solid currentColor; }
+.signature-skip-mark::before { content: ''; position: absolute; inset: 0; background: currentColor; clip-path: polygon(3% 0, 76% 50%, 3% 100%); }
+.signature-title {
+  align-self: center; justify-self: center; display: grid;
+  width: min(91%, 57rem); padding-bottom: 3svh;
+}
+.signature-script {
+  position: relative; z-index: 1; display: block; width: 70%; overflow: visible;
+  margin: 0 0 -1.5% 1%; transform: rotate(-3deg);
+  filter: drop-shadow(0 1px 4px #d4b3dd32);
+}
+.signature-hand { filter: drop-shadow(.65px -.45px 0 #dcc8df); }
 .signature-script path {
   stroke-dasharray: 1 1;
   animation: signature-write var(--ink-time) linear var(--ink-start) both;
 }
 .signature-impact {
-  text-align: center;
-  font: 800 clamp(3.2rem, 10.3vw, 10.3rem)/1.07 var(--font-ui);
+  justify-self: end; text-align: right;
+  font: 750 clamp(3.2rem, 10.3vw, 9.5rem)/1.08 var(--font-ui);
   letter-spacing: -.083em;
-  white-space: nowrap;
+  text-wrap: balance;
 }
 .signature-impact span {
   display: inline-block;
   animation: signature-impact .62s cubic-bezier(.18,.72,.24,1) var(--pen-finish) both;
 }
 .signature-impact span + span { animation-delay: calc(var(--pen-finish) + 75ms); }
+.signature-impact .signature-accent { font: italic 500 1.1em/.94 "SHUSH Hearth", Georgia, serif; letter-spacing: -.075em; color: #e8d8ec; }
 .signature-impact i { font-style: normal; color: #cba7dc; }
-.signature-foot { display: flex; align-items: center; justify-content: center; gap: .9rem; color: #c7b6cb; font: .75rem var(--font-mono); letter-spacing: .13em; }
-.signature-foot span { width: clamp(2rem, 5vw, 5rem); height: 1px; background: #a38baa65; }
+.signature-foot { display: flex; align-items: center; gap: 1rem; color: #d3c3d6; font: .75rem var(--font-mono); letter-spacing: .13em; }
+.signature-foot i { flex: 1; height: 1px; background: linear-gradient(90deg, #ad89bc65, #dfc3e13a 38%, #ad89bc65); }
 @keyframes signature-write { 0% { opacity: 0; stroke-dashoffset: 1; } 1% { opacity: 1; } 100% { opacity: 1; stroke-dashoffset: 0; } }
 @keyframes signature-impact { from { clip-path: inset(0 0 100%); transform: translateY(.15em); } to { clip-path: inset(-8%); transform: none; } }
 @keyframes silk-opening { from { transform: scale(1.09) translateX(1%); } to { transform: scale(1); } }
 @keyframes signature-exit { from { opacity: 1; } to { opacity: 0; } }
-@media (max-width: 600px) {
+@media (orientation: landscape) and (max-height: 500px) {
+  .signature-title { width: min(91%, 105svh); padding-bottom: 0; }
+  .signature-impact { font-size: min(10vw, 14svh); }
+}
+@media (max-width: 600px) and (orientation: portrait) {
   .signature-title { width: 100%; }
-  .signature-script { width: 92%; margin-left: 1%; }
-  .signature-impact { font-size: clamp(3rem, 15vw, 5.3rem); }
+  .signature-script { width: 88%; margin-left: 0; }
+  .signature-impact { font-size: clamp(3rem, 16vw, 5.65rem); }
+}
+@media (forced-colors: active) {
+  .signature-silk { display: none; }
+  .signature-script path { stroke: CanvasText; }
 }

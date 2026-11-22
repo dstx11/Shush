@@ -31,35 +31,3 @@ test('cover portraits have enough source pixels for their square-image crop', as
     expect(size.text).toBeLessThanOrEqual(size.available + 1);
   }
 });
-
-test('mobile jersey preview opens at the form and returns without losing the edit position', async ({ page }, info) => {
-  test.skip(!['mobile-320', 'mobile-390', 'mobile-webkit'].includes(info.project.name), 'Mobile form journey');
-  await page.goto('/products/jersey');
-  await page.getByLabel('Nick', { exact: true }).fill('SHUSH 愛');
-  await page.getByLabel('Número', { exact: true }).fill('13');
-  await page.getByLabel('Frase opcional', { exact: true }).fill('Só rounds.');
-  const miniature = page.locator('.drop-mini-image');
-  const miniatureHeight = (await miniature.boundingBox())!.height;
-  const phraseHeight = (await miniature.locator('.audit-live-print small').boundingBox())!.height;
-  expect(phraseHeight).toBeLessThan(miniatureHeight * .08);
-  const trigger = page.getByRole('button', { name: 'Ampliar a minha personalização', exact: true });
-  await trigger.scrollIntoViewIfNeeded();
-  const box = (await trigger.boundingBox())!;
-  const before = await page.evaluate(() => ({ scroll: window.scrollY, hash: location.hash }));
-  // A real tap does not run the locator click's second scroll alignment on this sticky control.
-  await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
-  const preview = page.getByRole('dialog', { name: 'A camisola, ao detalhe.' });
-  await expect(preview.getByLabel('Pré-visualização: SHUSH 愛 13', { exact: true })).toBeVisible();
-  await expect(preview.getByText('Só rounds.', { exact: true })).toBeVisible();
-  await preview.getByRole('button', { name: 'Frente', exact: true }).click();
-  await preview.getByRole('button', { name: 'Verso', exact: true }).click();
-  await page.screenshot({ path: info.outputPath('mobile-personalization-preview.png') });
-  await page.keyboard.press('Escape');
-  await expect(preview).toHaveCount(0);
-  await expect(trigger).toBeFocused();
-  expect(await page.evaluate(() => window.scrollY)).toBeCloseTo(before.scroll, 0);
-  expect(await page.evaluate(() => location.hash)).toBe(before.hash);
-  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('SHUSH 愛');
-  await expect(page.getByLabel('Número', { exact: true })).toHaveValue('13');
-  await page.screenshot({ path: info.outputPath('mobile-personalization-return.png') });
-});
