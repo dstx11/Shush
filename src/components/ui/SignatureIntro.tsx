@@ -6,7 +6,7 @@ const visitKey = 'shush:signature-intro:1';
 
 // Centre lines for the pen, in writing order. Separate flourishes lift the nib.
 const strokes = [
-  { d: 'M12 82 C-1 75 13 53 51 36 C79 23 98 21 86 43 C78 58 47 67 38 59 C32 50 59 23 78 21 C91 20 83 32 67 45 C45 63 28 75 30 88 C33 105 85 77 77 66 C72 60 48 73 42 88 C37 100 59 101 82 84', ms: 590 },
+  { d: 'M73 40 C90 18 68 17 47 28 C24 40 17 53 40 59 L56 63 C80 69 75 82 57 90 C36 100 13 96 17 83 C20 74 31 69 39 69 C31 75 26 83 30 88 C37 97 64 92 82 84', ms: 590 },
   { d: 'M82 84 C96 78 104 69 99 68 C90 65 77 82 82 88 C86 94 101 85 112 74 L103 89 C114 78 123 67 125 71 C126 73 116 84 116 89 C126 78 137 67 139 71 C141 74 126 88 133 90 C138 92 149 84 155 79', ms: 370 },
   { d: 'M168 86 C188 65 211 40 205 39 C197 37 174 72 169 89 C182 74 193 68 191 76 C190 83 177 94 174 88 C173 84 184 86 198 76', ms: 275 },
   { d: 'M215 73 C208 65 190 81 192 88 C194 96 211 77 216 72 C209 82 205 92 212 89 C219 86 225 78 231 72 C225 70 223 76 226 77 C230 79 237 73 239 73 C237 78 225 90 232 90 C238 89 245 81 252 74', ms: 300 },
@@ -52,7 +52,7 @@ export function SignatureIntro() {
     style={{ '--pen-finish': `${penFinish}ms` } as CSSProperties}
     onCancel={event => { event.preventDefault(); finish(); }}
     onAnimationEnd={event => { if (event.target === event.currentTarget && event.animationName === 'signature-exit') finish(); }}>
-    <div className="signature-silk" aria-hidden="true" />
+    <div className="signature-art" aria-hidden="true"><div className="signature-silk" /></div>
     <header className="signature-head">
       <img src="/assets/brand/shush-logo-small.webp" alt="SHUSH" width="1167" height="647" />
       <button type="button" onClick={finish} aria-label="Saltar apresentação">Saltar <span className="signature-skip-mark" aria-hidden="true" /></button>
@@ -64,14 +64,13 @@ export function SignatureIntro() {
             <stop stopColor="#b89ac8"/><stop offset=".34" stopColor="#fff5eb"/><stop offset=".69" stopColor="#e9d8e8"/><stop offset="1" stopColor="#b491c5"/>
           </linearGradient>
         </defs>
-        <g id="signature-hand" fill="none" stroke="url(#signature-ink)" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
+        <g className="signature-hand" fill="none" stroke="url(#signature-ink)" strokeWidth="1.45" strokeLinecap="round" strokeLinejoin="round">
           {strokes.map(({d, ms}) => {
             const start = delay;
             delay += ms;
             return <path key={d} d={d} pathLength="1" style={{ '--ink-start': `${start}ms`, '--ink-time': `${ms}ms` } as CSSProperties} />;
           })}
         </g>
-        <use href="#signature-hand" transform="translate(.65 -.45)" />
       </svg>
       <div className="signature-impact" aria-hidden="true"><span className="signature-accent">Só</span>{' '}<span>rounds<i>.</i></span></div>
     </div>

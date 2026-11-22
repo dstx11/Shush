@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useQuietMotion } from '../../hooks/useQuietMotion';
+
 // A photographic background remains visible while the shader starts or if WebGL is unavailable.
 export function SceneLight({ material }: { material: 'silk' | 'rays' }) {
   const quiet = useQuietMotion();
@@ -27,19 +28,19 @@ export function SceneLight({ material }: { material: 'silk' | 'rays' }) {
       frame = requestAnimationFrame(tick);
     }
     function canPlay() {
-      return mounted && visible && !document.hidden && !intro?.open && !contextLost;
+      return mounted && visible && !document.hidden && !intro?.open;
     }
     function sync() {
       cancelAnimationFrame(frame);
       if (!canvas) return;
       const active = canPlay();
       canvas.dataset.active = String(active);
-      if (!active || unavailable || loading) return;
+      if (!active || unavailable || contextLost || loading) return;
       if (!scene) {
         loading = true;
         import('./sceneRenderer').then(({ createScene }) => {
           loading = false;
-          if (!canPlay()) return;
+          if (!canPlay() || contextLost) return;
           scene = createScene(canvas, material);
           if (!scene) throw new Error('WebGL unavailable');
           sync();
@@ -56,7 +57,12 @@ export function SceneLight({ material }: { material: 'silk' | 'rays' }) {
     observer.observe(canvas);
     intro?.addEventListener('close', sync);
     document.addEventListener('visibilitychange', sync);
-    const lost = (event: Event) => { event.preventDefault(); contextLost = true; canvas.dataset.fallback = 'true'; cancelAnimationFrame(frame); };
+    const lost = (event: Event) => {
+      event.preventDefault();
+      contextLost = true;
+      canvas.dataset.fallback = 'true';
+      sync();
+    };
     const restored = () => {
       contextLost = false;
       delete canvas.dataset.fallback;

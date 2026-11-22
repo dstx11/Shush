@@ -20,9 +20,9 @@
   animation: signature-exit .48s cubic-bezier(.65,0,.32,1) calc(var(--pen-finish) + 1150ms) both;
 }
 .signature-intro::backdrop { background: transparent; }
+.signature-art { position: absolute; z-index: -1; inset: 0; overflow: clip; pointer-events: none; }
 .signature-silk {
   position: absolute;
-  z-index: -1;
   inset: 0;
   background: radial-gradient(ellipse at 46% 43%, #180c2266 8%, #100a17a3 61%, #0c0810e8 100%),
     linear-gradient(116deg, #100b14c2 6%, #20142840 47%, #120b18b5 84%),
@@ -55,6 +55,7 @@
   margin: 0 0 -1.5% 1%; transform: rotate(-3deg);
   filter: drop-shadow(0 1px 4px #d4b3dd32);
 }
+.signature-hand { filter: drop-shadow(.65px -.45px 0 #dcc8df); }
 .signature-script path {
   stroke-dasharray: 1 1;
   animation: signature-write var(--ink-time) linear var(--ink-start) both;
