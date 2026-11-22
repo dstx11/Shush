@@ -5,7 +5,6 @@ import { test, expect } from '@playwright/test';
 const regions = [
   ['home-hero', '/', '.lux-hero'],
   ['player-profile', '/esports/valorant/roster?player=more', '#selected-player'],
-  ['drop-preview', '/products/jersey?drop=1&nick=SHUSH&number=07&size=L&phrase=S%C3%B3+rounds.', '.audit-drop-gallery'],
   ['about-intro', '/company', '.story-cover'],
 ] as const;
 
@@ -21,7 +20,6 @@ for (const [name, path, selector] of regions) {
     await expect(page.getByRole('dialog',{name:'Entrada SHUSH'})).toHaveCount(0,{timeout:7000});
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.evaluate(() => document.fonts.ready);
-    if (name === 'drop-preview') await page.getByRole('button', { name: /Verso/ }).click();
     const region = page.locator(selector);
     await expect(region).toBeVisible();
     for (const image of await region.locator('img:visible').all()) {

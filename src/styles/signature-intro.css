@@ -9,14 +9,14 @@
   margin: 0;
   padding: clamp(1.15rem, 3.5vw, 3.5rem);
   border: 0;
-  overflow: hidden;
+  overflow: auto;
   color: #f5eee9;
   background: #100b14;
   isolation: isolate;
 }
 .signature-intro[open] {
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(min-content, 1fr) auto;
   animation: signature-exit .48s cubic-bezier(.65,0,.32,1) calc(var(--pen-finish) + 1150ms) both;
 }
 .signature-intro::backdrop { background: transparent; }
@@ -54,7 +54,7 @@
   text-align: center;
   font: 800 clamp(3.2rem, 10.3vw, 10.3rem)/1.07 var(--font-ui);
   letter-spacing: -.083em;
-  white-space: nowrap;
+  text-wrap: balance;
 }
 .signature-impact span {
   display: inline-block;
@@ -68,8 +68,16 @@
 @keyframes signature-impact { from { clip-path: inset(0 0 100%); transform: translateY(.15em); } to { clip-path: inset(-8%); transform: none; } }
 @keyframes silk-opening { from { transform: scale(1.09) translateX(1%); } to { transform: scale(1); } }
 @keyframes signature-exit { from { opacity: 1; } to { opacity: 0; } }
-@media (max-width: 600px) {
+@media (orientation: landscape) and (max-height: 500px) {
+  .signature-title { width: min(91%, 105svh); padding-bottom: 0; }
+  .signature-impact { font-size: min(10vw, 14svh); }
+}
+@media (max-width: 600px) and (orientation: portrait) {
   .signature-title { width: 100%; }
   .signature-script { width: 92%; margin-left: 1%; }
   .signature-impact { font-size: clamp(3rem, 15vw, 5.3rem); }
+}
+@media (forced-colors: active) {
+  .signature-silk { display: none; }
+  .signature-script path { stroke: CanvasText; }
 }

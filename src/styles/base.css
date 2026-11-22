@@ -20,6 +20,8 @@
   --surface-stroke: 2px;
   --portrait-rim: drop-shadow(0 0 2px #dec6f47a) drop-shadow(0 0 6px #ad78d755);
   --portrait-rim-active: drop-shadow(0 0 2px #e6cff691) drop-shadow(0 0 7px #b786e379);
+  --type-caption: .8125rem;
+  --type-control: .9375rem;
   --control-height: 2.75rem;
   --cozy-line: #45324f;
   --cozy-light: inset 0 1px 0 #ffffff08;

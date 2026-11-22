@@ -27,7 +27,7 @@ test('Character Select: player DNA, individual art direction and reduced motion'
   await expect(page.locator('.character-role-tape')).toBeVisible();
 });
 
-test('Initial splash covers prerendered content while the JavaScript loads', async ({ page }) => {
+test('The boot rail leaves prerendered content available while the JavaScript loads', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   let release!: () => void;
   const ready = new Promise<void>(resolve => { release = resolve; });
@@ -38,7 +38,7 @@ test('Initial splash covers prerendered content while the JavaScript loads', asy
   expect(await page.evaluate(() => {
     const atCenter=document.elementFromPoint(innerWidth / 2, innerHeight / 2);
     return Boolean(atCenter?.closest('#shush-boot-stage'));
-  })).toBe(true);
+  })).toBe(false);
   await page.evaluate(() => {
     (window as Window & { startupFallbackSeen?: boolean }).startupFallbackSeen = false;
     const observer = new MutationObserver(() => {
@@ -89,7 +89,7 @@ test('Character Select: arrow keys, Home/End, stable focus and preserved query p
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });
 
-test('Home leads with real players and sourced results, while the jersey belongs to Drop', async ({ page }) => {
+test('Home leads with real players and sourced results, without an active product promotion', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('[data-home-player]')).toHaveCount(3);
   await expect(page.locator('.lux-hero img[src*="/assets/jersey/"]')).toHaveCount(0);
@@ -97,7 +97,7 @@ test('Home leads with real players and sourced results, while the jersey belongs
   await expect(page.locator('[data-home-roster] img')).toHaveCount(3);
 });
 
-test('Character Select: swipe intent, cancellation and player jersey link', async ({ page }) => {
+test('Character Select: swipe intent, cancellation and the selected player dossier', async ({ page }) => {
   await page.goto('/esports/valorant/roster?player=lyel&origin=community');
   const media = page.locator('.character-media');
   // Vertical browsing and cancelled gestures must not select another player.
@@ -112,10 +112,9 @@ test('Character Select: swipe intent, cancellation and player jersey link', asyn
   await media.dispatchEvent('pointerup', { pointerType: 'touch', clientX: 90, clientY: 110 });
   await expect(page.locator('#selected-player-name')).toHaveText('TZ');
   expect(new URL(page.url()).searchParams.get('origin')).toBe('community');
-  await page.getByRole('link', { name: 'Ver camisola TZ' }).click();
-  await expect(page.getByLabel('Nick', { exact: true })).toHaveValue('TZ');
-  await expect(page.getByLabel('Número', { exact: true })).toHaveValue('10');
-  await expect(page.getByLabel('Pré-visualização: TZ 10')).toBeVisible();
+  await page.getByRole('button', { name: 'Abrir dossier de TZ', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: 'TZ', exact: true })).toBeVisible();
+
 });
 
 test('Motion: portrait arrival completes and reduced motion can be enabled at runtime', async ({ page }, testInfo) => {

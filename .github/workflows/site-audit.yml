@@ -40,7 +40,7 @@ jobs:
       - run: pnpm run build
       - name: Serve production bundle
         run: |
-          pnpm exec vite preview --port 4173 --strictPort > "$RUNNER_TEMP/preview.log" 2>&1 &
+          pnpm exec vite preview --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/preview.log" 2>&1 &
           for i in {1..30}; do
             if curl -sf http://127.0.0.1:4173/ > /dev/null; then exit 0; fi
             sleep 1

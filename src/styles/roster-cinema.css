@@ -27,7 +27,7 @@ html .character-backlight { transition: translate .5s var(--ease-out); }
 .dossier-actions{display:grid;gap:.75rem}
 .dossier-actions .tracker-button{background:transparent;color:var(--text);border-color:var(--control-line)}
 .dossier-actions .editorial-link{display:inline-flex;align-items:center;justify-content:space-between;color:var(--player-accent,var(--signal))}
-@media(max-width:600px){.dossier-body{grid-template-columns:1fr;padding:1rem}.dossier-portrait>img,.dossier-portrait>.portrait-placeholder{height:15rem}.dossier-heading,.dossier-navigation{padding:.75rem;gap:.5rem}.dossier-heading .section-kicker{font-size:.6rem}.dossier-heading .utility-button{font-size:.72rem}.dossier-navigation .utility-button{min-width:0;font-size:.75rem}.dossier-information>h2{margin-bottom:1.1rem}}
+@media(max-width:600px){.dossier-body{grid-template-columns:1fr;padding:1rem}.dossier-portrait>img,.dossier-portrait>.portrait-placeholder{height:15rem}.dossier-heading,.dossier-navigation{padding:.75rem;gap:.5rem}.dossier-heading .section-kicker{font-size:var(--type-caption)}.dossier-heading .utility-button{font-size:var(--type-control)}.dossier-navigation .utility-button{min-width:0;font-size:var(--type-control)}.dossier-information>h2{margin-bottom:1.1rem}}
 @media(max-height:500px) and (min-width:601px){.dossier-portrait>img,.dossier-portrait>.portrait-placeholder{height:15rem}.dossier-body{padding:1rem}}
 
 

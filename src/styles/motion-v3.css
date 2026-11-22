@@ -1,10 +1,9 @@
 /* Core motion, accessibility settings and brand perspective. */
 /* Shared SHUSH motion grammar. A limited set of high-impact moving surfaces. */
 .shush-root{--move-spring:cubic-bezier(.16,1,.3,1)}
-.shush-motion-toggle{display:inline-flex;align-items:center;gap:.65rem;min-height:2.75rem;border:var(--surface-stroke) solid var(--control-line);padding:.55rem .75rem;border-radius:var(--control-radius);background:transparent;color:var(--text);font:600 .72rem var(--font-ui)}
-.shush-motion-toggle[aria-pressed="true"]{border-color:var(--signal)}
-.shush-motion-toggle:disabled{cursor:default;opacity:.8}
-.motion-toggle-indicator{position:relative;width:30px;height:16px;border:1px solid var(--control-line);border-radius:999px;background:var(--surface-2)}
+.shush-motion-toggle{display:inline-flex;align-items:center;gap:.65rem;max-width:100%;min-height:max(44px,2.75rem);border:var(--surface-stroke) solid var(--control-line);padding:.55rem .75rem;border-radius:var(--control-radius);background:transparent;color:var(--text);font:600 var(--type-control)/1.4 var(--font-ui)}
+.shush-motion-toggle[aria-pressed="true"]{border-color:var(--signal);box-shadow:0 0 20px #ab55e533}
+.motion-toggle-indicator{position:relative;flex:none;width:30px;height:16px;border:1px solid var(--control-line);border-radius:999px;background:var(--surface-2)}
 .motion-toggle-indicator>span{display:block;width:10px;height:10px;background:var(--season-accent);border-radius:50%;position:absolute;top:2px;left:2px;transition:transform .2s var(--move-spring)}
 .shush-motion-toggle[aria-pressed="true"] .motion-toggle-indicator>span{transform:translateX(13px)}
 .shush-reading-progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--season-accent);box-shadow:0 0 12px #b45cff;z-index:70;transform:scaleX(0);transform-origin:left;pointer-events:none}
@@ -13,14 +12,10 @@ html .motion-in{opacity:.55;transform:translateY(22px);transition:opacity .65s v
  html .motion-in.motion-visible{opacity:1;transform:none}
 
 
-
-.motion-compact{font-size:.68rem;gap:.5rem}
-
 /* LUMEN: light belongs to selected actions and expressive headlines. */
 :is(.story-cover,.creator-editorial-heading,.premier-cover,.drop-heading) h1 em{text-shadow:0 0 32px #b869f64d,0 0 80px #8540d629}
 .utility-button:is(:hover,:focus-visible){box-shadow:0 0 22px #a24bea38}
 .creator-feature:focus-within .creator-art{box-shadow:0 0 32px #a647ed3d;border-color:#d09aef}
-.shush-motion-toggle[aria-pressed=true]{box-shadow:0 0 20px #ab55e533}
 .motion-in:focus-within{opacity:1!important;transform:none!important;transition:none!important}
 .shush-root :is(.creator-art,.audit-drop-gallery){border-color:#a26ecb99;box-shadow:0 0 44px #9135db2e,inset 0 1px #eed5ff22}
 .verified-match:is(:hover,:focus-within){box-shadow:0 0 28px #a14ee62b}
@@ -43,3 +38,14 @@ html .shush-root[data-entering=false] :is(.creator-editorial-heading,.premier-co
 .verified-match::before { transition: opacity .16s ease-out; }
   .verified-match details[open] .verified-match-source { animation: source-arrival .18s ease-out; }
   @keyframes source-arrival { from { opacity: .35; transform: translateY(-3px); } }
+
+/* Explicit visitor choice. Let finite reveals reach their final, readable frame. */
+html[data-quiet-motion], html[data-quiet-motion] * { scroll-behavior: auto !important; }
+html[data-quiet-motion] *, html[data-quiet-motion] *::before, html[data-quiet-motion] *::after {
+  animation-duration: .01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .01ms !important;
+  transition-delay: 0s !important;
+}
+html[data-quiet-motion] .motion-in { transform: none; opacity: 1; }

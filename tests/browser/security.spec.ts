@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 const headers = readFileSync('public/_headers', 'utf8');
 const policy = headers.split('\n').find(line => line.trim().startsWith('Content-Security-Policy:'))!.split('Content-Security-Policy:')[1].trim();
 
-test('production CSP blocks executable injections while the customizer and studio remain usable', async ({ page }, info) => {
+test('production CSP blocks executable injections while opponent search and the postcard studio remain usable', async ({ page }, info) => {
   test.skip(!['desktop-1366', 'mobile-390', 'mobile-webkit'].includes(info.project.name), 'Representative CSP engines');
   await page.clock.install({ time: new Date('2026-12-12T12:00:00Z') });
   // Enforce the exact deployment policy on a reserved HTTPS test origin.
@@ -19,12 +19,11 @@ test('production CSP blocks executable injections while the customizer and studi
     const scope = window as unknown as { policyViolations: string[] }; scope.policyViolations = [];
     document.addEventListener('securitypolicyviolation', event => scope.policyViolations.push(event.effectiveDirective));
   });
-  await page.goto('https://shush.test/products/jersey?drop=1&nick=SHUSH&number=07&size=L');
-  const nick = page.getByRole('textbox', { name: 'Nick' });
-  await nick.fill('<img src=x>');
-  await expect(page.locator('.audit-live-print').first()).toContainText('<img src=x>');
-  expect(await page.locator('img[src="x"]').count()).toBe(0);
-  expect(await page.locator('.audit-drop-image').first().evaluate(element => getComputedStyle(element).getPropertyValue('--print-name-size'))).not.toBe('');
+  await page.goto('https://shush.test/esports/valorant/premier');
+  const opponent = page.getByRole('searchbox', { name: 'Procurar adversário' });
+  await opponent.fill('EnLitro');
+  await expect(page.locator('.verified-match')).toHaveCount(1);
+  await expect(page.locator('.verified-match')).toContainText('EnLitro');
   expect(await page.evaluate(() => (window as unknown as { policyViolations: string[] }).policyViolations)).toEqual([]);
   const probe = await page.evaluate(async () => {
     const scope = window as unknown as { injected?: boolean };

@@ -27,10 +27,9 @@ test('Silent Night ornaments select every real player and navigate to their prof
 test('Silent Night presents offer direct real routes, keyboard access and no horizontal overflow', async ({ page }) => {
   await page.goto('/');
   const gifts = page.locator('.winter-gift-card');
-  await expect(gifts).toHaveCount(3);
+  await expect(gifts).toHaveCount(2);
   await expect(gifts.nth(0)).toHaveAttribute('href', '/esports/valorant/premier');
-  await expect(gifts.nth(1)).toHaveAttribute('href', '/products/jersey');
-  await expect(gifts.nth(2)).toHaveAttribute('href', '/content');
+  await expect(gifts.nth(1)).toHaveAttribute('href', '/content');
   await gifts.nth(1).focus();
   await expect(gifts.nth(1)).toBeFocused();
   const dimensions = await page.evaluate(() => ({

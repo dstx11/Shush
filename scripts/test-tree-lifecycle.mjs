@@ -12,7 +12,7 @@ const { outputText } = ts.transpileModule(source, { compilerOptions: {
   module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, jsx: ts.JsxEmit.ReactJSX,
 } });
 
-function mount({ reduced = false, paused = false, manual = false } = {}) {
+function mount({ reduced = false, paused = false, quiet = false, manual = false } = {}) {
   let effect, cleanup, intersection, resize, motion, visibility, refIndex = 0, stateIndex = 0;
   let draws = 0, next = 0;
   const frames = new Map();
@@ -38,7 +38,7 @@ function mount({ reduced = false, paused = false, manual = false } = {}) {
       useRef: value => ({ current: refIndex++ === 0 ? canvas : refIndex === 2 ? frame : value }),
       useState: value => [stateIndex++ === 1 ? paused : typeof value === 'function' ? value() : value, () => {}],
       useEffect: fn => { effect = fn; },
-    } : name === '../../lib/tree-visit' ? { getTreeVisit: () => ({ variant: 'christmas', returning: false }) } : require(name),
+    } : name === '../../hooks/useQuietMotion' ? { useQuietMotion: () => quiet } : name === '../../lib/tree-visit' ? { getTreeVisit: () => ({ variant: 'christmas', returning: false }) } : require(name),
   });
   const tree = exports.ChristmasTree();
   cleanup = effect();
@@ -76,7 +76,7 @@ active.visible(true);
 active.cleanup();
 assert.equal(active.frames.size, 0, 'unmount: cancel');
 
-for (const settings of [{ paused: true }]) {
+for (const settings of [{ paused: true }, { quiet: true }]) {
   const idle = mount(settings);
   idle.visible(true);
   assert.equal(idle.frames.size, 0, 'static mode never schedules frames');

@@ -1,14 +1,16 @@
 import { useEffect, useRef } from 'react';
+import { useQuietMotion } from '../../hooks/useQuietMotion';
 import { rays, silk } from './sceneShaders';
 
 const vertex = 'attribute vec2 point; void main(){gl_Position=vec4(point,0.0,1.0);}';
 
 // A photographic background remains visible while the shader starts or if WebGL is unavailable.
 export function SceneLight({ material }: { material: 'silk' | 'rays' }) {
+  const quiet = useQuietMotion();
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = ref.current;
-    if (!canvas) return;
+    if (!canvas || quiet) return;
     let dispose: (() => void) | undefined;
     let visible = false;
     let contextLost = false;
@@ -65,7 +67,8 @@ export function SceneLight({ material }: { material: 'silk' | 'rays' }) {
       canvas.removeEventListener('webglcontextrestored', restored);
       dispose?.();
     };
-  }, [material]);
+  }, [material, quiet]);
+  if (quiet) return null;
   return <canvas ref={ref} className={`scene-light scene-${material}`} aria-hidden="true" />;
 }
 

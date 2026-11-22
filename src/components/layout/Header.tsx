@@ -13,22 +13,26 @@ export function Header() {
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobilePanelRef = useRef<HTMLDivElement>(null);
+  const focusContentOnClose = useRef(false);
 
   useEffect(() => {
     setIsOpen(false);
   }, [activePath]);
 
   useEffect(() => {
-    const desktop = window.matchMedia('(min-width: 768px)');
-    const closeOnDesktop = () => { if (desktop.matches) setIsOpen(false); };
-    desktop.addEventListener('change', closeOnDesktop);
-    return () => desktop.removeEventListener('change', closeOnDesktop);
-  }, []);
+    const toggle = menuButtonRef.current;
+    if (!isOpen || !toggle) return;
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const unlock=lockPageScroll();
+    // CSS also responds to enlarged text. Observe the actual menu control,
+    // so the scroll lock follows the rendered navigation at any breakpoint.
+    const resize = new ResizeObserver(() => {
+      if (!toggle.getClientRects().length) {
+        setIsOpen(false);
+        navRef.current?.querySelector<HTMLAnchorElement>('.lux-desktop [aria-current="page"]')?.focus({ preventScroll: true });
+      }
+    });
+    resize.observe(toggle);
+    const unlock = lockPageScroll();
     const background = [document.getElementById('main-content'), document.querySelector('footer')];
     const inertStates = background.map((element) => element?.inert ?? false);
     background.forEach((element) => { if (element) element.inert = true; });
@@ -60,8 +64,13 @@ export function Header() {
     document.addEventListener('pointerdown', onPointerDown);
 
     return () => {
+      resize.disconnect();
       unlock();
       background.forEach((element, index) => { if (element) element.inert = inertStates[index]; });
+      if (focusContentOnClose.current) {
+        focusContentOnClose.current = false;
+        document.getElementById('main-content')?.focus({ preventScroll: true });
+      }
       window.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('pointerdown', onPointerDown);
     };
@@ -126,9 +135,10 @@ export function Header() {
                   key={item.href}
                   href={item.href}
                   aria-current={isActive(item.href) ? 'page' : undefined}
-                  onClick={() => {
+                  onClick={(event) => {
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                    focusContentOnClose.current = true;
                     setIsOpen(false);
-                    document.getElementById('main-content')?.focus({ preventScroll: true });
                   }}
                   className="lux-menu-link"
                   style={{ '--menu-order': index } as CSSProperties}

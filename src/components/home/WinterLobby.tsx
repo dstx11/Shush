@@ -16,14 +16,14 @@ const ornamentPositions = [
 
 const destinations = [
   {
-    id: 'premier', sequence: '01', label: 'THE COMPETITION',
+    id: 'premier', label: 'THE COMPETITION',
     title: 'O resultado fica no servidor.',
     body: 'Partidas, mapas e resultados verificados. O nosso percurso, round após round.',
     href: '/esports/valorant/premier', action: 'Explorar Premier',
     theme: 'winter-gift-competition',
   },
   {
-    id: 'creators', sequence: '02', label: 'THE STORIES',
+    id: 'creators', label: 'THE STORIES',
     title: 'Nem tudo fica no Discord.',
     body: 'Os nossos creators e tudo o que acontece do outro lado do ecrã.',
     href: '/content', action: 'Conhecer creators',
@@ -94,12 +94,12 @@ export function WinterLobby() {
         <div className="winter-gifts-heading">
           <span className="section-kicker">SHUSH / UNDER THE TREE</span>
           <h2 id="winter-gifts-title">Ainda há presentes<br /><em>por descobrir.</em></h2>
-          <p>Três portas para o universo SHUSH. Não precisas de esperar pelo dia 25.</p>
+          <p>Explora as partidas da equipa e os canais dos nossos creators.</p>
         </div>
         <div className="winter-gifts-grid">
-          {destinations.map((destination) => (
+          {destinations.map((destination, index) => (
             <AppLink key={destination.id} href={destination.href} className={`winter-gift-card ${destination.theme}`}>
-              <span className="winter-gift-top"><span>{destination.label}</span><span>{destination.sequence} / 03</span></span>
+              <span className="winter-gift-top"><span>{destination.label}</span><span>{String(index + 1).padStart(2, '0')} / {String(destinations.length).padStart(2, '0')}</span></span>
               <span className="winter-gift-illustration" aria-hidden="true"><span className="winter-gift-box"><i /><b /></span><span className="winter-gift-spark one">✦</span><span className="winter-gift-spark two">✧</span></span>
               <strong>{destination.title}</strong>
               <span className="winter-gift-description">{destination.body}</span>

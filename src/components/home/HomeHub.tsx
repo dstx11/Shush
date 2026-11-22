@@ -1,3 +1,4 @@
+import { isQuietMotion } from '../../hooks/useQuietMotion';
 import { useState, useRef, useEffect, type CSSProperties } from 'react';
 import '../../styles/luxury-discovery.css';
 import { ArrowIcon } from '../ui/ArrowIcon';
@@ -39,7 +40,7 @@ function TeamSheet() {
     const target = direction > 0
       ? current >= end - 2 ? 0 : cards.find(left => left > current + 2) ?? end
       : current <= 2 ? end : cards.reverse().find(left => left < current - 2) ?? 0;
-    node.scrollTo({ left: target, behavior: 'smooth' });
+    node.scrollTo({ left: target, behavior: isQuietMotion() ? 'instant' : 'smooth' });
   }
 
   return (

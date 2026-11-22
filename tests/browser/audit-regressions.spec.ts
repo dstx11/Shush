@@ -35,31 +35,28 @@ test('Public pages include their content when JavaScript is unavailable', async 
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL });
   try {
     const page = await context.newPage();
-    for (const path of ['/', '/esports/valorant/roster', '/esports/valorant/premier', '/content', '/company', '/products/jersey']) {
+    for (const path of ['/', '/esports/valorant/roster', '/esports/valorant/premier', '/content', '/company']) {
       await page.goto(path);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       await expect(page.locator('.shush-loading')).toHaveCount(0);
       await expect(page.locator('footer a').first()).toBeVisible();
     }
-    await expect(page.getByRole('button', { name: 'Copiar resumo' })).toBeDisabled();
+    await expect(page.locator('footer a[href^="/products/"]')).toHaveCount(0);
   } finally { await context.close(); }
 });
 
 
-test('A delayed navigation frame does not interrupt jersey editing', async ({ page }) => {
-  await page.goto('/esports/valorant/roster?player=dstx');
-  await expect(page.locator('#main-content')).toBeFocused();
+test('a delayed navigation frame preserves an active opponent search', async ({ page }) => {
+  await page.goto('/company');
+  await expect(page.locator('#shush-boot-stage')).toHaveCount(0);
   const now = Date.now();
   await page.clock.install({ time: now });
   await page.clock.pauseAt(now + 100);
-  const jersey = page.getByRole('link', { name: 'Ver camisola DSTX' });
-  await jersey.focus();
-  await jersey.press('Enter');
-  const nick = page.getByLabel('Nick', { exact: true });
-  await expect(nick).toHaveValue('DSTX');
-  await nick.fill('EDITADO');
+  await page.locator('footer a[href="/esports/valorant/premier"]').press('Enter');
+  const search = page.getByRole('searchbox', {name:'Procurar adversário'});
+  await search.fill('EnLitro');
   await page.clock.runFor(100);
-  await expect(nick).toBeFocused();
-  await expect(nick).toHaveValue('EDITADO');
-  await expect(page.getByLabel('Pré-visualização: EDITADO 11')).toBeVisible();
+  await expect(search).toBeFocused();
+  await expect(search).toHaveValue('EnLitro');
+  await expect(page.locator('.verified-match')).toHaveCount(1);
 });

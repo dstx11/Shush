@@ -3,38 +3,19 @@ import {test,expect} from '@playwright/test';
 test('copy feedback changes visibly without moving the controls',async ({page},info)=>{
  test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative pointer/touch engines');
  await page.addInitScript(()=>Object.defineProperty(navigator,'clipboard',{value:{writeText:async()=>{}},configurable:true}));
- for(const [path,name,success] of [['/esports/valorant/roster','Copiar Riot ID','Riot ID copiado.'],['/products/jersey','Copiar resumo','Resumo copiado.']]){
-  await page.goto(path);
-  const button=page.getByRole('button',{name,exact:true});
+ await page.goto('/esports/valorant/roster');
+  const button=page.getByRole('button',{name:'Copiar Riot ID',exact:true});
   await expect(page.locator('.shush-root')).toHaveAttribute('data-entering','false');
   await expect(button).toBeVisible();
   const before=await button.boundingBox();
   await button.click();
   await expect(button).toContainText('Copiado');
   await expect(button).toHaveAttribute('data-transfer','success');
-  await expect(page.getByRole('status').filter({hasText:success})).toBeVisible();
+  await expect(page.getByRole('status').filter({hasText:'Riot ID copiado.'})).toBeVisible();
   const after=await button.boundingBox();
   expect(Math.abs(after!.width-before!.width)).toBeLessThan(1);
   expect(Math.abs(after!.height-before!.height)).toBeLessThan(1);
   await expect(button).toBeEnabled();
- }
-});
-
-test('reset can be undone with configuration, view, URL and focus restored',async ({page},info)=>{
- test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative form engines');
- await page.goto('/products/jersey?drop=1&nick=MORE&number=13&size=L&phrase=Round');
- const original=page.url();
- await page.getByRole('button',{name:'Repor',exact:true}).click();
- await expect(page.getByLabel('Nick',{exact:true})).toHaveValue('SHUSH');
- await page.getByRole('button',{name:'Desfazer reposição',exact:true}).click();
- await expect(page.getByLabel('Nick',{exact:true})).toHaveValue('MORE');
- await expect(page.getByLabel('Número',{exact:true})).toHaveValue('13');
- await expect(page.getByRole('radio',{name:'L',exact:true})).toBeChecked();
- await expect(page.getByLabel('Frase opcional',{exact:true})).toHaveValue('Round');
- await expect(page).toHaveURL(original);
- await expect(page.getByLabel('Pré-visualização: MORE 13',{exact:true})).toBeVisible();
- await expect(page.getByRole('button',{name:'Repor',exact:true})).toBeFocused();
- await expect(page.getByRole('button',{name:'Desfazer reposição',exact:true})).toHaveCount(0);
 });
 
 test('pointer and button feedback leave the content geometry stable',async ({page},info)=>{
@@ -90,7 +71,7 @@ test('dossier: keyboard selection keeps navigation in reach and restores lobby f
  dossier=page.getByRole('dialog',{name:'More',exact:true});
  await expect(dossier).toBeVisible();
  await expect(dossier.getByRole('status')).toHaveText('2 / 7');
- await expect(dossier.getByRole('link',{name:'Personalizar camisola',exact:true})).toHaveAttribute('href',/nick=More&number=13/);
+ await expect(dossier.getByRole('button',{name:'Criar cartão do jogador',exact:true})).toBeVisible();
  await expect(dossier.getByRole('button',{name:'Voltar ao lobby',exact:true})).toBeFocused();
  const controls=await dossier.locator('.dossier-navigation').boundingBox();
  expect(controls!.y).toBeGreaterThanOrEqual(0);
@@ -100,32 +81,6 @@ test('dossier: keyboard selection keeps navigation in reach and restores lobby f
  await page.keyboard.press('Escape');
  await expect(page.getByRole('dialog')).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Abrir dossier de DSTX',exact:true})).toBeFocused();
-});
-
-test('draft recovery can be undone without losing unsaved edits, view or saved data',async ({page},info)=>{
- test.skip(!['desktop-1366','mobile-390','mobile-webkit'].includes(info.project.name),'Representative draft engines');
- await page.goto('/products/jersey?drop=1&nick=MORE&number=13&size=L&phrase=Round');
- await page.locator('.drop-draft summary').click();
- await page.getByRole('button',{name:'Guardar rascunho',exact:true}).click();
- await expect(page.locator('.draft-state')).toHaveText('Guardado');
- await page.getByLabel('Nick',{exact:true}).fill('TEMP');
- await page.getByLabel('Número',{exact:true}).fill('19');
- await page.getByRole('button',{name:/Frente/}).click();
- const original=page.url();
- await expect(page.locator('.draft-state')).toHaveText('Alterações por guardar');
- await page.getByRole('button',{name:'Recuperar rascunho',exact:true}).click();
- await expect(page.getByLabel('Nick',{exact:true})).toHaveValue('MORE');
- await expect(page.locator('.draft-state')).toHaveText('Guardado');
- await page.getByRole('button',{name:'Desfazer recuperação',exact:true}).click();
- await expect(page.getByLabel('Nick',{exact:true})).toHaveValue('TEMP');
- await expect(page.getByLabel('Número',{exact:true})).toHaveValue('19');
- await expect(page).toHaveURL(original);
- await expect(page.locator('.drop-view-control button[aria-pressed="true"]')).toContainText('Frente');
- await expect(page.locator('.draft-state')).toHaveText('Alterações por guardar');
- await expect(page.getByRole('button',{name:'Recuperar rascunho',exact:true})).toBeFocused();
- const stored=await page.evaluate(()=>JSON.parse(localStorage.getItem('shush:drop01:draft:v1')!).config);
- expect(stored.nick).toBe('MORE');
- expect(stored.number).toBe('13');
 });
 
 test('home result opens the actual match and gives it keyboard focus',async ({page},info)=>{
