@@ -64,6 +64,7 @@ test('Easter secrets are explicit and accessible',async ({page})=>{
 test('Summer and Halloween controls change state without a canvas loop',async ({page})=>{
  await page.clock.install({time:new Date('2027-07-15T12:00:00Z')});
  await page.goto('/');
+ await page.getByRole('button',{name:'Saltar apresentação'}).click();
  await page.getByRole('button',{name:'Ver o amanhecer'}).click();
  await expect(page.locator('.season-afterhours')).toHaveClass(/is-day/);
  await page.clock.setFixedTime(new Date('2027-10-31T12:00:00Z'));
