@@ -35,3 +35,19 @@ test('spring secrets preserve the revised brand story', async ({ page }) => {
   for (const button of await page.locator('.season-hidden-grid button').all()) await button.click();
   await expect(page.locator('.season-hidden-grid')).not.toContainText(/Less|aspas|LOUD/);
 });
+
+test('cover and roster captions remain on the portrait axis', async ({page}) => {
+  await page.goto('/#top');
+  const midpoint = async (selector: string) => {
+    const box = await page.locator(selector).boundingBox();
+    if (!box) throw new Error('Missing layout box: ' + selector);
+    return box.x + box.width / 2;
+  };
+  await expect(page.locator('.campaign-sitter img')).toBeVisible();
+  for (const selector of ['.campaign-credit', '#hero-title', '.campaign-title a', '.campaign-frames']) {
+    expect(Math.abs(await midpoint(selector) - await midpoint('.campaign-sitter'))).toBeLessThan(2);
+  }
+  await page.locator('.campaign-frame').first().click();
+  await expect(page.locator('#selected-player-name')).toBeVisible();
+  expect(Math.abs(await midpoint('#selected-player-name') - await midpoint('.character-media'))).toBeLessThan(2);
+});

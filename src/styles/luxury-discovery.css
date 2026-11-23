@@ -174,7 +174,7 @@ html .sheet-portrait img { transition: transform .42s var(--move-spring), filter
   .lux-creator-links .channel-photo { height: clamp(9rem, 37vw, 12rem); }
 }
 
-.discovery-nav { display:flex; flex-wrap:wrap; gap:.3rem 1.25rem; padding-bottom:1rem; }
+.discovery-nav { display:flex; justify-content:center; flex-wrap:wrap; gap:.3rem 1.25rem; padding-bottom:1rem; }
 .discovery-nav a { display:inline-flex; align-items:center; min-height:2.75rem; color:#e4d3ee; text-decoration:underline; text-underline-offset:.24em; font-size:.9375rem; }
 #arquivo { scroll-margin-top:6rem; }
 

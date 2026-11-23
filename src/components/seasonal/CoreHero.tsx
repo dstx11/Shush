@@ -2,7 +2,6 @@ import { SceneLight } from '../motion/SceneLight';
 import { useState, type CSSProperties } from 'react';
 import { AppLink } from '../ui/AppLink';
 import { Button } from '../ui/Button';
-import { ArrowIcon } from '../ui/ArrowIcon';
 import { getHomePlayers } from '../../lib/home-selection';
 import { PlayerPortrait } from '../ui/PlayerPortrait';
 import { useSeason } from '../../seasonal/SeasonProvider';
@@ -17,21 +16,21 @@ export function CoreHero() {
   return <section id="top" className="lux-hero" aria-labelledby="hero-title">
     <div className="campaign-stage">
       <SceneLight material="silk" />
-      <div className="campaign-masthead" aria-hidden="true">SHUSH</div>
+      <div className="campaign-masthead" style={{'--name-scale': 108 / (cover.displayName.length + 1)} as CSSProperties} aria-hidden="true">{cover.displayName}</div>
       <div className="campaign-sitter" key={cover.id} style={{ '--silhouette': `url("/assets/campaign/${cover.id}-mask.svg")` } as CSSProperties} aria-hidden="true">
-        <PlayerPortrait player={cover} eager decorative sizes="(max-width: 767px) min(132vw, clamp(423px, 61.41svh, 615px)), (max-height: 600px) min(72vw, 440px), min(72vw, clamp(550px, 73svh, 800px))" />
+        <PlayerPortrait player={cover} eager decorative sizes="(max-width: 767px) min(100vw, 46svh), min(70vw, 57svh)" />
       </div>
-      <div className="campaign-caption shell">
-        <div className="campaign-title">
-          <p className="section-kicker">{id === 'base' ? 'VALORANT  /  PORTUGAL' : theme.label}</p>
-          <h1 id="hero-title">{id === 'base' ? <>Sem barulho.<br /><em>Só rounds.</em></> : <>{theme.title[0]}<br /><em>{theme.title[1]}</em></>}</h1>
-          {id !== 'base' && <p className="campaign-lead">{theme.lead}</p>}
-          <Button href="/esports/valorant/roster">Conhecer o roster</Button>
-        </div>
-        <AppLink href={`/esports/valorant/roster?player=${cover.id}`} className="campaign-credit" aria-label={`Abrir perfil de ${cover.displayName}`}>
-          <span>CAMISOLA {cover.number}</span><strong>{cover.displayName} <ArrowIcon /></strong>
-          <small>{cover.roles.join(' / ')}</small>
-        </AppLink>
+      <AppLink href={`/esports/valorant/roster?player=${cover.id}`} className="campaign-credit" aria-label={`Abrir perfil de ${cover.displayName}`}>
+        <span>#{cover.number}</span><strong>{cover.displayName}</strong>
+        <small>{cover.roles.join(' / ')}</small>
+      </AppLink>
+    </div>
+    <div className="campaign-caption shell">
+      <div className="campaign-title">
+        <p className="section-kicker">{id === 'base' ? 'VALORANT  /  PORTUGAL' : theme.label}</p>
+        <h1 id="hero-title">{id === 'base' ? <>Sem barulho.{' '}<em>Só rounds.</em></> : <>{theme.title[0]}{' '}<em>{theme.title[1]}</em></>}</h1>
+        {id !== 'base' && <p className="campaign-lead">{theme.lead}</p>}
+        <Button href="/esports/valorant/roster">Conhecer o roster</Button>
       </div>
     </div>
     <div className="campaign-index shell">
@@ -41,7 +40,7 @@ export function CoreHero() {
           href={`/esports/valorant/roster?player=${player.id}`} onMouseEnter={() => setActive(index)} onFocus={() => setActive(index)}
           aria-label={`Conhecer ${player.displayName}`}>
           <PlayerPortrait player={player} decorative thumbnail sizes="64px" />
-          <span><small>#{player.number}</small><strong>{player.displayName}</strong></span><ArrowIcon />
+          <span><small>#{player.number}</small><strong>{player.displayName}</strong></span>
         </AppLink>)}
       </nav>
     </div>

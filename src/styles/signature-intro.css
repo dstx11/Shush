@@ -52,7 +52,7 @@
 }
 .signature-script {
   position: relative; z-index: 1; display: block; width: 70%; overflow: visible;
-  margin: 0 0 -1.5% 1%; transform: rotate(-3deg);
+  margin: 0 auto -1.5%; transform: rotate(-3deg);
   filter: drop-shadow(0 1px 4px #d4b3dd32);
 }
 .signature-hand { filter: drop-shadow(.65px -.45px 0 #dcc8df); }
@@ -61,7 +61,7 @@
   animation: signature-write var(--ink-time) linear var(--ink-start) both;
 }
 .signature-impact {
-  justify-self: end; text-align: right;
+  justify-self: center; text-align: center;
   font: 750 clamp(3.2rem, 10.3vw, 9.5rem)/1.08 var(--font-ui);
   letter-spacing: -.083em;
   text-wrap: balance;
@@ -85,7 +85,7 @@
 }
 @media (max-width: 600px) and (orientation: portrait) {
   .signature-title { width: 100%; }
-  .signature-script { width: 88%; margin-left: 0; }
+  .signature-script { width: 88%; }
   .signature-impact { font-size: clamp(3rem, 16vw, 5.65rem); }
 }
 @media (forced-colors: active) {

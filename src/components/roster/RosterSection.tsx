@@ -92,7 +92,6 @@ export function RosterSection() {
       <div className="shell">
         <div className="player-heading">
           <h1 id="roster-title">Roster.<span className="roster-count"> VALORANT / SETE JOGADORES</span></h1>
-          <span className="mono">SILENCE BEFORE IMPACT</span>
         </div>
 
         <div className="player-stage">
@@ -123,6 +122,7 @@ export function RosterSection() {
                 }
               }}>
               <span className="character-backlight" aria-hidden="true" />
+              <span className="portrait-lettering" aria-hidden="true" style={{fontSize: `min(${112 / (selectedPlayer.displayName.length + 1)}cqw, 18rem)`}}>{selectedPlayer.displayName}</span>
               {leaving?.avatar && <div className="portrait-depart" style={{ '--silhouette': `url("/assets/campaign/${leaving.id}-mask.svg")` } as CSSProperties} key={leaving.id} aria-hidden="true" onAnimationEnd={() => setLeaving(current => current?.id === leaving.id ? null : current)}><img src={leaving.avatar} alt="" style={{ objectPosition: leaving.portraitPosition }} /></div>}
               <div className="roster-portrait">
                 <PlayerPortrait player={selectedPlayer} eager sizes="(max-width: 767px) 100vw, 65vw" />
