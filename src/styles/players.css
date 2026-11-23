@@ -27,3 +27,8 @@ html .roster-portrait>img{animation:archive-portrait-in .24s ease-out}html .port
 
 .portrait-lettering { position:absolute; inset:7% 0 auto; text-align:center; text-transform:uppercase; font:750 5rem/.95 var(--font-ui); color:#b79ac1; letter-spacing:-.085em; padding-right:.085em; pointer-events:none; user-select:none; }
 @media(max-width:767px){.player-card-name{justify-content:center;text-align:center}}
+.roster-paging { display:inline-flex; gap:inherit; }
+@media(max-width:767px){
+  .character-controls { justify-content:center; }
+  .character-controls>.mono { flex-basis:100%; margin:0; text-align:center; }
+}

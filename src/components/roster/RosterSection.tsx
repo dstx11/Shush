@@ -154,12 +154,14 @@ export function RosterSection() {
 
           <div className="character-controls"><span className="mono">{String(selectedIndex + 1).padStart(2, '0')} / {String(players.length).padStart(2, '0')}</span><details className="roster-shortcuts"><summary>Atalhos</summary><p><kbd>1–7</kbd> selecionar jogador<br /><kbd>← →</kbd> percorrer as opções em foco<br />Desliza sobre a fotografia no telemóvel.</p></details>
             <button type="button" className="selector-replay" onClick={() => setReplayCycle(cycle => cycle + 1)} aria-label="Rever entrada do jogador">Rever entrada</button>
-            <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
-              <span aria-hidden="true">←</span>
-            </button>
-            <button type="button" onClick={selectNext} aria-label="Jogador seguinte">
-              <span aria-hidden="true">→</span>
-            </button>
+            <div className="roster-paging">
+              <button type="button" onClick={selectPrevious} aria-label="Jogador anterior">
+                <span aria-hidden="true">←</span>
+              </button>
+              <button type="button" onClick={selectNext} aria-label="Jogador seguinte">
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
           </div>
 
             <div key={`copy-${selectedPlayer.id}`} className="character-copy">
