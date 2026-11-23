@@ -39,7 +39,7 @@
 .campaign-title {display:grid; justify-items:center; gap:.7rem; margin-inline:auto; max-width:58rem}
 .campaign-title .section-kicker {font:500 var(--type-caption)/1.4 var(--font-mono); letter-spacing:.12em; color:#dfcfe7}
 .campaign-title h1 {margin:0; font:500 clamp(2.4rem,5.6vw,5.2rem)/1.02 'SHUSH Hearth',Georgia,serif;letter-spacing:-.055em; text-wrap:balance; overflow-wrap:anywhere}
-.campaign-title h1 em {color:#dfc4ef}
+.campaign-title h1 em {color:#dfc4ef;text-shadow:0 0 .45em #b783d833}
 .campaign-lead {max-width:44ch;font-size:1rem}
 .campaign-index {display:grid; justify-items:center; gap:.45rem; border-top:var(--surface-stroke) solid #7359816b; padding-block:.7rem}
 .campaign-discover {grid-row:2;display:inline-flex;align-items:center;gap:.45rem;min-height:44px;color:#d9cadf;font-size:.875rem;text-decoration:none}

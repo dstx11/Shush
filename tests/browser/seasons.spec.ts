@@ -55,6 +55,7 @@ test('Carnival reveals a real roster member without changing his identity',async
 test('Easter secrets are explicit and accessible',async ({page})=>{
  await page.clock.install({time:new Date('2027-03-28T12:00:00Z')});
  await page.goto('/');
+ await page.getByRole('button',{name:'Saltar apresentação'}).click();
  const first=page.locator('.season-hidden-grid button').first();
  await expect(first).toHaveAttribute('aria-expanded','false');
  await first.click();
